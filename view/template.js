@@ -10,15 +10,17 @@ module.exports = class self
 {
   async compose(vm, route)
   {
-    const template =  vm.template || route.template
+    const
+    layout    = vm.layout   || route.layout,
+    template  = vm.template || route.template
 
     if(!template)
       throw `view can not be rendered, no template or dispatcher defined`
 
     const html = await self.compose(template, vm.body)
 
-    return vm.layout
-    ? await self.compose(vm.layout, Object.assign(vm.body || {}, {main:html}))
+    return layout
+    ? await self.compose({body:{main:html}, template:layout})
     : html
   }
 
