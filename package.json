@@ -1,0 +1,19 @@
+{
+  "name"        : "@superhero/core",
+  "version"     : "0.0.1",
+  "description" : "foundational core functionality",
+  "repository"  : "git@github.com:superhero/js.core.git",
+  "main"        : "index.js",
+  "license"     : "MIT",
+  "author"      :
+  {
+    "name"  : "Erik Landvall",
+    "email" : "erik@landvall.se",
+    "url"   : "http://erik.landvall.se"
+  },
+  "dependencies":
+  {
+    "@superhero/websocket"  : "1.0.x",
+    "handlebars"            : "4.0.x"
+  }
+}
