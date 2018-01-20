@@ -14,6 +14,7 @@
   "dependencies":
   {
     "@superhero/websocket"  : "1.0.x",
-    "handlebars"            : "4.0.x"
+    "handlebars"            : "4.0.11",
+    "dateformat"            : "3.0.2"
   }
 }
