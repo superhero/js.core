@@ -78,16 +78,18 @@ handlebars.registerHelper('concat', (...args) =>
 })
 
 // escape quotes
-handlebars.registerHelper('esc_attr', (variable) =>
-  typeof variable == 'string'
-  ? variable.replace(/(['"])/g, '\\$1')
-  : variable)
+handlebars.registerHelper('escSingelQuote', (s) => ('' + s).replace(/(['])/g, '\\$1'))
+handlebars.registerHelper('escDoubleQuote', (s) => ('' + s).replace(/(["])/g, '\\$1'))
 
 // remove tags from variable
-handlebars.registerHelper('strip_tags', (variable) =>
+handlebars.registerHelper('stripTags', (variable) =>
   typeof variable == 'string'
   ? variable.replace(/(<([^>]+)>)/ig, '')
   : variable)
 
-// dateformat
-handlebars.registerHelper('date', (date, format) => dateformat(date, format)
+// date format helper
+handlebars.registerHelper('date', (date, format) => dateformat(date, format))
+
+// case helpers
+handlebars.registerHelper('toUpperCase', (s) => ('' + s).toUpperCase())
+handlebars.registerHelper('toLowerCase', (s) => ('' + s).toLowerCase())
