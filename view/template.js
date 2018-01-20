@@ -93,3 +93,6 @@ handlebars.registerHelper('date', (date, format) => dateformat(date, format))
 // case helpers
 handlebars.registerHelper('toUpperCase', (s) => ('' + s).toUpperCase())
 handlebars.registerHelper('toLowerCase', (s) => ('' + s).toLowerCase())
+
+// json helper
+handlebars.registerHelper('jsonStringify', (obj) => JSON.stringify(obj))
