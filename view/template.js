@@ -1,5 +1,5 @@
 const
-dateformat = require('dateformat'),
+dateformat  = require('dateformat'),
 handlebars  = require('handlebars'),
 fs          = require('fs'),
 util        = require('util'),
