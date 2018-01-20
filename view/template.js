@@ -1,4 +1,5 @@
 const
+dateformat = require('dateformat'),
 handlebars  = require('handlebars'),
 fs          = require('fs'),
 util        = require('util'),
@@ -87,3 +88,6 @@ handlebars.registerHelper('strip_tags', (variable) =>
   typeof variable == 'string'
   ? variable.replace(/(<([^>]+)>)/ig, '')
   : variable)
+
+// dateformat
+handlebars.registerHelper('date', (date, format) => dateformat(date, format)
