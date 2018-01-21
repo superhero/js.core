@@ -15,18 +15,18 @@ module.exports = class extends require('./_abstract')
     this.server.listen(port)
   }
 
-  io(in, out)
+  io(i, o)
   {
     const request =
     {
-      headers : in.headers,
-      method  : in.method,
-      url     : url.parse(in.url, true),
+      headers : i.headers,
+      method  : i.method,
+      url     : url.parse(i.url, true),
       body    : ''
     }
 
-    in.on('data', (data) => request.body += data)
-    in.on('end', this.dispatch.bind(this, out, request))
+    i.on('data', (data) => request.body += data)
+    i.on('end', this.dispatch.bind(this, o, request))
   }
 
   async dispatch(out, request)
