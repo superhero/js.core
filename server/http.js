@@ -6,12 +6,19 @@ module.exports = class extends require('./_abstract')
 {
   constructor(router)
   {
+    super()
     this.router = router
-    this.server = http.createServer(this.io.bind(this))
+  }
+
+  createServer()
+  {
+    if(!this.server)
+      this.server = http.createServer(this.io.bind(this))
   }
 
   listen(port)
   {
+    createServer()
     this.server.listen(port)
   }
 

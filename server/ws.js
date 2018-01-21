@@ -4,13 +4,24 @@ module.exports = class extends require('./_abstract')
 {
   constructor(router, options)
   {
-    this.router = router
-    this.server = new Websocket(options)
-    this.server.events.emit = this.dispatch.bind(this)
+    super()
+
+    this.router   = router
+    this.options  = options
+  }
+
+  createServer()
+  {
+    if(!this.server)
+    {
+      this.server = new Websocket(this.options)
+      this.server.events.emit = this.dispatch.bind(this)
+    }
   }
 
   listen(port)
   {
+    createServer()
     this.server.server.listen(port)
   }
 
