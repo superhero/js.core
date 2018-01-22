@@ -3,8 +3,8 @@ module.exports =
   http : (routes) =>
   {
     const
-    HttpServer  = require('./server/http'),
-    Router      = require('./router'),
+    HttpServer  = require('./controller/server/http'),
+    Router      = require('./controller/router'),
     router      = new Router(routes),
     server      = new HttpServer(router)
 
@@ -14,8 +14,8 @@ module.exports =
   https : (routes, options) =>
   {
     const
-    HttpsServer = require('./server/https'),
-    Router      = require('./router'),
+    HttpsServer = require('./controller/server/https'),
+    Router      = require('./controller/router'),
     router      = new Router(routes),
     server      = new HttpsServer(router, options)
 
