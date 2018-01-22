@@ -18,7 +18,7 @@ module.exports = class extends require('./_abstract')
 
   listen(port)
   {
-    createServer()
+    this.createServer()
     this.server.listen(port)
   }
 
@@ -56,7 +56,7 @@ module.exports = class extends require('./_abstract')
     const
     vm      = await new Dispatcher(request, route).dispatch(),
     View    = await this.fetchView(vm.view || route.view),
-    output  = await new View.compose(vm, route)
+    output  = await new View().compose(vm, route)
 
     out.writeHead(vm.status || 200, vm.headers)
     out.end(output)

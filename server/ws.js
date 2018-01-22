@@ -21,7 +21,7 @@ module.exports = class extends require('./_abstract')
 
   listen(port)
   {
-    createServer()
+    this.createServer()
     this.server.server.listen(port)
   }
 

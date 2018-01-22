@@ -21,7 +21,7 @@ module.exports = class self
     const html = await self.compose(template, vm.body)
 
     return layout
-    ? await self.compose({body:{main:html}, template:layout})
+    ? await self.compose(layout, {main:html})
     : html
   }
 
