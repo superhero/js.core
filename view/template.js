@@ -99,3 +99,18 @@ handlebars.registerHelper('toLowerCase', (s) => ('' + s).toLowerCase())
 
 // json helper
 handlebars.registerHelper('jsonStringify', (obj) => JSON.stringify(obj))
+
+//math helper
+handlebars.registerHelper("math", function(value1, op, value2, options) {
+    value1 = parseFloat(value1);
+    value2 = parseFloat(value2);
+
+    switch(op){
+      case "+": return value1 + value2;
+      case "-": return value1 - value2;
+      case "*": return value1 * value2;
+      case "/": return value1 / value2;
+      case "%": return value1 % value2;
+    }
+    return '';
+});
