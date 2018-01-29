@@ -90,6 +90,9 @@ handlebars.registerHelper('stripTags', (variable) =>
 // date format helper
 handlebars.registerHelper('date', (date, format) => dateformat(date, format))
 
+// decimal fixed size
+handlebars.registerHelper('toFixed', (n, x) => (+n).toFixed(x))
+
 // case helpers
 handlebars.registerHelper('toUpperCase', (s) => ('' + s).toUpperCase())
 handlebars.registerHelper('toLowerCase', (s) => ('' + s).toLowerCase())

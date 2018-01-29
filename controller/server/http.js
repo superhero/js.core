@@ -62,7 +62,7 @@ module.exports = class extends require('./_abstract')
     out.end(output)
   }
 
-  async fetchDispatcher(dispatcher)
+  fetchDispatcher(dispatcher)
   {
     try
     {
