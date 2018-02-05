@@ -1,6 +1,6 @@
 {
   "name"        : "@superhero/core",
-  "version"     : "0.2.4",
+  "version"     : "0.2.5",
   "description" : "foundational core functionality",
   "repository"  : "git@github.com:superhero/js.core.git",
   "main"        : "index.js",
