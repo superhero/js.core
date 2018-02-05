@@ -11,7 +11,7 @@ const PageNotFound =
 
 module.exports = class extends require('.')
 {
-  async dispatch()
+  dispatch()
   {
     const method = this.request.method.toLowerCase()
 
@@ -20,7 +20,7 @@ module.exports = class extends require('.')
       case 'get'    :
       case 'post'   :
       case 'put'    :
-      case 'delete' : return await this[method]()
+      case 'delete' : return this[method]()
 
       default : return { status : 400,
                          body   :
