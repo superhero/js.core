@@ -5,6 +5,11 @@ root = path.dirname(require.main.filename)
 
 module.exports = class
 {
+  constructor(router)
+  {
+    this.router = router
+  }
+
   fetchView(view)
   {
     return view && fs.existsSync(`${root}/${view}.js`)

@@ -4,12 +4,6 @@ http = require('http')
 
 module.exports = class extends require('./_abstract')
 {
-  constructor(router)
-  {
-    super()
-    this.router = router
-  }
-
   createServer()
   {
     if(!this.server)
@@ -18,7 +12,6 @@ module.exports = class extends require('./_abstract')
 
   listen(port)
   {
-    this.createServer()
     this.server.listen(port)
   }
 

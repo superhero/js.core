@@ -2,15 +2,7 @@ const Websocket = require('@superhero/websocket')
 
 module.exports = class extends require('./_abstract')
 {
-  constructor(router, options)
-  {
-    super()
-
-    this.router   = router
-    this.options  = options
-  }
-
-  createServer()
+  createServer(options)
   {
     if(!this.server)
     {
@@ -21,7 +13,6 @@ module.exports = class extends require('./_abstract')
 
   listen(port)
   {
-    this.createServer()
     this.server.server.listen(port)
   }
 
