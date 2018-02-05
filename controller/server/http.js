@@ -53,10 +53,20 @@ module.exports = class extends require('./_abstract')
         break
     }
 
-    const
-    vm      = await new Dispatcher(request, route).dispatch(),
-    View    = await this.fetchView(vm.view || route.view),
-    output  = await new View().compose(vm, route)
+    let vm
+
+    try
+    {
+      vm = await new Dispatcher(request, route).dispatch()
+    }
+    catch (error)
+    {
+      vm = { status : 500,
+             body   :
+             { dispatcher,
+               status  : 'failed',
+               message : 'unhandled exception' } }
+    }
 
     out.writeHead(vm.status || 200, vm.headers)
     out.end(output)
