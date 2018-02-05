@@ -63,9 +63,9 @@ module.exports = class extends require('./_abstract')
     {
       vm = { status : 500,
              body   :
-             { dispatcher,
-               status  : 'failed',
-               message : 'unhandled exception' } }
+             { dispatcher : route.dispatcher,
+               status     : 'failed',
+               message    : 'unhandled exception' } }
     }
 
     out.writeHead(vm.status || 200, vm.headers)
