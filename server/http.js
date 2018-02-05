@@ -60,7 +60,7 @@ module.exports = class extends require('./_abstract')
                status  : 'failed',
                message : 'unhandled exception' } }
     }
-    
+
     const
     View    = await this.fetchView(vm.view || route.view),
     output  = await new View.compose(vm, route)
