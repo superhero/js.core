@@ -54,6 +54,8 @@ module.exports = class extends require('./_abstract')
     }
     catch (error)
     {
+      console.log(route.dispatcher, require('util').inspect(error))
+
       vm = { status : 500,
              body   :
              { dispatcher : route.dispatcher,
@@ -77,6 +79,8 @@ module.exports = class extends require('./_abstract')
     }
     catch(error)
     {
+      console.log(dispatcher, require('util').inspect(error))
+
       return class
       {
         dispatch()
@@ -85,7 +89,7 @@ module.exports = class extends require('./_abstract')
                    body   :
                    { dispatcher,
                      status  : 'failed',
-                     message : error } }
+                     message : 'unhandled exception' } }
         }
       }
     }
