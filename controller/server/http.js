@@ -54,8 +54,6 @@ module.exports = class extends require('./_abstract')
     }
     catch (error)
     {
-      console.log(route.dispatcher, require('util').inspect(error))
-
       vm = { status : 500,
              body   :
              { dispatcher : route.dispatcher,
