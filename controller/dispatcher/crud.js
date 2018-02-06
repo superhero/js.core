@@ -17,7 +17,7 @@ module.exports = class extends require('.')
       case 'update'   :
       case 'delete'   : return await this[type]()
 
-      default : throw { type, message:'unsupported crud type' }
+      default : throw new Error(`unsupported crud type:"${type}"`)
     }
   }
 

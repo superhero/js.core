@@ -25,7 +25,7 @@ module.exports = class
       return require.main.require('./' + dispatcher)
 
     throw dispatcher
-    ? 'the defined dispatcher does not exist'
-    : 'the route does not define a dispatcher'
+    ? new Error('the defined dispatcher does not exist')
+    : new Error('the route does not define a dispatcher')
   }
 }

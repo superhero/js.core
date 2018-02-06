@@ -16,7 +16,7 @@ module.exports = class self
     template  = vm.template || route.template
 
     if(!template)
-      throw `view can not be rendered, no template or dispatcher defined`
+      throw new Error('view can not be rendered, no template defined')
 
     const html = await self.compose(template, vm.body)
 
