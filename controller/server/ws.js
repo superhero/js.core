@@ -6,7 +6,7 @@ module.exports = class extends require('./_abstract')
   {
     if(!this.server)
     {
-      this.server = new Websocket(this.options)
+      this.server = new Websocket(options)
       this.server.events.emit = this.dispatch.bind(this)
     }
   }
@@ -18,10 +18,24 @@ module.exports = class extends require('./_abstract')
 
   async dispatch(event, context, body)
   {
-    const
-    route       = await this.router.findRoute(event),
-    Dispatcher  = await this.fetchDispatcher(route.dispatcher)
+    try
+    {
+      const
+      route       = await this.router.findRoute(event),
+      Dispatcher  = await this.fetchDispatcher(route.dispatcher)
 
-    new Dispatcher({event, context, body}, route).dispatch()
+      try
+      {
+        new Dispatcher({event, context, body}, route).dispatch()
+      }
+      catch(error)
+      {
+        context.emit('error', error)
+      }
+    }
+    catch(error)
+    {
+      // ...
+    }
   }
 }
