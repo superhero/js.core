@@ -1,12 +1,7 @@
-const PageNotFound =
+const NotFound =
 {
   status : 404,
-  body   :
-  {
-    status  : 'failed',
-    message : 'Page Not Found',
-    reason  : 'dispatcher action has not been filled'
-  }
+  body   : 'Not Found'
 }
 
 module.exports = class extends require('.')
@@ -23,15 +18,12 @@ module.exports = class extends require('.')
       case 'delete' : return this[method]()
 
       default : return { status : 400,
-                         body   :
-                         { status  : 'failed',
-                           message : 'unsupported method',
-                           method  : this.request.method } }
+                         body   : 'Bad Request' }
     }
   }
 
-  get()     { return PageNotFound }
-  post()    { return PageNotFound }
-  put()     { return PageNotFound }
-  delete()  { return PageNotFound }
+  get()     { return NotFound }
+  post()    { return NotFound }
+  put()     { return NotFound }
+  delete()  { return NotFound }
 }
