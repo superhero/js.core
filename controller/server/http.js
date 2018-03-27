@@ -54,6 +54,10 @@ module.exports = class extends require('./_abstract')
     }
     catch (error)
     {
+      this.debug.log('dispatcher error:',   error,
+                                'route:',   route,
+                                'request:', request)
+
       vm = { status : 500,
              body   : 'Internal Server Error' }
     }
@@ -75,7 +79,7 @@ module.exports = class extends require('./_abstract')
     catch(error)
     {
       dispatcher
-      && console.log(dispatcher, require('util').inspect(error))
+      && this.debug.log(dispatcher, error)
 
       return class
       {

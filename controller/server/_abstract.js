@@ -1,13 +1,15 @@
 const
-fs   = require('fs'),
-path = require('path'),
-root = path.dirname(require.main.filename)
+Debug = require('@superhero/debug'),
+fs    = require('fs'),
+path  = require('path'),
+root  = path.dirname(require.main.filename)
 
 module.exports = class
 {
   constructor(router)
   {
     this.router = router
+    this.debug  = new Debug
   }
 
   fetchView(view)
