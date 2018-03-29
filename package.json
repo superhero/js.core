@@ -1,6 +1,6 @@
 {
   "name"        : "@superhero/core",
-  "version"     : "0.2.5",
+  "version"     : "0.2.6",
   "description" : "foundational core functionality",
   "repository"  : "git@github.com:superhero/js.core.git",
   "main"        : "index.js",
@@ -13,8 +13,9 @@
   },
   "dependencies":
   {
-    "@superhero/websocket"  : "1.0.x",
-    "handlebars"            : "4.0.11",
-    "dateformat"            : "3.0.2"
+    "@superhero/translation"  : "0.0.x",
+    "@superhero/websocket"    : "1.0.x",
+    "handlebars"              : "4.0.11",
+    "dateformat"              : "3.0.2"
   }
 }
