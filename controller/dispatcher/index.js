@@ -9,9 +9,6 @@ module.exports = class
   dispatch()
   {
     return { status : 404,
-             body   :
-             { status  : 'failed',
-               message : 'Page Not Found',
-               reason  : 'dispatcher has not been filled' } }
+             body   : 'Not Found' }
   }
 }

@@ -1,9 +1,3 @@
-const UndefinedError =
-{
-  message : 'undefined action',
-  reason  : 'dispatcher action has not been declared'
-}
-
 module.exports = class extends require('.')
 {
   async dispatch()
@@ -17,12 +11,12 @@ module.exports = class extends require('.')
       case 'update'   :
       case 'delete'   : return await this[type]()
 
-      default : throw { type, message:'unsupported crud type' }
+      default : throw new Error(`unsupported crud type:"${type}"`)
     }
   }
 
-  create()  { throw UndefinedError }
-  retrieve(){ throw UndefinedError }
-  update()  { throw UndefinedError }
-  delete()  { throw UndefinedError }
+  create()  { throw new Error('undefined action') }
+  retrieve(){ throw new Error('undefined action') }
+  update()  { throw new Error('undefined action') }
+  delete()  { throw new Error('undefined action') }
 }

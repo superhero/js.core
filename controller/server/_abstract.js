@@ -5,6 +5,11 @@ root = path.dirname(require.main.filename)
 
 module.exports = class
 {
+  constructor(router)
+  {
+    this.router = router
+  }
+
   fetchView(view)
   {
     return view && fs.existsSync(`${root}/${view}.js`)
@@ -20,7 +25,7 @@ module.exports = class
       return require.main.require('./' + dispatcher)
 
     throw dispatcher
-    ? 'the defined dispatcher does not exist'
-    : 'the route does not define a dispatcher'
+    ? new Error('defined dispatcher does not exist')
+    : new Error('route does not define a dispatcher')
   }
 }
