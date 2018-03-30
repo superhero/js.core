@@ -49,7 +49,7 @@ module.exports = class
                ? method
                : new RegExp(`^${method}$`, 'i')
 
-        if(!this.request.method.match(method))
+        if(!request.method.match(method))
           return
       }
 
