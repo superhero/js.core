@@ -32,7 +32,7 @@ module.exports = class extends require('./_abstract')
   async dispatch(out, request)
   {
     const
-    route      = await this.router.findRoute(request.url.pathname),
+    route      = await this.router.findRoute(request),
     Dispatcher = await this.fetchDispatcher(route.dispatcher)
 
     switch(request.headers['content-type'])
