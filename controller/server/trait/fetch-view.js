@@ -7,7 +7,7 @@ module.exports = (view) =>
 {
   return view && fs.existsSync(`${root}/${view}.js`)
   ? require.main.require(view)
-  : view && fs.existsSync(`${__dirname}..//../../view/${view}.js`)
+  : view && fs.existsSync(`${__dirname}/../../../view/${view}.js`)
     ? require(`../../../view/${view}`)
     : require(`../../../view/json`)
 }
