@@ -3,6 +3,7 @@ Debug           = require('@superhero/debug'),
 Websocket       = require('@superhero/websocket'),
 fetchDispatcher = require('./trait/fetch-dispatcher')
 
+// this is still experimental, untested...
 module.exports = class
 {
   constructor(router)
