@@ -22,7 +22,7 @@ module.exports = class
 
       context.on('error', (error) =>
       {
-        this.debug.error(error, 'request:', i.headers, i.url)
+        this.debug.error(error)
         try
         {
           o.statusCode = 500
@@ -51,10 +51,10 @@ module.exports = class
     }
 
     i.on('data', (data) => request.body += data)
-    i.on('end', this.dispatch.bind(this, o, request).catch((error) =>
+    i.on('end', () => this.dispatch(o, request).catch((error) =>
     {
       throw error
-    })
+    }))
   }
 
   async dispatch(out, request)
