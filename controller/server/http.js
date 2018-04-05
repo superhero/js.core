@@ -23,7 +23,7 @@ module.exports = class
 
         context.on('error', (error) =>
         {
-          this.debug.error(i.headers, i.url, error)
+          this.debug.error(error, 'request:', i.headers, i.url)
           try
           {
             o.statusCode = 500
@@ -80,24 +80,8 @@ module.exports = class
         break
     }
 
-    let vm
-
-    try
-    {
-      vm = await new Dispatcher(request, route).dispatch()
-    }
-    catch (error)
-    {
-      this.debug.error('dispatcher error:',   error,
-                                  'route:',   route,
-                                  'request:', request)
-
-      vm = { view   : 'raw',
-             status : 500,
-             body   : 'Internal Server Error' }
-    }
-
     const
+    vm      = await new Dispatcher(request, route).dispatch(),
     View    = await fetchView(vm.view || route.view),
     output  = await new View().compose(vm, route)
 
@@ -113,20 +97,16 @@ module.exports = class
     }
     catch(error)
     {
-      dispatcher
-      && this.debug.error(dispatcher, error)
+      if(dispatcher)
+        throw error
 
       return class
       {
         dispatch()
         {
-          return dispatcher
-          ? { view    : 'raw',
-              status  : 500,
-              body    : 'Internal Server Error' }
-          : { view    : 'raw',
-              status  : 404,
-              body    : 'Not Found' }
+          return { view    : 'raw',
+                   status  : 404,
+                   body    : 'Not Found' }
         }
       }
     }
