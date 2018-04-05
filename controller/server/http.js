@@ -16,34 +16,28 @@ module.exports = class
 
   createServer()
   {
-    if(!this.server)
-      this.server = http.createServer((i, o) =>
+    return http.createServer((i, o) =>
+    {
+      const context = domain.create()
+
+      context.on('error', (error) =>
       {
-        const context = domain.create()
-
-        context.on('error', (error) =>
+        this.debug.error(error, 'request:', i.headers, i.url)
+        try
         {
-          this.debug.error(error, 'request:', i.headers, i.url)
-          try
-          {
-            o.statusCode = 500
-            o.setHeader('content-type', 'text/plain')
-            o.end('Internal Server Error')
-          }
-          catch(ffs)
-          {
-            this.debug.error(ffs)
-          }
-        })
-        context.add(i)
-        context.add(o)
-        context.run(() => this.io(i, o))
+          o.statusCode = 500
+          o.setHeader('content-type', 'text/plain')
+          o.end('Internal Server Error')
+        }
+        catch(ffs)
+        {
+          this.debug.error(ffs)
+        }
       })
-  }
-
-  listen(port)
-  {
-    this.server.listen(port)
+      context.add(i)
+      context.add(o)
+      context.run(() => this.io(i, o))
+    })
   }
 
   io(i, o)

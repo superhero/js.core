@@ -8,8 +8,7 @@ module.exports =
     router      = new Router(routes),
     server      = new HttpServer(router)
 
-    server.createServer()
-    return server;
+    return server.createServer()
   },
 
   https : (routes, options) =>
@@ -20,8 +19,7 @@ module.exports =
     router      = new Router(routes),
     server      = new HttpsServer(router, options)
 
-    server.createServer(options)
-    return server;
+    return server.createServer(options)
   },
 
   ws : (routes, options) =>
@@ -32,7 +30,6 @@ module.exports =
     router   = new Router(routes),
     server   = new WsServer(router)
 
-    server.createServer(options)
-    return server;
+    return server.createServer(options)
   }
 }
