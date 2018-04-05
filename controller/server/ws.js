@@ -1,7 +1,16 @@
-const Websocket = require('@superhero/websocket')
+const
+Debug           = require('@superhero/debug'),
+Websocket       = require('@superhero/websocket'),
+fetchDispatcher = require('./trait/fetch-dispatcher')
 
-module.exports = class extends require('./_abstract')
+module.exports = class
 {
+  constructor(router)
+  {
+    this.router = router
+    this.debug  = new Debug
+  }
+
   createServer(options)
   {
     if(!this.server)
@@ -22,7 +31,7 @@ module.exports = class extends require('./_abstract')
     {
       const
       route       = await this.router.findRoute(event),
-      Dispatcher  = await this.fetchDispatcher(route.dispatcher)
+      Dispatcher  = await fetchDispatcher(route.dispatcher)
 
       try
       {

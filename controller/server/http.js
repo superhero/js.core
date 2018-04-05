@@ -1,9 +1,18 @@
 const
-url  = require('url'),
-http = require('http')
+Debug = require('@superhero/debug'),
+url   = require('url'),
+http  = require('http'),
+fetchDispatcher = require('./trait/fetch-dispatcher'),
+fetchView       = require('./trait/fetch-view')
 
-module.exports = class extends require('./_abstract')
+module.exports = class
 {
+  constructor(router)
+  {
+    this.router = router
+    this.debug  = new Debug
+  }
+
   createServer()
   {
     if(!this.server)
@@ -64,7 +73,7 @@ module.exports = class extends require('./_abstract')
     }
 
     const
-    View    = await this.fetchView(vm.view || route.view),
+    View    = await fetchView(vm.view || route.view),
     output  = await new View().compose(vm, route)
 
     out.writeHead(vm.status || 200, vm.headers)
@@ -75,7 +84,7 @@ module.exports = class extends require('./_abstract')
   {
     try
     {
-      return super.fetchDispatcher(dispatcher)
+      return fetchDispatcher(dispatcher)
     }
     catch(error)
     {
