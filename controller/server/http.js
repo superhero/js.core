@@ -16,50 +16,39 @@ module.exports = class
 
   createServer()
   {
-    return http.createServer((i, o) =>
-    {
-      const context = domain.create()
-
-      context.on('error', (error) =>
-      {
-        this.debug.error(error)
-        try
-        {
-          o.statusCode = 500
-          o.setHeader('content-type', 'text/plain')
-          o.end('Internal Server Error')
-        }
-        catch(ffs)
-        {
-          this.debug.error(ffs)
-        }
-      })
-      context.add(i)
-      context.add(o)
-      context.run(() => this.io(i, o))
-    })
+    return http.createServer(this.io.bind(this))
   }
 
   io(i, o)
   {
-    const request =
-    {
-      headers : i.headers,
-      method  : i.method,
-      url     : url.parse(i.url, true),
-      body    : ''
-    }
+    const context = domain.create()
 
-    i.on('data', (data) => request.body += data)
-    i.on('end', () => this.dispatch(o, request).catch((error) =>
+    context.on('error', (error) =>
+    {
+      this.debug.error(error)
+      try
+      {
+        o.statusCode = 500
+        o.setHeader('content-type', 'text/plain')
+        o.end('Internal Server Error')
+      }
+      catch(ffs)
+      {
+        this.debug.error(ffs)
+      }
+    })
+    context.add(i)
+    context.add(o)
+    context.run(() => this.dispatch(i, o).catch((error) =>
     {
       throw error
     }))
   }
 
-  async dispatch(out, request)
+  async dispatch(i, o)
   {
     const
+    request    = await this.composeRequest(i),
     route      = await this.router.findRoute(request),
     Dispatcher = await this.fetchDispatcher(route.dispatcher)
 
@@ -79,8 +68,46 @@ module.exports = class
     View    = await fetchView(vm.view || route.view),
     output  = await new View().compose(vm, route)
 
-    out.writeHead(vm.status || 200, vm.headers)
-    out.end(output)
+    o.writeHead(vm.status || 200, vm.headers)
+    o.end(output)
+  }
+
+  async composeRequest(i)
+  {
+    return new Promise((resolve, reject) =>
+    {
+      const request =
+      {
+        headers : i.headers,
+        method  : i.method,
+        url     : url.parse(i.url, true),
+        body    : ''
+      }
+
+      i.on('data', (data) => request.body += data)
+      i.on('end', () =>
+      {
+        try
+        {
+          switch(request.headers['content-type'])
+          {
+            case 'application/json':
+              request.body = JSON.parse(request.body)
+              break
+
+            default:
+              request.body = require('querystring').parse(request.body)
+              break
+          }
+
+          resolve(request)
+        }
+        catch(error)
+        {
+          reject(error)
+        }
+      })
+    })
   }
 
   fetchDispatcher(dispatcher)
