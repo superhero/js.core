@@ -57,7 +57,10 @@ module.exports = class
     }
 
     i.on('data', (data) => request.body += data)
-    i.on('end', this.dispatch.bind(this, o, request))
+    i.on('end', this.dispatch.bind(this, o, request).catch((error) =>
+    {
+      throw error
+    })
   }
 
   async dispatch(out, request)
