@@ -38,7 +38,7 @@ module.exports = class self
 }
 
 // register helper
-module.exports.registerHelper = handlebars.registerHelper
+module.exports.registerHelper = handlebars.registerHelper.bind(handlebars)
 
 // add partial
 module.exports.addPartial = async (name, filename) =>
@@ -115,4 +115,4 @@ handlebars.registerHelper('calculate', (a, operator, b, options) =>
     case '%': return a % b
   }
   return ''
-});
+})
