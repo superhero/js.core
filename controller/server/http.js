@@ -58,7 +58,8 @@ module.exports = class extends require('./_abstract')
                                 'route:',   route,
                                 'request:', request)
 
-      vm = { status : 500,
+      vm = { view   : 'raw',
+             status : 500,
              body   : 'Internal Server Error' }
     }
 
@@ -86,9 +87,11 @@ module.exports = class extends require('./_abstract')
         dispatch()
         {
           return dispatcher
-          ? { status  : 500,
+          ? { view    : 'raw',
+              status  : 500,
               body    : 'Internal Server Error' }
-          : { status  : 404,
+          : { view    : 'raw',
+              status  : 404,
               body    : 'Not Found' }
         }
       }

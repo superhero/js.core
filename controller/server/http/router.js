@@ -30,6 +30,7 @@ module.exports = class
 
       if(!path && !method)
       {
+        _route = Object.assign(_route, route)
         return
       }
 
