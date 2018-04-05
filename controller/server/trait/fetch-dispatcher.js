@@ -3,7 +3,7 @@ fs   = require('fs'),
 path = require('path'),
 root = path.dirname(require.main.filename)
 
-module.expports = (dispatcher) =>
+module.exports = (dispatcher) =>
 {
   if(dispatcher && fs.existsSync(`${root}/${dispatcher}.js`))
     return require.main.require('./' + dispatcher)
