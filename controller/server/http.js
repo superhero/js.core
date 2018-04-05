@@ -1,7 +1,8 @@
 const
-Debug = require('@superhero/debug'),
-url   = require('url'),
-http  = require('http'),
+Debug   = require('@superhero/debug'),
+domain  = require('domain'),
+url     = require('url'),
+http    = require('http'),
 fetchDispatcher = require('./trait/fetch-dispatcher'),
 fetchView       = require('./trait/fetch-view')
 
@@ -16,7 +17,28 @@ module.exports = class
   createServer()
   {
     if(!this.server)
-      this.server = http.createServer(this.io.bind(this))
+      this.server = http.createServer((i, o) =>
+      {
+        const context = domain.create()
+
+        context.on('error', (error) =>
+        {
+          this.debug.error(i.headers, i.url, error)
+          try
+          {
+            o.statusCode = 500
+            o.setHeader('content-type', 'text/plain')
+            o.end('Internal Server Error')
+          }
+          catch(ffs)
+          {
+            this.debug.error(ffs)
+          }
+        })
+        context.add(i)
+        context.add(o)
+        context.run(() => this.io(i, o))
+      })
   }
 
   listen(port)
@@ -63,9 +85,9 @@ module.exports = class
     }
     catch (error)
     {
-      this.debug.log('dispatcher error:',   error,
-                                'route:',   route,
-                                'request:', request)
+      this.debug.error('dispatcher error:',   error,
+                                  'route:',   route,
+                                  'request:', request)
 
       vm = { view   : 'raw',
              status : 500,
@@ -89,7 +111,7 @@ module.exports = class
     catch(error)
     {
       dispatcher
-      && this.debug.log(dispatcher, error)
+      && this.debug.error(dispatcher, error)
 
       return class
       {
