@@ -48,25 +48,12 @@ module.exports = class
   async dispatch(i, o)
   {
     const
-    request    = await this.composeRequest(i),
-    route      = await this.router.findRoute(request),
-    Dispatcher = await this.fetchDispatcher(route.dispatcher)
-
-    switch(request.headers['content-type'])
-    {
-      case 'application/json':
-        request.body = JSON.parse(request.body)
-        break
-
-      default:
-        request.body = require('querystring').parse(request.body)
-        break
-    }
-
-    const
-    vm      = await new Dispatcher(request, route).dispatch(),
-    View    = await fetchView(vm.view || route.view),
-    output  = await new View().compose(vm, route)
+    request     = await this.composeRequest(i),
+    route       = await this.router.findRoute(request),
+    Dispatcher  = await this.fetchDispatcher(route.dispatcher),
+    vm          = await new Dispatcher(request, route).dispatch(),
+    View        = await fetchView(vm.view || route.view),
+    output      = await new View().compose(vm, route)
 
     o.writeHead(vm.status || 200, vm.headers)
     o.end(output)
