@@ -5,10 +5,19 @@ fs          = require('fs'),
 util        = require('util'),
 path        = require('path').dirname(require.main.filename),
 readFile    = util.promisify(fs.readFile),
-templates   = {}
+templates   = {},
+helperDir   = __dirname + '/template/helper/'
+
+fs.readdirSync(helperDir).forEach((helper) =>
+  handlebars.registerHelper(helper, require(helperDir + helper)))
 
 module.exports = class self
 {
+  static get handlebars()
+  {
+    return handlebars
+  }
+
   async compose(vm, route)
   {
     const
@@ -35,84 +44,10 @@ module.exports = class self
         return templates[template](context)
       })
   }
-}
 
-// register helper
-module.exports.registerHelper = handlebars.registerHelper.bind(handlebars)
-
-// add partial
-module.exports.addPartial = async (name, filename) =>
-{
-  const source = await readFile(filename, 'utf-8')
-  handlebars.registerPartial(name, source)
-}
-
-// updated if helper
-handlebars.registerHelper('if', function(a, operator, b, options)
-{
-  options = options || operator
-
-  switch (operator)
+  static async addPartial(name, filename)
   {
-    case '==' : case 'eq' : return (a == b) ? options.fn(this) : options.inverse(this)
-    case '<'  : case 'lt' : return (a <  b) ? options.fn(this) : options.inverse(this)
-    case '<=' : case 'lte': return (a <= b) ? options.fn(this) : options.inverse(this)
-    case '>'  : case 'gt' : return (a >  b) ? options.fn(this) : options.inverse(this)
-    case '>=' : case 'gte': return (a >= b) ? options.fn(this) : options.inverse(this)
-    case '&&' : case 'and': return (a && b) ? options.fn(this) : options.inverse(this)
-    case '||' : case 'or' : return (a || b) ? options.fn(this) : options.inverse(this)
-    case 'typeof' : return  (typeof a == b) ? options.fn(this) : options.inverse(this)
-    default       : return  (a)             ? options.fn(this) : options.inverse(this)
+    const source = await readFile(filename, 'utf-8')
+    handlebars.registerPartial(name, source)
   }
-})
-
-// added a concat helper
-handlebars.registerHelper('concat', (...args) =>
-{
-  var out = ''
-  for(var arg of args)
-    if(typeof arg != 'object' && arg != undefined)
-      out += arg
-
-  return out
-})
-
-// escape quotes
-handlebars.registerHelper('escSingelQuote', (s) => ('' + s).replace(/(['])/g, '\\$1'))
-handlebars.registerHelper('escDoubleQuote', (s) => ('' + s).replace(/(["])/g, '\\$1'))
-
-// remove tags from variable
-handlebars.registerHelper('stripTags', (variable) =>
-  typeof variable == 'string'
-  ? variable.replace(/(<([^>]+)>)/ig, '')
-  : variable)
-
-// date format helper
-handlebars.registerHelper('date', (date, format) => dateformat(date, format))
-
-// decimal fixed size
-handlebars.registerHelper('toFixed', (n, x) => (+n).toFixed(x))
-
-// case helpers
-handlebars.registerHelper('toUpperCase', (s) => ('' + s).toUpperCase())
-handlebars.registerHelper('toLowerCase', (s) => ('' + s).toLowerCase())
-
-// json helper
-handlebars.registerHelper('jsonStringify', (obj) => JSON.stringify(obj))
-
-// calculate helper
-handlebars.registerHelper('calculate', (a, operator, b, options) =>
-{
-  a = parseFloat(a)
-  b = parseFloat(b)
-
-  switch(operator)
-  {
-    case '+': return a + b
-    case '-': return a - b
-    case '*': return a * b
-    case '/': return a / b
-    case '%': return a % b
-  }
-  return ''
-})
+}
