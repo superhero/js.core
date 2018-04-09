@@ -1,6 +1,6 @@
 module.exports = class extends require('.')
 {
-  setContext(...ctx)
+  setContext(ctx)
   {
     this.context = ctx
     return this
