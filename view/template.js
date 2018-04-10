@@ -20,18 +20,12 @@ module.exports = class self
 
   async compose(vm, route)
   {
-    const
-    layout    = vm.layout   || route.layout,
-    template  = vm.template || route.template
+    const template = vm.template || route.template
 
     if(!template)
       throw new Error('view can not be rendered, no template defined')
 
-    const html = await self.compose(template, vm.body)
-
-    return layout
-    ? await self.compose(layout, {main:html})
-    : html
+    return await self.compose(template, vm.body)
   }
 
   static async compose(template, context)
@@ -45,9 +39,9 @@ module.exports = class self
       })
   }
 
-  static async addPartial(name, filename)
+  static async addPartial(name, template)
   {
-    const source = await readFile(filename, 'utf-8')
+    const source = await readFile(`${path}/${template}.hbs`, 'utf-8')
     handlebars.registerPartial(name, source)
   }
 }

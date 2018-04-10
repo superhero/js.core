@@ -1,6 +1,18 @@
 module.exports =
 {
-  http : (routes) =>
+  bootstrap : async function(config)
+  {
+    if(config.partials)
+      if(typeof config.partials === 'object')
+        for(let key in config.partials)
+          await require('./view/template').addPartial(key, config.partials[key])
+      else
+        throw Error('"partials" is of an unsupported type')
+
+    return this
+  },
+
+  http : function(routes)
   {
     const
     HttpServer  = require('./controller/server/http'),
@@ -11,7 +23,7 @@ module.exports =
     return server.createServer()
   },
 
-  https : (routes, options) =>
+  https : function(routes, options)
   {
     const
     HttpsServer = require('./controller/server/https'),
@@ -22,7 +34,7 @@ module.exports =
     return server.createServer(options)
   },
 
-  ws : (routes, options) =>
+  ws : function(routes, options)
   {
     const
     WsServer = require('./controller/server/ws'),
