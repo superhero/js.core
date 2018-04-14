@@ -2,12 +2,25 @@ module.exports =
 {
   bootstrap : async function(config)
   {
-    if(config.partials)
-      if(typeof config.partials === 'object')
-        for(let key in config.partials)
-          await require('./view/template').addPartial(key, config.partials[key])
-      else
-        throw Error('"partials" is of an unsupported type')
+    if('partials' in config)
+    {
+      const Template = require('./view/template')
+
+      for(let key in config.partials)
+        await Template.addPartial(key, config.partials[key])
+    }
+
+    if('resource' in config)
+    {
+      const Resource = require('./controller/resource')
+
+      for(key in config.resource)
+        switch(key)
+        {
+          case 'cache'  :
+          case 'origin' : Resource[key] = config.resource[key]
+        }
+    }
 
     return this
   },
