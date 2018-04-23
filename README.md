@@ -29,15 +29,15 @@ A simple example to get started follows
 
 ### File structure
 
-- controller
+- **controller**
   - index.js
-- view
+- **view**
   - index.hbs
   - layout.hbs
 - config.js
 - index.js
 
-#### config.js
+#### *config.js*
 
 ```js
 module.exports =
@@ -65,7 +65,7 @@ module.exports =
 }
 ```
 
-#### index.js
+#### *index.js*
 
 ```js
 const config = module.exports.config = require('./config')
@@ -74,7 +74,7 @@ require('@superhero/core').bootstrap(config.bootstrap).then((core) =>
   core.http(config.routes).listen(80))
 ```
 
-#### controller/index.js
+#### *controller/index.js*
 
 ```js
 const Dispatcher = require('@superhero/core/controller/dispatcher')
@@ -88,7 +88,7 @@ module.exports = class extends Dispatcher
 }
 ```
 
-#### view/layout.hbs
+#### *view/layout.hbs*
 
 ```html
 <!DOCTYPE html>
@@ -114,7 +114,7 @@ module.exports = class extends Dispatcher
 </html>
 ```
 
-#### view/index.hbs
+#### *view/index.hbs*
 
 ```html
 {{#> layout title="Insert awesome title for the page here" }}
@@ -150,15 +150,10 @@ module.exports =
 
 ...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
 
-- controller
-  - index.js
-- view
-  - index.hbs
-- public
-  - resource
-    - css
+- ...
+- **public**
+  - **resource**
+    - **css**
       - master.css
-- config.js
-- index.js
 
 You can then request the `master.css` file through the request: `/resource/css/master.css`
