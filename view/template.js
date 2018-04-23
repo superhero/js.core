@@ -9,7 +9,8 @@ templates   = {},
 helperDir   = __dirname + '/template/helper/'
 
 fs.readdirSync(helperDir).forEach((helper) =>
-  handlebars.registerHelper(helper, require(helperDir + helper)))
+  helper.endsWith('.js')
+  && handlebars.registerHelper(helper.slice(0, -3), require(helperDir + helper)))
 
 module.exports = class self
 {
