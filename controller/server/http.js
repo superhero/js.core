@@ -50,7 +50,7 @@ module.exports = class
     const
     request     = await this.composeRequest(i),
     route       = await this.router.findRoute(request),
-    Dispatcher  = await this.fetchDispatcher(route.dispatcher),
+    Dispatcher  = await fetchDispatcher(route.dispatcher),
     vm          = await new Dispatcher(request, route).dispatch(),
     View        = await fetchView(vm.view || route.view),
     output      = await new View().compose(vm, route)
@@ -79,7 +79,7 @@ module.exports = class
           switch(request.headers['content-type'])
           {
             case 'application/json':
-              request.body = JSON.parse(request.body)
+              request.body = JSON.parse(request.body || '{}')
               break
 
             default:
@@ -95,28 +95,5 @@ module.exports = class
         }
       })
     })
-  }
-
-  fetchDispatcher(dispatcher)
-  {
-    try
-    {
-      return fetchDispatcher(dispatcher)
-    }
-    catch(error)
-    {
-      if(dispatcher)
-        throw error
-
-      return class
-      {
-        dispatch()
-        {
-          return { view    : 'raw',
-                   status  : 404,
-                   body    : 'Not Found' }
-        }
-      }
-    }
   }
 }

@@ -5,10 +5,18 @@ root = path.dirname(require.main.filename)
 
 module.exports = (dispatcher) =>
 {
-  if(dispatcher && fs.existsSync(`${root}/${dispatcher}.js`))
-    return require.main.require('./' + dispatcher)
+  try
+  {
+    require.resolve(`${root}/${dispatcher}`)
+  }
+  catch(error)
+  {
+    if(error.code === 'MODULE_NOT_FOUND')
+      return require.main.require(dispatcher)
 
-  throw dispatcher
-  ? new Error('defined dispatcher does not exist')
-  : new Error('route does not define a dispatcher')
+    else
+      throw error
+  }
+
+  return require(`${root}/${dispatcher}`)
 }
