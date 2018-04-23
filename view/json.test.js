@@ -13,7 +13,7 @@ describe('view/json', () =>
     it('should return a stringified value of `vm.body`', () =>
       expect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body)))
 
-    it('should set the `vm.header["content-type"]` to "application/json"', () =>
-      expect(vm.header['content-type']).to.be.equal('application/json'))
+    it('should set the `vm.headers["content-type"]` to "application/json"', () =>
+      expect(vm.headers['content-type']).to.be.equal('application/json'))
   })
 })
