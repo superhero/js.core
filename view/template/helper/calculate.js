@@ -1,4 +1,4 @@
-module.exports = (a, operator, b, options) =>
+module.exports = (a, operator, b) =>
 {
   a = parseFloat(a)
   b = parseFloat(b)

@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 
-describe('view/template',  () =>
+describe('view/template', () =>
 {
   const
   Template = require('./template'),
@@ -8,7 +8,7 @@ describe('view/template',  () =>
 
   describe('static get handlebars', () =>
   {
-    it('sould return the handlebars instance', () =>
+    it('should return the handlebars instance', () =>
       expect(Template.handlebars).to.be.equal(require('handlebars')))
   })
 })

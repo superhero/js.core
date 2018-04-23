@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 
-describe('view/raw',  () =>
+describe('view/raw', () =>
 {
   const
   Raw = require('./raw'),

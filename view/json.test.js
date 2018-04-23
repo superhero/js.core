@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 
-describe('view/json',  () =>
+describe('view/json', () =>
 {
   const
   Json = require('./json'),
