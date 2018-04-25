@@ -8,12 +8,17 @@ describe('view/json', () =>
 
   describe('compose(vm)', () =>
   {
-    const vm = { body:{ foo:'bar' } }
+    const
+    vm1 = { body:{ foo:'bar' } },
+    vm2 = { headers:{}, body:{ foo:'bar' } }
 
     it('should return a stringified value of `vm.body`', () =>
-      expect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body)))
+      expect(json.compose(vm1)).to.be.equal(JSON.stringify(vm1.body)))
 
     it('should set the `vm.headers["content-type"]` to "application/json"', () =>
-      expect(vm.headers['content-type']).to.be.equal('application/json'))
+      expect(vm1.headers['content-type']).to.be.equal('application/json'))
+
+    it('headers set`', () =>
+      expect(json.compose(vm2)).to.be.equal(JSON.stringify(vm2.body)))
   })
 })
