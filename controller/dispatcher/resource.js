@@ -1,16 +1,15 @@
 const
-Dispatcher  = require('@superhero/core/controller/dispatcher'),
-fs          = require('fs'),
-path        = require('path'),
-readFile    = require('util').promisify(fs.readFile),
-base        = path.dirname(require.main.filename),
-cached      = {}
+fs        = require('fs'),
+path      = require('path'),
+readFile  = require('util').promisify(fs.readFile),
+base      = path.dirname(require.main.filename),
+cached    = {}
 
 let
 cache   = false,
 origin  = '/public'
 
-module.exports = class extends Dispatcher
+module.exports = class extends require('.')
 {
   static set origin (_origin) { origin  = path.normalize('/' + _origin) }
   static set cache  (_cache)  { cache   = !!_cache }
