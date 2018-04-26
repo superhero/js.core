@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 
-describe('server/ws/router', () =>
+describe('controller/server/ws/router', () =>
 {
   const
   config =
