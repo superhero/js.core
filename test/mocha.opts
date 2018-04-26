@@ -1,2 +1,3 @@
 --full-trace
 --check-leaks
+--require test/bootstrap

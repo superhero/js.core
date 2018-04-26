@@ -11,7 +11,7 @@
     "url": "http://erik.landvall.se"
   },
   "scripts": {
-    "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./mocha.opts"
+    "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
     "@superhero/debug": "1.1.4",
@@ -20,6 +20,7 @@
     "dateformat": "3.0.2"
   },
   "devDependencies": {
+    "@superhero/request": "1.0.9",
     "mocha": "5.1.0",
     "chai": "4.1.2",
     "nyc": "11.7.1"
