@@ -2,20 +2,21 @@ const
 fs        = require('fs'),
 path      = require('path'),
 readFile  = require('util').promisify(fs.readFile),
-base      = path.dirname(require.main.filename),
-cached    = {}
+base      = path.dirname(require.main.filename)
 
-let
-cache   = false,
-origin  = '/public'
+let origin = '/public'
 
 module.exports = class extends require('.')
 {
-  static set origin (_origin) { origin  = path.normalize('/' + _origin) }
-  static set cache  (_cache)  { cache   = !!_cache }
+  static set origin (_origin)
+  {
+    origin = path.normalize('/' + _origin)
+  }
 
-  static get origin() { return origin }
-  static get cache()  { return cache  }
+  static get origin()
+  {
+    return origin
+  }
 
   async dispatch()
   {
@@ -26,9 +27,7 @@ module.exports = class extends require('.')
       headers   = {},
       resource  = base + origin + path.normalize(this.request.url.pathname),
       extension = path.extname(resource).toLowerCase(),
-      source    = resource in cached
-                  ? cached[resource]
-                  : cached[resource] = await readFile(resource, 'utf-8')
+      source    = await readFile(resource, 'utf-8')
 
       switch(extension)
       {

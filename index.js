@@ -17,7 +17,6 @@ module.exports =
       for(key in config.resource)
         switch(key)
         {
-          case 'cache'  :
           case 'origin' : Resource[key] = config.resource[key]
         }
     }
