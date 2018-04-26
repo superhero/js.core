@@ -5,7 +5,6 @@ fs          = require('fs'),
 util        = require('util'),
 path        = require('path').dirname(require.main.filename),
 readFile    = util.promisify(fs.readFile),
-templates   = {},
 helperDir   = __dirname + '/template/helper/'
 
 fs.readdirSync(helperDir).forEach((helper) =>
@@ -30,15 +29,13 @@ module.exports = class self
     return await self.compose(template, vm.body)
   }
 
-  static async compose(template, context)
+  static async compose(filename, context)
   {
-    return template in templates
-    ? templates[template](context)
-    : await readFile(`${path}/${template}.hbs`, 'utf-8').then((source) =>
-      {
-        templates[template] = handlebars.compile(source)
-        return templates[template](context)
-      })
+    return await readFile(`${path}/${filename}.hbs`, 'utf-8').then((source) =>
+    {
+      const template = handlebars.compile(source)
+      return template(context)
+    })
   }
 
   static async addPartial(name, template)
