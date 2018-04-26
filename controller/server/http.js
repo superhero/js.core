@@ -23,40 +23,34 @@ module.exports = class
   {
     const context = domain.create()
 
-    context.on('error', (error) =>
-    {
-      this.debug.error(error)
-      try
-      {
-        o.statusCode = 500
-        o.setHeader('content-type', 'text/plain')
-        o.end('Internal Server Error')
-      }
-      catch(ffs)
-      {
-        this.debug.error(ffs)
-      }
-    })
     context.add(i)
     context.add(o)
-    context.run(() => this.dispatch(i, o).catch((error) =>
-    {
-      throw error
-    }))
+    context.run(() => this.dispatch(i, o))
   }
 
   async dispatch(i, o)
   {
-    const
-    request     = await this.composeRequest(i),
-    route       = await this.router.findRoute(request),
-    Dispatcher  = await fetchDispatcher(route.dispatcher),
-    vm          = await new Dispatcher(request, route).dispatch(),
-    View        = await fetchView(vm.view || route.view),
-    output      = await new View().compose(vm, route)
+    try
+    {
+      const
+      request     = await this.composeRequest(i),
+      route       = await this.router.findRoute(request),
+      Dispatcher  = await fetchDispatcher(route.dispatcher),
+      vm          = await new Dispatcher(request, route).dispatch(),
+      View        = await fetchView(vm.view || route.view),
+      output      = await new View().compose(vm, route)
 
-    o.writeHead(vm.status || 200, vm.headers)
-    o.end(output)
+      o.writeHead(vm.status || 200, vm.headers)
+      o.end(output)
+    }
+    catch(error)
+    {
+      this.debug.error(502, 'Bad Gateway', error)
+
+      o.setHeader('content-type', 'text/plain')
+      o.writeHead(502)
+      o.end('Bad Gateway')
+    }
   }
 
   async composeRequest(i)
