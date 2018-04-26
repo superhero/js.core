@@ -32,15 +32,15 @@ module.exports = class extends require('.')
       switch(extension)
       {
         case '.jpg'   :
-        case '.jpeg'  : headers[CT] = 'image/jpeg'  break
-        case '.gif'   : headers[CT] = 'image/gif'   break
-        case '.png'   : headers[CT] = 'image/png'   break
-        case '.css'   : headers[CT] = 'text/css'    break
-        case '.csv'   : headers[CT] = 'text/csv'    break
-        case '.pdf'   : headers[CT] = 'application/pdf'           break
-        case '.json'  : headers[CT] = 'application/json'          break
-        case '.ico'   : headers[CT] = 'image/vnd.microsoft.icon'  break
-        case '.js'    : headers[CT] = 'application/javascript'    break
+        case '.jpeg'  : headers[CT] = 'image/jpeg'; break
+        case '.gif'   : headers[CT] = 'image/gif';  break
+        case '.png'   : headers[CT] = 'image/png';  break
+        case '.css'   : headers[CT] = 'text/css';   break
+        case '.csv'   : headers[CT] = 'text/csv';   break
+        case '.pdf'   : headers[CT] = 'application/pdf';          break
+        case '.json'  : headers[CT] = 'application/json';         break
+        case '.ico'   : headers[CT] = 'image/vnd.microsoft.icon'; break
+        case '.js'    : headers[CT] = 'application/javascript';   break
       }
 
       return { view : 'raw', headers, body : source }
