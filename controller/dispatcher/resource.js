@@ -43,11 +43,12 @@ module.exports = class extends require('.')
         case '.js'    : headers[CT] = 'application/javascript'    break
       }
 
-      return { headers, body : source }
+      return { view : 'raw', headers, body : source }
     }
     catch(error)
     {
-      return { status : 404,
+      return { view   : 'raw',
+               status : 404,
                body   : 'Not Found' }
     }
   }
