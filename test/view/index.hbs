@@ -1,1 +1,9 @@
 {{ foobar }}
+
+{{# if test.foo '==' 'bar' }}
+  {{ test.foo }}
+{{/ if }}
+
+{{# if test.baz '!=' 'foo' }}
+  {{ test.baz }}
+{{/ if }}

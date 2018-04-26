@@ -41,7 +41,11 @@ describe('controller/server/http', () =>
     const result = await request.get('/test-templated')
 
     expect(result.status).to.be.equal(200)
-    expect(result.data.trim()).to.be.equal('bazqux')
+    expect(result.data.startsWith('bazqux')).to.be.equal(true)
+
+    // testing the "if" helper in the template
+    expect(result.data.includes('bar')).to.be.equal(true)
+    expect(result.data.includes('qux')).to.be.equal(true)
   })
 
   it('integration test of a none specified route', async () =>
