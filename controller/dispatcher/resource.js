@@ -27,7 +27,7 @@ module.exports = class extends require('.')
       headers   = {},
       resource  = base + origin + path.normalize(this.request.url.pathname),
       extension = path.extname(resource).toLowerCase(),
-      source    = await readFile(resource, 'utf-8')
+      body      = await readFile(resource, 'utf-8')
 
       switch(extension)
       {
@@ -43,13 +43,11 @@ module.exports = class extends require('.')
         case '.js'    : headers[CT] = 'application/javascript';   break
       }
 
-      return { view : 'raw', headers, body : source }
+      return { view:'raw', headers, body }
     }
     catch(error)
     {
-      return { view   : 'raw',
-               status : 404,
-               body   : 'Not Found' }
+      throw 404
     }
   }
 }
