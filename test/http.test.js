@@ -17,6 +17,7 @@ describe('controller/server/http', () =>
     const result = await request.get('/resource/master.css')
 
     expect(result.status).to.be.equal(200)
+    expect(result.headers['content-type']).to.be.equal('text/css')
     expect(result.data.includes('margin: 0')).to.be.equal(true)
   })
 
