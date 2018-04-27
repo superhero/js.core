@@ -1,3 +1,4 @@
+const error = new Error('undefined action')
 module.exports = class extends require('.')
 {
   async dispatch()
@@ -15,8 +16,8 @@ module.exports = class extends require('.')
     }
   }
 
-  create()  { throw new Error('undefined action') }
-  retrieve(){ throw new Error('undefined action') }
-  update()  { throw new Error('undefined action') }
-  delete()  { throw new Error('undefined action') }
+  create()  { throw error }
+  retrieve(){ throw error }
+  update()  { throw error }
+  delete()  { throw error }
 }
