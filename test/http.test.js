@@ -21,6 +21,24 @@ describe('controller/server/http', () =>
     expect(result.data.includes('margin: 0')).to.be.equal(true)
   })
 
+  it('integration test of the rest dispatcher', async () =>
+  {
+    const result =
+    {
+      get     : await request.get('/rest'),
+      post    : await request.post('/rest'),
+      put     : await request.put('/rest'),
+      delete  : await request.delete('/rest'),
+      index   : await request.fetch('index', '/rest')
+    }
+
+    expect(result.get.status).to.be.equal(501)
+    expect(result.post.status).to.be.equal(501)
+    expect(result.put.status).to.be.equal(501)
+    expect(result.delete.status).to.be.equal(501)
+    expect(result.index.status).to.be.equal(400)
+  })
+
   it('integration test of a raw text response', async () =>
   {
     const result = await request.get('/test-raw')

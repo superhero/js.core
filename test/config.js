@@ -18,6 +18,10 @@ module.exports =
       }
     },
     {
+      dispatcher  : '../controller/dispatcher/rest',
+      policy      : '/rest'
+    },
+    {
       view        : 'raw',
       dispatcher  : 'controller/txt',
       policy      : '/test-raw'
