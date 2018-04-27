@@ -23,34 +23,58 @@ module.exports = class
   {
     const context = domain.create()
 
+    context.on('error', (error) => this.onError(error, o))
     context.add(i)
     context.add(o)
-    context.run(() => this.dispatch(i, o))
+    context.run(async () =>
+    {
+      try
+      {
+        await this.dispatch(i, o)
+      }
+      catch(error)
+      {
+        context.emit('error', error)
+      }
+    })
+  }
+
+  onError(error, o)
+  {
+    o.setHeader('content-type', 'text/plain')
+
+    switch (error)
+    {
+      case 404:
+        o.writeHead(404)
+        o.end('Not Found')
+        break
+
+      default:
+        this.debug.error(500, 'Internal Server Error', error)
+
+        o.writeHead(500)
+        o.end('Internal Server Error')
+    }
   }
 
   async dispatch(i, o)
   {
-    try
-    {
-      const
-      request     = await this.composeRequest(i),
-      route       = await this.router.findRoute(request),
-      Dispatcher  = await fetchDispatcher(route.dispatcher),
-      vm          = await new Dispatcher(request, route).dispatch(),
-      View        = await fetchView(vm.view || route.view),
-      output      = await new View().compose(vm, route)
+    const
+    request     = await this.composeRequest(i),
+    route       = await this.router.findRoute(request)
 
-      o.writeHead(vm.status || 200, vm.headers)
-      o.end(output)
-    }
-    catch(error)
-    {
-      this.debug.error(502, 'Bad Gateway', error)
+    if(!route.dispatcher)
+      throw 404
 
-      o.setHeader('content-type', 'text/plain')
-      o.writeHead(502)
-      o.end('Bad Gateway')
-    }
+    const
+    Dispatcher  = await fetchDispatcher(route.dispatcher),
+    vm          = await new Dispatcher(request, route).dispatch(),
+    View        = await fetchView(vm.view || route.view),
+    output      = await new View().compose(vm, route)
+
+    o.writeHead(vm.status || 200, vm.headers)
+    o.end(output)
   }
 
   async composeRequest(i)
