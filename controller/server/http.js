@@ -3,6 +3,7 @@ Debug   = require('@superhero/debug'),
 domain  = require('domain'),
 url     = require('url'),
 http    = require('http'),
+statusCodes     = require('./http/status-codes'),
 fetchDispatcher = require('./trait/fetch-dispatcher'),
 fetchView       = require('./trait/fetch-view')
 
@@ -41,20 +42,17 @@ module.exports = class
 
   onError(error, o)
   {
-    o.setHeader('content-type', 'text/plain')
-
-    switch (error)
+    if(error in statusCodes)
     {
-      case 404:
-        o.writeHead(404)
-        o.end('Not Found')
-        break
+      o.writeHead(error)
+      o.end(statusCodes[error])
+    }
+    else
+    {
+      this.debug.error(500, 'Internal Server Error', error)
 
-      default:
-        this.debug.error(500, 'Internal Server Error', error)
-
-        o.writeHead(500)
-        o.end('Internal Server Error')
+      o.writeHead(500)
+      o.end(statusCodes[500])
     }
   }
 
