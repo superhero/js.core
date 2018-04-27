@@ -1,8 +1,9 @@
 const
-Debug   = require('@superhero/debug'),
-domain  = require('domain'),
-url     = require('url'),
-http    = require('http'),
+Debug           = require('@superhero/debug'),
+domain          = require('domain'),
+url             = require('url'),
+http            = require('http'),
+querystring     = require('querystring'),
 statusCodes     = require('./http/status-codes'),
 fetchDispatcher = require('./trait/fetch-dispatcher'),
 fetchView       = require('./trait/fetch-view')
@@ -49,7 +50,7 @@ module.exports = class
     }
     else
     {
-      this.debug.error(500, 'Internal Server Error', error)
+      this.debug.error(statusCodes[500], error)
 
       o.writeHead(500)
       o.end(statusCodes[500])
@@ -99,7 +100,7 @@ module.exports = class
               break
 
             default:
-              request.body = require('querystring').parse(request.body)
+              request.body = querystring.parse(request.body)
               break
           }
 
