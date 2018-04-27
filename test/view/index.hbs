@@ -1,9 +1,21 @@
 {{ foobar }}
-
-{{# if test.foo '==' 'bar' }}
-  {{ test.foo }}
-{{/ if }}
-
-{{# if test.baz '!=' 'foo' }}
-  {{ test.baz }}
-{{/ if }}
+---
+tests for the "if" helper
+---
+{{# if test.foo '==' 'bar' }} == {{/ if }}
+---
+{{# if test.baz '!=' 'foo' }} != {{/ if }}
+---
+{{# if i '<' 10 }} < {{/ if }}
+---
+{{# if i '<=' 5 }} <= {{/ if }}
+---
+{{# if i '>' 0 }} > {{/ if }}
+---
+{{# if i '>=' 5 }} >= {{/ if }}
+---
+{{# if i '&&' state }} && {{/ if }}
+---
+{{# if i '||' state }} || {{/ if }}
+---
+{{# if state 'typeof' 'boolean' }} typeof {{/ if }}
