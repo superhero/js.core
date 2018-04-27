@@ -8,7 +8,6 @@ module.exports = class
 
   dispatch()
   {
-    return { status : 404,
-             body   : 'Not Found' }
+    throw 501
   }
 }
