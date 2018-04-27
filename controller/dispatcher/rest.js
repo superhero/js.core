@@ -15,8 +15,8 @@ module.exports = class extends require('.')
     }
   }
 
-  get()     { throw 404 }
-  post()    { throw 404 }
-  put()     { throw 404 }
-  delete()  { throw 404 }
+  get()     { throw 501 }
+  post()    { throw 501 }
+  put()     { throw 501 }
+  delete()  { throw 501 }
 }
