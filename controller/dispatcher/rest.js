@@ -1,9 +1,3 @@
-const NotFound =
-{
-  status : 404,
-  body   : 'Not Found'
-}
-
 module.exports = class extends require('.')
 {
   dispatch()
@@ -17,13 +11,12 @@ module.exports = class extends require('.')
       case 'put'    :
       case 'delete' : return this[method]()
 
-      default : return { status : 400,
-                         body   : 'Bad Request' }
+      default : throw 400
     }
   }
 
-  get()     { return NotFound }
-  post()    { return NotFound }
-  put()     { return NotFound }
-  delete()  { return NotFound }
+  get()     { throw 404 }
+  post()    { throw 404 }
+  put()     { throw 404 }
+  delete()  { throw 404 }
 }
