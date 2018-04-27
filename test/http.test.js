@@ -44,16 +44,39 @@ describe('controller/server/http', () =>
     expect(result.data.startsWith('bazqux')).to.be.equal(true)
 
     // testing the "if" helper in the template
-    expect(result.data.includes('bar')).to.be.equal(true)
-    expect(result.data.includes('qux')).to.be.equal(true)
+    expect(result.data.includes('==')).to.be.equal(true)
+    expect(result.data.includes('!=')).to.be.equal(true)
+    expect(result.data.includes('<' )).to.be.equal(true)
+    expect(result.data.includes('<=')).to.be.equal(true)
+    expect(result.data.includes('>' )).to.be.equal(true)
+    expect(result.data.includes('>=')).to.be.equal(true)
+    expect(result.data.includes('&&')).to.be.equal(true)
+    expect(result.data.includes('||')).to.be.equal(true)
+    expect(result.data.includes('typeof')).to.be.equal(true)
   })
 
-  it('integration test of a none specified route', async () =>
+  it('integration test of a none specified dispatcher should ', async () =>
+  {
+    const result = await request.get('/test-501')
+
+    expect(result.status).to.be.equal(501)
+    expect(result.data).to.be.equal('Not Implemented')
+  })
+
+  it('integration test of a failing dispatcher', async () =>
+  {
+    const result = await request.get('/test-failing')
+
+    expect(result.status).to.be.equal(500)
+    expect(result.data).to.be.equal('Internal Server Error')
+  })
+
+  it('integration test of a none specified route returns a 404', async () =>
   {
     const result = await request.get('/none-existing-path')
 
-    expect(result.status).to.be.equal(502)
-    expect(result.data).to.be.equal('Bad Gateway')
+    expect(result.status).to.be.equal(404)
+    expect(result.data).to.be.equal('Not Found')
   })
 
   after(() => server.close())

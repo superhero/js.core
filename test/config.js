@@ -32,6 +32,18 @@ module.exports =
       template    : 'view/index',
       dispatcher  : 'controller/obj',
       policy      : '/test-templated'
+    },
+    {
+      view        : 'template',
+      template    : 'view/index',
+      dispatcher  : 'controller/failing',
+      policy      : '/test-failing'
+    },
+    {
+      view        : 'template',
+      template    : 'view/index',
+      dispatcher  : 'controller/501',
+      policy      : '/test-501'
     }
   ]
 }

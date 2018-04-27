@@ -10,6 +10,8 @@ module.exports = class extends Dispatcher
     {
       body :
       {
+        i       : 5,
+        state   : true,
         foobar  : 'bazqux',
         test    :
         {
