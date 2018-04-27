@@ -108,7 +108,7 @@ module.exports = class
         }
         catch(error)
         {
-          reject(error)
+          reject(400)
         }
       })
     })
