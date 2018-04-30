@@ -6,11 +6,15 @@ describe('controller/server/http/router', () =>
   config =
   [
     {
+      middleware  : '/middle-1'
+    },
+    {
       view        : 'json'
     },
     {
       policy      : '/',
       dispatcher  : 'index',
+      middleware  : '/middle-2'
     },
     {
       view        : 'raw',
@@ -28,6 +32,7 @@ describe('controller/server/http/router', () =>
     {
       policy      : '/bar',
       dispatcher  : 'bar',
+      middleware  : ['/middle-2', '/middle-3']
     }
   ],
   Router = require('./router'),
@@ -54,22 +59,34 @@ describe('controller/server/http/router', () =>
     result4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'}),
     result5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
 
-    it('view is inherited', () =>
-      expect(result1.view).to.be.equal('json'))
+    it('middleware is an array',
+    () => expect(result1.middleware).is.an('array'))
 
-    it('found correct dispatcher ', () =>
-      expect(result1.dispatcher).to.be.equal('index'))
+    it('middleware builds on',
+    () => expect(result1.middleware.length).to.be.equal(2))
 
-    it('overwrite the view', () =>
-      expect(result2.view).to.be.equal('raw'))
+    it('middleware routes correctly',
+    () => expect(result2.middleware.length).to.be.equal(1))
 
-    it('first match should have hierarchy', () =>
-      expect(result3.dispatcher).to.be.equal('bar'))
+    it('middleware can be defined as an array',
+    () => expect(result3.middleware.length).to.be.equal(3))
 
-    it('method policy routes correctly', () =>
-      expect(result4.dispatcher).to.be.equal('bar'))
+    it('view is inherited',
+    () => expect(result1.view).to.be.equal('json'))
 
-    it('no match should return an undefined dispatcher', () =>
-      expect(result5.dispatcher).to.be.equal(undefined))
+    it('found correct dispatcher ',
+    () => expect(result1.dispatcher).to.be.equal('index'))
+
+    it('overwrite the view',
+    () => expect(result2.view).to.be.equal('raw'))
+
+    it('first match should have hierarchy',
+    () => expect(result3.dispatcher).to.be.equal('bar'))
+
+    it('method policy routes correctly',
+    () => expect(result4.dispatcher).to.be.equal('bar'))
+
+    it('no match should return an undefined dispatcher',
+    () => expect(result5.dispatcher).to.be.equal(undefined))
   })
 })

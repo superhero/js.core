@@ -72,6 +72,21 @@ module.exports = class
 
   flattenRoutes(routes)
   {
-    return routes.reduce((r, o) => Object.assign(r, o), {})
+    const
+    origin = { middleware:[] },
+    extend = this.extendRoute.bind(this),
+    route  = routes.reduce(extend, origin)
+
+    return route
+  }
+
+  extendRoute(origin, item)
+  {
+    const route = Object.assign({}, origin, item)
+
+    if(item.middleware)
+      route.middleware = origin.middleware.concat(item.middleware)
+
+    return route
   }
 }
