@@ -10,7 +10,8 @@ module.exports = class
   findRoute(request)
   {
     let _route = {}
-    this.routes.some((route) =>
+
+    for(const route of this.routes)
     {
       let path, method
 
@@ -31,7 +32,7 @@ module.exports = class
       if(!path && !method)
       {
         _route = Object.assign(_route, route)
-        return
+        continue
       }
 
       if(path)
@@ -41,7 +42,7 @@ module.exports = class
              : new RegExp(`^${path}$`)
 
         if(!request.url.pathname.match(path))
-          return
+          continue
       }
 
       if(method)
@@ -51,12 +52,11 @@ module.exports = class
                : new RegExp(`^${method}$`, 'i')
 
         if(!request.method.match(method))
-          return
+          continue
       }
 
       _route = Object.assign(_route, route)
-      return true
-    })
+    }
 
     return _route
   }

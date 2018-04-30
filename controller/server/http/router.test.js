@@ -55,7 +55,7 @@ describe('controller/server/http/router', () =>
       expect(result3.dispatcher).to.be.equal('bar'))
 
     it('method policy routes correctly', () =>
-      expect(result4.dispatcher).to.be.equal('baz'))
+      expect(result4.dispatcher).to.be.equal('bar'))
 
     it('no match should return an undefined dispatcher', () =>
       expect(result5.dispatcher).to.be.equal(undefined))
