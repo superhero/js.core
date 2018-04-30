@@ -33,6 +33,18 @@ describe('controller/server/http/router', () =>
   Router = require('./router'),
   router = new Router(config)
 
+  describe('flattenRoutes(routes)', () =>
+  {
+    const route = router.flattenRoutes(config)
+
+    it('should return a route of the last defined properties', () =>
+    {
+      expect(route.view).to.be.equal('raw')
+      expect(route.policy).to.be.equal('/bar')
+      expect(route.dispatcher).to.be.equal('bar')
+    })
+  })
+
   describe('findRoute(request)', () =>
   {
     const

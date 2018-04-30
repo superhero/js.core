@@ -7,9 +7,9 @@ module.exports = class
 
   // @todo: sort this mess out, wider support for different router validaters,
   // seperate in classes
-  findRoute(request)
+  findRoutes(request)
   {
-    let _route = {}
+    const routes = []
 
     for(const route of this.routes)
     {
@@ -31,7 +31,7 @@ module.exports = class
 
       if(!path && !method)
       {
-        _route = Object.assign(_route, route)
+        routes.push(route)
         continue
       }
 
@@ -55,9 +55,23 @@ module.exports = class
           continue
       }
 
-      _route = Object.assign(_route, route)
+      routes.push(route)
     }
 
-    return _route
+    return routes
+  }
+
+  findRoute(request)
+  {
+    const
+    routes = this.findRoutes(request),
+    route  = this.flattenRoutes(routes)
+
+    return route
+  }
+
+  flattenRoutes(routes)
+  {
+    return routes.reduce((r, o) => Object.assign(r, o), {})
   }
 }
