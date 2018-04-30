@@ -15,10 +15,5 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Deliver') {
-            steps {
-                input message: 'Click "Proceed" to continue'
-            }
-        }
     }
 }
