@@ -370,7 +370,7 @@ What view to use can be set in the dispatched view model or in the route.
 
 ## Middleware
 
-A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the [dispatcher chain](#middleware-dispatcher-chain).
+A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the [dispatcher chain](#middleware--dispatcher-chain).
 
 A middleware can be specified in the routing process, see [Routing](#routing) section above for more information.
 
