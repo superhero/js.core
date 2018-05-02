@@ -8,7 +8,7 @@ module.exports =
       {
         'calculate'       : true,
         'concat'          : true,
-        'date'            : true,
+        'dateformat'      : true,
         'escDoubleQuote'  : true,
         'escSingelQuote'  : true,
         'if'              : true,
