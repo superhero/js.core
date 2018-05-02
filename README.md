@@ -161,7 +161,7 @@ A few different settings can be set through this process, described below:
 
 ### Bootstrap Template View
 
-***\* relative-pathname*** *used in below description represents a pathname relative to the the main directory of the application filename, eg:"require.main.filename"*
+***\* relative-pathname*** *used in below description represents a pathname relative to the the main directory of the application filename, eg: `require.main.filename`*
 
 ```js
 module.exports =
