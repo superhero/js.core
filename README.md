@@ -434,7 +434,6 @@ module.exports =
  routes:
  [
    {
-     view        : 'raw',
      dispatcher  : '@superhero/core/controller/dispatcher/resource',
      policy      :
      {
