@@ -44,7 +44,7 @@ App
 #### `package.js`
 
 The library depends on a few optional external modules.
-In this example we will use the "Template" view that's dependent on the "handlebars" module, as specified under "dependencies".
+In this example we will use the "Template" view that has a dependency to the "handlebars" module, as specified under "dependencies" in the following example.
 
 ```js
 {
