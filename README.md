@@ -265,7 +265,7 @@ The route process will go through each entity and push every match to an array. 
 ]
 ```
 
-**output | `GET /`**
+**output `GET /`**
 
 ```js
 {
@@ -285,7 +285,7 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-**output | `POST /`**
+**output `POST /`**
 
 ```js
 {
@@ -300,7 +300,7 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-**output | `PUT /`**
+**output `PUT /`**
 
 ```js
 {
@@ -311,7 +311,7 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-**output | `GET /what-ever`**
+**output `GET /what-ever`**
 
 ```js
 {
