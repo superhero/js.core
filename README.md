@@ -41,7 +41,7 @@ App
 └── package.json
 ```
 
-#### *package.js*
+#### `package.js`
 
 The library depends on a few optional external modules.
 In this example we will use the "Template" view that's dependent on the "handlebars" module, as specified under "dependencies".
@@ -60,7 +60,7 @@ In this example we will use the "Template" view that's dependent on the "handleb
 
 ```
 
-#### *config.js*
+#### `config.js`
 
 ```js
 module.exports =
@@ -92,7 +92,7 @@ module.exports =
 }
 ```
 
-#### *index.js*
+#### `index.js`
 
 ```js
 const config = module.exports.config = require('./config')
@@ -101,7 +101,7 @@ require('@superhero/core').bootstrap(config.bootstrap).then((core) =>
   core.http(config.routes).listen(80))
 ```
 
-#### *controller/index.js*
+#### `controller/index.js`
 
 ```js
 const Dispatcher = require('@superhero/core/controller/dispatcher')
@@ -115,7 +115,7 @@ module.exports = class extends Dispatcher
 }
 ```
 
-#### *view/layout.hbs*
+#### `view/layout.hbs`
 
 ```html
 <!DOCTYPE html>
@@ -141,7 +141,7 @@ module.exports = class extends Dispatcher
 </html>
 ```
 
-#### *view/index.hbs*
+#### `view/index.hbs`
 
 ```html
 {{#> layout title="Insert awesome title for the page here" }}
