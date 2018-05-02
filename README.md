@@ -62,10 +62,11 @@ In this example we will use the "Template" view that has a dependency to the "ha
 
 #### `config.js`
 
+See the sections: [Bootstrap](#bootstrap) and [Routing](#routing), for more information.
+
 ```js
 module.exports =
 {
-  // ... see "Bootstrap" section below for more information
   bootstrap:
   {
     template:
@@ -76,15 +77,12 @@ module.exports =
       }
     }
   },
-  // Here we specify what request is handled by what dispatcher
   routes:
   [
     {
       view        : 'template',
       template    : 'view/index',
       dispatcher  : 'controller/index',
-      // The policy specification is related to the request
-      // See "Routing" section below for more information
       policy      :
       {
         method    : 'get',
