@@ -159,9 +159,9 @@ module.exports = class extends Dispatcher
 The bootstrap process is meant to run once, before anything else in the application.
 A few different settings can be set through this process, described below:
 
-***relative-pathname*** *used in below description is represents a pathname relative to the the main directory of the application filename, eg:"require.main.filename"*
-
 ### Bootstrap Template View
+
+***\* relative-pathname*** *used in below description represents a pathname relative to the the main directory of the application filename, eg:"require.main.filename"*
 
 ```js
 module.exports =
