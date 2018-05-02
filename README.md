@@ -23,11 +23,11 @@ A core module I use to bootstrap my applications. This module helps me setup a s
 }
 ```
 
-## Application example
+## Example Application
 
-A simple example to get started follows
+A simple example to get started follows.
 
-### File structure
+### Example Application › File structure
 
 ```
 App
@@ -157,7 +157,7 @@ module.exports = class extends Dispatcher
 The bootstrap process is meant to run once, before anything else in the application.
 A few different settings can be set through this process, described below:
 
-### Bootstrap Template View
+### Bootstrap › Template View
 
 ***\* relative-pathname*** *used in below description represents a pathname relative to the the main directory of the application filename, eg: `require.main.filename`*
 
@@ -200,7 +200,7 @@ module.exports =
 }
 ```
 
-### Bootstrap Resource Dispatcher
+### Bootstrap › Resource Dispatcher
 
 ```js
 module.exports =
@@ -221,7 +221,7 @@ module.exports =
 
 The route process will go through each entity and push every match to an array. Then flatten the object up to where the first dispatcher is found.
 
-### Example
+### Routing › Example
 
 **input**
 
@@ -319,22 +319,22 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-#### Dispatcher
+#### Routing › Dispatcher
 *optional*
 
 The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will give a `404 Not Found` response.
 
-#### Middleware
+#### Routing › Middleware
 *optional*
 
 See the section: [Middleware](#middleware), for more information.
 
-#### View
+#### Routing › View
 *optional*
 
 See the section: [View](#view), for more information.
 
-#### Policy
+#### Routing › Policy
 *optional*
 
 The policy is what defines the validator process.
@@ -343,12 +343,12 @@ If no policy is defined, then the entity is considered valid. This way you can s
 
 If the policy object is a string instead of an object, it will be interpret as a `policy.path`.
 
-##### Method
+##### Routing › Policy › Method
 *optional*
 
 The request method can be specified as a route specific.
 
-##### Path
+##### Routing › Policy › Path
 *optional*
 
 The url path used in the request can be specified as a string or regular expression.
@@ -370,11 +370,11 @@ What view to use can be set in the dispatched view model or in the route.
 
 ## Middleware
 
-A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the [dispatcher chain](#dispatcher-chain).
+A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the [dispatcher chain](#middleware-dispatcher-chain).
 
 A middleware can be specified in the routing process, see [Routing](#routing) section above for more information.
 
-### Example
+### Middleware › Example
 
 ```js
 const Dispatcher = require('@superhero/core/controller/dispatcher')
@@ -401,7 +401,7 @@ module.exports = class extends Dispatcher
 }
 ```
 
-### Dispatcher chain
+### Middleware › Dispatcher chain
 
 When chaining dispatchers, **OBS!** The post handling will be handled in reversed order.
 
@@ -413,8 +413,9 @@ When chaining dispatchers, **OBS!** The post handling will be handled in reverse
 EndpointDispatcher
 ```
 
-## Support loading resources from the file system
+## Resource
 
+Support loading resources from the file system.
 Add an entry to the routes array in the `config.js` file.
 
 ```js
