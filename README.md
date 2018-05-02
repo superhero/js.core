@@ -225,7 +225,7 @@ The route process will go through each entity and push every match to an array. 
 
 ### Example
 
-***input***
+**input**
 
 ```js
 [
@@ -265,7 +265,7 @@ The route process will go through each entity and push every match to an array. 
 ]
 ```
 
-***output | method GET***
+**output | `GET /`**
 
 ```js
 {
@@ -285,7 +285,7 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-***output | method POST***
+**output | `POST /`**
 
 ```js
 {
@@ -300,12 +300,23 @@ The route process will go through each entity and push every match to an array. 
 }
 ```
 
-***output | method PUT***
+**output | `PUT /`**
 
 ```js
 {
   view        : 'json',
   dispatcher  : 'controller3',
+  middleware  : [ 'auth' ],
+  policy      : '/'
+}
+```
+
+**output | `GET /what-ever`**
+
+```js
+{
+  view        : 'json',
+  dispatcher  : 'controller4',
   middleware  : [ 'auth' ]
 }
 ```
