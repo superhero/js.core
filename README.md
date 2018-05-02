@@ -43,15 +43,18 @@ App
 
 #### *package.js*
 
+The library depends on a few optional external modules.
+In this example we will use the "Template" view that's dependent on the "handlebars" module, as specified under "dependencies".
+
 ```js
 {
-  "name": "Super-Duper-App",
+  "name": "Super Duper App",
   "version": "0.0.1",
-  "description": "An example application",
+  "description": "An example meant to describe the libraries fundamentals",
   "license": "MIT",
   "dependencies": {
-    "@superhero/core": "1.1.4"
-    "handlebars": "4.0.11",
+    "@superhero/core": "*",
+    "handlebars": "4.0.11"
   }
 }
 
@@ -62,14 +65,11 @@ App
 ```js
 module.exports =
 {
+  // ... see "Bootstrap" section below for a deeper description
   bootstrap:
   {
     template:
     {
-      helpers:
-      {
-        // ... see "Bootstrap" section below for a deeper description
-      },
       partials:
       {
         layout : 'view/layout'
@@ -173,7 +173,7 @@ module.exports =
         // and used by through a truthful flag
         calculate       : true,
         concat          : true,
-        date            : true,
+        dateformat      : false,  // "dateformat" requires an external module
         escDoubleQuote  : true,
         escSingelQuote  : true,
         if              : true,
