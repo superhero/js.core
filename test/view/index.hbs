@@ -1,21 +1,23 @@
-{{ foobar }}
----
-tests for the "if" helper
----
-{{# if test.foo '==' 'bar' }} == {{/ if }}
----
-{{# if test.baz '!=' 'foo' }} != {{/ if }}
----
-{{# if i '<' 10 }} < {{/ if }}
----
-{{# if i '<=' 5 }} <= {{/ if }}
----
-{{# if i '>' 0 }} > {{/ if }}
----
-{{# if i '>=' 5 }} >= {{/ if }}
----
-{{# if i '&&' state }} && {{/ if }}
----
-{{# if i '||' state }} || {{/ if }}
----
-{{# if state 'typeof' 'boolean' }} typeof {{/ if }}
+{{#> layout title="titled" }}
+  {{ foobar }}
+  ---
+  tests for the "if" helper
+  ---
+  {{# if test.foo '==' 'bar' }} == {{/ if }}
+  ---
+  {{# if test.baz '!=' 'foo' }} != {{/ if }}
+  ---
+  {{# if i '<' 10 }} < {{/ if }}
+  ---
+  {{# if i '<=' 5 }} <= {{/ if }}
+  ---
+  {{# if i '>' 0 }} > {{/ if }}
+  ---
+  {{# if i '>=' 5 }} >= {{/ if }}
+  ---
+  {{# if i '&&' state }} && {{/ if }}
+  ---
+  {{# if i '||' state }} || {{/ if }}
+  ---
+  {{# if state 'typeof' 'boolean' }} typeof {{/ if }}
+{{/ layout }}

@@ -1,21 +1,25 @@
 const
-handlebars  = require('handlebars'),
-fs          = require('fs'),
-util        = require('util'),
-path        = require('path').dirname(require.main.filename),
-readFile    = util.promisify(fs.readFile),
-helperDir   = __dirname + '/template/helper/'
-
-fs.readdirSync(helperDir).forEach((helper) =>
-  helper.endsWith('.js')
-  &&!helper.endsWith('.test.js')
-  && handlebars.registerHelper(helper.slice(0, -3), require(helperDir + helper)))
+fs        = require('fs'),
+util      = require('util'),
+path      = require('path').dirname(require.main.filename),
+readFile  = util.promisify(fs.readFile)
 
 module.exports = class self
 {
   static get handlebars()
   {
-    return handlebars
+    try
+    {
+      // "handlebars" is an optional dependency
+      // but required for this module to work
+      return require('handlebars')
+    }
+    catch(err)
+    {
+      const error = new Error('Missing required module "handlebars"')
+      error.code  = 'ERR_MISSING_MODULE'
+      throw error
+    }
   }
 
   async compose(vm, route)
@@ -32,14 +36,42 @@ module.exports = class self
   {
     return await readFile(`${path}/${filename}.hbs`, 'utf-8').then((source) =>
     {
-      const template = handlebars.compile(source)
-      return template(context)
+      const
+      template = this.handlebars.compile(source),
+      composed = template(context)
+
+      return composed
     })
   }
 
   static async addPartial(name, template)
   {
-    const source = await readFile(`${path}/${template}.hbs`, 'utf-8')
-    handlebars.registerPartial(name, source)
+    const source = fs.readFileSync(`${path}/${template}.hbs`, 'utf-8')
+    this.handlebars.registerPartial(name, source)
+  }
+
+  static async addHelper(name, filename)
+  {
+    let helper
+    switch(typeof filename)
+    {
+      case 'string'  :
+        helper = require(`${path}/${filename}`)
+        break
+
+      case 'undefined' :
+        helper = require(`${__dirname}/template/helper/${name}`)
+        break
+
+      default:
+        const
+        msg   = `Invalid filename. `
+              + `Expected "string" or "boolean". `
+              + `Found:"${typeof filename}"`,
+        error = new TypeError(msg)
+        throw error
+    }
+
+    this.handlebars.registerHelper(name, helper)
   }
 }

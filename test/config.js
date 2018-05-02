@@ -2,9 +2,26 @@ module.exports =
 {
   bootstrap:
   {
-    partials:
+    template:
     {
-      'layout' : 'view/layout'
+      helpers:
+      {
+        'calculate'       : true,
+        'concat'          : true,
+        'date'            : true,
+        'escDoubleQuote'  : true,
+        'escSingelQuote'  : true,
+        'if'              : true,
+        'jsonStringify'   : true,
+        'stripTags'       : true,
+        'toFixed'         : true,
+        'toLowerCase'     : true,
+        'toUpperCase'     : true
+      },
+      partials:
+      {
+        'layout' : 'view/layout'
+      }
     }
   },
   routes:

@@ -1,4 +1,4 @@
-describe('controller/server/http', () =>
+describe('controller/server/http', async () =>
 {
   const
   Request = require('@superhero/request'),
@@ -8,7 +8,8 @@ describe('controller/server/http', () =>
   port    = 9001,
   debug   = new Debug(),
   request = new Request({ url:'http://localhost:' + port }),
-  server  = require('../').http(config.routes)
+  core    = await require('../').bootstrap(config.bootstrap),
+  server  = core.http(config.routes)
 
   before(() => server.listen(port))
 
@@ -60,7 +61,15 @@ describe('controller/server/http', () =>
     const result = await request.get('/test-templated')
 
     expect(result.status).to.be.equal(200)
-    expect(result.data.startsWith('bazqux')).to.be.equal(true)
+
+    expect(result.data.startsWith('layout')).to.be.equal(true)
+    expect(result.data.includes('titled')).to.be.equal(true)
+    expect(result.data.includes('bazqux')).to.be.equal(true)
+  })
+
+  it('integration test of the if helper', async () =>
+  {
+    const result = await request.get('/test-templated')
 
     // testing the "if" helper in the template
     expect(result.data.includes('==')).to.be.equal(true)
