@@ -65,7 +65,7 @@ In this example we will use the "Template" view that's dependent on the "handleb
 ```js
 module.exports =
 {
-  // ... see "Bootstrap" section below for a deeper description
+  // ... see "Bootstrap" section below for more information
   bootstrap:
   {
     template:
@@ -76,12 +76,15 @@ module.exports =
       }
     }
   },
+  // Here we specify what request is handled by what dispatcher
   routes:
   [
     {
       view        : 'template',
       template    : 'view/index',
       dispatcher  : 'controller/index',
+      // The policy specification is related to the request
+      // See "Routing" section below for more information
       policy      :
       {
         method    : 'get',
@@ -216,6 +219,131 @@ module.exports =
 }
 ```
 
+## Routing
+
+The route process will go through each entity and push every match to an array. Then flatten the object up to where the first dispatcher is found.
+
+### Example
+
+***input***
+
+```js
+[
+  {
+    view        : 'json',
+    middleware  : 'auth'
+  },
+  {
+    view        : 'raw',
+    dispatcher  : 'controller1',
+    middleware  :
+    [
+      'minification',
+      'gzip'
+    ],
+    policy      :
+    {
+      method    : 'get',
+      path      : '/'
+    }
+  },
+  {
+    dispatcher  : 'controller2',
+    policy      :
+    {
+      method    : 'post',
+      path      : '/'
+    }
+  },
+  {
+    dispatcher  : 'controller3',
+    policy      : '/'
+  },
+  {
+    dispatcher  : 'controller4'
+  }
+]
+```
+
+***output | method GET***
+
+```js
+{
+  view        : 'json',
+  dispatcher  : 'controller1',
+  middleware  :
+  [
+    'auth',
+    'minification',
+    'gzip'
+  ],
+  policy      :
+  {
+    method    : 'get',
+    path      : '/'
+  }
+}
+```
+
+***output | method POST***
+
+```js
+{
+  view        : 'raw',
+  dispatcher  : 'controller2',
+  middleware  : [ 'auth' ],
+  policy      :
+  {
+    method    : 'post',
+    path      : '/'
+  }
+}
+```
+
+***output | method PUT***
+
+```js
+{
+  view        : 'json',
+  dispatcher  : 'controller3',
+  middleware  : [ 'auth' ]
+}
+```
+
+#### Dispatcher
+
+The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will render a "404 Not Found" message.
+
+#### Middleware
+
+Middleware is optional.
+
+See the section for Middleware for more information.
+
+#### View
+
+The view defines how the content of the controller will be delivered. A few core delivering systems already exists, such as:
+
+- json **default**
+  - Stringifies the body of the view model
+- raw
+  - Simply return content as it is
+- template
+  - Mostly used to render html content through a templating system
+
+#### Policy
+
+The policy is what defines the validator process. If no policy is defined, then the entity is considered valid. This way you can specify some default behavior for all routes.
+If the policy object is a string instead of an object, it will be interpret as a path.
+
+##### Method
+
+The request method can be specified as a route specific
+
+##### Path
+
+The url path used in the request can be specified as a string or regular expression.
+
 ## Support loading resources from the file system
 
 Add an entry to the routes array in the `config.js` file.
@@ -223,6 +351,15 @@ Add an entry to the routes array in the `config.js` file.
 ```js
 module.exports =
 {
+  bootstrap:
+  {
+    resource:
+    {
+      // Optional setting
+      // origin : 'public'
+    }
+  },
+  // ...
   routes:
   [
     {
@@ -253,3 +390,47 @@ App
 ```
 
 You can then request the `master.css` file through the request: `/resource/css/master.css`
+
+## Middleware
+
+A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the dispatcher chain.
+
+A middleware can be specified in the routing process, see "Routing" section above for more information.
+
+### Example
+
+```js
+const Dispatcher = require('@superhero/core/controller/dispatcher')
+
+module.exports = class extends Dispatcher
+{
+  async dispatch(next)
+  {
+    // Do stuff here that needs to be done BEFORE the endpoint
+    // ...
+
+    // The callback will call the next dispatcher in the chain until it returns
+    // a view model by the endpoint
+    const vm = await next()
+
+    // Do stuff here that needs to be done AFTER the endpoint has been called
+    // If you need to manipulate the view model or simply log that the request
+    // has been performed
+
+    // Always return the view model
+    return vm
+  }
+}
+```
+
+### Dispatcher chain
+
+When chaining dispatchers, **OBS!** The post handling will be handled in reversed order.
+
+```
+   LoggerMiddleware
+     ↓         ↑
+    AuthMiddleware
+     ↓         ↑
+  EndpointDispatcher
+```
