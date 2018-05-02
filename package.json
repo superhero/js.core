@@ -14,13 +14,13 @@
     "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
-    "@superhero/debug": "1.1.4",
-    "@superhero/websocket": "1.0.20",
-    "handlebars": "4.0.11",
-    "dateformat": "3.0.2"
+    "@superhero/debug": "1.1.4"
   },
   "devDependencies": {
+    "@superhero/websocket": "1.0.20",
     "@superhero/request": "1.0.9",
+    "handlebars": "4.0.11",
+    "dateformat": "3.0.2",
     "mocha": "5.1.0",
     "chai": "4.1.2",
     "nyc": "11.7.1"
