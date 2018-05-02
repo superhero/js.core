@@ -428,9 +428,9 @@ module.exports = class extends Dispatcher
 When chaining dispatchers, **OBS!** The post handling will be handled in reversed order.
 
 ```
-   LoggerMiddleware
-     ↓         ↑
-    AuthMiddleware
-     ↓         ↑
-  EndpointDispatcher
+ LoggerMiddleware
+   ↓         ↑
+  AuthMiddleware
+   ↓         ↑
+EndpointDispatcher
 ```
