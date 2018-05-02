@@ -37,7 +37,24 @@ App
 │   ├── index.hbs
 │   └── layout.hbs
 ├── config.js
-└── index.js
+├── index.js
+└── package.json
+```
+
+#### *package.js*
+
+```js
+{
+  "name": "Super-Duper-App",
+  "version": "0.0.1",
+  "description": "An example application",
+  "license": "MIT",
+  "dependencies": {
+    "@superhero/core": "1.1.4"
+    "handlebars": "4.0.11",
+  }
+}
+
 ```
 
 #### *config.js*
@@ -134,44 +151,6 @@ module.exports = class extends Dispatcher
 {{/ layout }}
 ```
 
-## Support loading resources from filesystem
-
-Add an entry to the routes array in the `config.js` file.
-
-```js
-module.exports =
-{
-  routes:
-  [
-    {
-      view        : 'raw',
-      dispatcher  : '@superhero/core/controller/dispatcher/resource',
-      policy      :
-      {
-        method    : 'get',
-        path      : /^\/resource\/.*/
-      }
-    },
-    // ...
-  ],
-  // ...
-}
-```
-
-...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
-
-```
-App
-├── ...
-├── public
-│   └── resource
-│       └── css
-│           └── master.css
-└── ...
-```
-
-You can then request the `master.css` file through the request: `/resource/css/master.css`
-
 ## Bootstrap
 
 The bootstrap process is meant to run once, before anything else in the application.
@@ -236,3 +215,41 @@ module.exports =
   // ...
 }
 ```
+
+## Support loading resources from the file system
+
+Add an entry to the routes array in the `config.js` file.
+
+```js
+module.exports =
+{
+  routes:
+  [
+    {
+      view        : 'raw',
+      dispatcher  : '@superhero/core/controller/dispatcher/resource',
+      policy      :
+      {
+        method    : 'get',
+        path      : /^\/resource\/.*/
+      }
+    },
+    // ...
+  ],
+  // ...
+}
+```
+
+...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
+
+```
+App
+├── ...
+├── public
+│   └── resource
+│       └── css
+│           └── master.css
+└── ...
+```
+
+You can then request the `master.css` file through the request: `/resource/css/master.css`
