@@ -29,13 +29,16 @@ A simple example to get started follows
 
 ### File structure
 
-- **controller**
-  - index.js
-- **view**
-  - index.hbs
-  - layout.hbs
-- config.js
-- index.js
+```
+App
+├── controller
+│   └── index.js
+├── view
+│   ├── index.hbs
+│   └── layout.hbs
+├── config.js
+└── index.js
+```
 
 #### *config.js*
 
@@ -44,9 +47,16 @@ module.exports =
 {
   bootstrap:
   {
-    partials:
+    template:
     {
-      'layout' : 'view/layout'
+      helpers:
+      {
+        // ... see "Bootstrap" section below for a deeper description
+      },
+      partials:
+      {
+        layout : 'view/layout'
+      }
     }
   },
   routes:
@@ -150,10 +160,79 @@ module.exports =
 
 ...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
 
-- ...
-- **public**
-  - **resource**
-    - **css**
-      - master.css
+```
+App
+├── ...
+├── public
+│   └── resource
+│       └── css
+│           └── master.css
+└── ...
+```
 
 You can then request the `master.css` file through the request: `/resource/css/master.css`
+
+## Bootstrap
+
+The bootstrap process is meant to run once, before anything else in the application.
+A few different settings can be set through this process, described below:
+
+***relative-pathname*** *used in below description is represents a pathname relative to the the main directory of the application filename, eg:"require.main.filename"*
+
+### Bootstrap Template View
+
+```js
+module.exports =
+{
+  bootstrap:
+  {
+    template:
+    {
+      helpers:
+      {
+        // The library has a few defined core helpers that can be activated
+        // and used by through a truthful flag
+        calculate       : true,
+        concat          : true,
+        date            : true,
+        escDoubleQuote  : true,
+        escSingelQuote  : true,
+        if              : true,
+        jsonStringify   : true,
+        stripTags       : true,
+        toFixed         : true,
+        toLowerCase     : true,
+        toUpperCase     : true,
+
+        // You can add a custom helper by specify it's name and the path to the
+        // exported function
+        customHelper    : '*relative-pathname'
+      }
+      partials:
+      {
+        // You can register partials to be loaded and used through-out the
+        // application, such as a layout, for instance...
+        name : '*relative-pathname'
+      }
+    }
+  },
+  // ...
+}
+```
+
+### Bootstrap Resource Dispatcher
+
+```js
+module.exports =
+{
+  bootstrap:
+  {
+    resource:
+    {
+      // You can change the public folder where the public resources are located
+      origin : '*relative-pathname'
+    }
+  },
+  // ...
+}
+```
