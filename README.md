@@ -329,13 +329,13 @@ The dispatcher is what defines an endpoint and what the router is looking for to
 
 Specifying a "middleware" is optional.
 
-See the section: [Middleware](#Middleware), for more information.
+See the section: [Middleware](#middleware), for more information.
 
 #### View
 
 Specifying a "view" is optional.
 
-See the section: [View](#View), for more information.
+See the section: [View](#view), for more information.
 
 #### Policy
 
@@ -367,9 +367,9 @@ What view to use can be set in the dispatched view model or in the route.
 
 ## Middleware
 
-A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the dispatcher chain.
+A middleware is the same as any other dispatcher, apart from the callback passed as an argument to the `dispatcher`. The callback is used to treat the next item in the [dispatcher chain](#dispatcher-chain).
 
-A middleware can be specified in the routing process, see [Routing](#Routing) section above for more information.
+A middleware can be specified in the routing process, see [Routing](#routing) section above for more information.
 
 ### Example
 
