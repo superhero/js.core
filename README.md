@@ -312,24 +312,19 @@ The route process will go through each entity and push every match to an array. 
 
 #### Dispatcher
 
-The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will render a "404 Not Found" message.
+The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will give a `404 Not Found` response.
 
 #### Middleware
 
-Middleware is optional.
+Specifying a "middleware" is optional.
 
-See the section for Middleware for more information.
+See the section: "Middleware", for more information.
 
 #### View
 
-The view defines how the content of the controller will be delivered. A few core delivering systems already exists, such as:
+Specifying a "view" is optional.
 
-- json **default**
-  - Stringifies the body of the view model
-- raw
-  - Simply return content as it is
-- template
-  - Mostly used to render html content through a templating system
+See the section: "View", for more information.
 
 #### Policy
 
@@ -344,52 +339,20 @@ The request method can be specified as a route specific
 
 The url path used in the request can be specified as a string or regular expression.
 
-## Support loading resources from the file system
+## View
 
-Add an entry to the routes array in the `config.js` file.
+The view defines how the content of the controller will be delivered.
+A few core delivering systems already exists, such as:
 
-```js
-module.exports =
-{
-  bootstrap:
-  {
-    resource:
-    {
-      // Optional setting
-      // origin : 'public'
-    }
-  },
-  // ...
-  routes:
-  [
-    {
-      view        : 'raw',
-      dispatcher  : '@superhero/core/controller/dispatcher/resource',
-      policy      :
-      {
-        method    : 'get',
-        path      : /^\/resource\/.*/
-      }
-    },
-    // ...
-  ],
-  // ...
-}
-```
+- **json**
+  - Stringifies the body of the view model
+  - The default view used if none explicitly is specified
+- **raw**
+  - Simply return content as it is
+- **template**
+  - Mostly used to render html content through a templating system
 
-...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
-
-```
-App
-├── ...
-├── public
-│   └── resource
-│       └── css
-│           └── master.css
-└── ...
-```
-
-You can then request the `master.css` file through the request: `/resource/css/master.css`
+What view to use can be set in the dispatched view model or in the route.
 
 ## Middleware
 
@@ -416,6 +379,7 @@ module.exports = class extends Dispatcher
     // Do stuff here that needs to be done AFTER the endpoint has been called
     // If you need to manipulate the view model or simply log that the request
     // has been performed
+    // ...
 
     // Always return the view model
     return vm
@@ -434,3 +398,50 @@ When chaining dispatchers, **OBS!** The post handling will be handled in reverse
    ↓         ↑
 EndpointDispatcher
 ```
+
+## Support loading resources from the file system
+
+Add an entry to the routes array in the `config.js` file.
+
+```js
+module.exports =
+{
+ bootstrap:
+ {
+   resource:
+   {
+     // Optional setting
+     // origin : 'public'
+   }
+ },
+ // ...
+ routes:
+ [
+   {
+     view        : 'raw',
+     dispatcher  : '@superhero/core/controller/dispatcher/resource',
+     policy      :
+     {
+       method    : 'get',
+       path      : /^\/resource\/.*/
+     }
+   },
+   // ...
+ ],
+ // ...
+}
+```
+
+...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
+
+```
+App
+├── ...
+├── public
+│   └── resource
+│       └── css
+│           └── master.css
+└── ...
+```
+
+You can then request the `master.css` file through the request: `/resource/css/master.css`
