@@ -322,31 +322,36 @@ The route process will go through each entity and push every match to an array. 
 ```
 
 #### Dispatcher
+*optional*
 
 The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will give a `404 Not Found` response.
 
 #### Middleware
-
-Specifying a "middleware" is optional.
+*optional*
 
 See the section: [Middleware](#middleware), for more information.
 
 #### View
-
-Specifying a "view" is optional.
+*optional*
 
 See the section: [View](#view), for more information.
 
 #### Policy
+*optional*
 
-The policy is what defines the validator process. If no policy is defined, then the entity is considered valid. This way you can specify some default behavior for all routes.
-If the policy object is a string instead of an object, it will be interpret as a path.
+The policy is what defines the validator process.
+
+If no policy is defined, then the entity is considered valid. This way you can specify some default behavior for all routes.
+
+If the policy object is a string instead of an object, it will be interpret as a `policy.path`.
 
 ##### Method
+*optional*
 
-The request method can be specified as a route specific
+The request method can be specified as a route specific.
 
 ##### Path
+*optional*
 
 The url path used in the request can be specified as a string or regular expression.
 
