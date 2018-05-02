@@ -82,6 +82,9 @@ module.exports = class
 
   extendRoute(origin, item)
   {
+    if(origin.dispatcher)
+      return origin
+
     const route = Object.assign({}, origin, item)
 
     if(item.middleware)

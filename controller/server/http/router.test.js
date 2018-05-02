@@ -44,9 +44,9 @@ describe('controller/server/http/router', () =>
 
     it('should return a route of the last defined properties', () =>
     {
-      expect(route.view).to.be.equal('raw')
-      expect(route.policy).to.be.equal('/bar')
-      expect(route.dispatcher).to.be.equal('bar')
+      expect(route.view).to.be.equal('json')
+      expect(route.policy).to.be.equal('/')
+      expect(route.dispatcher).to.be.equal('index')
     })
   })
 
@@ -84,7 +84,7 @@ describe('controller/server/http/router', () =>
     () => expect(result3.dispatcher).to.be.equal('bar'))
 
     it('method policy routes correctly',
-    () => expect(result4.dispatcher).to.be.equal('bar'))
+    () => expect(result4.dispatcher).to.be.equal('baz'))
 
     it('no match should return an undefined dispatcher',
     () => expect(result5.dispatcher).to.be.equal(undefined))
