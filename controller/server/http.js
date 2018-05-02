@@ -1,12 +1,12 @@
 const
-Debug           = require('@superhero/debug'),
-domain          = require('domain'),
-url             = require('url'),
-http            = require('http'),
-querystring     = require('querystring'),
-statusCodes     = require('./http/status-codes'),
-fetchDispatcher = require('./trait/fetch-dispatcher'),
-fetchView       = require('./trait/fetch-view')
+Debug             = require('@superhero/debug'),
+domain            = require('domain'),
+url               = require('url'),
+http              = require('http'),
+querystring       = require('querystring'),
+statusCodes       = require('./http/status-codes'),
+fetchDispatchers  = require('./trait/fetch-dispatchers'),
+fetchView         = require('./trait/fetch-view')
 
 module.exports = class
 {
@@ -66,13 +66,32 @@ module.exports = class
     if(!route.dispatcher)
       throw 404
 
-    const
-    Dispatcher  = await fetchDispatcher(route.dispatcher),
-    vm          = await new Dispatcher(request, route).dispatch(),
-    View        = await fetchView(vm.view || route.view),
-    output      = await new View().compose(vm, route)
+    async function chain(Dispatcher)
+    {
+      const
+      dispatcher = new Dispatcher(request, route),
+      viewModel  = await dispatcher.dispatch(dispatch)
 
-    o.writeHead(vm.status || 200, vm.headers)
+      return viewModel
+    }
+
+    async function dispatch()
+    {
+      if(dispatchers.length)
+      {
+        const viewModel = await chain(dispatchers.shift())
+        return viewModel
+      }
+    }
+
+    const
+    list        = route.middleware.concat(route.dispatcher),
+    dispatchers = await fetchDispatchers(list),
+    viewModel   = await dispatch(),
+    View        = await fetchView(viewModel.view || route.view),
+    output      = await new View().compose(viewModel, route)
+
+    o.writeHead(viewModel.status || 200, viewModel.headers)
     o.end(output)
   }
 

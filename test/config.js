@@ -10,6 +10,13 @@ module.exports =
   routes:
   [
     {
+      middleware  :
+      [
+        'controller/middleware-1',
+        'controller/middleware-2'
+      ]
+    },
+    {
       dispatcher  : '../controller/dispatcher/resource',
       policy      :
       {
