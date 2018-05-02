@@ -6,6 +6,6 @@ module.exports = class extends Dispatcher
 {
   dispatch()
   {
-    throw new Error('woops')
+    throw new Error('expected error')
   }
 }
