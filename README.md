@@ -32,9 +32,10 @@ A simple example to get started follows.
 ```
 App
 ├── controller
-│   └── index.js
+│   ├── foobar.js
+│   └── logger.js
 ├── view
-│   ├── index.hbs
+│   ├── foobar.hbs
 │   └── layout.hbs
 ├── config.js
 ├── index.js
@@ -81,8 +82,9 @@ module.exports =
   [
     {
       view        : 'template',
-      template    : 'view/index',
-      dispatcher  : 'controller/index',
+      template    : 'view/foobar',
+      dispatcher  : 'controller/foobar',
+      middleware  : 'controller/logger',
       policy      :
       {
         method    : 'get',
@@ -102,7 +104,7 @@ require('@superhero/core').bootstrap(config.bootstrap).then((core) =>
   core.http(config.routes).listen(80))
 ```
 
-#### `controller/index.js`
+#### `controller/foobar.js`
 
 ```js
 const Dispatcher = require('@superhero/core/controller/dispatcher')
@@ -111,7 +113,44 @@ module.exports = class extends Dispatcher
 {
   async dispatch()
   {
-    return { body:{ foo:'bar' }}
+    // building a view model that we can use to render the view
+    const vm =
+    {
+      body:
+      {
+        foo : 'bar'
+      }
+    }
+
+    // return the view model to be passed through the dispatcher chain to
+    // finally be passed to the view
+    return vm
+  }
+}
+```
+
+#### `controller/logger.js`
+
+```js
+const Dispatcher = require('@superhero/core/controller/dispatcher')
+
+let i = 0
+
+module.exports = class extends Dispatcher
+{
+
+  // A simple logger that writes a timestamp to the console on in and out
+  async dispatch(next)
+  {
+    const n = ++i
+
+    console.log('i', n, new Date().toISOString())
+
+    const vm = next()
+
+    console.log('o', n, new Date().toISOString())
+
+    return vm
   }
 }
 ```
@@ -127,11 +166,6 @@ module.exports = class extends Dispatcher
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ title }}</title>
-
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body>
@@ -142,7 +176,7 @@ module.exports = class extends Dispatcher
 </html>
 ```
 
-#### `view/index.hbs`
+#### `view/foobar.hbs`
 
 ```html
 {{#> layout title="Insert awesome title for the page here" }}
