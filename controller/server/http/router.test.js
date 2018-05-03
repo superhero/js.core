@@ -1,4 +1,6 @@
-const expect = require('chai').expect
+const
+expect  = require('chai').expect,
+context = require('mochawesome/addContext')
 
 describe('controller/server/http/router', () =>
 {
@@ -35,29 +37,48 @@ describe('controller/server/http/router', () =>
       middleware  : ['/middle-2', '/middle-3']
     }
   ],
-  Router = require('./router'),
-  router = new Router(config)
+  Router = require('./router')
+
+  let router
+
+  before(function()
+  {
+    context(this, { title:'config', value:config })
+    router = new Router(config)
+  })
 
   describe('flattenRoutes(routes)', () =>
   {
-    const route = router.flattenRoutes(config)
-
-    it('should return a route of the last defined properties', () =>
+    it('should return a flatten route', function()
     {
+      context(this, { title:'config', value:config })
+
+      const route = router.flattenRoutes(config)
+
       expect(route.view).to.be.equal('json')
       expect(route.policy).to.be.equal('/')
       expect(route.dispatcher).to.be.equal('index')
+      expect(route.middleware.length).to.be.equal(2)
     })
   })
 
   describe('findRoute(request)', () =>
   {
-    const
-    result1 = router.findRoute({ url:{ pathname:'/' }}),
-    result2 = router.findRoute({ url:{ pathname:'/foo' }}),
-    result3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'}),
-    result4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'}),
-    result5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
+    let
+    result1,
+    result2,
+    result3,
+    result4,
+    result5
+
+    before(function()
+    {
+      result1 = router.findRoute({ url:{ pathname:'/' }})
+      result2 = router.findRoute({ url:{ pathname:'/foo' }})
+      result3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
+      result4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})
+      result5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
+    })
 
     it('middleware is an array',
     () => expect(result1.middleware).is.an('array'))
