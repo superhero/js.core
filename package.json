@@ -11,6 +11,7 @@
     "url": "http://erik.landvall.se"
   },
   "scripts": {
+    "generate-doc-coverage" : "nyc report --reporter=html --report-dir=./doc/coverage",
     "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
