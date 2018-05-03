@@ -267,7 +267,7 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'json',
+  view        : 'raw',
   dispatcher  : 'controller1',
   middleware  :
   [
@@ -287,7 +287,7 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'raw',
+  view        : 'json',
   dispatcher  : 'controller2',
   middleware  : [ 'auth' ],
   policy      :
