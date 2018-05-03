@@ -2,9 +2,13 @@ const expect = require('chai').expect
 
 describe('error/index', () =>
 {
-  const
-  Error = require('./index'),
-  error = new Error()
+  let error
+
+  before(() =>
+  {
+    const Error = require('./index')
+    error = new Error()
+  })
 
   describe('setCode(code)', () =>
   {

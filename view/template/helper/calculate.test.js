@@ -1,8 +1,10 @@
-const expect = require('chai').expect
-
 describe('view/template/helper/calculate', () =>
 {
-  const calculate = require('./calculate')
+  const expect = require('chai').expect
+
+  let calculate
+
+  before(() => calculate = require('./calculate'))
 
   it('1 + 1 = 2', () => expect(calculate(1, '+', 1)).to.be.equal(2))
   it('4 - 2 = 2', () => expect(calculate(4, '-', 2)).to.be.equal(2))
@@ -11,5 +13,5 @@ describe('view/template/helper/calculate', () =>
   it('5 % 3 = 2', () => expect(calculate(5, '%', 3)).to.be.equal(2))
 
   it('empty operator should return an empty string',
-    () => expect(calculate(1, '', 1)).to.be.equal(''))
+  () => expect(calculate(1, '', 1)).to.be.equal(''))
 })

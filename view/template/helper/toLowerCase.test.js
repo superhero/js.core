@@ -1,9 +1,11 @@
-const expect = require('chai').expect
-
 describe('view/template/helper/toLowerCase', () =>
 {
-  const toLowerCase = require('./toLowerCase')
+  const expect = require('chai').expect
 
-  it('should return an uppercase string', () =>
-    expect(toLowerCase('FooBar')).to.be.equal('foobar'))
+  let toLowerCase
+
+  before(() => toLowerCase = require('./toLowerCase'))
+
+  it('should return an uppercase string',
+  () => expect(toLowerCase('FooBar')).to.be.equal('foobar'))
 })

@@ -1,19 +1,28 @@
 describe('controller/server/http', async () =>
 {
   const
-  Request = require('@superhero/request'),
-  Debug   = require('@superhero/debug'),
   expect  = require('chai').expect,
-  config  = require('./config'),
-  port    = 9001,
-  debug   = new Debug(),
-  request = new Request({ url:'http://localhost:' + port }),
-  core    = await require('../').bootstrap(config.bootstrap),
-  server  = core.http(config.routes)
+  context = require('mochawesome/addContext'),
+  config  = require('./config')
 
-  before(() => server.listen(port))
+  let request, core, server
 
-  it('integration test of fetching a public resource', async () =>
+  before(async function()
+  {
+    const
+    Request = require('@superhero/request'),
+    port    = 9001
+
+    context(this, { title:'config', value:config })
+
+    request = new Request({ url:'http://localhost:' + port })
+    core    = await require('../').bootstrap(config.bootstrap)
+    server  = core.http(config.routes)
+
+    server.listen(port)
+  })
+
+  it('fetching a public resource', async () =>
   {
     const result = await request.get('/resource/master.css')
 
@@ -22,7 +31,7 @@ describe('controller/server/http', async () =>
     expect(result.data.includes('margin: 0')).to.be.equal(true)
   })
 
-  it('integration test of the rest dispatcher', async () =>
+  it('the rest dispatcher', async () =>
   {
     const result =
     {
@@ -40,7 +49,7 @@ describe('controller/server/http', async () =>
     expect(result.index.status).to.be.equal(400)
   })
 
-  it('integration test of a raw text response', async () =>
+  it('a raw text response', async () =>
   {
     const result = await request.get('/test-raw')
 
@@ -48,7 +57,7 @@ describe('controller/server/http', async () =>
     expect(result.data).to.be.equal('txt')
   })
 
-  it('integration test of a json response', async () =>
+  it('a json response', async () =>
   {
     const result = await request.get('/test-json')
 
@@ -56,7 +65,7 @@ describe('controller/server/http', async () =>
     expect(result.data.foobar).to.be.equal('bazqux')
   })
 
-  it('integration test of a templated response', async () =>
+  it('a templated response', async () =>
   {
     const result = await request.get('/test-templated')
 
@@ -67,7 +76,7 @@ describe('controller/server/http', async () =>
     expect(result.data.includes('bazqux')).to.be.equal(true)
   })
 
-  it('integration test of the if helper', async () =>
+  it('the if helper', async () =>
   {
     const result = await request.get('/test-templated')
 
@@ -83,7 +92,7 @@ describe('controller/server/http', async () =>
     expect(result.data.includes('typeof')).to.be.equal(true)
   })
 
-  it('integration test of a none specified dispatcher should ', async () =>
+  it('a none specified dispatcher should ', async () =>
   {
     const result = await request.get('/test-501')
 
@@ -91,7 +100,7 @@ describe('controller/server/http', async () =>
     expect(result.data).to.be.equal('Not Implemented')
   })
 
-  it('integration test of a failing dispatcher', async () =>
+  it('a failing dispatcher', async () =>
   {
     const result = await request.get('/test-failing')
 
@@ -99,7 +108,7 @@ describe('controller/server/http', async () =>
     expect(result.data).to.be.equal('Internal Server Error')
   })
 
-  it('integration test of a none specified route returns a 404', async () =>
+  it('a none specified route returns a 404', async () =>
   {
     const result = await request.get('/none-existing-path')
 

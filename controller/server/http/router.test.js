@@ -1,11 +1,9 @@
-const
-expect  = require('chai').expect,
-context = require('mochawesome/addContext')
-
 describe('controller/server/http/router', () =>
 {
   const
-  config =
+  expect  = require('chai').expect,
+  context = require('mochawesome/addContext'),
+  config  =
   [
     {
       middleware  : '/middle-1'
@@ -36,19 +34,19 @@ describe('controller/server/http/router', () =>
       dispatcher  : 'bar',
       middleware  : ['/middle-2', '/middle-3']
     }
-  ],
-  Router = require('./router')
+  ]
+
+  let Router, router
+
+  before(function()
+  {
+    context(this, { title:'config', value:config })
+    Router = require('./router')
+    router = new Router(config)
+  })
 
   describe('flattenRoutes(routes)', () =>
   {
-    let router
-
-    before(function()
-    {
-      context(this, { title:'config', value:config })
-      router = new Router(config)
-    })
-
     it('should return a flatten route', function()
     {
       context(this, { title:'config', value:config })
@@ -64,49 +62,64 @@ describe('controller/server/http/router', () =>
 
   describe('findRoute(request)', () =>
   {
-    let router, result1, result2, result3, result4, result5
-
-    before(function()
+    it('middleware is an array', () =>
     {
-      context(this, { title:'config', value:config })
-
-      router  = new Router(config)
-
-      result1 = router.findRoute({ url:{ pathname:'/' }})
-      result2 = router.findRoute({ url:{ pathname:'/foo' }})
-      result3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
-      result4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})
-      result5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
+      const result = router.findRoute({ url:{ pathname:'/' }})
+      expect(result.middleware).is.an('array')
     })
 
-    it('middleware is an array',
-    () => expect(result1.middleware).is.an('array'))
+    it('middleware builds on', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/' }})
+      expect(result.middleware.length).to.be.equal(2)
+    })
 
-    it('middleware builds on',
-    () => expect(result1.middleware.length).to.be.equal(2))
+    it('middleware routes correctly', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/foo' }})
+      expect(result.middleware.length).to.be.equal(1)
+    })
 
-    it('middleware routes correctly',
-    () => expect(result2.middleware.length).to.be.equal(1))
+    it('middleware can be defined as an array', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
+      expect(result.middleware.length).to.be.equal(3)
+    })
 
-    it('middleware can be defined as an array',
-    () => expect(result3.middleware.length).to.be.equal(3))
+    it('view is inherited', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/' }})
+      expect(result.view).to.be.equal('json')
+    })
 
-    it('view is inherited',
-    () => expect(result1.view).to.be.equal('json'))
+    it('found correct dispatcher ', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/' }})
+      expect(result.dispatcher).to.be.equal('index')
+    })
 
-    it('found correct dispatcher ',
-    () => expect(result1.dispatcher).to.be.equal('index'))
+    it('overwrite the view', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/foo' }})
+      expect(result.view).to.be.equal('raw')
+    })
 
-    it('overwrite the view',
-    () => expect(result2.view).to.be.equal('raw'))
+    it('first match should have hierarchy', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
+      expect(result.dispatcher).to.be.equal('bar')
+    })
 
-    it('first match should have hierarchy',
-    () => expect(result3.dispatcher).to.be.equal('bar'))
+    it('method policy routes correctly', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})
+      expect(result.dispatcher).to.be.equal('baz')
+    })
 
-    it('method policy routes correctly',
-    () => expect(result4.dispatcher).to.be.equal('baz'))
-
-    it('no match should return an undefined dispatcher',
-    () => expect(result5.dispatcher).to.be.equal(undefined))
+    it('no match should return an undefined dispatcher', () =>
+    {
+      const result = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
+      expect(result.dispatcher).to.be.equal(undefined)
+    })
   })
 })

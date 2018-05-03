@@ -1,9 +1,11 @@
-const expect = require('chai').expect
-
 describe('view/template/helper/escSingelQuote', () =>
 {
-  const escSingelQuote = require('./escSingelQuote')
+  const expect = require('chai').expect
 
-  it('should return a string with escaped singel quotes', () =>
-    expect(escSingelQuote("foo 'bar'")).to.be.equal("foo \\'bar\\'"))
+  let escSingelQuote
+    
+  before(() => escSingelQuote = require('./escSingelQuote'))
+
+  it('should return a string with escaped singel quotes',
+  () => expect(escSingelQuote("foo 'bar'")).to.be.equal("foo \\'bar\\'"))
 })

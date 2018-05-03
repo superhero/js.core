@@ -1,40 +1,47 @@
-const expect = require('chai').expect
-
 describe('controller/server/ws/router', () =>
 {
-  const
-  config =
-  [
-    {
-      policy      : 'foobar',
-      dispatcher  : 'foo',
-    },
-    {
-      policy      : 'foobar',
-      dispatcher  : 'bar'
-    },
-    {
-      policy      : /^BAZQUX$/i,
-      dispatcher  : 'baz'
-    }
-  ],
-  Router = require('./router'),
-  router = new Router(config)
+  const expect = require('chai').expect
+
+  let Router, router
+
+  before(() =>
+  {
+    Router = require('./router')
+    router = new Router(
+    [
+      {
+        policy      : 'foobar',
+        dispatcher  : 'foo',
+      },
+      {
+        policy      : 'foobar',
+        dispatcher  : 'bar'
+      },
+      {
+        policy      : /^BAZQUX$/i,
+        dispatcher  : 'baz'
+      }
+    ])
+  })
 
   describe('findRoute(request)', () =>
   {
-    const
-    result1 = router.findRoute('foobar'),
-    result2 = router.findRoute('bazqux'),
-    result3 = router.findRoute('no-matching-policy')
+    it('correct dispatcher found', () =>
+    {
+      const result = router.findRoute('foobar')
+      expect(result.dispatcher).to.be.equal('foo')
+    })
 
-    it('correct dispatcher found',
-    () => expect(result1.dispatcher).to.be.equal('foo'))
+    it('regex policy', () =>
+    {
+      const result = router.findRoute('bazqux')
+      expect(result.dispatcher).to.be.equal('baz')
+    })
 
-    it('regex policy',
-    () => expect(result2.dispatcher).to.be.equal('baz'))
-
-    it('no matching policy should return an undefined dispatcher',
-    () => expect(result3.dispatcher).to.be.equal(undefined))
+    it('no matching policy should return an undefined dispatcher', () =>
+    {
+      const result = router.findRoute('no-matching-policy')
+      expect(result.dispatcher).to.be.equal(undefined)
+    })
   })
 })

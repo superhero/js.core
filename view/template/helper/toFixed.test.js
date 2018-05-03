@@ -1,8 +1,10 @@
-const expect = require('chai').expect
-
 describe('view/template/helper/toFixed', () =>
 {
-  const toFixed = require('./toFixed')
+  const expect = require('chai').expect
+
+  let toFixed
+
+  before(() => toFixed = require('./toFixed'))
 
   it('should return a padded number',
   () => expect(toFixed(5, 2)).to.be.equal('5.00'))

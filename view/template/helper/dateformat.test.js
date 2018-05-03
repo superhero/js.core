@@ -1,9 +1,11 @@
-const expect = require('chai').expect
-
 describe('view/template/helper/dateformat', () =>
 {
-  const dateformat = require('./dateformat')
+  const expect = require('chai').expect
 
-  it('should return a formated date string', () =>
-    expect(dateformat(new Date(1524493378898), 'yyyy')).to.be.equal('2018'))
+  let dateformat
+
+  before(() => dateformat = require('./dateformat'))
+
+  it('should return a formated date string',
+  () => expect(dateformat(new Date(1524493378898), 'yyyy')).to.be.equal('2018'))
 })
