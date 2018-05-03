@@ -5,9 +5,9 @@
     "passes": 53,
     "pending": 0,
     "failures": 0,
-    "start": "2018-05-03T11:35:11.755Z",
-    "end": "2018-05-03T11:35:11.844Z",
-    "duration": 89,
+    "start": "2018-05-03T11:57:28.411Z",
+    "end": "2018-05-03T11:57:28.499Z",
+    "duration": 88,
     "testsRegistered": 53,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "16a76f21-53d7-4c4c-bc8c-1c7ca7a03d70",
+    "uuid": "7f83af6a-c6a0-4f08-ba90-ac2616d4cf70",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -35,7 +35,7 @@
         "code": "server.listen(port)",
         "err": {},
         "isRoot": true,
-        "uuid": "cc159b61-a5f9-4686-932f-20cf171d41ff",
+        "uuid": "7e8a20eb-f924-476d-ae97-12ae0ff320ac",
         "isHook": true,
         "skipped": false
       }
@@ -52,7 +52,7 @@
         "code": "server.close()",
         "err": {},
         "isRoot": true,
-        "uuid": "f70a1a6a-cfd3-48f9-a421-10e3ccf4169f",
+        "uuid": "504d295c-fa71-444b-9f7b-1770a372d593",
         "isHook": true,
         "skipped": false
       }
@@ -71,7 +71,7 @@
         "code": "const result = await request.get('/resource/master.css')\nexpect(result.status).to.be.equal(200)\nexpect(result.headers['content-type']).to.be.equal('text/css')\nexpect(result.data.includes('margin: 0')).to.be.equal(true)",
         "err": {},
         "isRoot": true,
-        "uuid": "594d9b8f-9503-47c9-8bbf-25f654cb4089",
+        "uuid": "c995650e-73a5-49db-bc17-9eb8f9b18a27",
         "isHook": false,
         "skipped": false
       },
@@ -79,7 +79,7 @@
         "title": "integration test of the rest dispatcher",
         "fullTitle": "integration test of the rest dispatcher",
         "timedOut": false,
-        "duration": 7,
+        "duration": 6,
         "state": "passed",
         "speed": "fast",
         "pass": true,
@@ -88,7 +88,7 @@
         "code": "const result =\n{\n  get     : await request.get('/rest'),\n  post    : await request.post('/rest'),\n  put     : await request.put('/rest'),\n  delete  : await request.delete('/rest'),\n  index   : await request.fetch('index', '/rest')\n}\nexpect(result.get.status).to.be.equal(501)\nexpect(result.post.status).to.be.equal(501)\nexpect(result.put.status).to.be.equal(501)\nexpect(result.delete.status).to.be.equal(501)\nexpect(result.index.status).to.be.equal(400)",
         "err": {},
         "isRoot": true,
-        "uuid": "d888d3ab-9d6c-4ffb-8255-13a14ab3b262",
+        "uuid": "1be24872-9fa8-4cbb-b1a3-c52d43b3a4f6",
         "isHook": false,
         "skipped": false
       },
@@ -105,7 +105,7 @@
         "code": "const result = await request.get('/test-raw')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('txt')",
         "err": {},
         "isRoot": true,
-        "uuid": "e2cd1654-f953-4e30-b5f4-edca8206767c",
+        "uuid": "898e2b11-55de-4857-bfe2-24de7830649b",
         "isHook": false,
         "skipped": false
       },
@@ -113,7 +113,7 @@
         "title": "integration test of a json response",
         "fullTitle": "integration test of a json response",
         "timedOut": false,
-        "duration": 1,
+        "duration": 2,
         "state": "passed",
         "speed": "fast",
         "pass": true,
@@ -122,7 +122,7 @@
         "code": "const result = await request.get('/test-json')\nexpect(result.status).to.be.equal(200)\nexpect(result.data.foobar).to.be.equal('bazqux')",
         "err": {},
         "isRoot": true,
-        "uuid": "543de750-c303-4bc8-afac-dcdc5df725e4",
+        "uuid": "858ba6ce-8ada-45bf-ae50-80b5fddeb94c",
         "isHook": false,
         "skipped": false
       },
@@ -139,7 +139,7 @@
         "code": "const result = await request.get('/test-templated')\nexpect(result.status).to.be.equal(200)\nexpect(result.data.startsWith('layout')).to.be.equal(true)\nexpect(result.data.includes('titled')).to.be.equal(true)\nexpect(result.data.includes('bazqux')).to.be.equal(true)",
         "err": {},
         "isRoot": true,
-        "uuid": "037699c1-dbe9-4290-9b35-87c3d1f359c7",
+        "uuid": "a5201dfd-b44d-4573-8916-3d3d81eda59a",
         "isHook": false,
         "skipped": false
       },
@@ -147,7 +147,7 @@
         "title": "integration test of the if helper",
         "fullTitle": "integration test of the if helper",
         "timedOut": false,
-        "duration": 6,
+        "duration": 5,
         "state": "passed",
         "speed": "fast",
         "pass": true,
@@ -156,7 +156,7 @@
         "code": "const result = await request.get('/test-templated')\n// testing the \"if\" helper in the template\nexpect(result.data.includes('==')).to.be.equal(true)\nexpect(result.data.includes('!=')).to.be.equal(true)\nexpect(result.data.includes('<' )).to.be.equal(true)\nexpect(result.data.includes('<=')).to.be.equal(true)\nexpect(result.data.includes('>' )).to.be.equal(true)\nexpect(result.data.includes('>=')).to.be.equal(true)\nexpect(result.data.includes('&&')).to.be.equal(true)\nexpect(result.data.includes('||')).to.be.equal(true)\nexpect(result.data.includes('typeof')).to.be.equal(true)",
         "err": {},
         "isRoot": true,
-        "uuid": "ac25b579-e170-4672-833c-b08cee0396a2",
+        "uuid": "e4d5a7e4-789a-43e5-a1d7-34562055d5a3",
         "isHook": false,
         "skipped": false
       },
@@ -164,7 +164,7 @@
         "title": "integration test of a none specified dispatcher should ",
         "fullTitle": "integration test of a none specified dispatcher should ",
         "timedOut": false,
-        "duration": 2,
+        "duration": 1,
         "state": "passed",
         "speed": "fast",
         "pass": true,
@@ -173,7 +173,7 @@
         "code": "const result = await request.get('/test-501')\nexpect(result.status).to.be.equal(501)\nexpect(result.data).to.be.equal('Not Implemented')",
         "err": {},
         "isRoot": true,
-        "uuid": "873bd3d3-3e60-4ee6-b4c3-a04d0d0720a9",
+        "uuid": "e8d615e1-fb51-4cd7-b8a9-fbf263a5853a",
         "isHook": false,
         "skipped": false
       },
@@ -181,7 +181,7 @@
         "title": "integration test of a failing dispatcher",
         "fullTitle": "integration test of a failing dispatcher",
         "timedOut": false,
-        "duration": 1,
+        "duration": 2,
         "state": "passed",
         "speed": "fast",
         "pass": true,
@@ -190,7 +190,7 @@
         "code": "const result = await request.get('/test-failing')\nexpect(result.status).to.be.equal(500)\nexpect(result.data).to.be.equal('Internal Server Error')",
         "err": {},
         "isRoot": true,
-        "uuid": "c234de01-db1d-4c0a-83ca-5b5ef5049d5c",
+        "uuid": "65f66f2e-ed72-4ba7-9797-2ac543307bfd",
         "isHook": false,
         "skipped": false
       },
@@ -208,50 +208,50 @@
         "code": "const result = await request.get('/none-existing-path')\nexpect(result.status).to.be.equal(404)\nexpect(result.data).to.be.equal('Not Found')",
         "err": {},
         "isRoot": true,
-        "uuid": "de4ef744-9dca-4fcc-a7a2-0c06fb211678",
+        "uuid": "cd79ff0e-5ec3-4501-aaed-ec88d771cd22",
         "isHook": false,
         "skipped": false
       }
     ],
     "suites": [
       {
-        "uuid": "3dcb4b29-b9c3-4d79-aa8f-8b9f4613f946",
+        "uuid": "76da3288-3bd6-4c9d-9de1-40f5b6d4971f",
         "title": "controller/server/http/router",
         "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/http/router.test.js",
         "file": "/controller/server/http/router.test.js",
-        "beforeHooks": [
-          {
-            "title": "\"before all\" hook",
-            "fullTitle": "controller/server/http/router \"before all\" hook",
-            "timedOut": false,
-            "duration": 0,
-            "pass": false,
-            "fail": false,
-            "pending": false,
-            "code": "context(this, { title:'config', value:config })\nrouter = new Router(config)",
-            "err": {},
-            "isRoot": false,
-            "uuid": "9ad9b254-71cf-493d-8cc3-de1e4b529b84",
-            "isHook": true,
-            "skipped": false
-          }
-        ],
+        "beforeHooks": [],
         "afterHooks": [],
         "tests": [],
         "suites": [
           {
-            "uuid": "e51ed1a7-74cb-4a39-9718-f68521609569",
+            "uuid": "1cf479e9-8b70-438a-ba6a-8c421fe1306d",
             "title": "flattenRoutes(routes)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/http/router.test.js",
             "file": "/controller/server/http/router.test.js",
-            "beforeHooks": [],
+            "beforeHooks": [
+              {
+                "title": "\"before all\" hook",
+                "fullTitle": "controller/server/http/router flattenRoutes(routes) \"before all\" hook",
+                "timedOut": false,
+                "duration": 1,
+                "pass": false,
+                "fail": false,
+                "pending": false,
+                "code": "context(this, { title:'config', value:config })\nrouter = new Router(config)",
+                "err": {},
+                "isRoot": false,
+                "uuid": "348ac939-ab7b-4a5d-84a0-010aab93cf3d",
+                "isHook": true,
+                "skipped": false
+              }
+            ],
             "afterHooks": [],
             "tests": [
               {
                 "title": "should return a flatten route",
                 "fullTitle": "controller/server/http/router flattenRoutes(routes) should return a flatten route",
                 "timedOut": false,
-                "duration": 1,
+                "duration": 0,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -261,25 +261,25 @@
                 "code": "context(this, { title:'config', value:config })\nconst route = router.flattenRoutes(config)\nexpect(route.view).to.be.equal('json')\nexpect(route.policy).to.be.equal('/')\nexpect(route.dispatcher).to.be.equal('index')\nexpect(route.middleware.length).to.be.equal(2)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "fd52faa4-5e77-4af4-91a5-9e9e9d4b91e8",
+                "uuid": "e617b6b3-a802-4544-8433-d60c9f3023fa",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "fd52faa4-5e77-4af4-91a5-9e9e9d4b91e8"
+              "e617b6b3-a802-4544-8433-d60c9f3023fa"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 1,
+            "duration": 0,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
           },
           {
-            "uuid": "ab42695b-0203-4cfa-87ac-d0550fa45151",
+            "uuid": "068b1c27-e5fd-4bec-966f-27f898fff59c",
             "title": "findRoute(request)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/http/router.test.js",
             "file": "/controller/server/http/router.test.js",
@@ -288,14 +288,15 @@
                 "title": "\"before all\" hook",
                 "fullTitle": "controller/server/http/router findRoute(request) \"before all\" hook",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "pass": false,
                 "fail": false,
                 "pending": false,
-                "code": "result1 = router.findRoute({ url:{ pathname:'/' }})\nresult2 = router.findRoute({ url:{ pathname:'/foo' }})\nresult3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})\nresult4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})\nresult5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})",
+                "context": "{\n  \"title\": \"config\",\n  \"value\": [\n    {\n      \"middleware\": \"/middle-1\"\n    },\n    {\n      \"view\": \"json\"\n    },\n    {\n      \"policy\": \"/\",\n      \"dispatcher\": \"index\",\n      \"middleware\": \"/middle-2\"\n    },\n    {\n      \"view\": \"raw\",\n      \"policy\": \"/foo\",\n      \"dispatcher\": \"foo\"\n    },\n    {\n      \"dispatcher\": \"baz\",\n      \"policy\": {\n        \"method\": \"post\",\n        \"path\": \"/bar\"\n      }\n    },\n    {\n      \"policy\": \"/bar\",\n      \"dispatcher\": \"bar\",\n      \"middleware\": [\n        \"/middle-2\",\n        \"/middle-3\"\n      ]\n    }\n  ]\n}",
+                "code": "context(this, { title:'config', value:config })\nrouter  = new Router(config)\nresult1 = router.findRoute({ url:{ pathname:'/' }})\nresult2 = router.findRoute({ url:{ pathname:'/foo' }})\nresult3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})\nresult4 = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})\nresult5 = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})",
                 "err": {},
                 "isRoot": false,
-                "uuid": "4df90445-48af-433c-abe5-06a0f5aa636e",
+                "uuid": "eec2cf3b-124d-4dc9-8758-7efd536fa258",
                 "isHook": true,
                 "skipped": false
               }
@@ -315,7 +316,7 @@
                 "code": "expect(result1.middleware).is.an('array')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "a9cf5974-e16a-41d0-ac1d-564d3f9578de",
+                "uuid": "c3493132-f209-4813-898e-6be1149f33e5",
                 "isHook": false,
                 "skipped": false
               },
@@ -332,7 +333,7 @@
                 "code": "expect(result1.middleware.length).to.be.equal(2)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "d7a26650-f426-479e-a3ad-9f5d6fc7120e",
+                "uuid": "e9487dd9-0925-4fb5-9470-7c63dca4424e",
                 "isHook": false,
                 "skipped": false
               },
@@ -340,7 +341,7 @@
                 "title": "middleware routes correctly",
                 "fullTitle": "controller/server/http/router findRoute(request) middleware routes correctly",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -349,7 +350,7 @@
                 "code": "expect(result2.middleware.length).to.be.equal(1)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "7cd6376c-8f55-46ef-b61e-7e91a33640e3",
+                "uuid": "829c4bf8-23ac-4dc5-a70e-f32a51874438",
                 "isHook": false,
                 "skipped": false
               },
@@ -366,7 +367,7 @@
                 "code": "expect(result3.middleware.length).to.be.equal(3)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "e2d2ac0e-fe92-4e29-aa79-9fdec99c5bb9",
+                "uuid": "864426ae-f25e-4dc2-a7a2-8cc7ce211e9d",
                 "isHook": false,
                 "skipped": false
               },
@@ -383,7 +384,7 @@
                 "code": "expect(result1.view).to.be.equal('json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "2794beb6-8782-4bb5-9224-fa7baa4b7b73",
+                "uuid": "eb4e58f5-eaa2-412e-886f-39963d487318",
                 "isHook": false,
                 "skipped": false
               },
@@ -400,7 +401,7 @@
                 "code": "expect(result1.dispatcher).to.be.equal('index')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "fc5401ba-2548-4589-86ce-c606be9a8467",
+                "uuid": "d5b40777-4954-4dbf-bf50-aba942789b71",
                 "isHook": false,
                 "skipped": false
               },
@@ -417,7 +418,7 @@
                 "code": "expect(result2.view).to.be.equal('raw')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "580efc16-2daf-440f-af14-3e54cf11b21d",
+                "uuid": "26c96250-3c6d-4eab-aebd-63204eadfa3f",
                 "isHook": false,
                 "skipped": false
               },
@@ -434,7 +435,7 @@
                 "code": "expect(result3.dispatcher).to.be.equal('bar')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "35f97577-ce5a-49aa-af97-2496dde00165",
+                "uuid": "530e4ba3-805e-46f0-ba64-4e70171a43d1",
                 "isHook": false,
                 "skipped": false
               },
@@ -451,7 +452,7 @@
                 "code": "expect(result4.dispatcher).to.be.equal('baz')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "37850a65-fbdb-4b75-be73-d34db23dc2f4",
+                "uuid": "2c2f9ef9-40ab-46a0-b7e5-a768ac4a2e79",
                 "isHook": false,
                 "skipped": false
               },
@@ -468,211 +469,23 @@
                 "code": "expect(result5.dispatcher).to.be.equal(undefined)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "2a14c90e-a321-4241-a685-997759a8295b",
+                "uuid": "d225cd60-1dbf-4958-a667-bc500a372f5f",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "a9cf5974-e16a-41d0-ac1d-564d3f9578de",
-              "d7a26650-f426-479e-a3ad-9f5d6fc7120e",
-              "7cd6376c-8f55-46ef-b61e-7e91a33640e3",
-              "e2d2ac0e-fe92-4e29-aa79-9fdec99c5bb9",
-              "2794beb6-8782-4bb5-9224-fa7baa4b7b73",
-              "fc5401ba-2548-4589-86ce-c606be9a8467",
-              "580efc16-2daf-440f-af14-3e54cf11b21d",
-              "35f97577-ce5a-49aa-af97-2496dde00165",
-              "37850a65-fbdb-4b75-be73-d34db23dc2f4",
-              "2a14c90e-a321-4241-a685-997759a8295b"
-            ],
-            "failures": [],
-            "pending": [],
-            "skipped": [],
-            "duration": 0,
-            "root": false,
-            "rootEmpty": false,
-            "_timeout": 2000
-          }
-        ],
-        "passes": [],
-        "failures": [],
-        "pending": [],
-        "skipped": [],
-        "duration": 0,
-        "root": false,
-        "rootEmpty": false,
-        "_timeout": 2000
-      },
-      {
-        "uuid": "77ccf42a-7899-46ba-ae4d-836d916e0e0b",
-        "title": "controller/server/ws/router",
-        "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/ws/router.test.js",
-        "file": "/controller/server/ws/router.test.js",
-        "beforeHooks": [],
-        "afterHooks": [],
-        "tests": [],
-        "suites": [
-          {
-            "uuid": "6d3e3e68-2dd7-46e7-8de4-be830d8a1512",
-            "title": "findRoute(request)",
-            "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/ws/router.test.js",
-            "file": "/controller/server/ws/router.test.js",
-            "beforeHooks": [],
-            "afterHooks": [],
-            "tests": [
-              {
-                "title": "correct dispatcher found",
-                "fullTitle": "controller/server/ws/router findRoute(request) correct dispatcher found",
-                "timedOut": false,
-                "duration": 0,
-                "state": "passed",
-                "speed": "fast",
-                "pass": true,
-                "fail": false,
-                "pending": false,
-                "code": "expect(result1.dispatcher).to.be.equal('foo')",
-                "err": {},
-                "isRoot": false,
-                "uuid": "ba923022-e9b0-4906-86ca-3ce37d4ba712",
-                "isHook": false,
-                "skipped": false
-              },
-              {
-                "title": "regex policy",
-                "fullTitle": "controller/server/ws/router findRoute(request) regex policy",
-                "timedOut": false,
-                "duration": 0,
-                "state": "passed",
-                "speed": "fast",
-                "pass": true,
-                "fail": false,
-                "pending": false,
-                "code": "expect(result2.dispatcher).to.be.equal('baz')",
-                "err": {},
-                "isRoot": false,
-                "uuid": "2bf066e1-44e9-4736-8ccd-87089438a382",
-                "isHook": false,
-                "skipped": false
-              },
-              {
-                "title": "no matching policy should return an undefined dispatcher",
-                "fullTitle": "controller/server/ws/router findRoute(request) no matching policy should return an undefined dispatcher",
-                "timedOut": false,
-                "duration": 0,
-                "state": "passed",
-                "speed": "fast",
-                "pass": true,
-                "fail": false,
-                "pending": false,
-                "code": "expect(result3.dispatcher).to.be.equal(undefined)",
-                "err": {},
-                "isRoot": false,
-                "uuid": "d1856135-47d2-45d0-bb6a-7a3f12fc87d7",
-                "isHook": false,
-                "skipped": false
-              }
-            ],
-            "suites": [],
-            "passes": [
-              "ba923022-e9b0-4906-86ca-3ce37d4ba712",
-              "2bf066e1-44e9-4736-8ccd-87089438a382",
-              "d1856135-47d2-45d0-bb6a-7a3f12fc87d7"
-            ],
-            "failures": [],
-            "pending": [],
-            "skipped": [],
-            "duration": 0,
-            "root": false,
-            "rootEmpty": false,
-            "_timeout": 2000
-          }
-        ],
-        "passes": [],
-        "failures": [],
-        "pending": [],
-        "skipped": [],
-        "duration": 0,
-        "root": false,
-        "rootEmpty": false,
-        "_timeout": 2000
-      },
-      {
-        "uuid": "41f99374-95c6-42f1-8a5e-af9834825029",
-        "title": "error/context",
-        "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
-        "file": "/error/context.test.js",
-        "beforeHooks": [],
-        "afterHooks": [],
-        "tests": [],
-        "suites": [
-          {
-            "uuid": "120763fe-0cb7-4a26-88f4-fbaa7c6f368a",
-            "title": "setCode(code)",
-            "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
-            "file": "/error/context.test.js",
-            "beforeHooks": [],
-            "afterHooks": [],
-            "tests": [
-              {
-                "title": "should be able to retrieve the error code set through `setCode`",
-                "fullTitle": "error/context setCode(code) should be able to retrieve the error code set through `setCode`",
-                "timedOut": false,
-                "duration": 0,
-                "state": "passed",
-                "speed": "fast",
-                "pass": true,
-                "fail": false,
-                "pending": false,
-                "code": "const code = 'ERR_VALUE_OUT_OF_RANGE'\nerror.setCode(code)\nexpect(error.code).to.be.equal(code)",
-                "err": {},
-                "isRoot": false,
-                "uuid": "faccfdb5-d17e-4fb8-837e-aa16c473356e",
-                "isHook": false,
-                "skipped": false
-              }
-            ],
-            "suites": [],
-            "passes": [
-              "faccfdb5-d17e-4fb8-837e-aa16c473356e"
-            ],
-            "failures": [],
-            "pending": [],
-            "skipped": [],
-            "duration": 0,
-            "root": false,
-            "rootEmpty": false,
-            "_timeout": 2000
-          },
-          {
-            "uuid": "c84fce71-a0c5-4195-a8f4-26881cb5089e",
-            "title": "setContext(ctx)",
-            "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
-            "file": "/error/context.test.js",
-            "beforeHooks": [],
-            "afterHooks": [],
-            "tests": [
-              {
-                "title": "should be able to retrieve the context set through `setContext`",
-                "fullTitle": "error/context setContext(ctx) should be able to retrieve the context set through `setContext`",
-                "timedOut": false,
-                "duration": 1,
-                "state": "passed",
-                "speed": "fast",
-                "pass": true,
-                "fail": false,
-                "pending": false,
-                "code": "const ctx = { foo:'bar' }\nerror.setContext(ctx)\nexpect(error.context).to.deep.equal(ctx)",
-                "err": {},
-                "isRoot": false,
-                "uuid": "a73d9a4e-9ec8-4eb6-9175-96ec4c0e8925",
-                "isHook": false,
-                "skipped": false
-              }
-            ],
-            "suites": [],
-            "passes": [
-              "a73d9a4e-9ec8-4eb6-9175-96ec4c0e8925"
+              "c3493132-f209-4813-898e-6be1149f33e5",
+              "e9487dd9-0925-4fb5-9470-7c63dca4424e",
+              "829c4bf8-23ac-4dc5-a70e-f32a51874438",
+              "864426ae-f25e-4dc2-a7a2-8cc7ce211e9d",
+              "eb4e58f5-eaa2-412e-886f-39963d487318",
+              "d5b40777-4954-4dbf-bf50-aba942789b71",
+              "26c96250-3c6d-4eab-aebd-63204eadfa3f",
+              "530e4ba3-805e-46f0-ba64-4e70171a43d1",
+              "2c2f9ef9-40ab-46a0-b7e5-a768ac4a2e79",
+              "d225cd60-1dbf-4958-a667-bc500a372f5f"
             ],
             "failures": [],
             "pending": [],
@@ -693,7 +506,195 @@
         "_timeout": 2000
       },
       {
-        "uuid": "97560559-a8db-42db-91a0-43da4f874513",
+        "uuid": "2f57501f-0f28-408c-89ca-1b4bf58a2345",
+        "title": "controller/server/ws/router",
+        "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/ws/router.test.js",
+        "file": "/controller/server/ws/router.test.js",
+        "beforeHooks": [],
+        "afterHooks": [],
+        "tests": [],
+        "suites": [
+          {
+            "uuid": "cfed591c-b02f-4081-a951-8d29c60ad02e",
+            "title": "findRoute(request)",
+            "fullFile": "/home/erik/Projects/@superhero/js.core/controller/server/ws/router.test.js",
+            "file": "/controller/server/ws/router.test.js",
+            "beforeHooks": [],
+            "afterHooks": [],
+            "tests": [
+              {
+                "title": "correct dispatcher found",
+                "fullTitle": "controller/server/ws/router findRoute(request) correct dispatcher found",
+                "timedOut": false,
+                "duration": 0,
+                "state": "passed",
+                "speed": "fast",
+                "pass": true,
+                "fail": false,
+                "pending": false,
+                "code": "expect(result1.dispatcher).to.be.equal('foo')",
+                "err": {},
+                "isRoot": false,
+                "uuid": "046ff569-fe43-4155-b706-e4a4c40cd5b3",
+                "isHook": false,
+                "skipped": false
+              },
+              {
+                "title": "regex policy",
+                "fullTitle": "controller/server/ws/router findRoute(request) regex policy",
+                "timedOut": false,
+                "duration": 0,
+                "state": "passed",
+                "speed": "fast",
+                "pass": true,
+                "fail": false,
+                "pending": false,
+                "code": "expect(result2.dispatcher).to.be.equal('baz')",
+                "err": {},
+                "isRoot": false,
+                "uuid": "82b9311f-95e0-4ff4-85b3-eb02de20dceb",
+                "isHook": false,
+                "skipped": false
+              },
+              {
+                "title": "no matching policy should return an undefined dispatcher",
+                "fullTitle": "controller/server/ws/router findRoute(request) no matching policy should return an undefined dispatcher",
+                "timedOut": false,
+                "duration": 0,
+                "state": "passed",
+                "speed": "fast",
+                "pass": true,
+                "fail": false,
+                "pending": false,
+                "code": "expect(result3.dispatcher).to.be.equal(undefined)",
+                "err": {},
+                "isRoot": false,
+                "uuid": "c4a617a3-72f4-4f49-a9d9-a9604ad5ec20",
+                "isHook": false,
+                "skipped": false
+              }
+            ],
+            "suites": [],
+            "passes": [
+              "046ff569-fe43-4155-b706-e4a4c40cd5b3",
+              "82b9311f-95e0-4ff4-85b3-eb02de20dceb",
+              "c4a617a3-72f4-4f49-a9d9-a9604ad5ec20"
+            ],
+            "failures": [],
+            "pending": [],
+            "skipped": [],
+            "duration": 0,
+            "root": false,
+            "rootEmpty": false,
+            "_timeout": 2000
+          }
+        ],
+        "passes": [],
+        "failures": [],
+        "pending": [],
+        "skipped": [],
+        "duration": 0,
+        "root": false,
+        "rootEmpty": false,
+        "_timeout": 2000
+      },
+      {
+        "uuid": "52bafdee-a07c-4396-ab3a-c2bc710b8ecb",
+        "title": "error/context",
+        "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
+        "file": "/error/context.test.js",
+        "beforeHooks": [],
+        "afterHooks": [],
+        "tests": [],
+        "suites": [
+          {
+            "uuid": "f6aad0ed-e3a2-4bbb-8f6e-96fbbee86de1",
+            "title": "setCode(code)",
+            "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
+            "file": "/error/context.test.js",
+            "beforeHooks": [],
+            "afterHooks": [],
+            "tests": [
+              {
+                "title": "should be able to retrieve the error code set through `setCode`",
+                "fullTitle": "error/context setCode(code) should be able to retrieve the error code set through `setCode`",
+                "timedOut": false,
+                "duration": 0,
+                "state": "passed",
+                "speed": "fast",
+                "pass": true,
+                "fail": false,
+                "pending": false,
+                "code": "const code = 'ERR_VALUE_OUT_OF_RANGE'\nerror.setCode(code)\nexpect(error.code).to.be.equal(code)",
+                "err": {},
+                "isRoot": false,
+                "uuid": "14f53afe-8585-49e6-a4b3-24aca132189f",
+                "isHook": false,
+                "skipped": false
+              }
+            ],
+            "suites": [],
+            "passes": [
+              "14f53afe-8585-49e6-a4b3-24aca132189f"
+            ],
+            "failures": [],
+            "pending": [],
+            "skipped": [],
+            "duration": 0,
+            "root": false,
+            "rootEmpty": false,
+            "_timeout": 2000
+          },
+          {
+            "uuid": "f537f300-368d-44b4-bec7-ab992b6d91ca",
+            "title": "setContext(ctx)",
+            "fullFile": "/home/erik/Projects/@superhero/js.core/error/context.test.js",
+            "file": "/error/context.test.js",
+            "beforeHooks": [],
+            "afterHooks": [],
+            "tests": [
+              {
+                "title": "should be able to retrieve the context set through `setContext`",
+                "fullTitle": "error/context setContext(ctx) should be able to retrieve the context set through `setContext`",
+                "timedOut": false,
+                "duration": 0,
+                "state": "passed",
+                "speed": "fast",
+                "pass": true,
+                "fail": false,
+                "pending": false,
+                "code": "const ctx = { foo:'bar' }\nerror.setContext(ctx)\nexpect(error.context).to.deep.equal(ctx)",
+                "err": {},
+                "isRoot": false,
+                "uuid": "75eb8250-1c95-45b0-bad5-464ad5d6ab8b",
+                "isHook": false,
+                "skipped": false
+              }
+            ],
+            "suites": [],
+            "passes": [
+              "75eb8250-1c95-45b0-bad5-464ad5d6ab8b"
+            ],
+            "failures": [],
+            "pending": [],
+            "skipped": [],
+            "duration": 0,
+            "root": false,
+            "rootEmpty": false,
+            "_timeout": 2000
+          }
+        ],
+        "passes": [],
+        "failures": [],
+        "pending": [],
+        "skipped": [],
+        "duration": 0,
+        "root": false,
+        "rootEmpty": false,
+        "_timeout": 2000
+      },
+      {
+        "uuid": "18fa7628-05d0-4d66-978b-638a49702951",
         "title": "error/index",
         "fullFile": "/home/erik/Projects/@superhero/js.core/error/index.test.js",
         "file": "/error/index.test.js",
@@ -702,7 +703,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "36872628-e4d1-46b9-9662-cd9cf7e2bf72",
+            "uuid": "78bbd40a-b1c8-4db1-a437-c86732032b9f",
             "title": "setCode(code)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/error/index.test.js",
             "file": "/error/index.test.js",
@@ -722,14 +723,14 @@
                 "code": "const code = 'ERR_VALUE_OUT_OF_RANGE'\nerror.setCode(code)\nexpect(error.code).to.be.equal(code)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "4d2cd0df-e5c1-4fe3-9906-89edddd5745f",
+                "uuid": "81644fb1-3967-4bb4-a969-232e01004670",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "4d2cd0df-e5c1-4fe3-9906-89edddd5745f"
+              "81644fb1-3967-4bb4-a969-232e01004670"
             ],
             "failures": [],
             "pending": [],
@@ -750,7 +751,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "3e9b4759-c08a-4d46-8088-d2b89e5f5c52",
+        "uuid": "d3c51974-cc33-4945-93b0-65ff29de3bcf",
         "title": "view/json",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
         "file": "/view/json.test.js",
@@ -759,7 +760,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "2396d46b-7bb8-4c75-ac55-58e78efffe78",
+            "uuid": "be45e05a-59bb-4c45-a307-3a7de514642c",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
             "file": "/view/json.test.js",
@@ -779,7 +780,7 @@
                 "code": "expect(json.compose(vm1)).to.be.equal(JSON.stringify(vm1.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "baddc80c-bcb1-45cf-afdc-b8be1a7e0521",
+                "uuid": "78fad131-341c-4d0a-a987-f4f692ad9974",
                 "isHook": false,
                 "skipped": false
               },
@@ -796,7 +797,7 @@
                 "code": "expect(vm1.headers['content-type']).to.be.equal('application/json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "428aa148-edb4-49c9-9c70-b7c6a9efe1e5",
+                "uuid": "c679b354-1a66-4462-b100-60b1cc49f747",
                 "isHook": false,
                 "skipped": false
               },
@@ -813,16 +814,16 @@
                 "code": "expect(json.compose(vm2)).to.be.equal(JSON.stringify(vm2.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "0a9370a5-6bb3-48c3-a4a6-f74876ea8c04",
+                "uuid": "0fb10c0c-3332-4858-bb5f-c972cebd7800",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "baddc80c-bcb1-45cf-afdc-b8be1a7e0521",
-              "428aa148-edb4-49c9-9c70-b7c6a9efe1e5",
-              "0a9370a5-6bb3-48c3-a4a6-f74876ea8c04"
+              "78fad131-341c-4d0a-a987-f4f692ad9974",
+              "c679b354-1a66-4462-b100-60b1cc49f747",
+              "0fb10c0c-3332-4858-bb5f-c972cebd7800"
             ],
             "failures": [],
             "pending": [],
@@ -843,7 +844,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "7d964aa4-f294-4a80-832a-14120c463269",
+        "uuid": "c44b6e3d-2316-417c-b257-8ab6f032e46b",
         "title": "view/raw",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
         "file": "/view/raw.test.js",
@@ -852,7 +853,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "9c283d76-0a4c-46e6-bb6b-5899143c982f",
+            "uuid": "c02c9644-2da1-4e8a-a8d7-00bdbf5ccd4e",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
             "file": "/view/raw.test.js",
@@ -872,14 +873,14 @@
                 "code": "expect(raw.compose(vm)).to.be.equal(vm.body)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "368c381d-e3da-4370-9741-9578cf6601bb",
+                "uuid": "770c474d-84c2-48ef-8475-007f1992c3cd",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "368c381d-e3da-4370-9741-9578cf6601bb"
+              "770c474d-84c2-48ef-8475-007f1992c3cd"
             ],
             "failures": [],
             "pending": [],
@@ -900,7 +901,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "5c6f3332-f9aa-4b33-8513-2c8f60598181",
+        "uuid": "80ec3744-a6ed-4e3b-87e0-fe7aa2f5cd70",
         "title": "view/template",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template.test.js",
         "file": "/view/template.test.js",
@@ -909,7 +910,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "a12ed799-65b0-4c52-9f7b-da5d309c8888",
+            "uuid": "532766e3-719d-4d9d-bd6d-2016085e1e59",
             "title": "static get handlebars",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/template.test.js",
             "file": "/view/template.test.js",
@@ -920,7 +921,7 @@
                 "title": "should return the handlebars instance",
                 "fullTitle": "view/template static get handlebars should return the handlebars instance",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -929,19 +930,19 @@
                 "code": "expect(Template.handlebars).to.be.equal(require('handlebars'))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "8b416766-99a2-46a8-9179-a763ea711aeb",
+                "uuid": "cee39325-8789-4fec-ab50-c149f6648ccf",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "8b416766-99a2-46a8-9179-a763ea711aeb"
+              "cee39325-8789-4fec-ab50-c149f6648ccf"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 0,
+            "duration": 1,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
@@ -957,7 +958,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "ba4971f5-d9ca-484e-be40-ad0f9dc7332d",
+        "uuid": "f71c654b-d20a-4cc1-8eea-a2388be4904c",
         "title": "view/template/helper/calculate",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/calculate.test.js",
         "file": "/view/template/helper/calculate.test.js",
@@ -977,7 +978,7 @@
             "code": "expect(calculate(1, '+', 1)).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "a43aed22-0274-40fb-8d0e-c1853162f828",
+            "uuid": "5b6d688f-cc07-46c9-b25c-f12298efa045",
             "isHook": false,
             "skipped": false
           },
@@ -994,7 +995,7 @@
             "code": "expect(calculate(4, '-', 2)).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "d4873c90-3a1f-4014-872a-a05f645b2ef9",
+            "uuid": "837b6be4-175b-4b1e-849c-1fcc1c157cb2",
             "isHook": false,
             "skipped": false
           },
@@ -1011,7 +1012,7 @@
             "code": "expect(calculate(3, '*', 3)).to.be.equal(9)",
             "err": {},
             "isRoot": false,
-            "uuid": "cfd13074-4cfb-41e3-a9b3-f146012addf9",
+            "uuid": "611022b8-5e5f-402e-b3de-e9bd141df0ac",
             "isHook": false,
             "skipped": false
           },
@@ -1028,7 +1029,7 @@
             "code": "expect(calculate(9, '/', 3)).to.be.equal(3)",
             "err": {},
             "isRoot": false,
-            "uuid": "c4637762-8620-416f-a6b6-bec69345500b",
+            "uuid": "89e7640f-e452-4197-807c-e132a9f62ce7",
             "isHook": false,
             "skipped": false
           },
@@ -1045,7 +1046,7 @@
             "code": "expect(calculate(5, '%', 3)).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "3e981d9d-ed72-4e24-bcc1-e1a38682d693",
+            "uuid": "87955e65-37e1-442b-b181-e84a2880364c",
             "isHook": false,
             "skipped": false
           },
@@ -1062,19 +1063,19 @@
             "code": "expect(calculate(1, '', 1)).to.be.equal('')",
             "err": {},
             "isRoot": false,
-            "uuid": "9be09d1a-025c-464e-b162-66691a6a272e",
+            "uuid": "39129bcc-4902-45cb-bb7d-be2c471ad951",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "a43aed22-0274-40fb-8d0e-c1853162f828",
-          "d4873c90-3a1f-4014-872a-a05f645b2ef9",
-          "cfd13074-4cfb-41e3-a9b3-f146012addf9",
-          "c4637762-8620-416f-a6b6-bec69345500b",
-          "3e981d9d-ed72-4e24-bcc1-e1a38682d693",
-          "9be09d1a-025c-464e-b162-66691a6a272e"
+          "5b6d688f-cc07-46c9-b25c-f12298efa045",
+          "837b6be4-175b-4b1e-849c-1fcc1c157cb2",
+          "611022b8-5e5f-402e-b3de-e9bd141df0ac",
+          "89e7640f-e452-4197-807c-e132a9f62ce7",
+          "87955e65-37e1-442b-b181-e84a2880364c",
+          "39129bcc-4902-45cb-bb7d-be2c471ad951"
         ],
         "failures": [],
         "pending": [],
@@ -1085,7 +1086,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "40d01bb6-6c64-46fe-af72-2a3215504eaf",
+        "uuid": "52ecf58f-431c-48ad-afef-28140b03de6c",
         "title": "view/template/helper/concat",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/concat.test.js",
         "file": "/view/template/helper/concat.test.js",
@@ -1105,7 +1106,7 @@
             "code": "expect(concat('foo','bar','baz')).to.be.equal('foobarbaz')",
             "err": {},
             "isRoot": false,
-            "uuid": "11024058-47a8-466c-acba-c14a0a50bbb6",
+            "uuid": "845e1487-59ad-4d3c-b062-e96f6fce9574",
             "isHook": false,
             "skipped": false
           },
@@ -1122,15 +1123,15 @@
             "code": "expect(concat('foo', undefined, {}, 'bar')).to.be.equal('foobar')",
             "err": {},
             "isRoot": false,
-            "uuid": "7b441e8c-b94d-40c5-9cf8-9dde9b8cac51",
+            "uuid": "b864c947-b53d-4291-895d-bbe28a8bb9e0",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "11024058-47a8-466c-acba-c14a0a50bbb6",
-          "7b441e8c-b94d-40c5-9cf8-9dde9b8cac51"
+          "845e1487-59ad-4d3c-b062-e96f6fce9574",
+          "b864c947-b53d-4291-895d-bbe28a8bb9e0"
         ],
         "failures": [],
         "pending": [],
@@ -1141,7 +1142,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "f9c42cc3-8331-40b9-ab05-29b259b27476",
+        "uuid": "3a1e4f0f-0730-4309-bfc5-234349638364",
         "title": "view/template/helper/dateformat",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/dateformat.test.js",
         "file": "/view/template/helper/dateformat.test.js",
@@ -1152,7 +1153,7 @@
             "title": "should return a formated date string",
             "fullTitle": "view/template/helper/dateformat should return a formated date string",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -1161,25 +1162,25 @@
             "code": "expect(dateformat(new Date(1524493378898), 'yyyy')).to.be.equal('2018')",
             "err": {},
             "isRoot": false,
-            "uuid": "7bd35a99-7289-417c-8d52-52a37198c935",
+            "uuid": "7d370643-16e0-48fd-ba47-156c43f0545a",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "7bd35a99-7289-417c-8d52-52a37198c935"
+          "7d370643-16e0-48fd-ba47-156c43f0545a"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 0,
+        "duration": 1,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "2a5d1567-5e26-4428-922a-c12614331085",
+        "uuid": "4ffff859-6fcc-409f-9fc3-078094dcda91",
         "title": "view/template/helper/escDoubleQuote",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/escDoubleQuote.test.js",
         "file": "/view/template/helper/escDoubleQuote.test.js",
@@ -1199,14 +1200,14 @@
             "code": "expect(escDoubleQuote('foo \"bar\"')).to.be.equal('foo \\\\\"bar\\\\\"')",
             "err": {},
             "isRoot": false,
-            "uuid": "1ca474a3-40ae-4472-beda-4c1fee2dc400",
+            "uuid": "3ead24f1-b230-49a7-8ae0-13799c993e16",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "1ca474a3-40ae-4472-beda-4c1fee2dc400"
+          "3ead24f1-b230-49a7-8ae0-13799c993e16"
         ],
         "failures": [],
         "pending": [],
@@ -1217,7 +1218,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "7979b068-6215-4940-b2c9-5b06cb23e771",
+        "uuid": "f095c7ba-6d2b-4df9-bd19-28c2eb7c0a8c",
         "title": "view/template/helper/escSingelQuote",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/escSingelQuote.test.js",
         "file": "/view/template/helper/escSingelQuote.test.js",
@@ -1237,14 +1238,14 @@
             "code": "expect(escSingelQuote(\"foo 'bar'\")).to.be.equal(\"foo \\\\'bar\\\\'\")",
             "err": {},
             "isRoot": false,
-            "uuid": "2cbe495d-bf86-4191-aa18-3a843681844c",
+            "uuid": "9a2e5274-3be3-47ed-93fb-fc1f9f137e54",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "2cbe495d-bf86-4191-aa18-3a843681844c"
+          "9a2e5274-3be3-47ed-93fb-fc1f9f137e54"
         ],
         "failures": [],
         "pending": [],
@@ -1255,7 +1256,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "7b9797da-9fb2-4921-acd9-5bac2b0c8dc5",
+        "uuid": "703757ce-b555-460c-965c-6febb1e64f06",
         "title": "view/template/helper/jsonStringify",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/jsonStringify.test.js",
         "file": "/view/template/helper/jsonStringify.test.js",
@@ -1275,14 +1276,14 @@
             "code": "expect(jsonStringify({foo:'bar'})).to.be.equal('{\"foo\":\"bar\"}')",
             "err": {},
             "isRoot": false,
-            "uuid": "545a97ab-7a42-497b-be37-c02f7a06bd84",
+            "uuid": "68d9b9de-5972-486c-a815-bb91b45eba5b",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "545a97ab-7a42-497b-be37-c02f7a06bd84"
+          "68d9b9de-5972-486c-a815-bb91b45eba5b"
         ],
         "failures": [],
         "pending": [],
@@ -1293,7 +1294,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "86fff84d-eb1d-47e5-a844-d1aea91f048f",
+        "uuid": "c17e6650-43e4-430b-802a-df055aac42f8",
         "title": "view/template/helper/stripTags",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/stripTags.test.js",
         "file": "/view/template/helper/stripTags.test.js",
@@ -1313,7 +1314,7 @@
             "code": "expect(stripTags('<p>foobar</p>')).to.be.equal('foobar')",
             "err": {},
             "isRoot": false,
-            "uuid": "6e36780e-ff6b-4d11-a275-8adb32ca25d2",
+            "uuid": "df8a31c1-4c99-4810-aca2-772398767fda",
             "isHook": false,
             "skipped": false
           },
@@ -1330,15 +1331,15 @@
             "code": "expect(stripTags(5)).to.be.equal(5)",
             "err": {},
             "isRoot": false,
-            "uuid": "273c8c19-0ae3-485a-b760-a6b9b57eb514",
+            "uuid": "b2341058-ac68-46f9-9e31-07fc296e52a3",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "6e36780e-ff6b-4d11-a275-8adb32ca25d2",
-          "273c8c19-0ae3-485a-b760-a6b9b57eb514"
+          "df8a31c1-4c99-4810-aca2-772398767fda",
+          "b2341058-ac68-46f9-9e31-07fc296e52a3"
         ],
         "failures": [],
         "pending": [],
@@ -1349,7 +1350,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "f75999fb-3ad4-432b-8da1-8dbcd9bda774",
+        "uuid": "08d94f8e-9c8c-425e-86ab-0f21ded0afcd",
         "title": "view/template/helper/toFixed",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/toFixed.test.js",
         "file": "/view/template/helper/toFixed.test.js",
@@ -1369,7 +1370,7 @@
             "code": "expect(toFixed(5, 2)).to.be.equal('5.00')",
             "err": {},
             "isRoot": false,
-            "uuid": "9b4a48b3-66ad-4949-8b1a-10814bd08acd",
+            "uuid": "8d55044c-aaab-42b9-8c68-43151805899a",
             "isHook": false,
             "skipped": false
           },
@@ -1386,7 +1387,7 @@
             "code": "expect(toFixed(null, 2)).to.be.equal('0.00')",
             "err": {},
             "isRoot": false,
-            "uuid": "6d1c6a4e-1376-4b3f-9bbb-bec6cf9bc8f4",
+            "uuid": "aa70c7b9-332d-40fd-891b-93cfa1995e9c",
             "isHook": false,
             "skipped": false
           },
@@ -1403,7 +1404,7 @@
             "code": "expect(toFixed(undefined, 2)).to.be.equal('NaN')",
             "err": {},
             "isRoot": false,
-            "uuid": "12b04dfd-e60d-4efc-b9fd-471cfbb58714",
+            "uuid": "4e6a8b38-caf3-45ab-a3fc-543ae9a66cf7",
             "isHook": false,
             "skipped": false
           },
@@ -1420,7 +1421,7 @@
             "code": "expect(toFixed(-5, 2)).to.be.equal('-5.00')",
             "err": {},
             "isRoot": false,
-            "uuid": "37215d1e-64a6-493a-87ab-d2b86f703e25",
+            "uuid": "212a5a29-6ff5-416a-aa8b-622fc43fb8e1",
             "isHook": false,
             "skipped": false
           },
@@ -1437,7 +1438,7 @@
             "code": "expect(toFixed('5', 2)).to.be.equal('5.00')",
             "err": {},
             "isRoot": false,
-            "uuid": "266d6b29-9db1-4026-b2c6-f63c781f8ee3",
+            "uuid": "2ed31d9a-8def-4ff4-bc22-1ca97901ca39",
             "isHook": false,
             "skipped": false
           },
@@ -1454,19 +1455,19 @@
             "code": "expect(toFixed('foobar', 2)).to.be.equal('NaN')",
             "err": {},
             "isRoot": false,
-            "uuid": "2b5f4276-093e-44cc-90d5-932503967611",
+            "uuid": "c42714b9-9239-4e20-93d5-933ebc71c786",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "9b4a48b3-66ad-4949-8b1a-10814bd08acd",
-          "6d1c6a4e-1376-4b3f-9bbb-bec6cf9bc8f4",
-          "12b04dfd-e60d-4efc-b9fd-471cfbb58714",
-          "37215d1e-64a6-493a-87ab-d2b86f703e25",
-          "266d6b29-9db1-4026-b2c6-f63c781f8ee3",
-          "2b5f4276-093e-44cc-90d5-932503967611"
+          "8d55044c-aaab-42b9-8c68-43151805899a",
+          "aa70c7b9-332d-40fd-891b-93cfa1995e9c",
+          "4e6a8b38-caf3-45ab-a3fc-543ae9a66cf7",
+          "212a5a29-6ff5-416a-aa8b-622fc43fb8e1",
+          "2ed31d9a-8def-4ff4-bc22-1ca97901ca39",
+          "c42714b9-9239-4e20-93d5-933ebc71c786"
         ],
         "failures": [],
         "pending": [],
@@ -1477,7 +1478,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "444b9787-90b1-4db1-8580-aa4a15b2a9c3",
+        "uuid": "0991af9c-54af-45e0-9ab2-7b4ce80192e1",
         "title": "view/template/helper/toLowerCase",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/toLowerCase.test.js",
         "file": "/view/template/helper/toLowerCase.test.js",
@@ -1497,14 +1498,14 @@
             "code": "expect(toLowerCase('FooBar')).to.be.equal('foobar')",
             "err": {},
             "isRoot": false,
-            "uuid": "19295a85-899e-40d1-a211-a3848a26db45",
+            "uuid": "4c1b9175-cd98-43e2-854e-571feb992731",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "19295a85-899e-40d1-a211-a3848a26db45"
+          "4c1b9175-cd98-43e2-854e-571feb992731"
         ],
         "failures": [],
         "pending": [],
@@ -1515,7 +1516,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "a3d82705-f2b5-4c60-9b25-721fa3455bd4",
+        "uuid": "8aa0da01-08f5-4676-a1c2-00aae99b6d66",
         "title": "view/template/helper/toUpperCase",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/template/helper/toUpperCase.test.js",
         "file": "/view/template/helper/toUpperCase.test.js",
@@ -1535,14 +1536,14 @@
             "code": "expect(toUpperCase('Foobar')).to.be.equal('FOOBAR')",
             "err": {},
             "isRoot": false,
-            "uuid": "c893620e-9d4f-46e9-ab23-d6e2a340b575",
+            "uuid": "66915701-74f8-4788-8d29-3b510a83c6e8",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "c893620e-9d4f-46e9-ab23-d6e2a340b575"
+          "66915701-74f8-4788-8d29-3b510a83c6e8"
         ],
         "failures": [],
         "pending": [],
@@ -1554,20 +1555,20 @@
       }
     ],
     "passes": [
-      "594d9b8f-9503-47c9-8bbf-25f654cb4089",
-      "d888d3ab-9d6c-4ffb-8255-13a14ab3b262",
-      "e2cd1654-f953-4e30-b5f4-edca8206767c",
-      "543de750-c303-4bc8-afac-dcdc5df725e4",
-      "037699c1-dbe9-4290-9b35-87c3d1f359c7",
-      "ac25b579-e170-4672-833c-b08cee0396a2",
-      "873bd3d3-3e60-4ee6-b4c3-a04d0d0720a9",
-      "c234de01-db1d-4c0a-83ca-5b5ef5049d5c",
-      "de4ef744-9dca-4fcc-a7a2-0c06fb211678"
+      "c995650e-73a5-49db-bc17-9eb8f9b18a27",
+      "1be24872-9fa8-4cbb-b1a3-c52d43b3a4f6",
+      "898e2b11-55de-4857-bfe2-24de7830649b",
+      "858ba6ce-8ada-45bf-ae50-80b5fddeb94c",
+      "a5201dfd-b44d-4573-8916-3d3d81eda59a",
+      "e4d5a7e4-789a-43e5-a1d7-34562055d5a3",
+      "e8d615e1-fb51-4cd7-b8a9-fbf263a5853a",
+      "65f66f2e-ed72-4ba7-9797-2ac543307bfd",
+      "cd79ff0e-5ec3-4501-aaed-ec88d771cd22"
     ],
     "failures": [],
     "pending": [],
     "skipped": [],
-    "duration": 50,
+    "duration": 49,
     "root": true,
     "rootEmpty": false,
     "_timeout": 2000

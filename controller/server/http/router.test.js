@@ -39,16 +39,16 @@ describe('controller/server/http/router', () =>
   ],
   Router = require('./router')
 
-  let router
-
-  before(function()
-  {
-    context(this, { title:'config', value:config })
-    router = new Router(config)
-  })
-
   describe('flattenRoutes(routes)', () =>
   {
+    let router
+
+    before(function()
+    {
+      context(this, { title:'config', value:config })
+      router = new Router(config)
+    })
+
     it('should return a flatten route', function()
     {
       context(this, { title:'config', value:config })
@@ -64,15 +64,14 @@ describe('controller/server/http/router', () =>
 
   describe('findRoute(request)', () =>
   {
-    let
-    result1,
-    result2,
-    result3,
-    result4,
-    result5
+    let router, result1, result2, result3, result4, result5
 
     before(function()
     {
+      context(this, { title:'config', value:config })
+
+      router  = new Router(config)
+
       result1 = router.findRoute({ url:{ pathname:'/' }})
       result2 = router.findRoute({ url:{ pathname:'/foo' }})
       result3 = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
