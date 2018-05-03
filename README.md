@@ -407,9 +407,9 @@ When chaining dispatchers, **OBS!** The post handling will be handled in reverse
 
 ```
  LoggerMiddleware
-   ↓         ↑
+    ↓        ↑
   AuthMiddleware
-   ↓         ↑
+    ↓        ↑
 EndpointDispatcher
 ```
 
