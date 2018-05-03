@@ -12,7 +12,7 @@
   },
   "scripts": {
     "generate-doc-coverage": "nyc report --reporter=html --report-dir=./docs/coverage",
-    "generate-doc-tests": "mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index",
+    "generate-doc-tests": "mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index,showHooks=always",
     "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
