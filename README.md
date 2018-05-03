@@ -464,7 +464,8 @@ module.exports =
    {
      // Optional setting
      // origin : 'public'
-   }
+   },
+   // ...
  },
  // ...
  routes:
