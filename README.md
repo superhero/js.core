@@ -113,7 +113,7 @@ module.exports = class extends Dispatcher
 {
   async dispatch()
   {
-    // building a view model that we can use to render the view
+    // Building a view model that we can use to render the view
     const vm =
     {
       body:
@@ -122,7 +122,7 @@ module.exports = class extends Dispatcher
       }
     }
 
-    // return the view model to be passed through the dispatcher chain to
+    // Return the view model to be passed through the dispatcher chain to
     // finally be passed to the view
     return vm
   }
@@ -136,9 +136,10 @@ const Dispatcher = require('@superhero/core/controller/dispatcher')
 
 let i = 0
 
+// Middleware dispatcher
+// Inherits the same interface and functionality as an endpoint dispatcher
 module.exports = class extends Dispatcher
 {
-
   // A simple logger that writes a timestamp to the console on in and out
   async dispatch(next)
   {
@@ -208,7 +209,7 @@ module.exports =
         // and used by through a truthful flag
         calculate       : true,
         concat          : true,
-        dateformat      : false,  // "dateformat" requires an external module
+        dateformat      : true, // "dateformat" requires an external module
         escDoubleQuote  : true,
         escSingelQuote  : true,
         if              : true,
@@ -228,7 +229,8 @@ module.exports =
         // application, such as a layout, for instance...
         name : '*relative-pathname'
       }
-    }
+    },
+    // ...
   },
   // ...
 }
@@ -245,7 +247,8 @@ module.exports =
     {
       // You can change the public folder where the public resources are located
       origin : '*relative-pathname'
-    }
+    },
+    // ...
   },
   // ...
 }
