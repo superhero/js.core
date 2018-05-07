@@ -60,8 +60,9 @@ module.exports = class
   async dispatch(i, o)
   {
     const
-    request     = await this.composeRequest(i),
-    route       = await this.router.findRoute(request)
+    request = await this.composeRequest(i),
+    route   = await this.router.findRoute(request),
+    session = {}
 
     if(!route.dispatcher)
       throw 404
@@ -69,7 +70,7 @@ module.exports = class
     async function chain(Dispatcher)
     {
       const
-      dispatcher = new Dispatcher(request, route),
+      dispatcher = new Dispatcher(request, route, session),
       viewModel  = await dispatcher.dispatch(dispatch)
 
       return viewModel
