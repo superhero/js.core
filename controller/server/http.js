@@ -60,8 +60,8 @@ module.exports = class
   async dispatch(i, o)
   {
     const
-    request = await this.composeRequest(i),
-    route   = await this.router.findRoute(request),
+    request = Object.freeze(await this.composeRequest(i)),
+    route   = Object.freeze(await this.router.findRoute(request)),
     session = {}
 
     if(!route.dispatcher)
