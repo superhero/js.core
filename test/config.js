@@ -1,4 +1,4 @@
-module.exports =
+module.exports = Object.freeze(
 {
   bootstrap:
   {
@@ -74,4 +74,4 @@ module.exports =
       policy      : '/test-501'
     }
   ]
-}
+})
