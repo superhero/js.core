@@ -2,7 +2,32 @@ describe('acl', () =>
 {
   const
   expect  = require('chai').expect,
+  context = require('mochawesome/addContext'),
   Acl     = require('.')
+
+  describe('from(roles)', () =>
+  {
+    it('should be able to create an instance from a configured json', () =>
+    {
+      const acl = new Acl
+      acl.addRoleUser('foo', 'foobar')
+      acl.addRoleUser('foo', 'bazqux')
+      acl.addRoleUser('bar', 'foobaz')
+      acl.addRoleChild('bar', 'foo')
+      acl.addRoleChild('bar', 'baz')
+      acl.addRoleResourcePermission('foo', 'res-1', 'perm-1-1')
+      acl.addRoleResourcePermission('foo', 'res-2', 'perm-2-1')
+      acl.addRoleResourcePermission('foo', 'res-2', 'perm-2-2')
+      acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-1')
+      acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-2')
+      acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-3')
+      context(acl.roles)
+      expect(Acl.from(acl.roles).roles).to.deep.equal(acl.roles)
+    })
+
+    it('should throw an error if there is an invalid key in the arg',
+    () => expect(Acl.from.bind(null, { foo:{ bar:'baz' } })).to.throw(Error))
+  })
 
   describe('hasRole(role)', () =>
   {

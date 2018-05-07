@@ -1,8 +1,41 @@
-module.exports = class
+module.exports = class Acl
 {
   constructor()
   {
     this.roles = {}
+  }
+
+  static from(roles)
+  {
+    const acl = new Acl
+
+    for(const role in roles)
+      for(const key in roles[role])
+        switch(key)
+        {
+          case 'users':
+            for(const user of roles[role].users)
+              acl.addRoleUser(role, user)
+            break
+
+          case 'children':
+            for(const child of roles[role].children)
+              acl.addRoleChild(role, child)
+            break
+
+          case 'resources':
+            for(const resource in roles[role].resources)
+              for(const permission of roles[role].resources[resource])
+                acl.addRoleResourcePermission(role, resource, permission)
+            break
+
+          default:
+            const error = new Error(`unknown key:"${key}"`)
+            error.code = 'ERR_INVALID_ARG_KEY'
+            throw error
+        }
+
+    return acl
   }
 
   hasRole(role)
