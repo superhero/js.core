@@ -8,7 +8,7 @@ let origin = '/public'
 
 module.exports = class extends require('.')
 {
-  static set origin (_origin)
+  static set origin(_origin)
   {
     origin = path.normalize('/' + _origin)
   }
