@@ -2,7 +2,6 @@ describe('acl', () =>
 {
   const
   expect  = require('chai').expect,
-  context = require('mochawesome/addContext'),
   Acl     = require('.')
 
   describe('hasRole(role)', () =>
