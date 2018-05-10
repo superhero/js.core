@@ -312,10 +312,10 @@ The route process will go through each entity and push every match to an array. 
     'minification',
     'gzip'
   ],
-  policy      :
+  policy    :
   {
-    method    : 'get',
-    path      : '/'
+    method  : 'get',
+    path    : '/'
   }
 }
 ```
