@@ -27,14 +27,14 @@ module.exports = Object.freeze(
   routes:
   [
     {
-      middleware  :
+      chain       :
       [
         'controller/middleware-1',
         'controller/middleware-2'
       ]
     },
     {
-      dispatcher  : '../controller/dispatcher/resource',
+      endpoint    : '../controller/dispatcher/resource',
       policy      :
       {
         method    : 'get',
@@ -42,35 +42,35 @@ module.exports = Object.freeze(
       }
     },
     {
-      dispatcher  : '../controller/dispatcher/rest',
+      endpoint    : '../controller/dispatcher/rest',
       policy      : '/rest'
     },
     {
       view        : 'raw',
-      dispatcher  : 'controller/txt',
+      endpoint    : 'controller/txt',
       policy      : '/test-raw'
     },
     {
       view        : 'json',
-      dispatcher  : 'controller/obj',
+      endpoint    : 'controller/obj',
       policy      : '/test-json'
     },
     {
       view        : 'template',
       template    : 'view/index',
-      dispatcher  : 'controller/obj',
+      endpoint    : 'controller/obj',
       policy      : '/test-templated'
     },
     {
       view        : 'template',
       template    : 'view/index',
-      dispatcher  : 'controller/failing',
+      endpoint    : 'controller/failing',
       policy      : '/test-failing'
     },
     {
       view        : 'template',
       template    : 'view/index',
-      dispatcher  : 'controller/501',
+      endpoint    : 'controller/501',
       policy      : '/test-501'
     }
   ]

@@ -64,7 +64,7 @@ module.exports = class
     route   = Object.freeze(await this.router.findRoute(request)),
     session = {}
 
-    if(!route.dispatcher)
+    if(!route.endpoint)
       throw 404
 
     async function chain(Dispatcher)
@@ -86,7 +86,7 @@ module.exports = class
     }
 
     const
-    list        = route.middleware.concat(route.dispatcher),
+    list        = route.chain.concat(route.endpoint),
     dispatchers = await fetchDispatchers(list),
     viewModel   = await dispatch(),
     View        = await fetchView(viewModel.view || route.view),

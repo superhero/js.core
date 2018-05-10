@@ -31,7 +31,7 @@ describe('controller/server/http', async () =>
     expect(result.data.includes('margin: 0')).to.be.equal(true)
   })
 
-  it('the rest dispatcher', async () =>
+  it('testing the rest dispatcher', async () =>
   {
     const result =
     {
@@ -92,7 +92,7 @@ describe('controller/server/http', async () =>
     expect(result.data.includes('typeof')).to.be.equal(true)
   })
 
-  it('a none specified dispatcher should ', async () =>
+  it('a none specified endpoint should respond with a status:"501"', async () =>
   {
     const result = await request.get('/test-501')
 

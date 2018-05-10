@@ -74,21 +74,21 @@ module.exports =
     {
       partials:
       {
-        layout : 'view/layout'
+        layout  : 'view/layout'
       }
     }
   },
   routes:
   [
     {
-      view        : 'template',
-      template    : 'view/foobar',
-      dispatcher  : 'controller/foobar',
-      middleware  : 'controller/logger',
-      policy      :
+      view      : 'template',
+      template  : 'view/foobar',
+      endpoint  : 'controller/foobar',
+      chain     : 'controller/logger',
+      policy    :
       {
-        method    : 'get',
-        path      : '/'
+        method  : 'get',
+        path    : '/'
       }
     }
   ]
@@ -256,7 +256,7 @@ module.exports =
 
 ## Routing
 
-The route process will go through each entity and push every match to an array. Then flatten the object up to where the first dispatcher is found.
+The route process will go through each entity and push every match to an array. Then flatten the object up to where the first endpoint is found.
 
 ### Routing › Example
 
@@ -265,37 +265,37 @@ The route process will go through each entity and push every match to an array. 
 ```js
 [
   {
-    view        : 'json',
-    middleware  : 'auth'
+    view      : 'json',
+    chain     : 'auth'
   },
   {
-    view        : 'raw',
-    dispatcher  : 'controller1',
-    middleware  :
+    view      : 'raw',
+    endpoint  : 'controller1',
+    chain     :
     [
       'minification',
       'gzip'
     ],
-    policy      :
+    policy    :
     {
-      method    : 'get',
-      path      : '/'
+      method  : 'get',
+      path    : '/'
     }
   },
   {
-    dispatcher  : 'controller2',
-    policy      :
+    endpoint  : 'controller2',
+    policy    :
     {
-      method    : 'post',
-      path      : '/'
+      method  : 'post',
+      path    : '/'
     }
   },
   {
-    dispatcher  : 'controller3',
-    policy      : '/'
+    endpoint  : 'controller3',
+    policy    : '/'
   },
   {
-    dispatcher  : 'controller4'
+    endpoint  : 'controller4'
   }
 ]
 ```
@@ -304,9 +304,9 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'raw',
-  dispatcher  : 'controller1',
-  middleware  :
+  view      : 'raw',
+  endpoint  : 'controller1',
+  chain     :
   [
     'auth',
     'minification',
@@ -324,13 +324,13 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'json',
-  dispatcher  : 'controller2',
-  middleware  : [ 'auth' ],
-  policy      :
+  view      : 'json',
+  endpoint  : 'controller2',
+  chain     : [ 'auth' ],
+  policy    :
   {
-    method    : 'post',
-    path      : '/'
+    method  : 'post',
+    path    : '/'
   }
 }
 ```
@@ -339,10 +339,10 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'json',
-  dispatcher  : 'controller3',
-  middleware  : [ 'auth' ],
-  policy      : '/'
+  view      : 'json',
+  endpoint  : 'controller3',
+  chain     : [ 'auth' ],
+  policy    : '/'
 }
 ```
 
@@ -350,18 +350,18 @@ The route process will go through each entity and push every match to an array. 
 
 ```js
 {
-  view        : 'json',
-  dispatcher  : 'controller4',
-  middleware  : [ 'auth' ]
+  view      : 'json',
+  endpoint  : 'controller4',
+  chain     : [ 'auth' ]
 }
 ```
 
-#### Routing › Dispatcher
+#### Routing › Endpoint
 *optional*
 
-The dispatcher is what defines an endpoint and what the router is looking for to confirm a route has been located. No dispatcher found will give a `404 Not Found` response.
+The endpoint is what defines what the router is looking for to confirm a route has been located. If no endpoint is found, a `404 Not Found` response will be returned.
 
-#### Routing › Middleware
+#### Routing › Chain
 *optional*
 
 See the section: [Middleware](#middleware), for more information.
@@ -471,11 +471,11 @@ module.exports =
  routes:
  [
    {
-     dispatcher  : '@superhero/core/controller/dispatcher/resource',
-     policy      :
+     endpoint : '@superhero/core/controller/dispatcher/resource',
+     policy   :
      {
-       method    : 'get',
-       path      : /^\/resource\/.*/
+       method : 'get',
+       path   : /^\/resource\/.*/
      }
    },
    // ...

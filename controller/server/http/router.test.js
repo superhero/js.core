@@ -6,23 +6,23 @@ describe('controller/server/http/router', () =>
   config  =
   [
     {
-      middleware  : '/middle-1'
+      chain       : '/middle-1'
     },
     {
       view        : 'json'
     },
     {
       policy      : '/',
-      dispatcher  : 'index',
-      middleware  : '/middle-2'
+      endpoint    : 'index',
+      chain       : '/middle-2'
     },
     {
       view        : 'raw',
       policy      : '/foo',
-      dispatcher  : 'foo'
+      endpoint    : 'foo'
     },
     {
-      dispatcher  : 'baz',
+      endpoint    : 'baz',
       policy      :
       {
         method    : 'post',
@@ -31,8 +31,8 @@ describe('controller/server/http/router', () =>
     },
     {
       policy      : '/bar',
-      dispatcher  : 'bar',
-      middleware  : ['/middle-2', '/middle-3']
+      endpoint    : 'bar',
+      chain       : ['/middle-2', '/middle-3']
     }
   ]
 
@@ -55,35 +55,35 @@ describe('controller/server/http/router', () =>
 
       expect(route.view).to.be.equal('json')
       expect(route.policy).to.be.equal('/')
-      expect(route.dispatcher).to.be.equal('index')
-      expect(route.middleware.length).to.be.equal(2)
+      expect(route.endpoint).to.be.equal('index')
+      expect(route.chain.length).to.be.equal(2)
     })
   })
 
   describe('findRoute(request)', () =>
   {
-    it('middleware is an array', () =>
+    it('chain is an array', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/' }})
-      expect(result.middleware).is.an('array')
+      expect(result.chain).is.an('array')
     })
 
-    it('middleware builds on', () =>
+    it('chain builds on', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/' }})
-      expect(result.middleware.length).to.be.equal(2)
+      expect(result.chain.length).to.be.equal(2)
     })
 
-    it('middleware routes correctly', () =>
+    it('chain routes correctly', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/foo' }})
-      expect(result.middleware.length).to.be.equal(1)
+      expect(result.chain.length).to.be.equal(1)
     })
 
-    it('middleware can be defined as an array', () =>
+    it('chain can be defined as an array', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
-      expect(result.middleware.length).to.be.equal(3)
+      expect(result.chain.length).to.be.equal(3)
     })
 
     it('view is inherited', () =>
@@ -92,10 +92,10 @@ describe('controller/server/http/router', () =>
       expect(result.view).to.be.equal('json')
     })
 
-    it('found correct dispatcher ', () =>
+    it('found correct endpoint ', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/' }})
-      expect(result.dispatcher).to.be.equal('index')
+      expect(result.endpoint).to.be.equal('index')
     })
 
     it('overwrite the view', () =>
@@ -107,19 +107,19 @@ describe('controller/server/http/router', () =>
     it('first match should have hierarchy', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
-      expect(result.dispatcher).to.be.equal('bar')
+      expect(result.endpoint).to.be.equal('bar')
     })
 
     it('method policy routes correctly', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})
-      expect(result.dispatcher).to.be.equal('baz')
+      expect(result.endpoint).to.be.equal('baz')
     })
 
-    it('no match should return an undefined dispatcher', () =>
+    it('no match should return an undefined endpoint', () =>
     {
       const result = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
-      expect(result.dispatcher).to.be.equal(undefined)
+      expect(result.endpoint).to.be.equal(undefined)
     })
   })
 })
