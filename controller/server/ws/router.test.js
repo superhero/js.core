@@ -10,38 +10,38 @@ describe('controller/server/ws/router', () =>
     router = new Router(
     [
       {
-        policy      : 'foobar',
-        dispatcher  : 'foo',
+        policy    : 'foobar',
+        endpoint  : 'foo',
       },
       {
-        policy      : 'foobar',
-        dispatcher  : 'bar'
+        policy    : 'foobar',
+        endpoint  : 'bar'
       },
       {
-        policy      : /^BAZQUX$/i,
-        dispatcher  : 'baz'
+        policy    : /^BAZQUX$/i,
+        endpoint  : 'baz'
       }
     ])
   })
 
   describe('findRoute(request)', () =>
   {
-    it('correct dispatcher found', () =>
+    it('correct endpoint found', () =>
     {
       const result = router.findRoute('foobar')
-      expect(result.dispatcher).to.be.equal('foo')
+      expect(result.endpoint).to.be.equal('foo')
     })
 
     it('regex policy', () =>
     {
       const result = router.findRoute('bazqux')
-      expect(result.dispatcher).to.be.equal('baz')
+      expect(result.endpoint).to.be.equal('baz')
     })
 
-    it('no matching policy should return an undefined dispatcher', () =>
+    it('no matching policy should return an undefined endpoint', () =>
     {
       const result = router.findRoute('no-matching-policy')
-      expect(result.dispatcher).to.be.equal(undefined)
+      expect(result.endpoint).to.be.equal(undefined)
     })
   })
 })
