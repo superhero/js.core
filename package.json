@@ -17,7 +17,8 @@
     "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
-    "@superhero/debug": "1.1.4"
+    "@superhero/debug": "1.1.4",
+    "npm": "^6.0.1"
   },
   "devDependencies": {
     "@superhero/websocket": "1.1.0",

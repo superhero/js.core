@@ -10,10 +10,10 @@ fetchView         = require('./trait/fetch-view')
 
 module.exports = class
 {
-  constructor(router)
+  constructor(router, options = {})
   {
     this.router = router
-    this.debug  = new Debug
+    this.debug  = new Debug({ debug:options.debug, prefix:'http server:' })
   }
 
   createServer()
@@ -61,7 +61,8 @@ module.exports = class
   {
     const
     request = Object.freeze(await this.composeRequest(i)),
-    route   = Object.freeze(await this.router.findRoute(request)),
+    input   = { path:request.url.pathname, method:request.method },
+    route   = Object.freeze(await this.router.findRoute(input)),
     session = {}
 
     if(!route.endpoint)

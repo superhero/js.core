@@ -41,7 +41,7 @@ describe('controller/server/http/router', () =>
   before(function()
   {
     context(this, { title:'config', value:config })
-    Router = require('./router')
+    Router = require('.')
     router = new Router(config)
   })
 
@@ -70,55 +70,55 @@ describe('controller/server/http/router', () =>
 
     it('chain builds on', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/' }})
+      const result = router.findRoute({ path:'/' })
       expect(result.chain.length).to.be.equal(2)
     })
 
     it('chain routes correctly', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/foo' }})
+      const result = router.findRoute({ path:'/foo' })
       expect(result.chain.length).to.be.equal(1)
     })
 
     it('chain can be defined as an array', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
+      const result = router.findRoute({ path:'/bar', method:'get' })
       expect(result.chain.length).to.be.equal(3)
     })
 
     it('view is inherited', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/' }})
+      const result = router.findRoute({ path:'/' })
       expect(result.view).to.be.equal('json')
     })
 
     it('found correct endpoint ', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/' }})
+      const result = router.findRoute({ path:'/' })
       expect(result.endpoint).to.be.equal('index')
     })
 
     it('overwrite the view', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/foo' }})
+      const result = router.findRoute({ path:'/foo' })
       expect(result.view).to.be.equal('raw')
     })
 
     it('first match should have hierarchy', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'get'})
+      const result = router.findRoute({ path:'/bar' , method:'get' })
       expect(result.endpoint).to.be.equal('bar')
     })
 
     it('method policy routes correctly', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/bar' }, method:'post'})
+      const result = router.findRoute({ path:'/bar', method:'post' })
       expect(result.endpoint).to.be.equal('baz')
     })
 
     it('no match should return an undefined endpoint', () =>
     {
-      const result = router.findRoute({ url:{ pathname:'/no-matching-pathname' }})
+      const result = router.findRoute({ path:'/no-matching-pathname' })
       expect(result.endpoint).to.be.equal(undefined)
     })
   })

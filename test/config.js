@@ -25,53 +25,70 @@ module.exports = Object.freeze(
     }
   },
   routes:
-  [
-    {
-      chain       :
-      [
-        'controller/middleware-1',
-        'controller/middleware-2'
-      ]
-    },
-    {
-      endpoint    : '../controller/dispatcher/resource',
-      policy      :
+  {
+    http:
+    [
       {
-        method    : 'get',
-        path      : /^\/resource\/.*/
+        chain     :
+        [
+          'controller/middleware-1',
+          'controller/middleware-2'
+        ]
+      },
+      {
+        endpoint  : '../controller/dispatcher/resource',
+        policy    :
+        {
+          method  : 'get',
+          path    : /^\/resource\/.*/
+        }
+      },
+      {
+        endpoint  : '../controller/dispatcher/rest',
+        policy    : '/rest'
+      },
+      {
+        view      : 'raw',
+        endpoint  : 'controller/txt',
+        policy    : '/test-raw'
+      },
+      {
+        view      : 'json',
+        endpoint  : 'controller/obj',
+        policy    : '/test-json'
+      },
+      {
+        view      : 'template',
+        template  : 'view/index',
+        endpoint  : 'controller/obj',
+        policy    : '/test-templated'
+      },
+      {
+        view      : 'template',
+        template  : 'view/index',
+        endpoint  : 'controller/failing',
+        policy    : '/test-failing'
+      },
+      {
+        view      : 'template',
+        template  : 'view/index',
+        endpoint  : 'controller/501',
+        policy    : '/test-501'
       }
-    },
-    {
-      endpoint    : '../controller/dispatcher/rest',
-      policy      : '/rest'
-    },
-    {
-      view        : 'raw',
-      endpoint    : 'controller/txt',
-      policy      : '/test-raw'
-    },
-    {
-      view        : 'json',
-      endpoint    : 'controller/obj',
-      policy      : '/test-json'
-    },
-    {
-      view        : 'template',
-      template    : 'view/index',
-      endpoint    : 'controller/obj',
-      policy      : '/test-templated'
-    },
-    {
-      view        : 'template',
-      template    : 'view/index',
-      endpoint    : 'controller/failing',
-      policy      : '/test-failing'
-    },
-    {
-      view        : 'template',
-      template    : 'view/index',
-      endpoint    : 'controller/501',
-      policy      : '/test-501'
-    }
-  ]
+    ],
+    ws:
+    [
+      {
+        endpoint  : 'controller/multiplex/reflect',
+        policy    : 'foo'
+      },
+      {
+        endpoint  : 'controller/multiplex/counter',
+        policy    :
+        {
+          event   : 'bar'
+        }
+      }
+    ]
+  }
 })

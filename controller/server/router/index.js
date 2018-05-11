@@ -7,8 +7,14 @@ module.exports = class
 
   // @todo: sort this mess out, wider support for different router validaters,
   // seperate in classes
-  findRoutes(request)
+  findRoutes(input)
   {
+    input = Object.assign(
+    {
+      path    : '',
+      method  : ''
+    }, input)
+
     const routes = []
 
     for(const route of this.routes)
@@ -22,6 +28,10 @@ module.exports = class
       }
       else if(route.policy instanceof Object)
       {
+        // event is alias for path, for now - until we cleanup this module...
+        if('event' in route.policy)
+          path = route.policy.event
+
         if('path' in route.policy)
           path = route.policy.path
 
@@ -41,7 +51,7 @@ module.exports = class
              ? path
              : new RegExp(`^${path}$`)
 
-        if(!request.url.pathname.match(path))
+        if(!input.path.match(path))
           continue
       }
 
@@ -51,7 +61,7 @@ module.exports = class
                ? method
                : new RegExp(`^${method}$`, 'i')
 
-        if(!request.method.match(method))
+        if(!input.method.match(method))
           continue
       }
 
@@ -61,10 +71,10 @@ module.exports = class
     return routes
   }
 
-  findRoute(request)
+  findRoute(input)
   {
     const
-    routes = this.findRoutes(request),
+    routes = this.findRoutes(input),
     route  = this.flattenRoutes(routes)
 
     return route

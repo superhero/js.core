@@ -17,7 +17,7 @@ describe('controller/server/http', async () =>
 
     request = new Request({ url:'http://localhost:' + port })
     core    = await require('../').bootstrap(config.bootstrap)
-    server  = core.http(config.routes)
+    server  = core.http(config.routes.http)
 
     server.listen(port)
   })
