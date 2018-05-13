@@ -5,9 +5,9 @@ describe('controller/server/http', async () =>
   context = require('mochawesome/addContext'),
   config  = require('./config')
 
-  let request, core, server
+  let request, server
 
-  before(async function()
+  before(function(done)
   {
     const
     Request = require('@superhero/request'),
@@ -16,19 +16,10 @@ describe('controller/server/http', async () =>
     context(this, { title:'config', value:config })
 
     request = new Request({ url:'http://localhost:' + port })
-    core    = await require('../').bootstrap(config.bootstrap)
-    server  = core.http(config.routes.http)
+    server  = require('../').http(config.routes.http)
 
+    server.on('listening', () => done())
     server.listen(port)
-  })
-
-  it('fetching a public resource', async () =>
-  {
-    const result = await request.get('/resource/master.css')
-
-    expect(result.status).to.be.equal(200)
-    expect(result.headers['content-type']).to.be.equal('text/css')
-    expect(result.data.includes('margin: 0')).to.be.equal(true)
   })
 
   it('testing the rest dispatcher', async () =>
@@ -38,15 +29,13 @@ describe('controller/server/http', async () =>
       get     : await request.get('/rest'),
       post    : await request.post('/rest'),
       put     : await request.put('/rest'),
-      delete  : await request.delete('/rest'),
-      index   : await request.fetch('index', '/rest')
+      delete  : await request.delete('/rest')
     }
 
     expect(result.get.status).to.be.equal(501)
     expect(result.post.status).to.be.equal(501)
     expect(result.put.status).to.be.equal(501)
     expect(result.delete.status).to.be.equal(501)
-    expect(result.index.status).to.be.equal(400)
   })
 
   it('a raw text response', async () =>
@@ -63,33 +52,6 @@ describe('controller/server/http', async () =>
 
     expect(result.status).to.be.equal(200)
     expect(result.data.foobar).to.be.equal('bazqux')
-  })
-
-  it('a templated response', async () =>
-  {
-    const result = await request.get('/test-templated')
-
-    expect(result.status).to.be.equal(200)
-
-    expect(result.data.startsWith('layout')).to.be.equal(true)
-    expect(result.data.includes('titled')).to.be.equal(true)
-    expect(result.data.includes('bazqux')).to.be.equal(true)
-  })
-
-  it('the if helper', async () =>
-  {
-    const result = await request.get('/test-templated')
-
-    // testing the "if" helper in the template
-    expect(result.data.includes('==')).to.be.equal(true)
-    expect(result.data.includes('!=')).to.be.equal(true)
-    expect(result.data.includes('<' )).to.be.equal(true)
-    expect(result.data.includes('<=')).to.be.equal(true)
-    expect(result.data.includes('>' )).to.be.equal(true)
-    expect(result.data.includes('>=')).to.be.equal(true)
-    expect(result.data.includes('&&')).to.be.equal(true)
-    expect(result.data.includes('||')).to.be.equal(true)
-    expect(result.data.includes('typeof')).to.be.equal(true)
   })
 
   it('a none specified endpoint should respond with a status:"501"', async () =>

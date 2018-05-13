@@ -5,15 +5,15 @@ url               = require('url'),
 http              = require('http'),
 querystring       = require('querystring'),
 statusCodes       = require('./http/status-codes'),
-fetchDispatchers  = require('./trait/fetch-dispatchers'),
-fetchView         = require('./trait/fetch-view')
+fetchDispatchers  = require('./trait/fetch-dispatchers')
 
 module.exports = class
 {
-  constructor(router, options = {})
+  constructor(router, options)
   {
+    this.config = Object.assign({ prefix:'http server:' }, options)
     this.router = router
-    this.debug  = new Debug({ debug:options.debug, prefix:'http server:' })
+    this.debug  = new Debug(this.config)
   }
 
   createServer()
@@ -90,7 +90,8 @@ module.exports = class
     list        = route.chain.concat(route.endpoint),
     dispatchers = await fetchDispatchers(list),
     viewModel   = await dispatch(),
-    View        = await fetchView(viewModel.view || route.view),
+    view        = viewModel.view || route.view || 'json',
+    View        = require(this.config.view[view]),
     output      = await new View().compose(viewModel, route)
 
     o.writeHead(viewModel.status || 200, viewModel.headers)

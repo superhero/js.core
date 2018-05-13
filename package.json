@@ -17,14 +17,11 @@
     "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
-    "@superhero/debug": "1.1.4",
-    "npm": "^6.0.1"
+    "@superhero/debug": "1.1.4"
   },
   "devDependencies": {
     "@superhero/websocket": "1.1.0",
     "@superhero/request": "1.0.9",
-    "handlebars": "4.0.11",
-    "dateformat": "3.0.2",
     "mocha": "5.1.0",
     "mochawesome": "3.0.2",
     "chai": "4.1.2",

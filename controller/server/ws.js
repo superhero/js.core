@@ -3,13 +3,13 @@ Debug             = require('@superhero/debug'),
 Websocket         = require('@superhero/websocket'),
 fetchDispatchers  = require('./trait/fetch-dispatchers')
 
-// this is still experimental, untested...
 module.exports = class
 {
-  constructor(router, debug)
+  constructor(router, options)
   {
+    this.config = Object.assign({ prefix:'websocket server:' }, options)
     this.router = router
-    this.debug  = new Debug({ debug, prefix:'websocket server:' })
+    this.debug  = new Debug(this.config)
   }
 
   createServer(options)
