@@ -48,7 +48,7 @@ module.exports =
   {
     Array.isArray(tasks)
     ? tasks.forEach(async (task) => await this.bootstrap(task))
-    : await tasks()
+    : await tasks(config)
 
     return this
   }
