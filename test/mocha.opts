@@ -1,2 +1,2 @@
 --check-leaks
---require test/bootstrap
+--require test/init
