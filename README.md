@@ -287,8 +287,6 @@ A few core delivering systems already exists, such as:
   - The default view used if none explicitly is specified
 - **raw**
   - Simply return content as it is
-- **template**
-  - Mostly used to render html content through a templating system
 
 What view to use can be set in the dispatched view model or in the route.
 
