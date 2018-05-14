@@ -1,7 +1,8 @@
 module.exports = class
 {
-  constructor(routes)
+  constructor(options, routes)
   {
+    this.config = options
     this.routes = routes
   }
 
@@ -75,17 +76,22 @@ module.exports = class
   {
     const
     routes = this.findRoutes(input),
-    route  = this.flattenRoutes(routes)
+    route  = this.composeRoute(routes)
 
     return route
   }
 
-  flattenRoutes(routes)
+  composeRoute(routes)
   {
     const
-    origin = { chain:[] },
-    extend = this.extendRoute.bind(this),
-    route  = routes.reduce(extend, origin)
+    origin  = { chain:[] },
+    extend  = this.extendRoute.bind(this),
+    route   = routes.reduce(extend, origin),
+    chain   = route.endpoint
+              ? route.chain.concat(route.endpoint)
+              : route.chain
+
+    route.dispatchers = this.fetchDispatchers(chain)
 
     return route
   }
@@ -95,11 +101,42 @@ module.exports = class
     if(origin.endpoint)
       return origin
 
-    const route = Object.assign({}, origin, item)
-
     if(item.chain)
-      route.chain = origin.chain.concat(item.chain)
+      for(const middleware of [].concat(item.chain))
+        if(!origin.chain.includes(middleware))
+          origin.chain.push(middleware)
 
+    const route = Object.assign({}, origin, item, { chain:origin.chain })
     return route
+  }
+
+  fetchDispatcher(dispatcher)
+  {
+    try
+    {
+      require.resolve(`${this.config.mainDirectory}/${dispatcher}`)
+    }
+    catch(error)
+    {
+      if(error.code === 'MODULE_NOT_FOUND')
+        return require.main.require(dispatcher)
+
+      else
+        throw error
+    }
+
+    return require(`${this.config.mainDirectory}/${dispatcher}`)
+  }
+
+  fetchDispatchers(dispatchers)
+  {
+    const collection = []
+    for(const dispatcher of dispatchers)
+    {
+      const Dispatcher = this.fetchDispatcher(dispatcher)
+      collection.push(Dispatcher)
+    }
+
+    return collection
   }
 }

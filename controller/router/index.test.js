@@ -3,36 +3,32 @@ describe('controller/server/http/router', () =>
   const
   expect  = require('chai').expect,
   context = require('mochawesome/addContext'),
-  config  =
+  config  = { mainDirectory : require('path').dirname(require.main.filename) },
+  routes  =
   [
     {
-      chain       : '/middle-1'
+      chain     : 'controller/dispatcher/rest'
     },
     {
-      view        : 'json'
+      view      : 'json'
     },
     {
-      policy      : '/',
-      endpoint    : 'index',
-      chain       : '/middle-2'
+      policy    : '/',
+      endpoint  : 'controller/dispatcher',
     },
     {
-      view        : 'raw',
-      policy      : '/foo',
-      endpoint    : 'foo'
-    },
-    {
-      endpoint    : 'baz',
-      policy      :
+      policy    :
       {
-        method    : 'post',
-        path      : '/bar'
-      }
+        path    : '/foo',
+        method  : 'post'
+      },
+      endpoint  : 'controller/dispatcher',
     },
     {
-      policy      : '/bar',
-      endpoint    : 'bar',
-      chain       : ['/middle-2', '/middle-3']
+      view      : 'raw',
+      policy    : '/foo',
+      endpoint  : 'controller/dispatcher/rest',
+      chain     : 'controller/dispatcher',
     }
   ]
 
@@ -41,22 +37,23 @@ describe('controller/server/http/router', () =>
   before(function()
   {
     context(this, { title:'config', value:config })
+    context(this, { title:'routes', value:routes })
     Router = require('.')
-    router = new Router(config)
+    router = new Router(config, routes)
   })
 
-  describe('flattenRoutes(routes)', () =>
+  describe('composeRoute(routes)', () =>
   {
     it('should return a flatten route', function()
     {
-      context(this, { title:'config', value:config })
+      context(this, { title:'routes', value:routes })
 
-      const route = router.flattenRoutes(config)
+      const route = router.composeRoute(routes)
 
       expect(route.view).to.be.equal('json')
       expect(route.policy).to.be.equal('/')
-      expect(route.endpoint).to.be.equal('index')
-      expect(route.chain.length).to.be.equal(2)
+      expect(route.endpoint).to.be.equal('controller/dispatcher')
+      expect(route.chain.length).to.be.equal(1)
     })
   })
 
@@ -71,19 +68,13 @@ describe('controller/server/http/router', () =>
     it('chain builds on', () =>
     {
       const result = router.findRoute({ path:'/' })
-      expect(result.chain.length).to.be.equal(2)
+      expect(result.chain.length).to.be.equal(1)
     })
 
     it('chain routes correctly', () =>
     {
       const result = router.findRoute({ path:'/foo' })
-      expect(result.chain.length).to.be.equal(1)
-    })
-
-    it('chain can be defined as an array', () =>
-    {
-      const result = router.findRoute({ path:'/bar', method:'get' })
-      expect(result.chain.length).to.be.equal(3)
+      expect(result.chain.length).to.be.equal(2)
     })
 
     it('view is inherited', () =>
@@ -95,25 +86,19 @@ describe('controller/server/http/router', () =>
     it('found correct endpoint ', () =>
     {
       const result = router.findRoute({ path:'/' })
-      expect(result.endpoint).to.be.equal('index')
+      expect(result.endpoint).to.be.equal('controller/dispatcher')
     })
 
     it('overwrite the view', () =>
     {
-      const result = router.findRoute({ path:'/foo' })
+      const result = router.findRoute({ path:'/foo', method:'get' })
       expect(result.view).to.be.equal('raw')
-    })
-
-    it('first match should have hierarchy', () =>
-    {
-      const result = router.findRoute({ path:'/bar' , method:'get' })
-      expect(result.endpoint).to.be.equal('bar')
     })
 
     it('method policy routes correctly', () =>
     {
-      const result = router.findRoute({ path:'/bar', method:'post' })
-      expect(result.endpoint).to.be.equal('baz')
+      const result = router.findRoute({ path:'/foo', method:'post' })
+      expect(result.endpoint).to.be.equal('controller/dispatcher')
     })
 
     it('no match should return an undefined endpoint', () =>

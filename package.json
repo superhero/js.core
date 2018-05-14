@@ -20,7 +20,6 @@
     "@superhero/debug": "1.1.4"
   },
   "devDependencies": {
-    "@superhero/websocket": "1.1.0",
     "@superhero/request": "1.0.9",
     "mocha": "5.1.0",
     "mochawesome": "3.0.2",

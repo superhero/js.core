@@ -1,15 +1,14 @@
 const
-Debug             = require('@superhero/debug'),
-domain            = require('domain'),
-url               = require('url'),
-http              = require('http'),
-querystring       = require('querystring'),
-statusCodes       = require('./http/status-codes'),
-fetchDispatchers  = require('./trait/fetch-dispatchers')
+Debug       = require('@superhero/debug'),
+domain      = require('domain'),
+url         = require('url'),
+http        = require('http'),
+querystring = require('querystring'),
+statusCodes = require('./http/status-codes')
 
 module.exports = class
 {
-  constructor(router, options)
+  constructor(options, router)
   {
     this.config = Object.assign({ prefix:'http server:' }, options)
     this.router = router
@@ -77,22 +76,21 @@ module.exports = class
       return viewModel
     }
 
+    let n = 0
     async function dispatch()
     {
-      if(dispatchers.length)
+      if(n < route.dispatchers.length)
       {
-        const viewModel = await chain(dispatchers.shift())
+        const viewModel = await chain(route.dispatchers[n++])
         return viewModel
       }
     }
 
     const
-    list        = route.chain.concat(route.endpoint),
-    dispatchers = await fetchDispatchers(list),
-    viewModel   = await dispatch(),
-    view        = viewModel.view || route.view || 'json',
-    View        = require(this.config.view[view]),
-    output      = await new View().compose(viewModel, route)
+    viewModel = await dispatch(),
+    view      = viewModel.view || route.view || 'json',
+    View      = require(this.config.view[view]),
+    output    = await new View().compose(viewModel, route)
 
     o.writeHead(viewModel.status || 200, viewModel.headers)
     o.end(output)
