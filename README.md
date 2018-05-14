@@ -34,18 +34,12 @@ App
 ├── controller
 │   ├── foobar.js
 │   └── logger.js
-├── view
-│   ├── foobar.hbs
-│   └── layout.hbs
 ├── config.js
 ├── index.js
 └── package.json
 ```
 
 #### `package.js`
-
-The library depends on a few optional external modules.
-In this example we will use the "Template" view that has a dependency to the "handlebars" module, as specified under "dependencies" in the following example.
 
 ```js
 {
@@ -54,8 +48,7 @@ In this example we will use the "Template" view that has a dependency to the "ha
   "description": "An example meant to describe the libraries fundamentals",
   "license": "MIT",
   "dependencies": {
-    "@superhero/core": "*",
-    "handlebars": "4.0.11"
+    "@superhero/core": "*"
   }
 }
 
@@ -68,21 +61,9 @@ See the sections: [Bootstrap](#bootstrap) and [Routing](#routing), for more info
 ```js
 module.exports =
 {
-  bootstrap:
-  {
-    template:
-    {
-      partials:
-      {
-        layout  : 'view/layout'
-      }
-    }
-  },
   routes:
   [
     {
-      view      : 'template',
-      template  : 'view/foobar',
       endpoint  : 'controller/foobar',
       chain     : 'controller/logger',
       policy    :
@@ -100,8 +81,7 @@ module.exports =
 ```js
 const config = module.exports.config = require('./config')
 
-require('@superhero/core').bootstrap(config.bootstrap).then((core) =>
-  core.http(config.routes).listen(80))
+require('@superhero/core').server('http', config.routes).listen(80)
 ```
 
 #### `controller/foobar.js`
@@ -113,7 +93,7 @@ module.exports = class extends Dispatcher
 {
   async dispatch()
   {
-    // Building a view model that we can use to render the view
+    // Building a view model that's used by the view
     const vm =
     {
       body:
@@ -156,103 +136,10 @@ module.exports = class extends Dispatcher
 }
 ```
 
-#### `view/layout.hbs`
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>{{ title }}</title>
-  </head>
-
-  <body>
-    <main>
-      {{> @partial-block }}
-    </main>
-  </body>
-</html>
-```
-
-#### `view/foobar.hbs`
-
-```html
-{{#> layout title="Insert awesome title for the page here" }}
-  <p>
-    Write your markup here with support for variables, eg: "{{ foo }}"
-  </p>
-{{/ layout }}
-```
-
 ## Bootstrap
 
 The bootstrap process is meant to run once, before anything else in the application.
-A few different settings can be set through this process, described below:
-
-### Bootstrap › Template View
-
-***\* relative-pathname*** *used in below description represents a pathname relative to the the main directory of the application filename, eg: `require.main.filename`*
-
-```js
-module.exports =
-{
-  bootstrap:
-  {
-    template:
-    {
-      helpers:
-      {
-        // The library has a few defined core helpers that can be activated
-        // and used by through a truthful flag
-        calculate       : true,
-        concat          : true,
-        dateformat      : true, // "dateformat" requires an external module
-        escDoubleQuote  : true,
-        escSingelQuote  : true,
-        if              : true,
-        jsonStringify   : true,
-        stripTags       : true,
-        toFixed         : true,
-        toLowerCase     : true,
-        toUpperCase     : true,
-
-        // You can add a custom helper by specify it's name and the path to the
-        // exported function
-        customHelper    : '*relative-pathname'
-      }
-      partials:
-      {
-        // You can register partials to be loaded and used through-out the
-        // application, such as a layout, for instance...
-        name : '*relative-pathname'
-      }
-    },
-    // ...
-  },
-  // ...
-}
-```
-
-### Bootstrap › Resource Dispatcher
-
-```js
-module.exports =
-{
-  bootstrap:
-  {
-    resource:
-    {
-      // You can change the public folder where the public resources are located
-      origin : '*relative-pathname'
-    },
-    // ...
-  },
-  // ...
-}
-```
+It's an optional process that's only required for using addons.
 
 ## Routing
 
@@ -449,51 +336,3 @@ When chaining dispatchers, **OBS!** The post handling will be handled in reverse
     ↓        ↑
 EndpointDispatcher
 ```
-
-## Resource
-
-Support loading resources from the file system.
-Add an entry to the routes array in the `config.js` file.
-
-```js
-module.exports =
-{
- bootstrap:
- {
-   resource:
-   {
-     // Optional setting
-     // origin : 'public'
-   },
-   // ...
- },
- // ...
- routes:
- [
-   {
-     endpoint : '@superhero/core/controller/dispatcher/resource',
-     policy   :
-     {
-       method : 'get',
-       path   : /^\/resource\/.*/
-     }
-   },
-   // ...
- ],
- // ...
-}
-```
-
-...and add a public folder with the reflecting structure of your specified path pattern in the root directory. eg:
-
-```
-App
-├── ...
-├── public
-│   └── resource
-│       └── css
-│           └── master.css
-└── ...
-```
-
-You can then request the `master.css` file through the request: `/resource/css/master.css`
