@@ -23,7 +23,7 @@ module.exports =
       router  = new Router(options, routes),
       server  = new Server(options, router)
 
-      return server.createServer()
+      return server.createServer(options)
     }
 
     throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)
