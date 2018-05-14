@@ -56,7 +56,7 @@ App
 
 #### `config.js`
 
-See the sections: [Bootstrap](#bootstrap) and [Routing](#routing), for more information.
+See the section: [Routing](#routing), for more information.
 
 ```js
 module.exports =
