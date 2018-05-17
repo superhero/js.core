@@ -1,17 +1,14 @@
 module.exports = class
 {
-  constructor(request, route)
+  constructor(request, route, session)
   {
     this.request = request
     this.route   = route
+    this.session = session
   }
 
   dispatch()
   {
-    return { status : 404,
-             body   :
-             { status  : 'failed',
-               message : 'Page Not Found',
-               reason  : 'dispatcher has not been filled' } }
+    throw 501
   }
 }

@@ -2,15 +2,15 @@ const https = require('https')
 
 module.exports = class extends require('./http')
 {
-  constructor(router, options)
+  constructor(options, router)
   {
-    super(router)
-    this.options = options
+    this.config = Object.assign({ prefix:'https server:' }, options)
+    this.router = router
+    this.debug  = new Debug(this.config)
   }
 
-  createServer()
+  createServer(options)
   {
-    if(!this.server)
-      this.server = https.createServer(this.options, this.io.bind(this))
+    return https.createServer(options, this.io.bind(this))
   }
 }

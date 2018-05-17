@@ -1,17 +1,6 @@
-const PageNotFound =
-{
-  status : 404,
-  body   :
-  {
-    status  : 'failed',
-    message : 'Page Not Found',
-    reason  : 'dispatcher action has not been filled'
-  }
-}
-
 module.exports = class extends require('.')
 {
-  async dispatch()
+  dispatch()
   {
     const method = this.request.method.toLowerCase()
 
@@ -20,18 +9,14 @@ module.exports = class extends require('.')
       case 'get'    :
       case 'post'   :
       case 'put'    :
-      case 'delete' : return await this[method]()
+      case 'delete' : return this[method]()
 
-      default : return { status : 400,
-                         body   :
-                         { status  : 'failed',
-                           message : 'unsupported method',
-                           method  : this.request.method } }
+      default : throw 400
     }
   }
 
-  get()     { return PageNotFound }
-  post()    { return PageNotFound }
-  put()     { return PageNotFound }
-  delete()  { return PageNotFound }
+  get()     { throw 501 }
+  post()    { throw 501 }
+  put()     { throw 501 }
+  delete()  { throw 501 }
 }

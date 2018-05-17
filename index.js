@@ -1,24 +1,31 @@
+const config = require('./config')
+
 module.exports =
 {
-  http : (routes) =>
+  bootstrap : async function(tasks)
   {
-    const
-    HttpServer  = require('./controller/server/http'),
-    Router      = require('./controller/router'),
-    router      = new Router(routes),
-    server      = new HttpServer(router)
+    Array.isArray(tasks)
+    ? tasks.forEach(async (task) => await this.bootstrap(task))
+    : await tasks(config)
 
-    return server;
+    return this
   },
 
-  https : (routes, options) =>
+  server : function(type, routes, options = {})
   {
-    const
-    HttpsServer = require('./controller/server/https'),
-    Router      = require('./controller/router'),
-    router      = new Router(routes),
-    server      = new HttpsServer(router, options)
+    if(type in config.server)
+    {
+      options = Object.assign({}, config, options)
 
-    return server;
+      const
+      Server  = require(config.server[type]),
+      Router  = require('./controller/router'),
+      router  = new Router(options, routes),
+      server  = new Server(options, router)
+
+      return server.createServer(options)
+    }
+
+    throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)
   }
 }
