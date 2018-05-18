@@ -25,7 +25,7 @@ module.exports =
       router  = new Router(options, routes),
       server  = new Server(options, router, locator)
 
-      locator.addBatch(config.mainDirectory, config.locator)
+      locator.addBatch(options.mainDirectory, options.locator)
 
       return server.createServer(options)
     }
