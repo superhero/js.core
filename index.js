@@ -18,10 +18,12 @@ module.exports =
       options = Object.assign({}, config, options)
 
       const
-      Server  = require(config.server[type]),
+      Locator = require('./model/service-locator'),
       Router  = require('./controller/router'),
+      Server  = require(config.server[type]),
+      locator = new Locator,
       router  = new Router(options, routes),
-      server  = new Server(options, router)
+      server  = new Server(options, router, locator)
 
       return server.createServer(options)
     }

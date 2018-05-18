@@ -8,11 +8,12 @@ statusCodes = require('./http/status-codes')
 
 module.exports = class
 {
-  constructor(options, router)
+  constructor(options, router, serviceLocator)
   {
-    this.config = Object.assign({ prefix:'http server:' }, options)
-    this.router = router
-    this.debug  = new Debug(this.config)
+    this.config         = Object.assign({ prefix:'http server:' }, options)
+    this.router         = router
+    this.debug          = new Debug(this.config)
+    this.serviceLocator = serviceLocator
   }
 
   createServer()
@@ -62,7 +63,8 @@ module.exports = class
     request = Object.freeze(await this.composeRequest(i)),
     input   = { path:request.url.pathname, method:request.method },
     route   = Object.freeze(await this.router.findRoute(input)),
-    session = {}
+    session = {},
+    locator = Object.freeze(this.serviceLocator)
 
     if(!route.endpoint)
       throw 404
@@ -70,7 +72,7 @@ module.exports = class
     async function chain(Dispatcher)
     {
       const
-      dispatcher = new Dispatcher(request, route, session),
+      dispatcher = new Dispatcher(request, route, session, locator),
       viewModel  = await dispatcher.dispatch(dispatch)
 
       return viewModel
