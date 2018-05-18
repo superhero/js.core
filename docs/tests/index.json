@@ -5,9 +5,9 @@
     "passes": 58,
     "pending": 0,
     "failures": 0,
-    "start": "2018-05-18T13:54:30.413Z",
-    "end": "2018-05-18T13:54:30.486Z",
-    "duration": 73,
+    "start": "2018-05-18T14:28:22.344Z",
+    "end": "2018-05-18T14:28:22.415Z",
+    "duration": 71,
     "testsRegistered": 58,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "7433036e-1a23-40fa-a1e5-baa248e6df0a",
+    "uuid": "51da962e-25b5-4e27-8038-9181e99e8073",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -28,7 +28,7 @@
     "tests": [],
     "suites": [
       {
-        "uuid": "4f8e1dc4-0a7c-4d36-ba7b-bb7fba4dadca",
+        "uuid": "40feb701-b496-46e6-b0c0-0ffb2e0d1978",
         "title": "acl",
         "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
         "file": "/acl/index.test.js",
@@ -37,7 +37,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "b8d22b5d-cf2a-4e0c-8df6-62c18694082f",
+            "uuid": "d546b37f-1b35-4043-b00d-f587dc724225",
             "title": "from(roles)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -48,16 +48,17 @@
                 "title": "should be able to create an instance from a configured json",
                 "fullTitle": "acl from(roles) should be able to create an instance from a configured json",
                 "timedOut": false,
-                "duration": 3,
+                "duration": 2,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
                 "fail": false,
                 "pending": false,
-                "code": "const acl = new Acl\nacl.addRoleUser('foo', 'foobar')\nacl.addRoleUser('foo', 'bazqux')\nacl.addRoleUser('bar', 'foobaz')\nacl.addRoleChild('bar', 'foo')\nacl.addRoleChild('bar', 'baz')\nacl.addRoleResourcePermission('foo', 'res-1', 'perm-1-1')\nacl.addRoleResourcePermission('foo', 'res-2', 'perm-2-1')\nacl.addRoleResourcePermission('foo', 'res-2', 'perm-2-2')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-1')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-2')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-3')\ncontext(acl.roles)\nexpect(Acl.from(acl.roles).roles).to.deep.equal(acl.roles)",
+                "context": "{\n  \"title\": \"acl.roles\",\n  \"value\": {\n    \"foo\": {\n      \"users\": [\n        \"foobar\",\n        \"bazqux\"\n      ],\n      \"children\": [],\n      \"resources\": {\n        \"res-1\": [\n          \"perm-1-1\"\n        ],\n        \"res-2\": [\n          \"perm-2-1\",\n          \"perm-2-2\"\n        ]\n      }\n    },\n    \"bar\": {\n      \"users\": [\n        \"foobaz\"\n      ],\n      \"children\": [\n        \"foo\",\n        \"baz\"\n      ],\n      \"resources\": {}\n    },\n    \"baz\": {\n      \"users\": [],\n      \"children\": [],\n      \"resources\": {\n        \"res-1\": [\n          \"perm-1-1\",\n          \"perm-1-2\",\n          \"perm-1-3\"\n        ]\n      }\n    }\n  }\n}",
+                "code": "const acl = new Acl\nacl.addRoleUser('foo', 'foobar')\nacl.addRoleUser('foo', 'bazqux')\nacl.addRoleUser('bar', 'foobaz')\nacl.addRoleChild('bar', 'foo')\nacl.addRoleChild('bar', 'baz')\nacl.addRoleResourcePermission('foo', 'res-1', 'perm-1-1')\nacl.addRoleResourcePermission('foo', 'res-2', 'perm-2-1')\nacl.addRoleResourcePermission('foo', 'res-2', 'perm-2-2')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-1')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-2')\nacl.addRoleResourcePermission('baz', 'res-1', 'perm-1-3')\ncontext(this, { title:'acl.roles', value:acl.roles })\nexpect(Acl.from(acl.roles).roles).to.deep.equal(acl.roles)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "20abefb2-c37b-486a-b4f2-5da4da752141",
+                "uuid": "b03391ea-8c0a-4134-b4fc-f7cc68d4b27b",
                 "isHook": false,
                 "skipped": false
               },
@@ -65,7 +66,7 @@
                 "title": "should throw an error if there is an invalid key in the arg",
                 "fullTitle": "acl from(roles) should throw an error if there is an invalid key in the arg",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -74,15 +75,15 @@
                 "code": "expect(Acl.from.bind(null, { foo:{ bar:'baz' } })).to.throw(Error)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "ba78b49f-cab1-48d6-9c7d-07841162870a",
+                "uuid": "38ff7016-5fd1-4f71-9975-8337ffdfd467",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "20abefb2-c37b-486a-b4f2-5da4da752141",
-              "ba78b49f-cab1-48d6-9c7d-07841162870a"
+              "b03391ea-8c0a-4134-b4fc-f7cc68d4b27b",
+              "38ff7016-5fd1-4f71-9975-8337ffdfd467"
             ],
             "failures": [],
             "pending": [],
@@ -93,7 +94,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "8dac3777-b39e-46f0-b1e7-cbf275dd9de7",
+            "uuid": "c7af62ba-78e0-4e48-87a8-2c5779a5de36",
             "title": "hasRole(role)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -113,7 +114,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'role'\nexpect(acl.hasRole(role)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "54776fb0-6751-4ac3-b785-8884c24f8888",
+                "uuid": "843ff3b9-6e38-4147-962a-b5ff6d464063",
                 "isHook": false,
                 "skipped": false
               },
@@ -121,7 +122,7 @@
                 "title": "should be able to find an existing role",
                 "fullTitle": "acl hasRole(role) should be able to find an existing role",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -130,26 +131,26 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'role'\nexpect(acl.hasRole(role)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRole(role)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "cc14dd44-253b-40cb-a9c1-f55dd87f126f",
+                "uuid": "439d64eb-83a3-49f4-9c1f-7d90193500ea",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "54776fb0-6751-4ac3-b785-8884c24f8888",
-              "cc14dd44-253b-40cb-a9c1-f55dd87f126f"
+              "843ff3b9-6e38-4147-962a-b5ff6d464063",
+              "439d64eb-83a3-49f4-9c1f-7d90193500ea"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 0,
+            "duration": 1,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
           },
           {
-            "uuid": "4cefa6b8-a7ba-4806-a4c3-4d2bb25b70c4",
+            "uuid": "3ca5b99a-25af-407f-81f1-b920c48165c7",
             "title": "addRole(role)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -169,7 +170,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'role'\nexpect(acl.hasRole(role)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRole(role)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "adcccdc6-5888-43a4-bddd-2bc3cd5e86b7",
+                "uuid": "9b195e98-8982-40d2-a7e2-3db4cf751ca7",
                 "isHook": false,
                 "skipped": false
               },
@@ -177,7 +178,7 @@
                 "title": "adding the same role multiple times wont reset it",
                 "fullTitle": "acl addRole(role) adding the same role multiple times wont reset it",
                 "timedOut": false,
-                "duration": 2,
+                "duration": 0,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -186,26 +187,26 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nuser  = 'bar'\nacl.addRole(role)\nacl.addRoleUser(role, user)\nacl.addRole(role)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "39de68de-2503-4e87-89aa-a2524c0116ff",
+                "uuid": "f7c4940d-7cb2-471f-9533-3b3209f79c34",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "adcccdc6-5888-43a4-bddd-2bc3cd5e86b7",
-              "39de68de-2503-4e87-89aa-a2524c0116ff"
+              "9b195e98-8982-40d2-a7e2-3db4cf751ca7",
+              "f7c4940d-7cb2-471f-9533-3b3209f79c34"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 2,
+            "duration": 0,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
           },
           {
-            "uuid": "f569e922-2482-4047-b6df-894debb1bda2",
+            "uuid": "037fb35b-ddaa-414a-86a2-87a48b52ca4c",
             "title": "removeRole(role)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -225,7 +226,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo'\nexpect(acl.removeRole.bind(acl, role)).to.not.throw()",
                 "err": {},
                 "isRoot": false,
-                "uuid": "0f9ecbc7-2f32-446b-9175-59bb025b6854",
+                "uuid": "6f63554b-3748-469b-941e-938c85de9bf4",
                 "isHook": false,
                 "skipped": false
               },
@@ -242,15 +243,15 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo'\nacl.addRole(role)\nexpect(acl.hasRole(role)).to.be.equal(true)\nacl.removeRole(role)\nexpect(acl.hasRole(role)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "c9701029-db99-46ec-bc54-f9154a0c4200",
+                "uuid": "2861f34f-689b-4668-99ca-ff4edb7be445",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "0f9ecbc7-2f32-446b-9175-59bb025b6854",
-              "c9701029-db99-46ec-bc54-f9154a0c4200"
+              "6f63554b-3748-469b-941e-938c85de9bf4",
+              "2861f34f-689b-4668-99ca-ff4edb7be445"
             ],
             "failures": [],
             "pending": [],
@@ -261,7 +262,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "5f900e09-4ebf-480e-946a-609e5a4c7137",
+            "uuid": "4d64c557-2fff-4b0f-911b-53ad408738b9",
             "title": "hasRoleChild(role, child)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -281,7 +282,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nchild = 'bar'\nexpect(acl.hasRoleChild(role, child)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(false)\nacl.addRole(child)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "2480af2d-c930-4994-ad2b-d6aa42cc5c32",
+                "uuid": "7c562560-5ae2-4f15-9511-c142f6c05a9a",
                 "isHook": false,
                 "skipped": false
               },
@@ -298,15 +299,15 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nchild = 'bar'\nacl.addRoleChild(role, child)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "ed2e909d-59d4-4fa0-bb0e-33ab0ea7e0d6",
+                "uuid": "bb1fa3e5-2950-4835-a781-e7ff631e3550",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "2480af2d-c930-4994-ad2b-d6aa42cc5c32",
-              "ed2e909d-59d4-4fa0-bb0e-33ab0ea7e0d6"
+              "7c562560-5ae2-4f15-9511-c142f6c05a9a",
+              "bb1fa3e5-2950-4835-a781-e7ff631e3550"
             ],
             "failures": [],
             "pending": [],
@@ -317,7 +318,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "18bcd016-98ae-414c-b185-1b6618dcee31",
+            "uuid": "c7e18e69-1563-4964-83f4-ceb94afef81a",
             "title": "hasRoleChildRecursively(role, child)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -337,7 +338,7 @@
                 "code": "const\nacl           = new Acl,\nrole          = 'foo',\nchild         = 'bar',\nchildOfChild  = 'baz'\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(false)\nacl.addRole(child)\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(false)\nacl.addRole(childOfChild)\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(false)\nacl.addRoleChild(role, child)\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "9511897c-6498-415a-b2af-6b7dfb90402b",
+                "uuid": "027a5fab-03b8-45ac-9275-6b13b93e071d",
                 "isHook": false,
                 "skipped": false
               },
@@ -354,15 +355,15 @@
                 "code": "const\nacl           = new Acl,\nrole          = 'foo',\nchild         = 'bar',\nchildOfChild  = 'baz'\nacl.addRoleChild(role, child)\nacl.addRoleChild(child, childOfChild)\nexpect(acl.hasRoleChildRecursively(role, childOfChild)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "dba412b5-7d17-4157-bc65-731a19bfb8a8",
+                "uuid": "bdc838b5-f879-4cb7-be98-f320593bca96",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "9511897c-6498-415a-b2af-6b7dfb90402b",
-              "dba412b5-7d17-4157-bc65-731a19bfb8a8"
+              "027a5fab-03b8-45ac-9275-6b13b93e071d",
+              "bdc838b5-f879-4cb7-be98-f320593bca96"
             ],
             "failures": [],
             "pending": [],
@@ -373,7 +374,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "0986c420-f221-4c42-b52b-9f43fe47aa66",
+            "uuid": "ca3b909e-e6fc-42b9-a390-befe79aa8a69",
             "title": "addRoleChild(role, child)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -393,14 +394,14 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nchild = 'bar'\nacl.addRoleChild(role, child)\nexpect(acl.hasRole(role)).to.be.equal(true)\nexpect(acl.hasRole(child)).to.be.equal(true)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "d1a2b50c-456b-40ed-a6e3-9a96d8d71c8a",
+                "uuid": "dcee4479-a2e8-429c-8806-f60355c6d6fa",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "d1a2b50c-456b-40ed-a6e3-9a96d8d71c8a"
+              "dcee4479-a2e8-429c-8806-f60355c6d6fa"
             ],
             "failures": [],
             "pending": [],
@@ -411,7 +412,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "80824dc8-0762-4b7e-969d-32efd389a5a0",
+            "uuid": "981cff62-164c-4341-80f3-53658ba3059e",
             "title": "removeRoleChild(role, child)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -422,7 +423,7 @@
                 "title": "should be able to remove a child from a role",
                 "fullTitle": "acl removeRoleChild(role, child) should be able to remove a child from a role",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -431,25 +432,25 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nchild = 'bar'\nacl.addRoleChild(role, child)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(true)\nacl.removeRoleChild(role, child)\nexpect(acl.hasRoleChild(role, child)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "6c4fb784-b31e-4c53-9e7c-5a93dd57e5fe",
+                "uuid": "52f12e81-3167-4fde-981e-29b6392c2a39",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "6c4fb784-b31e-4c53-9e7c-5a93dd57e5fe"
+              "52f12e81-3167-4fde-981e-29b6392c2a39"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 0,
+            "duration": 1,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
           },
           {
-            "uuid": "92c5ca99-988e-4540-92e3-dee71c64b275",
+            "uuid": "0d56fd61-992d-43a7-b446-d3241a104b53",
             "title": "hasRoleUser(role, user)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -469,14 +470,14 @@
                 "code": "const\nacl  = new Acl,\nrole = 'foo',\nuser = 'bar'\nexpect(acl.hasRoleUser(role, user)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(false)\nacl.addRoleUser(role, user)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "dc8c9bb9-4fa8-4186-b17f-7ad3e83ee853",
+                "uuid": "84a6e865-9755-4f8e-823c-08a3b03168ac",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "dc8c9bb9-4fa8-4186-b17f-7ad3e83ee853"
+              "84a6e865-9755-4f8e-823c-08a3b03168ac"
             ],
             "failures": [],
             "pending": [],
@@ -487,7 +488,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "4f700e33-2e66-4cb1-b735-a6f99bc73cfe",
+            "uuid": "7039af2b-adbd-4b42-a1a8-a6465e53067a",
             "title": "addRoleUser(role user)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -507,7 +508,7 @@
                 "code": "const\nacl  = new Acl,\nrole = 'foo',\nuser = 'bar'\nexpect(acl.hasRole(role)).to.be.equal(false)\nacl.addRoleUser(role, user)\nexpect(acl.hasRole(role)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "b327c3bb-7024-4a1b-8ad5-c3640afe2754",
+                "uuid": "a28cda0e-d058-4651-b0f1-93ee3cd4e014",
                 "isHook": false,
                 "skipped": false
               },
@@ -524,15 +525,15 @@
                 "code": "const\nacl  = new Acl,\nrole = 'foo',\nuser = 'bar'\nexpect(acl.hasRoleUser(role, user)).to.be.equal(false)\nacl.addRoleUser(role, user)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "614fbcc2-16a7-4d6b-8ffc-7d93a43c6830",
+                "uuid": "2e5b9c17-da85-496e-b9dc-740e8eb84b56",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "b327c3bb-7024-4a1b-8ad5-c3640afe2754",
-              "614fbcc2-16a7-4d6b-8ffc-7d93a43c6830"
+              "a28cda0e-d058-4651-b0f1-93ee3cd4e014",
+              "2e5b9c17-da85-496e-b9dc-740e8eb84b56"
             ],
             "failures": [],
             "pending": [],
@@ -543,7 +544,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "87c9c766-648a-4df6-afba-2820b1ddbcd1",
+            "uuid": "68785b27-db65-4186-a861-0c0a2e579255",
             "title": "removeRoleUser(role, user)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -563,14 +564,14 @@
                 "code": "const\nacl  = new Acl,\nrole = 'foo',\nuser = 'bar'\nexpect(acl.hasRoleUser(role, user)).to.be.equal(false)\nacl.addRoleUser(role, user)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(true)\nacl.removeRoleUser(role, user)\nexpect(acl.hasRoleUser(role, user)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "24f9b83b-abf6-4277-af8e-4ab09831e76e",
+                "uuid": "8a383359-c30f-4d13-8db7-9f3fa8728711",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "24f9b83b-abf6-4277-af8e-4ab09831e76e"
+              "8a383359-c30f-4d13-8db7-9f3fa8728711"
             ],
             "failures": [],
             "pending": [],
@@ -581,7 +582,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "fa945358-202a-4d53-8fbb-7f7501e70cee",
+            "uuid": "46ce966b-3528-4430-856c-01c60ce50584",
             "title": "removeUser(user)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -601,14 +602,14 @@
                 "code": "const\nacl   = new Acl,\nrole1 = 'foo',\nrole2 = 'bar',\nrole3 = 'baz',\nuser  = 'qux'\nacl.addRoleUser(role1, user)\nacl.addRoleUser(role2, user)\nexpect(acl.hasRoleUser(role1, user)).to.be.equal(true)\nexpect(acl.hasRoleUser(role2, user)).to.be.equal(true)\nexpect(acl.hasRoleUser(role3, user)).to.be.equal(false)\nacl.removeUser(user)\nexpect(acl.hasRoleUser(role1, user)).to.be.equal(false)\nexpect(acl.hasRoleUser(role2, user)).to.be.equal(false)\nexpect(acl.hasRoleUser(role3, user)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "f65b70e8-754a-414b-98e5-04b14b92a68b",
+                "uuid": "6a18adfe-bdd8-46c8-9d4f-97784d65c2dc",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "f65b70e8-754a-414b-98e5-04b14b92a68b"
+              "6a18adfe-bdd8-46c8-9d4f-97784d65c2dc"
             ],
             "failures": [],
             "pending": [],
@@ -619,7 +620,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "f5bf38fd-9e40-40c3-9aef-4e4ba4a2c881",
+            "uuid": "b3b48fbb-0646-4310-b12e-46d20323f84b",
             "title": "hasRoleResource(role, resource)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -639,14 +640,14 @@
                 "code": "const\nacl       = new Acl,\nrole      = 'foo',\nresource  = 'bar'\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(false)\nacl.addRoleResource(role, resource)\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "c463da25-5368-4c68-961a-faf7eaa0830d",
+                "uuid": "c7ad3a8e-836d-4600-a54e-41944ca764a6",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "c463da25-5368-4c68-961a-faf7eaa0830d"
+              "c7ad3a8e-836d-4600-a54e-41944ca764a6"
             ],
             "failures": [],
             "pending": [],
@@ -657,7 +658,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "5cda08f2-d2f7-4173-bd6d-a4ada5f4626f",
+            "uuid": "9578e7f2-b0ae-404c-affc-efa6c472147b",
             "title": "addRoleResource(role, resource)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -677,14 +678,14 @@
                 "code": "const\nacl       = new Acl,\nrole      = 'foo',\nresource  = 'bar'\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(false)\nacl.addRoleResource(role, resource)\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "a4229fb0-8d0e-47fc-b87a-6a7ca666f6de",
+                "uuid": "407b1a35-96a3-4c9d-ad04-b82ea2e49578",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "a4229fb0-8d0e-47fc-b87a-6a7ca666f6de"
+              "407b1a35-96a3-4c9d-ad04-b82ea2e49578"
             ],
             "failures": [],
             "pending": [],
@@ -695,7 +696,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "e52a158c-e7f2-431b-809f-58eab190f43e",
+            "uuid": "25b63b5b-3e44-4137-a5a2-dbd7848a27f3",
             "title": "removeRoleResource(role, resource)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -715,7 +716,7 @@
                 "code": "const\nacl       = new Acl,\nrole      = 'foo',\nresource  = 'bar'\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(false)\nacl.addRoleResource(role, resource)\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(true)\nacl.removeRoleResource(role, resource)\nexpect(acl.hasRoleResource(role, resource)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "bbfe346e-754d-4879-9016-e6f04c760a9c",
+                "uuid": "aaab25f3-6b0f-4a30-9f17-31458a34a6e3",
                 "isHook": false,
                 "skipped": false
               },
@@ -732,15 +733,15 @@
                 "code": "const\nacl       = new Acl,\nrole      = 'foo',\nresource  = 'bar'\nacl.addRoleResource(role, resource)\nacl.removeRoleResource(role, resource)\nexpect(acl.hasRole(role)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "51cdf715-18cd-4dfc-89e0-92fb5183a4e8",
+                "uuid": "cd5cbba7-d7d2-466d-9825-19e84dbbb0a0",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "bbfe346e-754d-4879-9016-e6f04c760a9c",
-              "51cdf715-18cd-4dfc-89e0-92fb5183a4e8"
+              "aaab25f3-6b0f-4a30-9f17-31458a34a6e3",
+              "cd5cbba7-d7d2-466d-9825-19e84dbbb0a0"
             ],
             "failures": [],
             "pending": [],
@@ -751,7 +752,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "b249a3a6-2fae-4e9f-aceb-9e381cb99f79",
+            "uuid": "015f060d-df1f-4417-9891-96324ef548e8",
             "title": "removeResource(resource)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -771,14 +772,14 @@
                 "code": "const\nacl       = new Acl,\nrole1     = 'foo',\nrole2     = 'bar',\nrole3     = 'baz',\nresource  = 'qux'\nacl.addRole(role1)\nacl.addRoleResource(role2, resource)\nacl.addRoleResource(role3, resource)\nexpect(acl.hasRoleResource(role1, resource)).to.be.equal(false)\nexpect(acl.hasRoleResource(role2, resource)).to.be.equal(true)\nexpect(acl.hasRoleResource(role3, resource)).to.be.equal(true)\nacl.removeResource(resource)\nexpect(acl.hasRoleResource(role1, resource)).to.be.equal(false)\nexpect(acl.hasRoleResource(role2, resource)).to.be.equal(false)\nexpect(acl.hasRoleResource(role3, resource)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "5a92fc5e-c372-4a06-938b-7150c120ecc5",
+                "uuid": "7fc8a54d-95f8-40f7-99d8-2022c181257e",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "5a92fc5e-c372-4a06-938b-7150c120ecc5"
+              "7fc8a54d-95f8-40f7-99d8-2022c181257e"
             ],
             "failures": [],
             "pending": [],
@@ -789,7 +790,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "f59af138-e771-4618-b9ab-04c068ee6e94",
+            "uuid": "0f142b54-8ce1-4f4f-8996-bf7214bbc8a7",
             "title": "hasRoleResourcePermission(role, resource, permission)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -809,14 +810,14 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nres   = 'bar',\nper   = 'baz'\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(false)\nacl.addRole(role)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(false)\nacl.addRoleResource(role, res)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(false)\nacl.addRoleResourcePermission(role, res, per)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "ca73fd1d-f4f1-433f-8c68-5e1fd86d72a0",
+                "uuid": "2df7836f-6ed0-4e9b-a55a-89bb41dee4ae",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "ca73fd1d-f4f1-433f-8c68-5e1fd86d72a0"
+              "2df7836f-6ed0-4e9b-a55a-89bb41dee4ae"
             ],
             "failures": [],
             "pending": [],
@@ -827,7 +828,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "89e87b78-2f96-4bf5-a856-62552ff718ed",
+            "uuid": "a879f367-77c3-4bea-af38-ac5856a536a8",
             "title": "addRoleResourcePermission(role, resource, permission)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -847,7 +848,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nres   = 'bar',\nper   = 'baz'\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(false)\nacl.addRoleResourcePermission(role, res, per)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "39d8c4b0-6e31-4cc5-83f2-72f12503606a",
+                "uuid": "b06bc453-633e-4518-91d4-0ce9c94f0efc",
                 "isHook": false,
                 "skipped": false
               },
@@ -855,7 +856,7 @@
                 "title": "should add a resource to the role",
                 "fullTitle": "acl addRoleResourcePermission(role, resource, permission) should add a resource to the role",
                 "timedOut": false,
-                "duration": 1,
+                "duration": 0,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -864,7 +865,7 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nres   = 'bar',\nper   = 'baz'\nexpect(acl.hasRoleResource(role, res)).to.be.equal(false)\nacl.addRoleResourcePermission(role, res, per)\nexpect(acl.hasRoleResource(role, res)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "bb267097-8ded-4b6d-ab1c-809bb04c522c",
+                "uuid": "15d23c9a-4765-480a-b529-83dee37f0c02",
                 "isHook": false,
                 "skipped": false
               },
@@ -881,27 +882,27 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nres   = 'bar',\nper   = 'baz'\nexpect(acl.hasRole(role)).to.be.equal(false)\nacl.addRoleResourcePermission(role, res, per)\nexpect(acl.hasRole(role)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "9eaf251a-11c4-458e-a138-d9105b35e2ff",
+                "uuid": "3b85b5a9-e5e5-4af3-a065-a292636d03ee",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "39d8c4b0-6e31-4cc5-83f2-72f12503606a",
-              "bb267097-8ded-4b6d-ab1c-809bb04c522c",
-              "9eaf251a-11c4-458e-a138-d9105b35e2ff"
+              "b06bc453-633e-4518-91d4-0ce9c94f0efc",
+              "15d23c9a-4765-480a-b529-83dee37f0c02",
+              "3b85b5a9-e5e5-4af3-a065-a292636d03ee"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 1,
+            "duration": 0,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
           },
           {
-            "uuid": "f9fd557e-6dc3-48a2-a059-670019c2ae56",
+            "uuid": "734c1e10-396c-4002-8759-2f0ec7714fd5",
             "title": "removeRoleResourcePermission(role, resource, permission)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -921,14 +922,14 @@
                 "code": "const\nacl   = new Acl,\nrole  = 'foo',\nres   = 'bar',\nper   = 'baz'\nacl.addRoleResourcePermission(role, res, per)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(true)\nacl.removeRoleResourcePermission(role, res, per)\nexpect(acl.hasRoleResourcePermission(role, res, per)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "fa9b9732-ab86-41bc-8a58-0b390120f1f8",
+                "uuid": "6aa11bfd-eb8e-4a59-a808-778d0ec844d0",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "fa9b9732-ab86-41bc-8a58-0b390120f1f8"
+              "6aa11bfd-eb8e-4a59-a808-778d0ec844d0"
             ],
             "failures": [],
             "pending": [],
@@ -939,7 +940,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "8aadf12f-326e-4017-9a83-09df2e7548c7",
+            "uuid": "f8a566fd-016d-4bc8-88f2-7719b11de93c",
             "title": "removeResourcePermission(resource, permission)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -959,7 +960,7 @@
                 "code": "const\nacl   = new Acl,\nrole1 = 'foo1',\nrole2 = 'foo2',\nrole3 = 'foo3',\nres   = 'bar',\nper   = 'baz'\nacl.addRoleResource(role1, res)\nacl.addRoleResourcePermission(role2, res, per)\nacl.addRoleResourcePermission(role3, res, per)\nexpect(acl.hasRoleResourcePermission(role1, res, per)).to.be.equal(false)\nexpect(acl.hasRoleResourcePermission(role2, res, per)).to.be.equal(true)\nexpect(acl.hasRoleResourcePermission(role3, res, per)).to.be.equal(true)\nacl.removeResourcePermission(res, per)\nexpect(acl.hasRoleResourcePermission(role1, res, per)).to.be.equal(false)\nexpect(acl.hasRoleResourcePermission(role2, res, per)).to.be.equal(false)\nexpect(acl.hasRoleResourcePermission(role3, res, per)).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "46f22eea-6a6f-45cd-bc97-ffd5e247bdf9",
+                "uuid": "ebf33e05-1e16-4ad2-a0ef-efea26b447de",
                 "isHook": false,
                 "skipped": false
               },
@@ -976,15 +977,15 @@
                 "code": "const\nacl   = new Acl,\nrole1 = 'foo1',\nrole2 = 'foo2',\nrole3 = 'foo3',\nres   = 'bar',\nper   = 'baz'\nacl.addRoleResource(role1, res)\nacl.addRoleResourcePermission(role2, res, per)\nacl.addRoleResourcePermission(role3, res, per)\nacl.removeResourcePermission(res, per)\nexpect(acl.hasRoleResource(role1, res, per)).to.be.equal(true)\nexpect(acl.hasRoleResource(role2, res, per)).to.be.equal(true)\nexpect(acl.hasRoleResource(role3, res, per)).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "01e43c39-e213-426d-bbe0-df08f15fc08d",
+                "uuid": "7218e1bb-d2fb-4a55-9dfe-be098fe21410",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "46f22eea-6a6f-45cd-bc97-ffd5e247bdf9",
-              "01e43c39-e213-426d-bbe0-df08f15fc08d"
+              "ebf33e05-1e16-4ad2-a0ef-efea26b447de",
+              "7218e1bb-d2fb-4a55-9dfe-be098fe21410"
             ],
             "failures": [],
             "pending": [],
@@ -995,7 +996,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "f7fe6a5b-a3fd-4ee3-9311-e15de90fd1b5",
+            "uuid": "bd732a4b-52e6-4f6b-904c-234f135482eb",
             "title": "getUserRoles(user)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -1015,14 +1016,14 @@
                 "code": "const\nacl   = new Acl,\nuser  = 'foobar',\nrole1 = 'foo',\nrole2 = 'bar',\nrole3 = 'baz',\nrole4 = 'qux'\nacl.addRoleUser(role1, user)\nacl.addRoleUser(role2, user)\nacl.addRoleChild(role1, role3)\nacl.addRoleChild(role2, role4)\nexpect(acl.getUserRoles(user)).to.have.members([role1, role2])",
                 "err": {},
                 "isRoot": false,
-                "uuid": "930f590a-7d92-462e-991f-a2adca5cc0e0",
+                "uuid": "699bdac2-8ba4-4501-bd73-ab4853150ae8",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "930f590a-7d92-462e-991f-a2adca5cc0e0"
+              "699bdac2-8ba4-4501-bd73-ab4853150ae8"
             ],
             "failures": [],
             "pending": [],
@@ -1033,7 +1034,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "e19618ee-3c88-4af5-be61-7293309bc507",
+            "uuid": "b80007fa-ae37-40cd-a366-33d2bf56cc4b",
             "title": "getUserRolesRecursive(user, roles = [])",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -1053,14 +1054,14 @@
                 "code": "const\nacl       = new Acl,\nuser1     = 'foobar1',\nuser2     = 'foobar2',\nrole1     = 'foo',\nrole2     = 'bar',\nrole3     = 'baz',\nrole4     = 'qux',\nexpected  = [role1, role2, role3]\nacl.addRoleUser(role1, user1)\nacl.addRoleUser(role2, user1)\nacl.addRoleChild(role1, role3)\nacl.addRole(role4)\nexpect(acl.getUserRolesRecursively(user1)).to.have.members(expected)\nacl.addRoleUser(role4, user2)\nexpect(acl.getUserRolesRecursively(user1)).to.have.members(expected)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "cd077b74-96fd-4f64-8568-73c6be5a517a",
+                "uuid": "fa6008c4-00ac-497c-a5af-54b922d6edf9",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "cd077b74-96fd-4f64-8568-73c6be5a517a"
+              "fa6008c4-00ac-497c-a5af-54b922d6edf9"
             ],
             "failures": [],
             "pending": [],
@@ -1071,7 +1072,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "4824a6b2-dc32-4c62-94b1-3e4671162f87",
+            "uuid": "c3e863ab-bfee-4aaf-aa6f-7dc816a05edf",
             "title": "hasUserPermission(user, resource, permission)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/acl/index.test.js",
             "file": "/acl/index.test.js",
@@ -1091,7 +1092,7 @@
                 "code": "const\nacl         = new Acl,\nuser        = 'foo',\nrole        = 'bar',\nresource    = 'baz',\npermission  = 'qux'\nacl.addRoleUser(role, user)\nacl.addRoleResourcePermission(role, resource, permission)\nconst result = acl.hasUserPermission(user, resource, permission)\nexpect(result).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "7e88c843-01bb-41a3-ac7d-d47e1e2fb140",
+                "uuid": "8a709b73-09b6-469c-80b3-8326f258a37f",
                 "isHook": false,
                 "skipped": false
               },
@@ -1108,7 +1109,7 @@
                 "code": "const\nacl         = new Acl,\nuser1       = 'foo1',\nuser2       = 'foo2',\nrole1       = 'bar1',\nrole2       = 'bar2',\nresource1   = 'baz1',\nresource2   = 'baz2',\npermission  = 'qux'\nacl.addRoleUser(role1, user1)\nacl.addRoleUser(role2, user2)\nacl.addRoleResourcePermission(role1, resource1, permission)\nacl.addRoleResourcePermission(role2, resource2, permission)\nconst result1 = acl.hasUserPermission(user1, resource2, permission)\nexpect(result1).to.be.equal(false)\nacl.addRoleChild(role1, role2)\nconst result2 = acl.hasUserPermission(user1, resource2, permission)\nexpect(result2).to.be.equal(true)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "936e31bc-70b8-4a3a-880f-a8745247c1e9",
+                "uuid": "f9f153a0-8ebc-4b42-aa10-f6e2294a47e6",
                 "isHook": false,
                 "skipped": false
               },
@@ -1125,16 +1126,16 @@
                 "code": "const\nacl         = new Acl,\nuser1       = 'foo1',\nuser2       = 'foo2',\nrole1       = 'bar1',\nrole2       = 'bar2',\nresource1   = 'baz1',\nresource2   = 'baz2',\npermission  = 'qux'\nacl.addRoleUser(role1, user1)\nacl.addRoleUser(role2, user2)\nacl.addRoleResourcePermission(role1, resource1, permission)\nacl.addRoleResourcePermission(role2, resource2, permission)\nconst result1 = acl.hasUserPermission(user1, resource1, permission)\nexpect(result1).to.be.equal(true)\nconst result2 = acl.hasUserPermission(user1, resource2, permission)\nexpect(result2).to.be.equal(false)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "bc8d80bc-5b48-4c90-b1f1-1aaea5edf5f9",
+                "uuid": "b6a53ed4-d046-49de-9bbd-bc2c99a26d65",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "7e88c843-01bb-41a3-ac7d-d47e1e2fb140",
-              "936e31bc-70b8-4a3a-880f-a8745247c1e9",
-              "bc8d80bc-5b48-4c90-b1f1-1aaea5edf5f9"
+              "8a709b73-09b6-469c-80b3-8326f258a37f",
+              "f9f153a0-8ebc-4b42-aa10-f6e2294a47e6",
+              "b6a53ed4-d046-49de-9bbd-bc2c99a26d65"
             ],
             "failures": [],
             "pending": [],
@@ -1155,7 +1156,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "a1fbf176-ddea-4148-bfb1-7c40bef6e267",
+        "uuid": "3937edc0-796f-4702-9697-d74d26ba45a1",
         "title": "controller/server/http/router",
         "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
         "file": "/controller/router/index.test.js",
@@ -1172,7 +1173,7 @@
             "code": "context(this, { title:'config', value:config })\ncontext(this, { title:'routes', value:routes })\nRouter = require('.')\nrouter = new Router(config, routes)",
             "err": {},
             "isRoot": false,
-            "uuid": "b7ce1d17-5545-4f0c-92a7-fe136c9d6559",
+            "uuid": "ee4338de-a409-4f44-af1e-aec299904208",
             "isHook": true,
             "skipped": false
           }
@@ -1181,7 +1182,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "f720c26b-014f-4483-9ac5-5645d0b7393f",
+            "uuid": "aa939109-a2c9-443c-b1b5-547fbc97327b",
             "title": "composeRoute(routes)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
             "file": "/controller/router/index.test.js",
@@ -1202,14 +1203,14 @@
                 "code": "context(this, { title:'routes', value:routes })\nconst route = router.composeRoute(routes)\nexpect(route.view).to.be.equal('json')\nexpect(route.policy).to.be.equal('/')\nexpect(route.endpoint).to.be.equal('controller/dispatcher')\nexpect(route.chain.length).to.be.equal(1)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "3fa5138b-8429-4749-b481-1cba0bb4950d",
+                "uuid": "e81306a6-0013-4baf-9d25-8a5e502f6847",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "3fa5138b-8429-4749-b481-1cba0bb4950d"
+              "e81306a6-0013-4baf-9d25-8a5e502f6847"
             ],
             "failures": [],
             "pending": [],
@@ -1220,7 +1221,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "fede140c-6a65-4982-8483-26a4675daff1",
+            "uuid": "2cd53c62-32fa-4b24-a3ca-7029dadfc78c",
             "title": "findRoute(request)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
             "file": "/controller/router/index.test.js",
@@ -1240,7 +1241,7 @@
                 "code": "const result = router.findRoute({ url:{ pathname:'/' }})\nexpect(result.chain).is.an('array')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "a1906b72-d83f-4d39-94d2-c6afe6ac5c46",
+                "uuid": "8abc5024-7b47-41b6-bf77-ca9df80fb5fb",
                 "isHook": false,
                 "skipped": false
               },
@@ -1257,7 +1258,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.chain.length).to.be.equal(1)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "04bf3f13-e963-4f72-a5d4-17f67ea30ed1",
+                "uuid": "4e7be904-9713-4182-a853-6db321a369da",
                 "isHook": false,
                 "skipped": false
               },
@@ -1274,7 +1275,7 @@
                 "code": "const result = router.findRoute({ path:'/foo' })\nexpect(result.chain.length).to.be.equal(2)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "a5bc11f5-86b0-4c47-b540-9325c0932e96",
+                "uuid": "82cf6fec-c969-4668-a334-9f10eaa6c69a",
                 "isHook": false,
                 "skipped": false
               },
@@ -1291,7 +1292,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.view).to.be.equal('json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "b895a883-58db-4d2e-8262-b7e4ac98801b",
+                "uuid": "6c786726-47d2-4d58-b61e-11aa299daaaa",
                 "isHook": false,
                 "skipped": false
               },
@@ -1308,7 +1309,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.endpoint).to.be.equal('controller/dispatcher')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "7a105f03-00d8-4e88-9554-3b24ce7a83b1",
+                "uuid": "0fcbe745-fc94-494d-b15f-db49bd84ee16",
                 "isHook": false,
                 "skipped": false
               },
@@ -1325,7 +1326,7 @@
                 "code": "const result = router.findRoute({ path:'/foo', method:'get' })\nexpect(result.view).to.be.equal('raw')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "3b1b1a9f-2431-4a77-b3bb-18dfe70ecc92",
+                "uuid": "1302fed5-f171-4868-b589-2e6dd1cb4a71",
                 "isHook": false,
                 "skipped": false
               },
@@ -1342,7 +1343,7 @@
                 "code": "const result = router.findRoute({ path:'/foo', method:'post' })\nexpect(result.endpoint).to.be.equal('controller/dispatcher')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "dcd711e4-770c-4bc2-8c5e-091ed3bf2a39",
+                "uuid": "64cefbb3-f5e2-4498-a57d-ac040d765339",
                 "isHook": false,
                 "skipped": false
               },
@@ -1359,21 +1360,21 @@
                 "code": "const result = router.findRoute({ path:'/no-matching-pathname' })\nexpect(result.endpoint).to.be.equal(undefined)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "575f406d-7eaf-4b44-95a7-1018c8a47df2",
+                "uuid": "ddcbc268-0764-49bb-be0e-d71c2936ed97",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "a1906b72-d83f-4d39-94d2-c6afe6ac5c46",
-              "04bf3f13-e963-4f72-a5d4-17f67ea30ed1",
-              "a5bc11f5-86b0-4c47-b540-9325c0932e96",
-              "b895a883-58db-4d2e-8262-b7e4ac98801b",
-              "7a105f03-00d8-4e88-9554-3b24ce7a83b1",
-              "3b1b1a9f-2431-4a77-b3bb-18dfe70ecc92",
-              "dcd711e4-770c-4bc2-8c5e-091ed3bf2a39",
-              "575f406d-7eaf-4b44-95a7-1018c8a47df2"
+              "8abc5024-7b47-41b6-bf77-ca9df80fb5fb",
+              "4e7be904-9713-4182-a853-6db321a369da",
+              "82cf6fec-c969-4668-a334-9f10eaa6c69a",
+              "6c786726-47d2-4d58-b61e-11aa299daaaa",
+              "0fcbe745-fc94-494d-b15f-db49bd84ee16",
+              "1302fed5-f171-4868-b589-2e6dd1cb4a71",
+              "64cefbb3-f5e2-4498-a57d-ac040d765339",
+              "ddcbc268-0764-49bb-be0e-d71c2936ed97"
             ],
             "failures": [],
             "pending": [],
@@ -1394,7 +1395,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "16cf3746-a814-47ee-8705-448bdf38f9d0",
+        "uuid": "8a85606e-356e-4094-ac82-eb404c9e5ccf",
         "title": "service locator tests",
         "fullFile": "/home/erik/Projects/@superhero/js.core/model/service-locator.test.js",
         "file": "/model/service-locator.test.js",
@@ -1410,7 +1411,7 @@
             "code": "sl = new SL\nsl.add('service', () => new class\n{\n  constructor()\n  {\n    this.i = 0\n  }\n  get foo()\n  {\n    return ++this.i\n  }\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "754dc806-99a5-430d-9d23-7c8c8f782059",
+            "uuid": "2a5d177e-a4f1-4a11-9acf-0ee666933c1f",
             "isHook": true,
             "skipped": false
           }
@@ -1430,7 +1431,7 @@
             "code": "const service = await sl.load('service')\nexpect(service.foo).to.be.equal(1)\nexpect(service.foo).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "5d29eb45-be54-43da-bf89-9bcae4e9640a",
+            "uuid": "35cdbe67-e728-490c-ac88-b98f138a4e85",
             "isHook": false,
             "skipped": false
           },
@@ -1447,7 +1448,7 @@
             "code": "const service1 = await sl.load('service')\nexpect(service1.foo).to.be.equal(1)\nconst service2 = await sl.load('service')\nexpect(service2.foo).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "bbeabf65-4797-4b0f-984f-d4a0456eea88",
+            "uuid": "7f824f65-8750-4f79-9f7f-5361845af067",
             "isHook": false,
             "skipped": false
           },
@@ -1464,16 +1465,16 @@
             "code": "sl.load('none existing service')\n.then((service) => done(new Error('should not have loaded a service')))\n.catch((error)  =>\n{\n  expect(error.code).to.be.equal('ERR_SERVICE_FACTORY_UNDEFINED')\n  done()\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "5cac2855-8c08-48e3-8ab6-b3da2d8ea30a",
+            "uuid": "7b4be49a-cdf1-48fd-8dda-3f718a89e189",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "5d29eb45-be54-43da-bf89-9bcae4e9640a",
-          "bbeabf65-4797-4b0f-984f-d4a0456eea88",
-          "5cac2855-8c08-48e3-8ab6-b3da2d8ea30a"
+          "35cdbe67-e728-490c-ac88-b98f138a4e85",
+          "7f824f65-8750-4f79-9f7f-5361845af067",
+          "7b4be49a-cdf1-48fd-8dda-3f718a89e189"
         ],
         "failures": [],
         "pending": [],
@@ -1484,7 +1485,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "db14ef64-aec6-4fe9-aee7-350d5d2c5766",
+        "uuid": "a1dfdc7f-2ac4-4d50-a558-2ef6064429f5",
         "title": "controller/server/http",
         "fullFile": "/home/erik/Projects/@superhero/js.core/test/http.test.js",
         "file": "/test/http.test.js",
@@ -1501,7 +1502,7 @@
             "code": "const\nRequest = require('@superhero/request'),\nport    = 9001\ncontext(this, { title:'config', value:config })\nrequest = new Request({ url:'http://localhost:' + port })\nserver  = require('../').server('http', config.routes)\nserver.on('listening', () => done())\nserver.listen(port)",
             "err": {},
             "isRoot": false,
-            "uuid": "77a502f5-b405-442a-9116-03814266cfe9",
+            "uuid": "697a092e-1dc0-4a5c-8d42-db83a15c6e19",
             "isHook": true,
             "skipped": false
           }
@@ -1518,7 +1519,7 @@
             "code": "server.close()",
             "err": {},
             "isRoot": false,
-            "uuid": "4d801f5d-015d-42ca-9548-f47d4f945f50",
+            "uuid": "b2cbe708-e745-4522-9787-c7ba5638a682",
             "isHook": true,
             "skipped": false
           }
@@ -1528,7 +1529,7 @@
             "title": "testing the rest dispatcher",
             "fullTitle": "controller/server/http testing the rest dispatcher",
             "timedOut": false,
-            "duration": 17,
+            "duration": 18,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -1537,7 +1538,7 @@
             "code": "const result =\n{\n  get     : await request.get('/rest'),\n  post    : await request.post('/rest'),\n  put     : await request.put('/rest'),\n  delete  : await request.delete('/rest')\n}\nexpect(result.get.status).to.be.equal(501)\nexpect(result.post.status).to.be.equal(501)\nexpect(result.put.status).to.be.equal(501)\nexpect(result.delete.status).to.be.equal(501)",
             "err": {},
             "isRoot": false,
-            "uuid": "b67eeef6-f747-485a-b218-d1c6d25282e0",
+            "uuid": "4cfe0965-8014-475d-accc-50b25618f7e6",
             "isHook": false,
             "skipped": false
           },
@@ -1554,7 +1555,7 @@
             "code": "const result = await request.get('/test-raw')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('txt')",
             "err": {},
             "isRoot": false,
-            "uuid": "c3d6d3ac-668c-4f97-a967-f6ca57d8624d",
+            "uuid": "b17b5e52-8dce-4a03-ad69-84550bd51deb",
             "isHook": false,
             "skipped": false
           },
@@ -1571,7 +1572,7 @@
             "code": "const result = await request.get('/test-json')\nexpect(result.status).to.be.equal(200)\nexpect(result.data.foobar).to.be.equal('bazqux')",
             "err": {},
             "isRoot": false,
-            "uuid": "8887e215-35ec-4e8a-a308-723548249680",
+            "uuid": "f5bd6443-06db-4bd2-b49d-481d400c66f9",
             "isHook": false,
             "skipped": false
           },
@@ -1579,7 +1580,7 @@
             "title": "a none specified endpoint should respond with a status:\"501\"",
             "fullTitle": "controller/server/http a none specified endpoint should respond with a status:\"501\"",
             "timedOut": false,
-            "duration": 1,
+            "duration": 2,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -1588,7 +1589,7 @@
             "code": "const result = await request.get('/test-501')\nexpect(result.status).to.be.equal(501)\nexpect(result.data).to.be.equal('Not Implemented')",
             "err": {},
             "isRoot": false,
-            "uuid": "307fb1eb-3d43-4768-b124-468fefcd19f8",
+            "uuid": "7394dc45-e16a-4f64-88e7-776fc619be0f",
             "isHook": false,
             "skipped": false
           },
@@ -1605,7 +1606,7 @@
             "code": "const result = await request.get('/test-failing')\nexpect(result.status).to.be.equal(500)\nexpect(result.data).to.be.equal('Internal Server Error')",
             "err": {},
             "isRoot": false,
-            "uuid": "b35c72bd-8f86-4cf9-b144-cacb04f2352d",
+            "uuid": "a0b34c23-e8a0-4846-b94d-3a0db86c3d8e",
             "isHook": false,
             "skipped": false
           },
@@ -1622,30 +1623,30 @@
             "code": "const result = await request.get('/none-existing-path')\nexpect(result.status).to.be.equal(404)\nexpect(result.data).to.be.equal('Not Found')",
             "err": {},
             "isRoot": false,
-            "uuid": "f2580d0a-d469-410a-9b50-380c5c79a958",
+            "uuid": "1fab99a8-47f6-4615-a78e-d03c382817d1",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "b67eeef6-f747-485a-b218-d1c6d25282e0",
-          "c3d6d3ac-668c-4f97-a967-f6ca57d8624d",
-          "8887e215-35ec-4e8a-a308-723548249680",
-          "307fb1eb-3d43-4768-b124-468fefcd19f8",
-          "b35c72bd-8f86-4cf9-b144-cacb04f2352d",
-          "f2580d0a-d469-410a-9b50-380c5c79a958"
+          "4cfe0965-8014-475d-accc-50b25618f7e6",
+          "b17b5e52-8dce-4a03-ad69-84550bd51deb",
+          "f5bd6443-06db-4bd2-b49d-481d400c66f9",
+          "7394dc45-e16a-4f64-88e7-776fc619be0f",
+          "a0b34c23-e8a0-4846-b94d-3a0db86c3d8e",
+          "1fab99a8-47f6-4615-a78e-d03c382817d1"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 24,
+        "duration": 26,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "0c0d3bc0-bf9e-4da2-a7f8-b2ef486599c7",
+        "uuid": "3fc8c93d-94ed-407d-ad49-5f76bd73d255",
         "title": "view/json",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
         "file": "/view/json.test.js",
@@ -1661,7 +1662,7 @@
             "code": "Json = require('./json')\njson = new Json()",
             "err": {},
             "isRoot": false,
-            "uuid": "ebb406f0-8a89-4a39-a620-19b2aa71a1c1",
+            "uuid": "85c0865a-2f24-4264-afc1-ca3ee7074253",
             "isHook": true,
             "skipped": false
           }
@@ -1670,7 +1671,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "e337d0eb-a193-4750-8518-84c3cd4acb69",
+            "uuid": "38832cee-374d-47d6-90a0-b55b232d3a41",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
             "file": "/view/json.test.js",
@@ -1691,7 +1692,7 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "f962d386-b261-498f-b6e1-0b523ed0b50d",
+                "uuid": "53e90178-ccde-4620-b263-ad4f32c56e03",
                 "isHook": false,
                 "skipped": false
               },
@@ -1709,7 +1710,7 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(vm.headers['content-type']).to.be.equal('application/json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "3a46ef4f-aec3-47bf-8807-4454e83b0f9f",
+                "uuid": "e18afde1-1159-4855-ac39-ee2e3bc4bb9a",
                 "isHook": false,
                 "skipped": false
               },
@@ -1727,16 +1728,16 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "9a10728f-0e79-4af1-824b-99ed68b04fdb",
+                "uuid": "6d8cc041-bd21-4adb-adcc-46b9855cb408",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "f962d386-b261-498f-b6e1-0b523ed0b50d",
-              "3a46ef4f-aec3-47bf-8807-4454e83b0f9f",
-              "9a10728f-0e79-4af1-824b-99ed68b04fdb"
+              "53e90178-ccde-4620-b263-ad4f32c56e03",
+              "e18afde1-1159-4855-ac39-ee2e3bc4bb9a",
+              "6d8cc041-bd21-4adb-adcc-46b9855cb408"
             ],
             "failures": [],
             "pending": [],
@@ -1757,7 +1758,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "35375b86-437e-41e8-94ce-6feea4eb7b18",
+        "uuid": "5db025e2-429d-48ac-b4f2-3108d10b9517",
         "title": "view/raw",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
         "file": "/view/raw.test.js",
@@ -1766,14 +1767,14 @@
             "title": "\"before all\" hook",
             "fullTitle": "view/raw \"before all\" hook",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "pass": false,
             "fail": false,
             "pending": false,
             "code": "Raw = require('./raw')\nraw = new Raw()",
             "err": {},
             "isRoot": false,
-            "uuid": "f1918efb-6b90-40ae-b673-03bf6b5c8446",
+            "uuid": "571bc808-5f45-4ba2-8443-2835382fead1",
             "isHook": true,
             "skipped": false
           }
@@ -1782,7 +1783,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "57979315-2c8d-452e-859c-6b580bba8365",
+            "uuid": "9dd4dddd-4214-4305-b11a-f913c273ab08",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
             "file": "/view/raw.test.js",
@@ -1803,14 +1804,14 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(raw.compose(vm)).to.be.equal(vm.body)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "b823f221-2e7d-47d5-b1a1-57bde9154a6d",
+                "uuid": "f7bb447c-fe0c-4c3c-a6cf-646ed9067083",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "b823f221-2e7d-47d5-b1a1-57bde9154a6d"
+              "f7bb447c-fe0c-4c3c-a6cf-646ed9067083"
             ],
             "failures": [],
             "pending": [],

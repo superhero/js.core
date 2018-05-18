@@ -2,13 +2,22 @@ module.exports = class
 {
   constructor()
   {
-    this.factories = {}
-    this.services  = {}
+    this.factories  = {}
+    this.services   = {}
   }
 
   add(service, factory)
   {
     this.factories[service] = factory
+  }
+
+  async addBatch(origin, batch)
+  {
+    for(const key in batch)
+    {
+      const service = require(origin + '/' + batch[key])
+      this.add(key, service)
+    }
   }
 
   async create(service)
