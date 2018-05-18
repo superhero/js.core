@@ -7,7 +7,7 @@ describe('acl', () =>
 
   describe('from(roles)', () =>
   {
-    it('should be able to create an instance from a configured json', () =>
+    it('should be able to create an instance from a configured json', function()
     {
       const acl = new Acl
       acl.addRoleUser('foo', 'foobar')
@@ -21,7 +21,7 @@ describe('acl', () =>
       acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-1')
       acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-2')
       acl.addRoleResourcePermission('baz', 'res-1', 'perm-1-3')
-      context(acl.roles)
+      context(this, { title:'acl.roles', value:acl.roles })
       expect(Acl.from(acl.roles).roles).to.deep.equal(acl.roles)
     })
 
