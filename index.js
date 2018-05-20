@@ -9,7 +9,7 @@ module.exports =
     return this
   },
 
-  server : function(type, options)
+  server : function(type, routes, options)
   {
     const config = Object.assign({}, require('./config'), options)
 
@@ -20,7 +20,7 @@ module.exports =
       Router  = require('./controller/router'),
       Server  = require(config.server[type]),
       locator = new Locator,
-      router  = new Router(config, config.routes),
+      router  = new Router(config, routes),
       server  = new Server(config, router, locator)
 
       locator.add('config', config)

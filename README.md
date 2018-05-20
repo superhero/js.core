@@ -80,7 +80,7 @@ module.exports =
 
 ```js
 const config = require('./config')
-require('@superhero/core').server('http', config).listen(80)
+require('@superhero/core').server('http', config.routes, config).listen(80)
 ```
 
 #### `controller/foobar.js`
