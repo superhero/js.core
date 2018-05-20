@@ -16,7 +16,7 @@ describe('controller/server/http', async () =>
     context(this, { title:'config', value:config })
 
     request = new Request({ url:'http://localhost:' + port })
-    server  = require('../').server('http', config.routes)
+    server  = require('../').server('http', config)
 
     server.on('listening', () => done())
     server.listen(port)

@@ -79,9 +79,8 @@ module.exports =
 #### `index.js`
 
 ```js
-const config = module.exports.config = require('./config')
-
-require('@superhero/core').server('http', config.routes).listen(80)
+const config = require('./config')
+require('@superhero/core').server('http', config).listen(80)
 ```
 
 #### `controller/foobar.js`
