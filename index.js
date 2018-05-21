@@ -1,17 +1,19 @@
+const src_config = require('./config')
+
 module.exports =
 {
   bootstrap : async function(tasks)
   {
     Array.isArray(tasks)
     ? tasks.forEach(async (task) => await this.bootstrap(task))
-    : await tasks(config)
+    : await tasks(src_config)
 
     return this
   },
 
   server : function(type, routes, options)
   {
-    const config = Object.assign({}, require('./config'), options)
+    const config = Object.assign({}, src_config, options)
 
     if(type in config.server)
     {
