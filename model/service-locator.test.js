@@ -2,7 +2,6 @@ describe('service locator tests', () =>
 {
   const
   expect  = require('chai').expect,
-  context = require('mochawesome/addContext'),
   SL      = require('./service-locator')
 
   let sl
