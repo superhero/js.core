@@ -1,4 +1,4 @@
-const config = require('./config')
+const src_config = require('./config')
 
 module.exports =
 {
@@ -6,28 +6,29 @@ module.exports =
   {
     Array.isArray(tasks)
     ? tasks.forEach(async (task) => await this.bootstrap(task))
-    : await tasks(config)
+    : await tasks(src_config)
 
     return this
   },
 
-  server : function(type, routes, options = {})
+  server : function(type, routes, options)
   {
+    const config = Object.assign({}, src_config, options)
+
     if(type in config.server)
     {
-      options = Object.assign({}, config, options)
-
       const
       Locator = require('./model/service-locator'),
       Router  = require('./controller/router'),
       Server  = require(config.server[type]),
       locator = new Locator,
-      router  = new Router(options, routes),
-      server  = new Server(options, router, locator)
+      router  = new Router(config, routes),
+      server  = new Server(config, router, locator)
 
-      locator.addBatch(options.mainDirectory, options.locator)
+      locator.add('config', () => config)
+      locator.addBatch(config.mainDirectory, config.locator)
 
-      return server.createServer(options)
+      return server.createServer(config)
     }
 
     throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)

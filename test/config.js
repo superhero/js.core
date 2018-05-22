@@ -3,7 +3,7 @@ module.exports = Object.freeze(
   routes:
   [
     {
-      chain     :
+      chain :
       [
         'controller/middleware-1',
         'controller/middleware-2'
