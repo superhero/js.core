@@ -15,6 +15,7 @@ describe('acl', () =>
       acl.addRoleUser('bar', 'foobaz')
       acl.addRoleChild('bar', 'foo')
       acl.addRoleChild('bar', 'baz')
+      acl.addRoleResource('baz', 'res-0')
       acl.addRoleResourcePermission('foo', 'res-1', 'perm-1-1')
       acl.addRoleResourcePermission('foo', 'res-2', 'perm-2-1')
       acl.addRoleResourcePermission('foo', 'res-2', 'perm-2-2')

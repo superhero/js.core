@@ -25,8 +25,12 @@ module.exports = class Acl
 
           case 'resources':
             for(const resource in roles[role].resources)
+            {
+              acl.addRoleResource(role, resource)
+
               for(const permission of roles[role].resources[resource])
                 acl.addRoleResourcePermission(role, resource, permission)
+            }
             break
 
           default:
