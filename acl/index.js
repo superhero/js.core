@@ -219,7 +219,7 @@ module.exports = class Acl
     }
 
     for(const role in this.roles)
-      if(this.hasRoleUser(role, user) && !roles.includes(role))
+      if(this.hasRoleUser(role, user))
       {
         roles.push(role)
         chain(role)
@@ -228,9 +228,43 @@ module.exports = class Acl
     return roles
   }
 
-  hasUserPermission(user, resource, permission)
+  getRolesRecursively(role)
+  {
+    const
+    roles = [],
+    chain = (role) =>
+    {
+      for(const roleChild of this.roles[role].children)
+        if(this.hasRole(roleChild) && !roles.includes(roleChild))
+        {
+          roles.push(roleChild)
+          chain(roleChild)
+        }
+    }
+
+    if(this.hasRole(role))
+    {
+      roles.push(role)
+      chain(role)
+    }
+
+    return roles
+  }
+
+  isUserAuthorized(user, resource, permission)
   {
     const roles = this.getUserRolesRecursively(user)
+
+    for(const role of roles)
+      if(this.hasRoleResourcePermission(role, resource, permission))
+        return true
+
+    return false
+  }
+
+  isRoleAuthorized(role, resource, permission)
+  {
+    const roles = this.getRolesRecursively(role)
 
     for(const role of roles)
       if(this.hasRoleResourcePermission(role, resource, permission))
