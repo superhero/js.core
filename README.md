@@ -34,6 +34,8 @@ App
 ├── controller
 │   ├── foobar.js
 │   └── logger.js
+├── model
+│   └── service.js
 ├── config.js
 ├── index.js
 └── package.json
@@ -61,6 +63,10 @@ See the section: [Routing](#routing), for more information.
 ```js
 module.exports =
 {
+  locator:
+  {
+    'service_x' : 'model/service'
+  },
   routes:
   [
     {
@@ -83,6 +89,29 @@ const config = require('./config')
 require('@superhero/core').server('http', config.routes, config).listen(80)
 ```
 
+#### `model/service.js`
+
+```js
+module.exports = function()
+{
+  // If you need to access the locator in the factory function you can access
+  // it through:"this.locator".
+  // Not recommended to do the class definition in the factory function as done
+  // in this example, use require to simply solve any dependencies in this
+  // function.
+
+  // Simple service, designed as a demonstration placeholder for the
+  // applications business logic, such as access to a db layer
+  return new class
+  {
+    getTxt()
+    {
+      return 'bar'
+    }
+  }
+}
+```
+
 #### `controller/foobar.js`
 
 ```js
@@ -93,11 +122,13 @@ module.exports = class extends Dispatcher
   async dispatch()
   {
     // Building a view model that's used by the view
-    const vm =
+    const
+    service = await this.locator('service_x'),
+    vm      =
     {
-      body:
+      body :
       {
-        foo : 'bar'
+        foo : service.getTxt()
       }
     }
 
