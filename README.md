@@ -126,7 +126,7 @@ module.exports = class extends Dispatcher
 
     console.log('i', n, new Date().toISOString())
 
-    const vm = next()
+    const vm = await next()
 
     console.log('o', n, new Date().toISOString())
 
