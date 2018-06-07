@@ -94,8 +94,8 @@ require('@superhero/core').server('http', config.routes, config).listen(80)
 ```js
 module.exports = function()
 {
-  // If you need to access the locator in the factory function you can access
-  // it through:"this.locator".
+  // If you need to access the "locator.load" function in the factory function
+  // you can access it through:"this.load".
   // Not recommended to do the class definition in the factory function as done
   // in this example, use require to simply solve any dependencies in this
   // function.
