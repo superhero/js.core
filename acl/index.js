@@ -28,7 +28,11 @@ module.exports = class Acl
             {
               acl.addRoleResource(role, resource)
 
-              for(const permission of roles[role].resources[resource])
+              const permissions = Array.isArray(roles[role].resources[resource])
+              ?  roles[role].resources[resource]
+              : [roles[role].resources[resource]]
+
+              for(const permission of permissions)
                 acl.addRoleResourcePermission(role, resource, permission)
             }
             break
@@ -179,7 +183,7 @@ module.exports = class Acl
     if(this.hasRoleResourcePermission(role, resource, permission))
       return // preventing duplicate permissions
 
-    this.roles[role].resources[resource].push(permission)
+    permission && this.roles[role].resources[resource].push(permission)
   }
 
   removeRoleResourcePermission(role, resource, permission)
@@ -257,10 +261,10 @@ module.exports = class Acl
 
   isUserAuthorized(user, resource, permission)
   {
-    const roles = this.getUserRolesRecursively(user)
+    const roles = this.getUserRoles(user)
 
     for(const role of roles)
-      if(this.hasRoleResourcePermission(role, resource, permission))
+      if(this.isRoleAuthorized(role, resource, permission))
         return true
 
     return false
@@ -270,9 +274,22 @@ module.exports = class Acl
   {
     const roles = this.getRolesRecursively(role)
 
-    for(const role of roles)
-      if(this.hasRoleResourcePermission(role, resource, permission))
-        return true
+    if(permission)
+    {
+      for(const role of roles)
+        if(this.hasRoleResourcePermission(role, resource, permission)
+        || this.hasRoleResourcePermission(role, '*', permission)
+        || this.hasRoleResourcePermission(role, resource, '*')
+        || this.hasRoleResourcePermission(role, '*', '*'))
+          return true
+    }
+    else
+    {
+      for(const role of roles)
+        if(this.hasRoleResource(role, resource)
+        || this.hasRoleResource(role, '*'))
+          return true
+    }
 
     return false
   }

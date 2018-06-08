@@ -643,5 +643,78 @@ describe('acl', () =>
       const result2 = acl.isRoleAuthorized(role1, resource2, permission)
       expect(result2).to.be.equal(false)
     })
+
+    it('* for resouce should allow access to all resources', () =>
+    {
+      const
+      acl         = new Acl,
+      role1       = 'bar1',
+      resource1   = 'baz1',
+      resource2   = 'baz2',
+      permission  = 'qux'
+
+      acl.addRole(role1)
+      acl.addRoleResourcePermission(role1, '*', permission)
+      const result1 = acl.isRoleAuthorized(role1, resource1, permission)
+      expect(result1).to.be.equal(true)
+      const result2 = acl.isRoleAuthorized(role1, resource2, permission)
+      expect(result2).to.be.equal(true)
+    })
+
+    it('* for permission should allow access to all permissions', () =>
+    {
+      const
+      acl         = new Acl,
+      role1       = 'bar1',
+      resource1   = 'baz1',
+      permission1 = 'qux1',
+      permission2 = 'qux2'
+
+      acl.addRole(role1)
+      acl.addRoleResourcePermission(role1, resource1, '*')
+      const result1 = acl.isRoleAuthorized(role1, resource1, permission1)
+      expect(result1).to.be.equal(true)
+      const result2 = acl.isRoleAuthorized(role1, resource1, permission2)
+      expect(result2).to.be.equal(true)
+    })
+
+    it('* for permission and resource should allow access to everything', () =>
+    {
+      const
+      acl         = new Acl,
+      role1       = 'bar1',
+      resource1   = 'baz1',
+      resource2   = 'baz2',
+      permission1 = 'qux1',
+      permission2 = 'qux2'
+
+      acl.addRole(role1)
+      acl.addRoleResourcePermission(role1, '*', '*')
+      const result1 = acl.isRoleAuthorized(role1, resource1, permission1)
+      expect(result1).to.be.equal(true)
+      const result2 = acl.isRoleAuthorized(role1, resource2, permission2)
+      expect(result2).to.be.equal(true)
+    })
+
+    it('undefined permission should allow access on a resource level', () =>
+    {
+      const
+      acl         = new Acl,
+      role1       = 'bar1',
+      role2       = 'bar2',
+      resource1   = 'baz1',
+      resource2   = 'baz2',
+      permission1 = 'qux1',
+      permission2 = 'qux2'
+
+      acl.addRole(role1)
+      acl.addRole(role2)
+      acl.addRoleResourcePermission(role1, resource1, permission1)
+      acl.addRoleResourcePermission(role2, resource2, permission2)
+      const result1 = acl.isRoleAuthorized(role1, resource1)
+      expect(result1).to.be.equal(true)
+      const result2 = acl.isRoleAuthorized(role1, resource2)
+      expect(result2).to.be.equal(false)
+    })
   })
 })
