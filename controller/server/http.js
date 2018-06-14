@@ -65,7 +65,21 @@ module.exports = class
     route   = await this.router.findRoute(input),
     arg     = argCb.bind(route, request)
 
-    return Object.assign(route, { arg })
+    return Object.assign(route,
+    {
+      arg,
+      get entity()
+      {
+        if(!this._entity)
+        {
+          this._entity = {}
+          for(const key in route.mapper)
+            this._entity[key] = arg(key)
+        }
+
+        return this._entity
+      }
+    })
   }
 
   async dispatch(i, o)

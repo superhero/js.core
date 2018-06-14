@@ -37,7 +37,7 @@ module.exports =
     {
       endpoint  : 'controller/route-arg-foo',
       policy    : '/test-route-arg-body',
-      args      :
+      mapper    :
       {
         foo : { body:'foo' }
       }
@@ -45,7 +45,7 @@ module.exports =
     {
       endpoint  : 'controller/route-arg-foo',
       policy    : '/test-route-arg-query',
-      args      :
+      mapper    :
       {
         foo : { query:'foo' }
       }
@@ -53,7 +53,7 @@ module.exports =
     {
       endpoint  : 'controller/route-arg-foo',
       policy    : '/bar/test-route-arg-segment',
-      args      :
+      mapper    :
       {
         foo : { segment:0 }
       }
@@ -61,9 +61,20 @@ module.exports =
     {
       endpoint  : 'controller/route-arg-foo',
       policy    : '/bar/test-route-arg-segment-by-number',
-      args      :
+      mapper    :
       {
         foo : 0
+      }
+    },
+    {
+      view      : 'json',
+      endpoint  : 'controller/route-enity',
+      policy    : '/test-route-entity',
+      mapper    :
+      {
+        foo : { body:'foo' },
+        bar : { body:'bar' },
+        baz : { body:'baz' }
       }
     }
   ]

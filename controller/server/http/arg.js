@@ -8,7 +8,7 @@ const arg = module.exports = function(request, input)
       return path.split('/')[input]
 
     case 'string':
-      return arg.call(this, request, this.args[input])
+      return arg.call(this, request, this.mapper[input])
 
     case 'object':
     {

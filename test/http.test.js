@@ -114,5 +114,27 @@ describe('controller/server/http', async () =>
     expect(result.data).to.be.equal('bar')
   })
 
+  it('route.entity', async () =>
+  {
+    const result = await request.post(
+    {
+      url   : '/test-route-entity',
+      data  :
+      {
+        foo : 'foo',
+        bar : 'bar',
+        baz : 'baz'
+      }
+    })
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.deep.equal(
+    {
+      foo : 'foo',
+      bar : 'bar',
+      baz : 'baz'
+    })
+  })
+
   after(() => server.close())
 })
