@@ -8,6 +8,14 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 
 A core module I use to bootstrap my applications. This module helps me setup a server, structure my code into a clear MVC folder structure as well as declaring routes and endpoints.
 
+## Addons
+
+Consider extending the framework with one or multiple addons, if needed:
+
+- [Core.Handlebars](http://github.com/superhero/js.core.handlebars)
+- [Core.Resource](http://github.com/superhero/js.core.resource)
+- [Core.Websocket](http://github.com/superhero/js.core.websocket)
+
 ## Install
 
 `npm install @superhero/core`
