@@ -106,6 +106,8 @@ module.exports = class
         if(!origin.chain.includes(middleware))
           origin.chain.push(middleware)
 
+    item.args = item.args || {}
+
     const route = Object.assign({}, origin, item, { chain:origin.chain })
     return route
   }

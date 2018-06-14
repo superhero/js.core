@@ -78,5 +78,41 @@ describe('controller/server/http', async () =>
     expect(result.data).to.be.equal('Not Found')
   })
 
+  it('route.arg body', async () =>
+  {
+    const result = await request.post(
+    {
+      url   : '/test-route-arg-body',
+      data  : { foo:'bar' }
+    })
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg query', async () =>
+  {
+    const result = await request.post('/test-route-arg-query?foo=bar')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg segment', async () =>
+  {
+    const result = await request.post('/bar/test-route-arg-segment')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg segment by number', async () =>
+  {
+    const result = await request.post('/bar/test-route-arg-segment-by-number')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
   after(() => server.close())
 })

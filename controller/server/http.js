@@ -4,7 +4,8 @@ domain      = require('domain'),
 url         = require('url'),
 http        = require('http'),
 querystring = require('querystring'),
-statusCodes = require('./http/status-codes')
+statusCodes = require('./http/status-codes'),
+argCb       = require('./http/arg')
 
 module.exports = class
 {
@@ -57,13 +58,22 @@ module.exports = class
     }
   }
 
+  async findRoute(request)
+  {
+    const
+    input   = { path:request.url.pathname, method:request.method },
+    route   = await this.router.findRoute(input),
+    arg     = argCb.bind(route, request)
+
+    return Object.assign(route, { arg })
+  }
+
   async dispatch(i, o)
   {
     const
-    request = Object.freeze(await this.composeRequest(i)),
-    input   = { path:request.url.pathname, method:request.method },
-    route   = Object.freeze(await this.router.findRoute(input)),
     session = {},
+    request = Object.freeze(await this.composeRequest(i)),
+    route   = Object.freeze(await this.findRoute(request)),
     locator = Object.freeze(this.locator)
 
     if(!route.endpoint)

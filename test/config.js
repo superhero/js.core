@@ -30,6 +30,41 @@ module.exports =
     {
       endpoint  : 'controller/501',
       policy    : '/test-501'
+    },
+    {
+      view      : 'raw',
+    },
+    {
+      endpoint  : 'controller/route-arg-foo',
+      policy    : '/test-route-arg-body',
+      args      :
+      {
+        foo : { body:'foo' }
+      }
+    },
+    {
+      endpoint  : 'controller/route-arg-foo',
+      policy    : '/test-route-arg-query',
+      args      :
+      {
+        foo : { query:'foo' }
+      }
+    },
+    {
+      endpoint  : 'controller/route-arg-foo',
+      policy    : '/bar/test-route-arg-segment',
+      args      :
+      {
+        foo : { segment:0 }
+      }
+    },
+    {
+      endpoint  : 'controller/route-arg-foo',
+      policy    : '/bar/test-route-arg-segment-by-number',
+      args      :
+      {
+        foo : 0
+      }
     }
   ]
 }
