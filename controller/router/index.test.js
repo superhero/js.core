@@ -13,10 +13,12 @@ describe('controller/server/http/router', () =>
       view      : 'json'
     },
     {
+      test      : 1,
       policy    : '/',
       endpoint  : 'controller/dispatcher',
     },
     {
+      test      : 2,
       policy    :
       {
         path    : '/foo',
@@ -25,6 +27,16 @@ describe('controller/server/http/router', () =>
       endpoint  : 'controller/dispatcher',
     },
     {
+      test      : 3,
+      policy    :
+      {
+        path    : '/foo',
+        method  : /PUT/
+      },
+      endpoint  : 'controller/dispatcher',
+    },
+    {
+      test      : 4,
       view      : 'raw',
       policy    : '/foo',
       endpoint  : 'controller/dispatcher/rest',
@@ -98,7 +110,13 @@ describe('controller/server/http/router', () =>
     it('method policy routes correctly', () =>
     {
       const result = router.findRoute({ path:'/foo', method:'post' })
-      expect(result.endpoint).to.be.equal('controller/dispatcher')
+      expect(result.test).to.be.equal(2)
+    })
+
+    it('method policy routes correctly, case test', () =>
+    {
+      const result = router.findRoute({ path:'/foo', method:'put' })
+      expect(result.test).to.be.equal(3)
     })
 
     it('no match should return an undefined endpoint', () =>

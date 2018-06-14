@@ -1,4 +1,4 @@
-module.exports = Object.freeze(
+module.exports =
 {
   routes:
   [
@@ -32,4 +32,4 @@ module.exports = Object.freeze(
       policy    : '/test-501'
     }
   ]
-})
+}

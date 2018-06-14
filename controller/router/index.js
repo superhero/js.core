@@ -59,7 +59,7 @@ module.exports = class
       if(method)
       {
         method = method instanceof RegExp
-               ? method
+               ? new RegExp(method, 'i')
                : new RegExp(`^${method}$`, 'i')
 
         if(!input.method.match(method))
