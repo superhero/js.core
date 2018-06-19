@@ -3,7 +3,7 @@ describe('controller/server/http/router', () =>
   const
   expect  = require('chai').expect,
   context = require('mochawesome/addContext'),
-  config  = { mainDirectory : require('path').dirname(require.main.filename) },
+  origin  = require('path').dirname(require.main.filename),
   routes  =
   [
     {
@@ -48,10 +48,10 @@ describe('controller/server/http/router', () =>
 
   before(function()
   {
-    context(this, { title:'config', value:config })
+    context(this, { title:'origin', value:origin })
     context(this, { title:'routes', value:routes })
     Router = require('.')
-    router = new Router(config, routes)
+    router = new Router(origin, routes)
   })
 
   describe('composeRoute(routes)', () =>
