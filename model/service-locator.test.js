@@ -9,7 +9,7 @@ describe('service locator tests', () =>
   beforeEach(() =>
   {
     sl = new SL
-    sl.add('service', () => new class
+    sl.set('service', () => new class
     {
       constructor()
       {
