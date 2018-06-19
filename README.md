@@ -93,8 +93,12 @@ module.exports =
 #### `index.js`
 
 ```js
-const config = require('./config')
-require('@superhero/core').server('http', config.routes, config).listen(80)
+const
+config  = require('./config'),
+Core    = require('@superhero/core'),
+core    = new Core(config)
+
+core.server('http', config.routes).listen(80)
 ```
 
 #### `model/service.js`

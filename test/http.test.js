@@ -11,12 +11,14 @@ describe('controller/server/http', async () =>
   {
     const
     Request = require('@superhero/request'),
+    Core    = require('../'),
+    core    = new Core(config),
     port    = 9001
 
     context(this, { title:'config', value:config })
 
     request = new Request({ url:'http://localhost:' + port })
-    server  = require('../').server('http', config.routes)
+    server  = core.server('http', config.routes)
 
     server.on('listening', () => done())
     server.listen(port)
