@@ -13,21 +13,15 @@ const arg = module.exports = function(request, input)
     case 'object':
     {
       for(const where in input)
-      {
-        let value
         switch(where)
         {
-          case 'body'    : value = request.body[ input[where] ];          break
-          case 'query'   : value = request.url.query[ input[where] ];     break
-          case 'segment' : value = arg.call(this, request, input[where]); break
+          case 'body'    : return request.body[ input[where] ]
+          case 'query'   : return request.url.query[ input[where] ]
+          case 'segment' : return arg.call(this, request, input[where])
         }
 
-        if(value)
-          return value
-      }
-
       const
-      msg = `unexpected object supplied`,
+      msg = `unexpected mapper object supplied in the route`,
       err = new Error(msg)
 
       err.code = 'ERR_ARG_UNEXPECTED_OBJ'
