@@ -7,6 +7,8 @@ module.exports = class
 
     vm.headers['content-type'] = 'application/json'
 
-    return JSON.stringify(vm.body)
+    return vm.pretty
+    ? JSON.stringify(vm.body, null, 2)
+    : JSON.stringify(vm.body)
   }
 }
