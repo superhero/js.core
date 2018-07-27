@@ -52,7 +52,7 @@ module.exports = class
       try
       {
         const config = require(`${path}/config`)
-        deepmerge(this.config, config)
+        deepmerge.merge(this.config, config)
       }
       catch(err)
       {
