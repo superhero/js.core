@@ -36,11 +36,9 @@ module.exports = class
     return this._locator
   }
 
-  async bootstrap()
+  async bootstrap(collection)
   {
-    const
-    origin      = this.config.mainDirectory,
-    collection  = this.config.bootstrap
+    const origin = this.config.mainDirectory
 
     for(const ns in collection)
       try

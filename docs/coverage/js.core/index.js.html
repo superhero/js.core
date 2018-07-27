@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">43.24% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>16/32</span>
+        <span class='fraction'>16/37</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">25% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>2/8</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">60% </span>
@@ -35,16 +35,16 @@
         <span class='fraction'>3/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">51.61% </span>
+        <span class="strong">44.44% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>16/31</span>
+        <span class='fraction'>16/36</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -153,13 +153,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -167,7 +169,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -190,14 +198,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">module.exports = class
 {
   constructor(config)
@@ -226,46 +226,46 @@
       }
       catch(err)
       {
-        if(err.code !== <span class="cstat-no" title="statement not covered" >'MODULE_NOT_FOUND')</span>
+<span class="cstat-no" title="statement not covered" >        if(err.code !== 'MODULE_NOT_FOUND')</span>
 <span class="cstat-no" title="statement not covered" >          throw err</span>
 &nbsp;
-        const service = require(origin + '/' + locator[key])
-        this._locator.set(key, service)
+        const service = <span class="cstat-no" title="statement not covered" >require(origin + '/' + locator[key])</span>
+<span class="cstat-no" title="statement not covered" >        this._locator.set(key, service)</span>
       }
 &nbsp;
-<span class="fstat-no" title="function not covered" ></span>    return this._locator
+    return this._locator
   }
-<span class="cstat-no" title="statement not covered" ></span>
-  async bootstrap(collection)
-  {<span class="cstat-no" title="statement not covered" ></span>
-    co<span class="cstat-no" title="statement not covered" >nst origin = this.config.mainDirectory</span>
 &nbsp;
-    for(const ns in collec<span class="cstat-no" title="statement not covered" >tion)</span>
-      tr<span class="cstat-no" title="statement not covered" >y</span>
-      {
-        const bootstrap = require(ns + '/bootstrap')
+<span class="fstat-no" title="function not covered" >  as</span>ync bootstrap(collection)
+  {
+    const origin = this.config.mainDirectory
+<span class="cstat-no" title="statement not covered" ></span>
+    for(const ns i<span class="cstat-no" title="statement not covered" >n collection)</span>
+      try
+<span class="cstat-no" title="statement not covered" >      {</span>
+<span class="cstat-no" title="statement not covered" >        const bootstrap = require(ns + '/bootstrap')</span>
         await bootstrap.call({ locator:this.locator }, collection[ns])
       }<span class="cstat-no" title="statement not covered" ></span>
       ca<span class="cstat-no" title="statement not covered" >tch(err)</span>
       {
         if(err.code !== 'MODULE_NOT_FOUND')
-<span class="cstat-no" title="statement not covered" >          throw </span>err
-&nbsp;
-        const bootstrap = require(origin + '/' + ns + '/bootstrap')
+          throw err
+<span class="cstat-no" title="statement not covered" ></span>
+        co<span class="cstat-no" title="statement not covered" >nst bootst</span>rap = require(`${origin}/${ns}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, collection[ns])
-      }
-<span class="missing-if-branch" title="else path not taken" >E</span>
+      }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
     return this
   }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
   server(type, routes, options)
   {
     if(type in this.config.server)
     {
-      const
+    <span class="missing-if-branch" title="else path not taken" >E</span>  const
       Router  = require('./controller/router'),
       Server  = require(this.config.server[type]),
-<span class="cstat-no" title="statement not covered" >      router  = new Router(this.config.mainDirectory, routes),</span>
+      router  = new Router(this.config.mainDirectory, routes),
       server  = new Server(this.config, router, this.locator)
 &nbsp;
       return server.createServer(options)
@@ -273,14 +273,14 @@
 &nbsp;
     throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)
   }
-}
+}<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jun 28 2018 16:36:29 GMT+0200 (CEST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jul 27 2018 16:38:17 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
