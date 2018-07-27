@@ -48,6 +48,18 @@ module.exports = class
     {
       let path = ns
 
+      // extend config
+      try
+      {
+        const config = require(`${path}/config`)
+        deepmerge(this.config, config)
+      }
+      catch(err)
+      {
+        if(err.code !== 'MODULE_NOT_FOUND')
+          throw err
+      }
+
       // bootstrap
       try
       {
@@ -63,18 +75,6 @@ module.exports = class
 
         const bootstrap = require(`${path}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, collection[ns])
-      }
-
-      // extend config
-      try
-      {
-        const config = require(`${path}/config`)
-        deepmerge(this.config, config)
-      }
-      catch(err)
-      {
-        if(err.code !== 'MODULE_NOT_FOUND')
-          throw err
       }
     }
 
