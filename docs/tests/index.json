@@ -5,9 +5,9 @@
     "passes": 28,
     "pending": 0,
     "failures": 0,
-    "start": "2018-07-27T14:38:18.362Z",
-    "end": "2018-07-27T14:38:18.430Z",
-    "duration": 68,
+    "start": "2018-07-27T15:30:17.411Z",
+    "end": "2018-07-27T15:30:17.480Z",
+    "duration": 69,
     "testsRegistered": 28,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "501a8265-159b-4a79-8542-6b77979a8802",
+    "uuid": "7d2b2cdd-4e71-46fb-8086-e9eadb2e9e97",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -28,7 +28,7 @@
     "tests": [],
     "suites": [
       {
-        "uuid": "01f1abe5-6f65-495f-95cb-29ff25f5e0e5",
+        "uuid": "ee186022-a031-48bf-bed9-387928869ac5",
         "title": "controller/server/http/router",
         "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
         "file": "/controller/router/index.test.js",
@@ -45,7 +45,7 @@
             "code": "context(this, { title:'origin', value:origin })\ncontext(this, { title:'routes', value:routes })\nRouter = require('.')\nrouter = new Router(origin, routes)",
             "err": {},
             "isRoot": false,
-            "uuid": "ac44ba83-1045-4c08-a7f8-7469d4b0ace4",
+            "uuid": "da62b9f9-b69c-4635-b2c7-8592d5ed2388",
             "isHook": true,
             "skipped": false
           }
@@ -54,7 +54,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "1de65837-f525-468e-8d45-bc2ba84e78df",
+            "uuid": "d34edd50-8bf7-43e3-8b2a-09947e69e1f5",
             "title": "composeRoute(routes)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
             "file": "/controller/router/index.test.js",
@@ -75,14 +75,14 @@
                 "code": "context(this, { title:'routes', value:routes })\nconst route = router.composeRoute(routes)\nexpect(route.view).to.be.equal('json')\nexpect(route.policy).to.be.equal('/')\nexpect(route.endpoint).to.be.equal('controller/dispatcher')\nexpect(route.chain.length).to.be.equal(1)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "484174f8-7e86-40b1-bb93-1e7afb7ac09e",
+                "uuid": "de28713c-0976-4ac5-b10c-0781bcdf7bdf",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "484174f8-7e86-40b1-bb93-1e7afb7ac09e"
+              "de28713c-0976-4ac5-b10c-0781bcdf7bdf"
             ],
             "failures": [],
             "pending": [],
@@ -93,7 +93,7 @@
             "_timeout": 2000
           },
           {
-            "uuid": "e6d3b1fb-ef04-4026-a69d-5d76229dcbcc",
+            "uuid": "3a4043f3-93de-48cf-99de-cc321791f3ef",
             "title": "findRoute(request)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/controller/router/index.test.js",
             "file": "/controller/router/index.test.js",
@@ -113,7 +113,7 @@
                 "code": "const result = router.findRoute({ url:{ pathname:'/' }})\nexpect(result.chain).is.an('array')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "2b042e12-32c9-405b-8ed9-00dd9090030c",
+                "uuid": "8f62d753-22e3-4147-9f1c-f3bfbc55dc07",
                 "isHook": false,
                 "skipped": false
               },
@@ -130,7 +130,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.chain.length).to.be.equal(1)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "1e9e8b2c-a947-4664-95b7-67ba2c96e1f5",
+                "uuid": "d2519691-0ee2-4dae-874a-c0c99169ae38",
                 "isHook": false,
                 "skipped": false
               },
@@ -147,7 +147,7 @@
                 "code": "const result = router.findRoute({ path:'/foo' })\nexpect(result.chain.length).to.be.equal(2)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "f2204120-d06b-4e3c-97b6-c7e9d3f44848",
+                "uuid": "c0f48ef2-2b18-4e41-8e8f-681e7261a508",
                 "isHook": false,
                 "skipped": false
               },
@@ -155,7 +155,7 @@
                 "title": "view is inherited",
                 "fullTitle": "controller/server/http/router findRoute(request) view is inherited",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -164,7 +164,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.view).to.be.equal('json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "56e32186-3aa9-4509-b51b-21be72863ee9",
+                "uuid": "6d18c722-73c1-4661-b6dc-18dfa9076b26",
                 "isHook": false,
                 "skipped": false
               },
@@ -181,7 +181,7 @@
                 "code": "const result = router.findRoute({ path:'/' })\nexpect(result.endpoint).to.be.equal('controller/dispatcher')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "aff0ee25-68a2-468a-a61c-2e29b15d906b",
+                "uuid": "1b912724-a835-43e4-9dda-f46696001851",
                 "isHook": false,
                 "skipped": false
               },
@@ -189,7 +189,7 @@
                 "title": "overwrite the view",
                 "fullTitle": "controller/server/http/router findRoute(request) overwrite the view",
                 "timedOut": false,
-                "duration": 1,
+                "duration": 0,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -198,7 +198,7 @@
                 "code": "const result = router.findRoute({ path:'/foo', method:'get' })\nexpect(result.view).to.be.equal('raw')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "62401ce2-4b3d-4184-a4c4-7d6b3066f533",
+                "uuid": "45ab67aa-9e94-46b0-8cf6-4dca4842925d",
                 "isHook": false,
                 "skipped": false
               },
@@ -215,7 +215,7 @@
                 "code": "const result = router.findRoute({ path:'/foo', method:'post' })\nexpect(result.test).to.be.equal(2)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "dfd7abe2-5e87-4773-a32d-148617d0cb18",
+                "uuid": "d3767c43-7dc0-42f4-941b-53030106ed31",
                 "isHook": false,
                 "skipped": false
               },
@@ -223,7 +223,7 @@
                 "title": "method policy routes correctly, case test",
                 "fullTitle": "controller/server/http/router findRoute(request) method policy routes correctly, case test",
                 "timedOut": false,
-                "duration": 0,
+                "duration": 1,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -232,7 +232,7 @@
                 "code": "const result = router.findRoute({ path:'/foo', method:'put' })\nexpect(result.test).to.be.equal(3)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "2ad2a592-a15b-49b3-a0c2-14ceae84df00",
+                "uuid": "cca3f826-106c-4546-8dc8-1acbc368a43e",
                 "isHook": false,
                 "skipped": false
               },
@@ -249,27 +249,27 @@
                 "code": "const result = router.findRoute({ path:'/no-matching-pathname' })\nexpect(result.endpoint).to.be.equal(undefined)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "42265d44-4f13-428a-88a6-2da040eb5e14",
+                "uuid": "21f15737-bd43-4110-a8e9-cda5ea5caef0",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "2b042e12-32c9-405b-8ed9-00dd9090030c",
-              "1e9e8b2c-a947-4664-95b7-67ba2c96e1f5",
-              "f2204120-d06b-4e3c-97b6-c7e9d3f44848",
-              "56e32186-3aa9-4509-b51b-21be72863ee9",
-              "aff0ee25-68a2-468a-a61c-2e29b15d906b",
-              "62401ce2-4b3d-4184-a4c4-7d6b3066f533",
-              "dfd7abe2-5e87-4773-a32d-148617d0cb18",
-              "2ad2a592-a15b-49b3-a0c2-14ceae84df00",
-              "42265d44-4f13-428a-88a6-2da040eb5e14"
+              "8f62d753-22e3-4147-9f1c-f3bfbc55dc07",
+              "d2519691-0ee2-4dae-874a-c0c99169ae38",
+              "c0f48ef2-2b18-4e41-8e8f-681e7261a508",
+              "6d18c722-73c1-4661-b6dc-18dfa9076b26",
+              "1b912724-a835-43e4-9dda-f46696001851",
+              "45ab67aa-9e94-46b0-8cf6-4dca4842925d",
+              "d3767c43-7dc0-42f4-941b-53030106ed31",
+              "cca3f826-106c-4546-8dc8-1acbc368a43e",
+              "21f15737-bd43-4110-a8e9-cda5ea5caef0"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 2,
+            "duration": 3,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
@@ -285,7 +285,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "d2f96c75-827d-4ebf-b6e8-a50d9737e1ba",
+        "uuid": "2d90cbf7-8c33-4602-9765-678bfcb5404a",
         "title": "service locator tests",
         "fullFile": "/home/erik/Projects/@superhero/js.core/model/service-locator.test.js",
         "file": "/model/service-locator.test.js",
@@ -301,7 +301,7 @@
             "code": "sl = new SL\nsl.set('service', () => new class\n{\n  constructor()\n  {\n    this.i = 0\n  }\n  get foo()\n  {\n    return ++this.i\n  }\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "c8ba184d-a7e5-4b43-82fe-f14d394c847a",
+            "uuid": "572682eb-c0bc-41f1-adaa-08ae723311a1",
             "isHook": true,
             "skipped": false
           }
@@ -321,7 +321,7 @@
             "code": "const service = await sl.load('service')\nexpect(service.foo).to.be.equal(1)\nexpect(service.foo).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "d15ec707-861a-4d05-8bf9-bc22d26016be",
+            "uuid": "ff6d47ac-6737-49cd-b100-695f15f2148c",
             "isHook": false,
             "skipped": false
           },
@@ -329,7 +329,7 @@
             "title": "loads the same instance",
             "fullTitle": "service locator tests loads the same instance",
             "timedOut": false,
-            "duration": 1,
+            "duration": 0,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -338,7 +338,7 @@
             "code": "const service1 = await sl.load('service')\nexpect(service1.foo).to.be.equal(1)\nconst service2 = await sl.load('service')\nexpect(service2.foo).to.be.equal(2)",
             "err": {},
             "isRoot": false,
-            "uuid": "eda26b77-445b-4515-92a9-ff0f85ad6b96",
+            "uuid": "4a9b541c-f2f9-48b4-a708-3aa6b40faf88",
             "isHook": false,
             "skipped": false
           },
@@ -346,7 +346,7 @@
             "title": "throws an exception if the service has not been defined",
             "fullTitle": "service locator tests throws an exception if the service has not been defined",
             "timedOut": false,
-            "duration": 0,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -355,16 +355,16 @@
             "code": "sl.load('none existing service')\n.then((service) => done(new Error('should not have loaded a service')))\n.catch((error)  =>\n{\n  expect(error.code).to.be.equal('ERR_SERVICE_FACTORY_UNDEFINED')\n  done()\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "ef0e3f22-a7da-42c4-a196-c8c38f09af8f",
+            "uuid": "1817c8b9-10df-443a-a67f-186310005c0e",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "d15ec707-861a-4d05-8bf9-bc22d26016be",
-          "eda26b77-445b-4515-92a9-ff0f85ad6b96",
-          "ef0e3f22-a7da-42c4-a196-c8c38f09af8f"
+          "ff6d47ac-6737-49cd-b100-695f15f2148c",
+          "4a9b541c-f2f9-48b4-a708-3aa6b40faf88",
+          "1817c8b9-10df-443a-a67f-186310005c0e"
         ],
         "failures": [],
         "pending": [],
@@ -375,7 +375,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "c64b6a11-36a9-47c9-8088-cda701b22b04",
+        "uuid": "bc8ee1d9-b353-4e81-9aae-e0885a88ca7c",
         "title": "controller/server/http",
         "fullFile": "/home/erik/Projects/@superhero/js.core/test/http.test.js",
         "file": "/test/http.test.js",
@@ -392,7 +392,7 @@
             "code": "const\nRequest = require('@superhero/request'),\nCore    = require('../'),\ncore    = new Core(config),\nport    = 9001\ncontext(this, { title:'config', value:config })\nrequest = new Request({ url:'http://localhost:' + port })\nserver  = core.server('http', config.routes)\nserver.on('listening', () => done())\nserver.listen(port)",
             "err": {},
             "isRoot": false,
-            "uuid": "8c6f3abc-2785-4001-a70c-ff3b00d3a4ce",
+            "uuid": "43cc14fa-300e-4fec-8798-3927db9ca535",
             "isHook": true,
             "skipped": false
           }
@@ -409,7 +409,7 @@
             "code": "server.close()",
             "err": {},
             "isRoot": false,
-            "uuid": "227cbce8-4284-4262-b0d0-9dc5f361749a",
+            "uuid": "3c080376-c2e3-43cf-8cf6-f201b53d53ae",
             "isHook": true,
             "skipped": false
           }
@@ -419,7 +419,7 @@
             "title": "testing the rest dispatcher",
             "fullTitle": "controller/server/http testing the rest dispatcher",
             "timedOut": false,
-            "duration": 17,
+            "duration": 18,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -428,7 +428,7 @@
             "code": "const result =\n{\n  get     : await request.get('/rest'),\n  post    : await request.post('/rest'),\n  put     : await request.put('/rest'),\n  delete  : await request.delete('/rest')\n}\nexpect(result.get.status).to.be.equal(501)\nexpect(result.post.status).to.be.equal(501)\nexpect(result.put.status).to.be.equal(501)\nexpect(result.delete.status).to.be.equal(501)",
             "err": {},
             "isRoot": false,
-            "uuid": "377d17f8-490b-4808-bccb-68e6ac461452",
+            "uuid": "66f9e16d-b718-4ebe-b006-948109053d3f",
             "isHook": false,
             "skipped": false
           },
@@ -445,7 +445,7 @@
             "code": "const result = await request.get('/test-raw')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('txt')",
             "err": {},
             "isRoot": false,
-            "uuid": "105f4da5-752a-4ad8-9416-ea1551f65515",
+            "uuid": "ab1d8cda-e80c-4790-9dbc-7fb50f031973",
             "isHook": false,
             "skipped": false
           },
@@ -453,7 +453,7 @@
             "title": "a json response",
             "fullTitle": "controller/server/http a json response",
             "timedOut": false,
-            "duration": 2,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -462,7 +462,7 @@
             "code": "const result = await request.get('/test-json')\nexpect(result.status).to.be.equal(200)\nexpect(result.data.foobar).to.be.equal('bazqux')",
             "err": {},
             "isRoot": false,
-            "uuid": "104bfa09-2441-4fad-8085-0c25c110f602",
+            "uuid": "b15463e2-9ec7-4dd7-a219-1c9ca9644b1c",
             "isHook": false,
             "skipped": false
           },
@@ -470,7 +470,7 @@
             "title": "a none specified endpoint should respond with a status:\"501\"",
             "fullTitle": "controller/server/http a none specified endpoint should respond with a status:\"501\"",
             "timedOut": false,
-            "duration": 1,
+            "duration": 2,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -479,7 +479,7 @@
             "code": "const result = await request.get('/test-501')\nexpect(result.status).to.be.equal(501)\nexpect(result.data).to.be.equal('Not Implemented')",
             "err": {},
             "isRoot": false,
-            "uuid": "d4fa1ff1-8933-451d-95fd-70a6ee902137",
+            "uuid": "970737d5-7b63-4616-8af4-d0e4c05044d1",
             "isHook": false,
             "skipped": false
           },
@@ -496,7 +496,7 @@
             "code": "const result = await request.get('/test-failing')\nexpect(result.status).to.be.equal(500)\nexpect(result.data).to.be.equal('Internal Server Error')",
             "err": {},
             "isRoot": false,
-            "uuid": "33cf2ae9-e992-437f-bf3c-b7c398e9769a",
+            "uuid": "106e89d1-fba9-4405-80c9-63e67a5eb5de",
             "isHook": false,
             "skipped": false
           },
@@ -513,7 +513,7 @@
             "code": "const result = await request.get('/none-existing-path')\nexpect(result.status).to.be.equal(404)\nexpect(result.data).to.be.equal('Not Found')",
             "err": {},
             "isRoot": false,
-            "uuid": "f012452d-8499-46bc-95ea-1bc4b08a2acf",
+            "uuid": "ce1ac36e-0598-4d0f-8908-e1135fa081b5",
             "isHook": false,
             "skipped": false
           },
@@ -530,7 +530,7 @@
             "code": "const result = await request.post(\n{\n  url   : '/test-route-arg-body',\n  data  : { foo:'bar' }\n})\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('bar')",
             "err": {},
             "isRoot": false,
-            "uuid": "ee50a1f1-d107-43ea-adf5-edda1ee71381",
+            "uuid": "72df1661-3231-4294-af31-ef27bddf4c0d",
             "isHook": false,
             "skipped": false
           },
@@ -547,7 +547,7 @@
             "code": "const result = await request.post('/test-route-arg-query?foo=bar')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('bar')",
             "err": {},
             "isRoot": false,
-            "uuid": "4957f040-7658-45da-9cc6-de0c2957cd39",
+            "uuid": "59bf1223-380a-4e1b-a0ac-df49302d3a69",
             "isHook": false,
             "skipped": false
           },
@@ -564,7 +564,7 @@
             "code": "const result = await request.post('/bar/test-route-arg-segment')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('bar')",
             "err": {},
             "isRoot": false,
-            "uuid": "10e1166f-7f5b-409f-be8c-8a3252d8a9e9",
+            "uuid": "53bfd09e-e4bf-47d2-bddf-f489b401ef18",
             "isHook": false,
             "skipped": false
           },
@@ -581,7 +581,7 @@
             "code": "const result = await request.post('/bar/test-route-arg-segment-by-number')\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.be.equal('bar')",
             "err": {},
             "isRoot": false,
-            "uuid": "9c4275f3-ff24-40a1-9dfe-08c57a86cd3f",
+            "uuid": "b071f190-9f30-419f-b751-d56ddf42aa5b",
             "isHook": false,
             "skipped": false
           },
@@ -589,7 +589,7 @@
             "title": "route.entity",
             "fullTitle": "controller/server/http route.entity",
             "timedOut": false,
-            "duration": 2,
+            "duration": 3,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -598,35 +598,35 @@
             "code": "const result = await request.post(\n{\n  url   : '/test-route-entity',\n  data  :\n  {\n    foo : 'foo',\n    bar : 'bar',\n    baz : 'baz'\n  }\n})\nexpect(result.status).to.be.equal(200)\nexpect(result.data).to.deep.equal(\n{\n  foo : 'foo',\n  bar : 'bar',\n  baz : 'baz'\n})",
             "err": {},
             "isRoot": false,
-            "uuid": "dadb1c3f-2f0d-4bb4-b33a-867dea530be1",
+            "uuid": "f527ba5f-a0fb-4638-904b-baf2a38e759a",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "377d17f8-490b-4808-bccb-68e6ac461452",
-          "105f4da5-752a-4ad8-9416-ea1551f65515",
-          "104bfa09-2441-4fad-8085-0c25c110f602",
-          "d4fa1ff1-8933-451d-95fd-70a6ee902137",
-          "33cf2ae9-e992-437f-bf3c-b7c398e9769a",
-          "f012452d-8499-46bc-95ea-1bc4b08a2acf",
-          "ee50a1f1-d107-43ea-adf5-edda1ee71381",
-          "4957f040-7658-45da-9cc6-de0c2957cd39",
-          "10e1166f-7f5b-409f-be8c-8a3252d8a9e9",
-          "9c4275f3-ff24-40a1-9dfe-08c57a86cd3f",
-          "dadb1c3f-2f0d-4bb4-b33a-867dea530be1"
+          "66f9e16d-b718-4ebe-b006-948109053d3f",
+          "ab1d8cda-e80c-4790-9dbc-7fb50f031973",
+          "b15463e2-9ec7-4dd7-a219-1c9ca9644b1c",
+          "970737d5-7b63-4616-8af4-d0e4c05044d1",
+          "106e89d1-fba9-4405-80c9-63e67a5eb5de",
+          "ce1ac36e-0598-4d0f-8908-e1135fa081b5",
+          "72df1661-3231-4294-af31-ef27bddf4c0d",
+          "59bf1223-380a-4e1b-a0ac-df49302d3a69",
+          "53bfd09e-e4bf-47d2-bddf-f489b401ef18",
+          "b071f190-9f30-419f-b751-d56ddf42aa5b",
+          "f527ba5f-a0fb-4638-904b-baf2a38e759a"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 31,
+        "duration": 33,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
       },
       {
-        "uuid": "e9f2793e-6a33-4699-8ac3-1428427bab44",
+        "uuid": "7cf0b6dc-d462-4622-8bb9-d4d01517e6d3",
         "title": "view/json",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
         "file": "/view/json.test.js",
@@ -642,7 +642,7 @@
             "code": "Json = require('./json')\njson = new Json()",
             "err": {},
             "isRoot": false,
-            "uuid": "31d1cb62-c13d-4c2d-91a8-ace1a6ede84c",
+            "uuid": "b9ddeab1-05a8-4958-b20a-bf97958df4fe",
             "isHook": true,
             "skipped": false
           }
@@ -651,7 +651,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "c982a0ba-ce58-4744-9c6a-d0223d70df0a",
+            "uuid": "b1db625a-c1f4-4ad2-94f2-e65b1680b2c8",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/json.test.js",
             "file": "/view/json.test.js",
@@ -672,7 +672,7 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "cc0bb53c-de65-44d3-97f0-e8b8ee4fe0a9",
+                "uuid": "6ca7001f-d026-4c69-81bf-4bfed4a2f98b",
                 "isHook": false,
                 "skipped": false
               },
@@ -690,7 +690,7 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(vm.headers['content-type']).to.be.equal('application/json')",
                 "err": {},
                 "isRoot": false,
-                "uuid": "d6b6f892-cadd-40d2-bf97-f094c2198bf3",
+                "uuid": "459c8082-e6e0-4de1-b5c2-7b3ba75c6ff3",
                 "isHook": false,
                 "skipped": false
               },
@@ -698,7 +698,7 @@
                 "title": "expected a stringified version of the `vm.body`",
                 "fullTitle": "view/json compose(vm) expected a stringified version of the `vm.body`",
                 "timedOut": false,
-                "duration": 1,
+                "duration": 0,
                 "state": "passed",
                 "speed": "fast",
                 "pass": true,
@@ -708,21 +708,21 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(json.compose(vm)).to.be.equal(JSON.stringify(vm.body))",
                 "err": {},
                 "isRoot": false,
-                "uuid": "9bb32070-b1dc-456c-bc47-6078bf49fe4c",
+                "uuid": "b6af0f29-311e-4782-8155-b145322d68b1",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "cc0bb53c-de65-44d3-97f0-e8b8ee4fe0a9",
-              "d6b6f892-cadd-40d2-bf97-f094c2198bf3",
-              "9bb32070-b1dc-456c-bc47-6078bf49fe4c"
+              "6ca7001f-d026-4c69-81bf-4bfed4a2f98b",
+              "459c8082-e6e0-4de1-b5c2-7b3ba75c6ff3",
+              "b6af0f29-311e-4782-8155-b145322d68b1"
             ],
             "failures": [],
             "pending": [],
             "skipped": [],
-            "duration": 1,
+            "duration": 0,
             "root": false,
             "rootEmpty": false,
             "_timeout": 2000
@@ -738,7 +738,7 @@
         "_timeout": 2000
       },
       {
-        "uuid": "18d342ba-9042-464c-8c4e-f0c9f8d182e9",
+        "uuid": "a941bde0-bcf6-4260-8525-417cba9012fe",
         "title": "view/raw",
         "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
         "file": "/view/raw.test.js",
@@ -754,7 +754,7 @@
             "code": "Raw = require('./raw')\nraw = new Raw()",
             "err": {},
             "isRoot": false,
-            "uuid": "2071cad9-11d7-4284-b8ff-7489bf44394e",
+            "uuid": "93c354d2-8147-4a18-a0d4-e2ace4467f5f",
             "isHook": true,
             "skipped": false
           }
@@ -763,7 +763,7 @@
         "tests": [],
         "suites": [
           {
-            "uuid": "052189bb-302c-4e77-906f-5afcbd640839",
+            "uuid": "406038b9-6ad9-4dac-ba31-387d49709891",
             "title": "compose(vm)",
             "fullFile": "/home/erik/Projects/@superhero/js.core/view/raw.test.js",
             "file": "/view/raw.test.js",
@@ -784,14 +784,14 @@
                 "code": "context(this, { title:'view model', value:vm })\nexpect(raw.compose(vm)).to.be.equal(vm.body)",
                 "err": {},
                 "isRoot": false,
-                "uuid": "feb620ae-b26a-4df6-a33b-b7db2ef4975b",
+                "uuid": "8404f82f-50f5-490c-9c44-8130e4eab56c",
                 "isHook": false,
                 "skipped": false
               }
             ],
             "suites": [],
             "passes": [
-              "feb620ae-b26a-4df6-a33b-b7db2ef4975b"
+              "8404f82f-50f5-490c-9c44-8130e4eab56c"
             ],
             "failures": [],
             "pending": [],

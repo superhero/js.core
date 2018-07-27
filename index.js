@@ -1,3 +1,7 @@
+const
+DeepMerge = require('./model/deep-merge'),
+deepmerge = new DeepMerge
+
 module.exports = class
 {
   constructor(config)
@@ -41,9 +45,13 @@ module.exports = class
     const origin = this.config.mainDirectory
 
     for(const ns in collection)
+    {
+      let path = ns
+
+      // bootstrap
       try
       {
-        const bootstrap = require(ns + '/bootstrap')
+        const bootstrap = require(`${path}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, collection[ns])
       }
       catch(err)
@@ -51,9 +59,24 @@ module.exports = class
         if(err.code !== 'MODULE_NOT_FOUND')
           throw err
 
-        const bootstrap = require(`${origin}/${ns}/bootstrap`)
+        path = `${origin}/${ns}`
+
+        const bootstrap = require(`${path}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, collection[ns])
       }
+
+      // extend config
+      try
+      {
+        const config = require(`${path}/config`)
+        deepmerge(this.config, config)
+      }
+      catch(err)
+      {
+        if(err.code !== 'MODULE_NOT_FOUND')
+          throw err
+      }
+    }
 
     return this
   }
