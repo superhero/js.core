@@ -36,9 +36,11 @@ module.exports = class
     return this._locator
   }
 
-  async bootstrap(collection)
+  async bootstrap()
   {
-    const origin = this.config.mainDirectory
+    const
+    origin      = this.config.mainDirectory,
+    collection  = this.config.bootstrap
 
     for(const ns in collection)
       try
@@ -51,7 +53,7 @@ module.exports = class
         if(err.code !== 'MODULE_NOT_FOUND')
           throw err
 
-        const bootstrap = require(origin + '/' + ns + '/bootstrap')
+        const bootstrap = require(`${origin}/${ns}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, collection[ns])
       }
 
