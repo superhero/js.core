@@ -80,9 +80,20 @@ module.exports = class
       {
         path = ns
       }
-      else
+      else if(resolve(`${this.config.mainDirectory}/${ns}/bootstrap`)
+           || resolve(`${this.config.mainDirectory}/${ns}/config`))
       {
         path = `${this.config.mainDirectory}/${ns}`
+      }
+      else
+      {
+        const
+        msg = `invalid component:"${ns}", missing expected bootstrap or config file`,
+        err = new Error(message)
+
+        err.code = 'ERR_INVALID_COMPONENT'
+
+        throw err
       }
 
       await load(path, collection[ns])
