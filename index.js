@@ -1,7 +1,3 @@
-const
-DeepMerge = require('./model/deep-merge'),
-deepmerge = new DeepMerge
-
 module.exports = class
 {
   constructor(config)
@@ -42,40 +38,54 @@ module.exports = class
 
   async bootstrap(collection)
   {
-    const origin = this.config.mainDirectory
-
-    for(const ns in collection)
+    const
+    DeepMerge = require('./model/deep-merge'),
+    deepmerge = new DeepMerge,
+    // resolves the filename and returns if the script exists or not...
+    resolve = (filename) =>
     {
-      let path = ns
-
-      // bootstrap
       try
       {
-        const bootstrap = require(`${path}/bootstrap`)
-        await bootstrap.call({ locator:this.locator }, collection[ns])
+        require.resolve(filename)
+        return true
       }
-      catch(err)
+      catch (err)
       {
-        if(err.code !== 'MODULE_NOT_FOUND')
-          throw err
-
-        path = `${origin}/${ns}`
-
-        const bootstrap = require(`${path}/bootstrap`)
-        await bootstrap.call({ locator:this.locator }, collection[ns])
+        return false
       }
-
-      // extend config
-      try
+    },
+    // load the module in a specified order
+    load = async (path, options) =>
+    {
+      if(resolve(`${path}/config`))
       {
         const config = require(`${path}/config`)
         deepmerge.merge(this.config, config)
       }
-      catch(err)
+
+      if(resolve(`${path}/bootstrap`))
       {
-        if(err.code !== 'MODULE_NOT_FOUND')
-          throw err
+        const bootstrap = require(`${path}/bootstrap`)
+        await bootstrap.call({ locator:this.locator }, options)
       }
+    }
+
+    for(const ns in collection)
+    {
+      let path
+
+      // if one or the other file exists, then the module is valid
+      if(resolve(`${ns}/bootstrap`)
+      || resolve(`${ns}/config`))
+      {
+        path = ns
+      }
+      else
+      {
+        path = `${this.config.mainDirectory}/${ns}`
+      }
+
+      await load(path, collection[ns])
     }
 
     return this
