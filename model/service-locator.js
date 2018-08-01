@@ -8,13 +8,15 @@ module.exports = class
 
   set(service, factory)
   {
-    this.factories[service] = factory
+    'create' in factory
+    ? this.factories[service] = factory.create.bind(factory)
+    : this.factories[service] = factory
   }
 
   async create(service)
   {
     if(service in this.factories)
-      return await this.factories[service].call(this)
+      return await this.factories[service](this)
 
     const error = new Error(`"${service}" does not have a specified factory`)
     error.code = 'ERR_SERVICE_FACTORY_UNDEFINED'
