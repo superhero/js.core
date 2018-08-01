@@ -8,7 +8,9 @@ module.exports = class
 
   set(service, factory)
   {
-    this.factories[service] = factory
+    'create' in factory
+    ? this.factories[service] = factory.create.bind(factory)
+    : this.factories[service] = factory
   }
 
   async create(service)
