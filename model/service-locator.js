@@ -8,8 +8,8 @@ module.exports = class
 
   set(service, factory)
   {
-    'create' in factory
-    ? this.factories[service] = factory.create.bind(factory)
+    'from' in factory
+    ? this.factories[service] = factory.from.bind(factory)
     : this.factories[service] = factory
   }
 
