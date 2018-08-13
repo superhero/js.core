@@ -1,14 +1,17 @@
-module.exports = class
+module.exports = class extends require('.')
 {
-  compose(vm)
+  write(vm)
   {
     if(!vm.headers)
       vm.headers = {}
 
     vm.headers['content-type'] = 'application/json'
 
-    return vm.pretty
+    const body = vm.pretty
     ? JSON.stringify(vm.body, null, 2)
     : JSON.stringify(vm.body)
+
+    this.out.writeHead(vm.status || 200, vm.headers)
+    this.out.end(body)
   }
 }

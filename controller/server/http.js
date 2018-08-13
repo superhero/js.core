@@ -115,11 +115,9 @@ module.exports = class
     const
     viewModel = await dispatch(),
     view      = viewModel.view || route.view || 'json',
-    View      = require(this.config.view[view]),
-    output    = await new View().compose(viewModel, route)
+    View      = require(this.config.view[view])
 
-    o.writeHead(viewModel.status || 200, viewModel.headers)
-    o.end(output)
+    await new View(o).write(viewModel, route)
   }
 
   async composeRequest(i)

@@ -1,7 +1,8 @@
-module.exports = class
+module.exports = class extends require('.')
 {
-  compose(vm)
+  write(vm)
   {
-    return vm.body
+    this.out.writeHead(vm.status || 200, vm.headers)
+    this.out.end(vm.body)
   }
 }

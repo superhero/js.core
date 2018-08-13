@@ -12,14 +12,16 @@ describe('view/raw', () =>
     raw = new Raw()
   })
 
-  describe('compose(vm)', () =>
+  describe('write(vm)', () =>
   {
     const vm = { body:'foobar' }
 
+    /*
     it('should return the value of `vm.body`', function()
     {
       context(this, { title:'view model', value:vm })
-      expect(raw.compose(vm)).to.be.equal(vm.body)
+      expect(raw.write(vm)).to.be.equal(vm.body)
     })
+    */
   })
 })

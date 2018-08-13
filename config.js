@@ -4,8 +4,9 @@ module.exports =
 
   view:
   {
-    json  : __dirname + '/view/json',
-    raw   : __dirname + '/view/raw'
+    json    : __dirname + '/view/json',
+    raw     : __dirname + '/view/raw',
+    stream  : __dirname + '/view/stream'
   },
 
   server:
