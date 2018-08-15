@@ -1,3 +1,5 @@
+const log = require('@superhero/debug').log
+
 module.exports = class
 {
   constructor(config)
@@ -61,12 +63,16 @@ module.exports = class
       {
         const config = require(`${path}/config`)
         deepmerge.merge(this.config, config)
+
+        log(`Merged config:"${path}"`)
       }
 
       if(resolve(`${path}/bootstrap`))
       {
         const bootstrap = require(`${path}/bootstrap`)
         await bootstrap.call({ locator:this.locator }, options)
+
+        log(`Bootstraped:"${path}"`)
       }
     }
 
@@ -107,10 +113,10 @@ module.exports = class
     if(type in this.config.server)
     {
       const
-      Router  = require('./controller/router'),
-      Server  = require(this.config.server[type]),
-      router  = new Router(this.config.mainDirectory, routes),
-      server  = new Server(this.config, router, this.locator)
+      Router = require('./controller/router'),
+      Server = require(this.config.server[type]),
+      router = new Router(this.config.mainDirectory, routes),
+      server = new Server(this.config, router, this.locator)
 
       return server.createServer(options)
     }
