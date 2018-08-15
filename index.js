@@ -2,7 +2,7 @@ module.exports = class
 {
   constructor(config)
   {
-    this.config = Object.assign({}, require('./config'), config)
+    this.config = Object.assign(config, require('./config'), config)
   }
 
   get locator()
