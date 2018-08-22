@@ -89,7 +89,7 @@ module.exports = class
       {
         const
         msg = `invalid component:"${ns}", missing expected bootstrap or config file`,
-        err = new Error(message)
+        err = new Error(msg)
 
         err.code = 'ERR_INVALID_COMPONENT'
 
