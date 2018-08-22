@@ -1,6 +1,6 @@
 {
   "name": "@superhero/core",
-  "version": "0.19.2",
+  "version": "0.19.5",
   "description": "Foundational core functionality to create and route http requests",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -17,8 +17,7 @@
     "test": "syntax-check && nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
-    "@superhero/debug": "1.1.4",
-    "deepmerge": "2.1.1"
+    "@superhero/debug": "1.1.4"
   },
   "devDependencies": {
     "@superhero/syntax-check": "0.0.1",
