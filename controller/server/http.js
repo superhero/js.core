@@ -122,7 +122,7 @@ module.exports = class
 
   async composeRequest(i)
   {
-    return new Promise((resolve, reject) =>
+    return new Promise((accept, reject) =>
     {
       const request =
       {
@@ -156,7 +156,7 @@ module.exports = class
               break
           }
 
-          resolve(request)
+          accept(request)
         }
         catch(error)
         {
