@@ -145,9 +145,10 @@ module.exports = class
 
             case 'application/jwt':
               const dto = jwt.decode(request.body, { complete:true })
-              request.meta = dto.header
-              request.body = dto.payload
-              request.sign = dto.signature
+              request.meta      = dto.header
+              request.body      = dto.payload
+              request.signature = dto.signature
+              request.verify    = jwt.verify.bind(null, request.body)
               break
 
             default:
