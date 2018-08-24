@@ -6,7 +6,7 @@ http        = require('http'),
 querystring = require('querystring'),
 statusCodes = require('./http/status-codes'),
 arg         = require('./http/arg'),
-jwt         = require('./http/jwt')
+jwt         = require('jsonwebtoken')
 
 module.exports = class
 {
@@ -144,7 +144,10 @@ module.exports = class
               break
 
             case 'application/jwt':
-              request.body = jwt(request.body)
+              const dto = jwt.decode(request.body, { complete:true })
+              request.meta = dto.header
+              request.body = dto.payload
+              request.sign = dto.signature
               break
 
             default:
