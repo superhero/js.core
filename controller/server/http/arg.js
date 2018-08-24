@@ -1,3 +1,5 @@
+// Used by the request mapper to be able to locate arguments in the request
+// body
 const arg = module.exports = function(request, input)
 {
   switch (typeof input)

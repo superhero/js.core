@@ -5,7 +5,8 @@ url         = require('url'),
 http        = require('http'),
 querystring = require('querystring'),
 statusCodes = require('./http/status-codes'),
-argCb       = require('./http/arg')
+arg         = require('./http/arg'),
+jwt         = require('./http/jwt')
 
 module.exports = class
 {
@@ -61,20 +62,19 @@ module.exports = class
   async findRoute(request)
   {
     const
-    input   = { path:request.url.pathname, method:request.method },
-    route   = await this.router.findRoute(input),
-    arg     = argCb.bind(route, request)
+    input = { path:request.url.pathname, method:request.method },
+    route = await this.router.findRoute(input)
 
     return Object.assign(route,
     {
-      arg,
+      arg : arg.bind(route, request),
       get entity()
       {
         if(!this._entity)
         {
           this._entity = {}
           for(const key in route.mapper)
-            this._entity[key] = arg(key)
+            this._entity[key] = arg.call(route, request, key)
         }
 
         return this._entity
@@ -143,6 +143,10 @@ module.exports = class
               request.body = JSON.parse(request.body || '{}')
               break
 
+            case 'application/jwt':
+              request.body = jwt(request.body)
+              break
+
             default:
               request.body = querystring.parse(request.body)
               break
@@ -152,6 +156,7 @@ module.exports = class
         }
         catch(error)
         {
+          this.debug.error(error)
           reject(400)
         }
       })
