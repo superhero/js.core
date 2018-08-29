@@ -2,9 +2,9 @@ const log = require('@superhero/debug').log
 
 module.exports = class
 {
-  constructor(config)
+  constructor(config = {})
   {
-    this.config = Object.assign(config, require('./config'), config)
+    this.config = Object.assign({}, require('./config'), config)
   }
 
   get locator()
@@ -94,7 +94,8 @@ module.exports = class
       else
       {
         const
-        msg = `invalid component:"${ns}", missing expected bootstrap or config file`,
+        msg = `invalid component:"${ns}" (missing expected bootstrap or config `
+            + `file) path:"${this.config.mainDirectory}"`,
         err = new Error(msg)
 
         err.code = 'ERR_INVALID_COMPONENT'

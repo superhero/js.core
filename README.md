@@ -98,7 +98,7 @@ config  = require('./config'),
 Core    = require('@superhero/core'),
 core    = new Core(config)
 
-core.server('http', config.routes).listen(80)
+core.server('http', core.config.routes).listen(80)
 ```
 
 #### `model/service.js`
