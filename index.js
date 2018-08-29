@@ -21,12 +21,17 @@ module.exports = class
     this._locator.set('config', () => this.config)
 
     for(const key in this.config.locator)
-      try
+      if(isResolvable(`${this.config.mainDirectory}/${locator[key]}`))
+      {
+        const service = require(`${this.config.mainDirectory}/${locator[key]}`)
+        this._locator.set(key, service)
+      }
+      else if(isResolvable(locator[key]))
       {
         const service = require(locator[key])
         this._locator.set(key, service)
       }
-      catch(err)
+      else
       {
         if(err.code !== 'MODULE_NOT_FOUND')
           throw err
@@ -43,36 +48,29 @@ module.exports = class
     const
     DeepMerge = require('./model/deep-merge'),
     deepmerge = new DeepMerge,
-    // resolves the filename and returns if the script exists or not...
-    resolve = (filename) =>
-    {
-      try
-      {
-        require.resolve(filename)
-        return true
-      }
-      catch (err)
-      {
-        return false
-      }
-    },
     // load the module in a specified order
-    load = async (path, options) =>
+    load =
     {
-      if(resolve(`${path}/config`))
+      modules : {},
+      mergeConfig : async (path) =>
       {
-        const config = require(`${path}/config`)
-        deepmerge.merge(this.config, config)
+        if(isResolvable(`${path}/config`))
+        {
+          const config = require(`${path}/config`)
+          deepmerge.merge(this.config, config)
 
-        log(`Merged config:"${path}"`)
-      }
-
-      if(resolve(`${path}/bootstrap`))
+          log(`Merged config:"${path}"`)
+        }
+      },
+      bootstrap : async (path) =>
       {
-        const bootstrap = require(`${path}/bootstrap`)
-        await bootstrap.call({ locator:this.locator }, options)
+        if(isResolvable(`${path}/bootstrap`))
+        {
+          const bootstrap = require(`${path}/bootstrap`)
+          await bootstrap.call({ locator:this.locator }, this.modules[path])
 
-        log(`Bootstraped:"${path}"`)
+          log(`Bootstraped:"${path}"`)
+        }
       }
     }
 
@@ -81,15 +79,16 @@ module.exports = class
       let path
 
       // if one or the other file exists, then the module is valid
-      if(resolve(`${ns}/bootstrap`)
-      || resolve(`${ns}/config`))
-      {
-        path = ns
-      }
-      else if(resolve(`${this.config.mainDirectory}/${ns}/bootstrap`)
-           || resolve(`${this.config.mainDirectory}/${ns}/config`))
+
+      if(isResolvable(`${this.config.mainDirectory}/${ns}/bootstrap`)
+      || isResolvable(`${this.config.mainDirectory}/${ns}/config`))
       {
         path = `${this.config.mainDirectory}/${ns}`
+      }
+      else if(isResolvable(`${ns}/bootstrap`)
+           || isResolvable(`${ns}/config`))
+      {
+        path = ns
       }
       else
       {
@@ -103,8 +102,17 @@ module.exports = class
         throw err
       }
 
-      await load(path, collection[ns])
+      load.modules[path] = collection[ns]
     }
+
+    // first merge the modules to prevent the bootstrap from opt out any
+    // configuration for the locator
+
+    for(const path in load.modules)
+      await load.mergeConfig(path)
+
+    for(const path in load.modules)
+      await load.bootstrap(path)
 
     return this
   }
@@ -123,5 +131,19 @@ module.exports = class
     }
 
     throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)
+  }
+}
+
+// resolves the filename and returns if the module exists or not...
+function isResolvable(filename)
+{
+  try
+  {
+    require.resolve(filename)
+    return true
+  }
+  catch (err)
+  {
+    return false
   }
 }
