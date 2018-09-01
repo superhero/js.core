@@ -67,7 +67,7 @@ module.exports = class
         if(isResolvable(`${path}/bootstrap`))
         {
           const bootstrap = require(`${path}/bootstrap`)
-          await bootstrap.call({ locator:this.locator }, this.modules[path])
+          await bootstrap.call({ locator:this.locator }, load.modules[path])
 
           log(`Bootstraped:"${path}"`)
         }
