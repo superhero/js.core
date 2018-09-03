@@ -1,6 +1,6 @@
 {
   "name": "@superhero/core",
-  "version": "0.20.1",
+  "version": "0.20.3",
   "description": "Foundational core functionality to create and route http requests",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
