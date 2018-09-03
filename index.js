@@ -111,6 +111,8 @@ module.exports = class
     for(const path in load.modules)
       await load.mergeConfig(path)
 
+    log('Merged config:', this.config)
+
     for(const path in load.modules)
       await load.bootstrap(path)
 
