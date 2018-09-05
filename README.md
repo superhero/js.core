@@ -49,6 +49,8 @@ App
 └── package.json
 ```
 
+Test string
+
 #### `package.js`
 
 ```js
