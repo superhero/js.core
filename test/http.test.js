@@ -11,12 +11,14 @@ describe('controller/server/http', async () =>
   {
     const
     Request = require('@superhero/request'),
+    Core    = require('../'),
+    core    = new Core(config),
     port    = 9001
 
     context(this, { title:'config', value:config })
 
     request = new Request({ url:'http://localhost:' + port })
-    server  = require('../').server('http', config.routes)
+    server  = core.server('http', config.routes)
 
     server.on('listening', () => done())
     server.listen(port)
@@ -76,6 +78,64 @@ describe('controller/server/http', async () =>
 
     expect(result.status).to.be.equal(404)
     expect(result.data).to.be.equal('Not Found')
+  })
+
+  it('route.arg body', async () =>
+  {
+    const result = await request.post(
+    {
+      url   : '/test-route-arg-body',
+      data  : { foo:'bar' }
+    })
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg query', async () =>
+  {
+    const result = await request.post('/test-route-arg-query?foo=bar')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg segment', async () =>
+  {
+    const result = await request.post('/bar/test-route-arg-segment')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.arg segment by number', async () =>
+  {
+    const result = await request.post('/bar/test-route-arg-segment-by-number')
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.be.equal('bar')
+  })
+
+  it('route.entity', async () =>
+  {
+    const result = await request.post(
+    {
+      url   : '/test-route-entity',
+      data  :
+      {
+        foo : 'foo',
+        bar : 'bar',
+        baz : 'baz'
+      }
+    })
+
+    expect(result.status).to.be.equal(200)
+    expect(result.data).to.deep.equal(
+    {
+      foo : 'foo',
+      bar : 'bar',
+      baz : 'baz'
+    })
   })
 
   after(() => server.close())

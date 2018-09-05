@@ -8,6 +8,14 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 
 A core module I use to bootstrap my applications. This module helps me setup a server, structure my code into a clear MVC folder structure as well as declaring routes and endpoints.
 
+## Addons
+
+Consider extending the framework with one or multiple addons, if needed:
+
+- [Core.Handlebars](http://github.com/superhero/js.core.handlebars)
+- [Core.Resource](http://github.com/superhero/js.core.resource)
+- [Core.Websocket](http://github.com/superhero/js.core.websocket)
+
 ## Install
 
 `npm install @superhero/core`
@@ -34,6 +42,8 @@ App
 ├── controller
 │   ├── foobar.js
 │   └── logger.js
+├── model
+│   └── service.js
 ├── config.js
 ├── index.js
 └── package.json
@@ -61,6 +71,10 @@ See the section: [Routing](#routing), for more information.
 ```js
 module.exports =
 {
+  locator:
+  {
+    'service_x' : 'model/service'
+  },
   routes:
   [
     {
@@ -79,9 +93,35 @@ module.exports =
 #### `index.js`
 
 ```js
-const config = module.exports.config = require('./config')
+const
+config  = require('./config'),
+Core    = require('@superhero/core'),
+core    = new Core(config)
 
-require('@superhero/core').server('http', config.routes).listen(80)
+core.server('http', core.config.routes).listen(80)
+```
+
+#### `model/service.js`
+
+```js
+module.exports = function()
+{
+  // If you need to access the "locator.load" function in the factory function
+  // you can access it through:"this.load".
+  // Not recommended to do the class definition in the factory function as done
+  // in this example, use require to simply solve any dependencies in this
+  // function.
+
+  // Simple service, designed as a demonstration placeholder for the
+  // applications business logic, such as access to a db layer
+  return new class
+  {
+    getTxt()
+    {
+      return 'bar'
+    }
+  }
+}
 ```
 
 #### `controller/foobar.js`
@@ -94,11 +134,13 @@ module.exports = class extends Dispatcher
   async dispatch()
   {
     // Building a view model that's used by the view
-    const vm =
+    const
+    service = await this.locator('service_x'),
+    vm      =
     {
-      body:
+      body :
       {
-        foo : 'bar'
+        foo : service.getTxt()
       }
     }
 
@@ -127,7 +169,7 @@ module.exports = class extends Dispatcher
 
     console.log('i', n, new Date().toISOString())
 
-    const vm = next()
+    const vm = await next()
 
     console.log('o', n, new Date().toISOString())
 

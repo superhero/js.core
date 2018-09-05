@@ -4,15 +4,18 @@ domain      = require('domain'),
 url         = require('url'),
 http        = require('http'),
 querystring = require('querystring'),
-statusCodes = require('./http/status-codes')
+statusCodes = require('./http/status-codes'),
+arg         = require('./http/arg'),
+jwt         = require('jsonwebtoken')
 
 module.exports = class
 {
-  constructor(options, router)
+  constructor(options, router, locator)
   {
-    this.config = Object.assign({ prefix:'http server:' }, options)
-    this.router = router
-    this.debug  = new Debug(this.config)
+    this.config   = Object.assign({ prefix:'http server:' }, options)
+    this.router   = router
+    this.debug    = new Debug(this.config)
+    this.locator  = locator
   }
 
   createServer()
@@ -56,13 +59,44 @@ module.exports = class
     }
   }
 
+  async findRoute(request)
+  {
+    const
+    input = { path:request.url.pathname, method:request.method },
+    route = await this.router.findRoute(input)
+
+    let _arg, _entity
+
+    return Object.assign(
+    {
+      get arg()
+      {
+        return _arg
+        ? _arg
+        : _arg = arg.bind(route, request)
+      },
+
+      get entity()
+      {
+        if(!_entity)
+        {
+          _entity = {}
+          for(const key in route.mapper)
+            _entity[key] = arg.call(route, request, key)
+        }
+
+        return _entity
+      }
+    }, route)
+  }
+
   async dispatch(i, o)
   {
     const
+    session = {},
     request = Object.freeze(await this.composeRequest(i)),
-    input   = { path:request.url.pathname, method:request.method },
-    route   = Object.freeze(await this.router.findRoute(input)),
-    session = {}
+    route   = Object.freeze(await this.findRoute(request)),
+    locator = Object.freeze(this.locator)
 
     if(!route.endpoint)
       throw 404
@@ -70,7 +104,7 @@ module.exports = class
     async function chain(Dispatcher)
     {
       const
-      dispatcher = new Dispatcher(request, route, session),
+      dispatcher = new Dispatcher(request, route, session, locator),
       viewModel  = await dispatcher.dispatch(dispatch)
 
       return viewModel
@@ -89,16 +123,14 @@ module.exports = class
     const
     viewModel = await dispatch(),
     view      = viewModel.view || route.view || 'json',
-    View      = require(this.config.view[view]),
-    output    = await new View().compose(viewModel, route)
+    View      = require(this.config.view[view])
 
-    o.writeHead(viewModel.status || 200, viewModel.headers)
-    o.end(output)
+    await new View(o).write(viewModel, route)
   }
 
   async composeRequest(i)
   {
-    return new Promise((resolve, reject) =>
+    return new Promise((accept, reject) =>
     {
       const request =
       {
@@ -119,15 +151,24 @@ module.exports = class
               request.body = JSON.parse(request.body || '{}')
               break
 
+            case 'application/jwt':
+              const dto = jwt.decode(request.body, { complete:true })
+              request.meta      = dto.header
+              request.body      = dto.payload
+              request.signature = dto.signature
+              request.verify    = jwt.verify.bind(null, request.body)
+              break
+
             default:
               request.body = querystring.parse(request.body)
               break
           }
 
-          resolve(request)
+          accept(request)
         }
         catch(error)
         {
+          this.debug.error(error)
           reject(400)
         }
       })

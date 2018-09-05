@@ -1,8 +1,8 @@
 module.exports = class
 {
-  constructor(options, routes)
+  constructor(origin, routes)
   {
-    this.config = options
+    this.origin = origin
     this.routes = routes
   }
 
@@ -59,7 +59,7 @@ module.exports = class
       if(method)
       {
         method = method instanceof RegExp
-               ? method
+               ? new RegExp(method, 'i')
                : new RegExp(`^${method}$`, 'i')
 
         if(!input.method.match(method))
@@ -84,9 +84,9 @@ module.exports = class
   composeRoute(routes)
   {
     const
-    origin  = { chain:[] },
+    initial = { chain:[] },
     extend  = this.extendRoute.bind(this),
-    route   = routes.reduce(extend, origin),
+    route   = routes.reduce(extend, initial),
     chain   = route.endpoint
               ? route.chain.concat(route.endpoint)
               : route.chain
@@ -96,17 +96,19 @@ module.exports = class
     return route
   }
 
-  extendRoute(origin, item)
+  extendRoute(initial, item)
   {
-    if(origin.endpoint)
-      return origin
+    if(initial.endpoint)
+      return initial
 
     if(item.chain)
       for(const middleware of [].concat(item.chain))
-        if(!origin.chain.includes(middleware))
-          origin.chain.push(middleware)
+        if(!initial.chain.includes(middleware))
+          initial.chain.push(middleware)
 
-    const route = Object.assign({}, origin, item, { chain:origin.chain })
+    item.args = item.args || {}
+
+    const route = Object.assign({}, initial, item, { chain:initial.chain })
     return route
   }
 
@@ -114,7 +116,7 @@ module.exports = class
   {
     try
     {
-      require.resolve(`${this.config.mainDirectory}/${dispatcher}`)
+      require.resolve(`${this.origin}/${dispatcher}`)
     }
     catch(error)
     {
@@ -125,7 +127,7 @@ module.exports = class
         throw error
     }
 
-    return require(`${this.config.mainDirectory}/${dispatcher}`)
+    return require(`${this.origin}/${dispatcher}`)
   }
 
   fetchDispatchers(dispatchers)

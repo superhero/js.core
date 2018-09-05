@@ -1,6 +1,6 @@
 {
   "name": "@superhero/core",
-  "version": "0.13.2",
+  "version": "0.20.4",
   "description": "Foundational core functionality to create and route http requests",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -11,15 +11,17 @@
     "url": "http://erik.landvall.se"
   },
   "scripts": {
-    "prepublishOnly": "npm run-script generate-doc-coverage && npm run-script generate-doc-tests",
+    "prepublishOnly": "npm test && npm run-script generate-doc-coverage && npm run-script generate-doc-tests",
     "generate-doc-coverage": "nyc report --reporter=html --report-dir=./docs/coverage",
     "generate-doc-tests": "mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index,showHooks=always",
-    "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
+    "test": "syntax-check && nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
   },
   "dependencies": {
-    "@superhero/debug": "1.1.4"
+    "@superhero/debug": "1.1.11",
+    "jsonwebtoken": "8.3.0"
   },
   "devDependencies": {
+    "@superhero/syntax-check": "0.0.1",
     "@superhero/request": "1.0.9",
     "mocha": "5.1.0",
     "mochawesome": "3.0.2",
