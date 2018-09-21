@@ -116,6 +116,10 @@ module.exports = class
     for(const path in load.modules)
       await load.bootstrap(path)
 
+    // @todo: deep freeze the config object after the bootsrap process
+    // reason being: we like to allow the bootstrap process the ability to
+    // change the configurations before the service is operational
+
     return this
   }
 
