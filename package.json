@@ -1,6 +1,6 @@
 {
   "name": "@superhero/core",
-  "version": "0.20.4",
+  "version": "0.21.0",
   "description": "Foundational core functionality to create and route http requests",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@superhero/debug": "1.1.11",
-    "jsonwebtoken": "8.3.0"
+    "jsonwebtoken": "8.3.0",
+    "cookies": "0.7.2"
   },
   "devDependencies": {
     "@superhero/syntax-check": "0.0.1",

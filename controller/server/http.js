@@ -6,7 +6,8 @@ http        = require('http'),
 querystring = require('querystring'),
 statusCodes = require('./http/status-codes'),
 arg         = require('./http/arg'),
-jwt         = require('jsonwebtoken')
+jwt         = require('jsonwebtoken'),
+Cookies     = require('cookies')
 
 module.exports = class
 {
@@ -93,7 +94,15 @@ module.exports = class
   async dispatch(i, o)
   {
     const
-    session = {},
+    session =
+    {
+      get cookies()
+      {
+        return this._cookies
+        ? this._cookies
+        : this._cookies = new Cookies(i, o)
+      }
+    },
     request = Object.freeze(await this.composeRequest(i)),
     route   = Object.freeze(await this.findRoute(request)),
     locator = Object.freeze(this.locator)
