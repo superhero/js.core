@@ -14,14 +14,23 @@ const arg = module.exports = function(request, input)
 
     case 'object':
     {
-      for(const where in input)
+      for(const where of ['body', 'query', 'segment']) //This sets the hierarchy
+      {
+        if(!input.hasOwnProperty(where)
+          continue;
+        
+        let value
         switch(where)
         {
-          case 'body'    : return request.body[ input[where] ]
-          case 'query'   : return request.url.query[ input[where] ]
-          case 'segment' : return arg.call(this, request, input[where])
+          case 'body'    : value = request.body[ input[where] ];          break
+          case 'query'   : value = request.url.query[ input[where] ];     break
+          case 'segment' : value = arg.call(this, request, input[where]); break
         }
 
+        if(value !== undefined)
+          return value
+      }
+      
       const
       msg = `unexpected mapper object supplied in the route`,
       err = new Error(msg)
