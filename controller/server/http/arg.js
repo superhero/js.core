@@ -14,12 +14,10 @@ const arg = module.exports = function(request, input)
 
     case 'object':
     {
-      for(const where of ['body', 'query', 'segment']) //This sets the hierarchy
+      for(const where in input)
       {
-        if(!input.hasOwnProperty(where)
-          continue;
-        
         let value
+        
         switch(where)
         {
           case 'body'    : value = request.body[ input[where] ];          break
