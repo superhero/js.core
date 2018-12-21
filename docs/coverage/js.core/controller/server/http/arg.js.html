@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">57.89% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>16/24</span>
+        <span class='fraction'>11/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/11</span>
+        <span class='fraction'>7/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">61.9% </span>
+        <span class="strong">57.89% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>13/21</span>
+        <span class='fraction'>11/19</span>
       </div>
     </div>
     <p class="quiet">
@@ -92,11 +92,7 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,8 +110,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -123,16 +117,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,25 +156,21 @@ const arg = module.exports = function(request, input)
     {
       for(const where in input)
       {
-        let value
-        
         switch(where)
         {
-          case 'body'    : value = request.body[ input[where] ];          break
-          case 'query'   : value = request.url.query[ input[where] ];     break
-          case 'segment' : value = arg.call(this, request, input[where]); break
+          case 'body'    : return request.body[ input[where] ]
+          case 'query'   : return request.url.query[ input[where] ]
+          case 'segment' : return arg.call(this, request, input[where])
+&nbsp;
+<span class="branch-3 cbranch-no" title="branch not covered" >          default:</span>
+            const
+            msg = <span class="cstat-no" title="statement not covered" >`unexpected mapper object supplied in the route`,</span>
+            err = <span class="cstat-no" title="statement not covered" >new Error(msg)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            err.code = 'ERR_ARG_UNEXPECTED_OBJ'</span>
+<span class="cstat-no" title="statement not covered" >            throw err</span>
         }
-&nbsp;
-        <span class="missing-if-branch" title="else path not taken" >E</span>if(value !== undefined)
-          return value
       }
-      
-      const
-      msg = <span class="cstat-no" title="statement not covered" >`unexpected mapper object supplied in the route`,</span>
-      err = <span class="cstat-no" title="statement not covered" >new Error(msg)</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      err.code = 'ERR_ARG_UNEXPECTED_OBJ'</span>
-<span class="cstat-no" title="statement not covered" >      throw err</span>
     }
 &nbsp;
 <span class="branch-3 cbranch-no" title="branch not covered" >    default:</span>
@@ -202,7 +190,7 @@ const arg = module.exports = function(request, input)
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Dec 12 2018 17:44:16 GMT+0100 (CET)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Dec 21 2018 15:58:52 GMT+0100 (CET)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>
