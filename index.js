@@ -1,155 +1,76 @@
-const log = require('@superhero/debug').log
+// TODO this should be placed elsewhere, and handled differetn
+process.on('unhandledRejection', (...args) => console.log('unhandledRejection', ...args))
 
-module.exports = class
+const Locator = require('./locator')
+
+class Core
 {
-  constructor(config = {})
+  constructor(locator)
   {
-    this.config = Object.assign({}, require('./config'), config)
+    this.locator = locator
   }
 
-  get locator()
-  {
-    if(this._locator)
-      return this._locator
-
-    const
-    origin  = this.config.mainDirectory,
-    locator = this.config.locator,
-    Locator = require('./model/service-locator')
-
-    this._locator = new Locator
-    this._locator.set('config', () => this.config)
-
-    for(const key in this.config.locator)
-      if(isResolvable(`${this.config.mainDirectory}/${locator[key]}`))
-      {
-        const service = require(`${this.config.mainDirectory}/${locator[key]}`)
-        this._locator.set(key, service)
-      }
-      else if(isResolvable(locator[key]))
-      {
-        const service = require(locator[key])
-        this._locator.set(key, service)
-      }
-      else
-      {
-        if(err.code !== 'MODULE_NOT_FOUND')
-          throw err
-
-        const service = require(origin + '/' + locator[key])
-        this._locator.set(key, service)
-      }
-
-    return this._locator
-  }
-
-  async bootstrap(collection)
+  add(component)
   {
     const
-    DeepMerge = require('./model/deep-merge'),
-    deepmerge = new DeepMerge,
-    // load the module in a specified order
-    load =
+    configuration = this.locator.locate('configuration'),
+    path          = this.locator.locate('path'),
+    // component paths
+    localPath     = `${path.main.dirname}/${component}/config`,
+    dependentPath = `${component}/config`,
+    corePath      = `${__dirname}/${component}/config`
+
+    if(path.isResolvable(localPath))
     {
-      modules : {},
-      mergeConfig : async (path) =>
-      {
-        if(isResolvable(`${path}/config`))
-        {
-          const config = require(`${path}/config`)
-          deepmerge.merge(this.config, config)
-
-          log(`Merged config:"${path}"`)
-        }
-      },
-      bootstrap : async (path) =>
-      {
-        if(isResolvable(`${path}/bootstrap`))
-        {
-          const bootstrap = require(`${path}/bootstrap`)
-          await bootstrap.call({ locator:this.locator }, load.modules[path])
-
-          log(`Bootstraped:"${path}"`)
-        }
-      }
+      const config = require(localPath)
+      configuration.extend(config)
     }
-
-    for(const ns in collection)
+    else if(path.isResolvable(dependentPath))
     {
-      let path
+      const config = require(dependentPath)
+      configuration.extend(config)
+    }
+    else if(path.isResolvable(corePath))
+    {
+      const config = require(corePath)
+      configuration.extend(config)
+    }
+    else
+    {
+      throw new Error('gtfo...')
+    }
+  }
 
-      // if one or the other file exists, then the module is valid
+  load()
+  {
+    const
+    configuration = this.locator.locate('configuration'),
+    path          = this.locator.locate('path')
 
-      if(isResolvable(`${this.config.mainDirectory}/${ns}/bootstrap`)
-      || isResolvable(`${this.config.mainDirectory}/${ns}/config`))
-      {
-        path = `${this.config.mainDirectory}/${ns}`
-      }
-      else if(isResolvable(`${ns}/bootstrap`)
-           || isResolvable(`${ns}/config`))
-      {
-        path = ns
-      }
-      else
+    for(const name in configuration.config.locator)
+    {
+      const factoryPath = `${configuration.config.locator[name]}/factory`
+
+      if(path.isResolvable(factoryPath))
       {
         const
-        msg = `invalid component:"${ns}" (missing expected bootstrap or config `
-            + `file) path:"${this.config.mainDirectory}"`,
-        err = new Error(msg)
+        Factory = require(factoryPath),
+        factory = new Factory(this.locator),
+        service = factory.create()
 
-        err.code = 'ERR_INVALID_COMPONENT'
-
-        throw err
+        configuration.locator.set(name, service)
       }
-
-      load.modules[path] = collection[ns]
+      else
+      {
+        throw new Error('gtfo...')
+      }
     }
-
-    // first merge the modules to prevent the bootstrap from opt out any
-    // configuration for the locator
-
-    for(const path in load.modules)
-      await load.mergeConfig(path)
-
-    log('Merged config:', this.config)
-
-    for(const path in load.modules)
-      await load.bootstrap(path)
-
-    // @todo: deep freeze the config object after the bootsrap process
-    // reason being: we like to allow the bootstrap process the ability to
-    // change the configurations before the service is operational
-
-    return this
   }
 
-  server(type, routes, options)
+  locate(service)
   {
-    if(type in this.config.server)
-    {
-      const
-      Router = require('./controller/router'),
-      Server = require(this.config.server[type]),
-      router = new Router(this.config.mainDirectory, routes),
-      server = new Server(this.config, router, this.locator)
-
-      return server.createServer(options)
-    }
-
-    throw new Error(`Server:"${type}" is unspecified, was it bootstrapped?`)
+    return this.locator.locate(service)
   }
 }
 
-// resolves the filename and returns if the module exists or not...
-function isResolvable(filename)
-{
-  try
-  {
-    require.resolve(filename)
-    return true
-  }
-  catch (err)
-  {
-    return false
-  }
-}
+module.exports = Core
