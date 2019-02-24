@@ -6,7 +6,7 @@ class Path
   {
     const
     filename  = require.main.filename,
-    dirname   = path.dirname(filename),
+    dirname   = path.dirname(filename)
 
     this.main = { filename, dirname }
   }

@@ -1,8 +1,6 @@
-const Events = require('events')
-
-class EventBus extends Events
+class Process
 {
 
 }
 
-module.exports = EventBus
+module.exports = Process

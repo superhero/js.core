@@ -1,4 +1,4 @@
-class ServiceUndefinedError extends require('error')
+class ServiceUndefinedError extends ReferenceError
 {
   constructor(...a)
   {

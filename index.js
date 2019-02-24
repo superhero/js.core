@@ -1,8 +1,6 @@
 // TODO this should be placed elsewhere, and handled differetn
 process.on('unhandledRejection', (...args) => console.log('unhandledRejection', ...args))
 
-const Locator = require('./locator')
-
 class Core
 {
   constructor(locator)
@@ -37,7 +35,7 @@ class Core
     }
     else
     {
-      throw new Error('gtfo...')
+      throw new Error(`could not add component "${component}"`)
     }
   }
 
@@ -49,20 +47,20 @@ class Core
 
     for(const name in configuration.config.locator)
     {
-      const factoryPath = `${configuration.config.locator[name]}/factory`
+      const locatorPath = `${configuration.config.locator[name]}/locator`
 
-      if(path.isResolvable(factoryPath))
+      if(path.isResolvable(locatorPath))
       {
         const
-        Factory = require(factoryPath),
-        factory = new Factory(this.locator),
-        service = factory.create()
+        Locator = require(locatorPath),
+        locator = new Locator(this.locator),
+        service = locator.locate()
 
-        configuration.locator.set(name, service)
+        this.locator.set(name, service)
       }
       else
       {
-        throw new Error('gtfo...')
+        throw new Error(`locator could not be found for ${name}`)
       }
     }
   }

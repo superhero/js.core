@@ -1,12 +1,12 @@
 const ServerSessionBuilder = require('.')
 
-class ServerSessionBuilderFactory
+class ServerSessionBuilderLocator
 {
-  create()
+  locate()
   {
     const serverSessionBuilder = new ServerSessionBuilder
     return serverSessionBuilder
   }
 }
 
-module.exports = ServerSessionBuilderFactory
+module.exports = ServerSessionBuilderLocator

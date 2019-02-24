@@ -2,14 +2,14 @@ const
 ObserverContractNotHoneredError = require('./error/observer-contract-not-honered'),
 EventBus = require('.')
 
-class EventBusFactory
+class EventBusLocator
 {
   constructor(locator)
   {
     this.locator = locator
   }
 
-  create()
+  locate()
   {
     const
     configuration = this.locator.locate('configuration'),
@@ -36,4 +36,4 @@ class EventBusFactory
   }
 }
 
-module.exports = EventBusFactory
+module.exports = EventBusLocator

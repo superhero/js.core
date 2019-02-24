@@ -2,7 +2,7 @@ module.exports =
 {
   locator:
   {
-    'eventbus' : __dirname + '/eventbus'
+    'eventbus' : __dirname
   },
   eventbus:
   {

@@ -1,13 +1,13 @@
 const ServerRouteBuilder = require('.')
 
-class ServerRouteBuilderFactory
+class ServerRouteBuilderLocator
 {
   constructor(locator)
   {
     this.locator = locator
   }
 
-  create()
+  locate()
   {
     const
     deepfreeze          = this.locator.locate('deepfreeze'),
@@ -19,4 +19,4 @@ class ServerRouteBuilderFactory
   }
 }
 
-module.exports = ServerRouteBuilderFactory
+module.exports = ServerRouteBuilderLocator

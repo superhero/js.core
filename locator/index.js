@@ -17,7 +17,7 @@ class Locator
     if(service in this.services)
       return this.services[service]
 
-    throw new ServiceUndefinedError(`"${service}" does not have a specified factory`)
+    throw new ServiceUndefinedError(`"${service}" can not be located`)
   }
 }
 

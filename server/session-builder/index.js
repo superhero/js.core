@@ -8,7 +8,7 @@ class ServerSessionBuilder
 
     const session =
     {
-      set cookies()
+      set cookies(value)
       {
         throw new Error('"cookies" can not be set on session, protected member')
       },

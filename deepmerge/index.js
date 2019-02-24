@@ -9,7 +9,7 @@ class DeepMerge
     : result
   }
 
-  _merge()
+  _merge(a, b)
   {
     if(typeof a !== 'object' || a === null)
       return b

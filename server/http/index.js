@@ -19,17 +19,26 @@ class ServerHttp
     this.server.listen(...args)
   }
 
-  async dispatch(in, out)
+  close()
+  {
+    return new Promise((accept, reject) =>
+      this.server.close((error) =>
+        error
+        ? reject(error)
+        : accept()))
+  }
+
+  async dispatch(input, output)
   {
     const
     routes    = this.locator.locate('configuration').config.server.http.routes,
-    session   = await this.sessionBuilder.build(in, out),
-    request   = await this.requestBuilder.build(in),
+    session   = await this.sessionBuilder.build(input, output),
+    request   = await this.requestBuilder.build(input),
     route     = await this.routeBuilder.build(routes, request, session, this.locator),
     viewModel = await this.dispatcherChain.dispatch(),
     viewType  = viewModel.view || route.view || 'view.json',
     View      = this.locator.locate(viewType),
-    view      = new View(out)
+    view      = new View(output)
 
     await view.write(viewModel, route)
   }

@@ -1,13 +1,13 @@
 const ServerDispatcherChain = require('.')
 
-class ServerDispatcherChainFactory
+class ServerDispatcherChainLocator
 {
   constructor(locator)
   {
     this.locator = locator
   }
 
-  create()
+  locate()
   {
     const
     path            = this.locator.locate('path'),
@@ -17,4 +17,4 @@ class ServerDispatcherChainFactory
   }
 }
 
-module.exports = ServerDispatcherChainFactory
+module.exports = ServerDispatcherChainLocator

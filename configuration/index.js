@@ -9,9 +9,18 @@ class Configuration
 
   extend(config)
   {
-    const copy  = this.deepcopy.copy(config)
+    const copy  = this.deepcopy.fast(config)
     this.config = this.deepmerge.merge(this.config, copy)
   }
+
+  /*
+  find(path)
+  {
+    const paths = path.split('.')
+    // reduce
+    // this.config.
+  }
+  */
 }
 
 module.exports = Configuration

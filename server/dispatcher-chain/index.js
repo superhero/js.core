@@ -5,7 +5,7 @@ class ServerDispatcherChain
     this.path = path
   }
 
-  async function chain(i, dispatcher)
+  async chain(i, dispatcher)
   {
     const
     next      = this.dispatch.bind(this, i),
@@ -14,7 +14,7 @@ class ServerDispatcherChain
     return viewModel
   }
 
-  async function dispatch(i = 0)
+  async dispatch(i = 0)
   {
     if(i < route.dispatchers.length)
     {

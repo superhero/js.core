@@ -9,31 +9,31 @@ class ServerRequestBuilder
     this.deepfreeze = deepfreeze
   }
 
-  async build(in)
+  async build(input)
   {
     const
-    parsedUrl = url.parse(in.url, true),
+    parsedUrl = url.parse(input.url, true),
     request   =
     {
-      headers : in.headers,
-      method  : in.method,
+      headers : input.headers,
+      method  : input.method,
       url     : parsedUrl.pathname,
       query   : parsedUrl.query,
-      body    : await this.fetchBody(in)
+      body    : await this.fetchBody(input)
     }
 
     return deepfreeze.freeze(request)
   }
 
-  async fetchBody(in)
+  async fetchBody(input)
   {
     return new Promise((accept, reject) =>
     {
       let body = ''
 
-      in.on('error',  reject)
-      in.on('data',   (data)  => body += data)
-      in.on('end',    ()      => this.parseBody(in.headers['content-type'], body).then(accept).catch(reject))
+      input.on('error',  reject)
+      input.on('data',   (data)  => body += data)
+      input.on('end',    ()      => this.parseBody(input.headers['content-type'], body).then(accept).catch(reject))
     })
   }
 
