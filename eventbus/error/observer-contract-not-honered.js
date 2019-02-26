@@ -1,4 +1,4 @@
-class ObserverContractNotHoneredError extends require('error')
+class ObserverContractNotHoneredError extends Error
 {
   constructor(...a)
   {

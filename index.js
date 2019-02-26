@@ -11,8 +11,8 @@ class Core
   add(component)
   {
     const
-    configuration = this.locator.locate('configuration'),
-    path          = this.locator.locate('path'),
+    configuration = this.locate('configuration'),
+    path          = this.locate('path'),
     // component paths
     localPath     = `${path.main.dirname}/${component}/config`,
     dependentPath = `${component}/config`,
@@ -41,27 +41,30 @@ class Core
 
   load()
   {
+    const configuration = this.locator.locate('configuration')
+    for(const name in configuration.config.locator)
+      this.loadService(name)
+  }
+
+  loadService(name)
+  {
     const
     configuration = this.locator.locate('configuration'),
-    path          = this.locator.locate('path')
+    path          = this.locator.locate('path'),
+    locatorPath   = `${configuration.config.locator[name]}/locator`
 
-    for(const name in configuration.config.locator)
+    if(path.isResolvable(locatorPath))
     {
-      const locatorPath = `${configuration.config.locator[name]}/locator`
+      const
+      Locator = require(locatorPath),
+      locator = new Locator(this.locator),
+      service = locator.locate()
 
-      if(path.isResolvable(locatorPath))
-      {
-        const
-        Locator = require(locatorPath),
-        locator = new Locator(this.locator),
-        service = locator.locate()
-
-        this.locator.set(name, service)
-      }
-      else
-      {
-        throw new Error(`locator could not be found for ${name}`)
-      }
+      this.locator.set(name, service)
+    }
+    else
+    {
+      throw new Error(`locator could not be found for ${name}`)
     }
   }
 

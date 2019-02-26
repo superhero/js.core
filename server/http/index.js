@@ -3,24 +3,26 @@ class ServerHttp
   /**
    * @param {http.Server} server
    */
-  constructor(server, deepfreeze, requestBuilder, sessionBuilder, routeBuilder, dispatcherChain, locator)
+  constructor(server, requestBuilder, sessionBuilder, routeBuilder, dispatcherCollectionBuilder, dispatcherChain, locator)
   {
-    this.server           = server
-    this.deepfreeze       = deepfreeze
-    this.sessionBuilder   = sessionBuilder
-    this.requestBuilder   = requestBuilder
-    this.routeBuilder     = routeBuilder
-    this.dispatcherChain  = dispatcherChain
-    this.locator          = locator
+    this.server                       = server
+    this.requestBuilder               = requestBuilder
+    this.sessionBuilder               = sessionBuilder
+    this.routeBuilder                 = routeBuilder
+    this.dispatcherCollectionBuilder  = dispatcherCollectionBuilder
+    this.dispatcherChain              = dispatcherChain
+    this.locator                      = locator
   }
 
   listen(...args)
   {
+    require('@superhero/debug').log('dispatcher', '1')
     this.server.listen(...args)
   }
 
   close()
   {
+    require('@superhero/debug').log('dispatcher', 'close')
     return new Promise((accept, reject) =>
       this.server.close((error) =>
         error
@@ -30,17 +32,18 @@ class ServerHttp
 
   async dispatch(input, output)
   {
+    require('@superhero/debug').log('dispatcher', '2')
     const
-    routes    = this.locator.locate('configuration').config.server.http.routes,
-    session   = await this.sessionBuilder.build(input, output),
-    request   = await this.requestBuilder.build(input),
-    route     = await this.routeBuilder.build(routes, request, session, this.locator),
-    viewModel = await this.dispatcherChain.dispatch(),
-    viewType  = viewModel.view || route.view || 'view.json',
-    View      = this.locator.locate(viewType),
-    view      = new View(output)
+    routes      = this.locator.locate('configuration').find('server.http.routes'),
+    session     = await this.sessionBuilder.build(input, output),
+    request     = await this.requestBuilder.build(input),
+    route       = await this.routeBuilder.build(routes, request, session),
+    dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session),
+    viewModel   = await this.dispatcherChain.dispatch(dispatchers),
+    viewType    = viewModel.view || route.view || 'view/json',
+    view        = this.locator.locate(viewType)
 
-    await view.write(viewModel, route)
+    await view.write(output, viewModel, route)
   }
 }
 

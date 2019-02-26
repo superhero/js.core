@@ -10,17 +10,19 @@ class ServerHttpLocator
   locate()
   {
     const
-    configuration   = this.locator.locate('configuration'),
-    server          = require('http').createServer(configuration.config.server.http.options),
-    deepfreeze      = this.locator.locate('deepfreeze'),
-    requestBuilder  = this.locator.locate('server.request-builder'),
-    sessionFactory  = this.locator.locate('server.session-builder'),
-    routeBuilder    = this.locator.locate('server.route-builder'),
-    dispatcherChain = this.locator.locate('server.dispatcher-chain'),
-    httpServer      = new ServerHttp( server, deepfreeze, requestBuilder, sessionFactory, routeBuilder,
-                                      dispatcherChain, this.locator )
+    configuration               = this.locator.locate('configuration'),
+    serverOptions               = configuration.find('server.http.options'),
+    server                      = require('http').createServer(serverOptions),
+    requestBuilder              = this.locator.locate('server/request/builder'),
+    sessionFactory              = this.locator.locate('server/session/builder'),
+    routeBuilder                = this.locator.locate('server/route/builder'),
+    dispatcherCollectionBuilder = this.locator.locate('server/dispatcher/collection/builder'),
+    dispatcherChain             = this.locator.locate('server/dispatcher/chain'),
+    httpServer                  = new ServerHttp(server, requestBuilder, sessionFactory, routeBuilder,
+                                                 dispatcherCollectionBuilder, dispatcherChain, this.locator)
 
-    server.timeout = configuration.config.server.http.timeout
+    server.timeout = configuration.find('server.http.timeout')
+    server.on('request', httpServer.dispatch.bind(httpServer))
 
     return httpServer
   }

@@ -1,9 +1,10 @@
 class Configuration
 {
-  constructor(deepcopy, deepmerge)
+  constructor(deepcopy, deepmerge, deepfind)
   {
     this.deepcopy   = deepcopy
     this.deepmerge  = deepmerge
+    this.deepfind   = deepfind
     this.config     = {}
   }
 
@@ -13,14 +14,10 @@ class Configuration
     this.config = this.deepmerge.merge(this.config, copy)
   }
 
-  /*
   find(path)
   {
-    const paths = path.split('.')
-    // reduce
-    // this.config.
+    return this.deepfind.find(path, this.config)
   }
-  */
 }
 
 module.exports = Configuration

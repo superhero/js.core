@@ -12,14 +12,16 @@ class EventBusLocator
   locate()
   {
     const
-    configuration = this.locator.locate('configuration'),
-    path          = this.locator.locate('path'),
-    eventbus      = new EventBus(configuration.config.eventbus.options)
+    configuration   = this.locator.locate('configuration'),
+    eventbusOptions = configuration.find('eventbus.options'),
+    observers       = configuration.find('eventbus.observers'),
+    path            = this.locator.locate('path'),
+    eventbus        = new EventBus(eventbusOptions)
 
-    for(const event in configuration.config.eventbus.observers)
+    for(const event in observers)
     {
       const
-      serviceName = configuration.config.eventbus.observers[event],
+      serviceName = observers[event],
       service     = this.locator.locate(serviceName)
 
       if(typeof service.observe !== 'functions')

@@ -2,16 +2,15 @@ module.exports =
 {
   locator:
   {
-    'server/http' : __dirname
+    'server/dispatcher/chain' : __dirname
   },
   server:
   {
-    http:
+    dispatcher:
     {
-      timeout: 4e3,
-      options:
+      chain:
       {
-
+        
       }
     }
   }
