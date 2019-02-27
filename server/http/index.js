@@ -1,3 +1,5 @@
+const ServerError = require('../')
+
 class ServerHttp
 {
   /**
@@ -30,21 +32,36 @@ class ServerHttp
 
   async dispatch(input, output)
   {
-    const
-    routes      = this.locator.locate('configuration').find('server.http.routes'),
-    session     = await this.sessionBuilder.build(input, output),
-    request     = await this.requestBuilder.build(input),
-    route       = await this.routeBuilder.build(routes, request, session),
-    viewModel   = this.createViewModel(),
-    dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+    try
+    {
+      const
+      routes      = this.locator.locate('configuration').find('server.http.routes'),
+      session     = await this.sessionBuilder.build(input, output),
+      request     = await this.requestBuilder.build(input),
+      route       = await this.routeBuilder.build(routes, request, session),
+      viewModel   = this.createViewModel(),
+      dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
 
-    await this.dispatcherChain.dispatch(dispatchers)
+      await this.dispatcherChain.dispatch(dispatchers)
 
-    const
-    viewType    = viewModel.view || route.view || 'view/json',
-    view        = this.locator.locate(viewType)
+      const
+      viewType    = viewModel.view || route.view || 'view/json',
+      view        = this.locator.locate(viewType)
 
-    await view.write(output, viewModel, route)
+      await view.write(output, viewModel, route)
+    }
+    catch(error)
+    {
+      if(error instanceof ServerError)
+      {
+        output.writeHead(error.code)
+        output.end(error.message)
+      }
+      else
+      {
+        throw error
+      }
+    }
   }
 
   createViewModel()

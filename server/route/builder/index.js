@@ -13,6 +13,8 @@ class ServerRouteBuilder
     validRoutes = this.fetchValidRoutes(routes, request),
     route       = this.deepmerge.merge({}, ...validRoutes)
 
+    // TODO validate that the route has an endpoint
+
     route.dto = this.composeDto(request, route.dto)
 
     return route
@@ -20,20 +22,25 @@ class ServerRouteBuilder
 
   fetchValidRoutes(routes, request)
   {
-    const output = []
+    const validRoutes = []
     for(const name in routes)
     {
       const
-      action = routes[name].action && new RegExp(`^${routes[name].action}$`),
-      method = routes[name].method && new RegExp(`^${routes[name].method}$`, 'i')
+      route  = routes[name],
+      action = route.action && new RegExp(`^${route.action}$`),
+      method = route.method && new RegExp(`^${route.method}$`, 'i')
 
       if(request.url    .match(action)
       && request.method .match(method))
       {
-        output.push(routes[name])
+        validRoutes.push(route)
+
+        // once we found an endpoint, the route is completed
+        if(route.endpoint)
+          break
       }
     }
-    return output
+    return validRoutes
   }
 
   composeDto(request, map)

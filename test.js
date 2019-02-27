@@ -69,7 +69,7 @@ describe('Core', () =>
     expect(response.data.dto).to.deep.equal({})
   })
 
-  it('testing route "baz"', async function()
+  it('testing route "baz" with dto', async function()
   {
     const configuration = core.locate('configuration')
     context(this, { title:'route', value:configuration.config.server.http.routes.baz })
