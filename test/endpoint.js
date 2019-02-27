@@ -4,9 +4,8 @@ class TestEndpoint extends Dispatcher
 {
   dispatch()
   {
-    require('@superhero/debug').log('1')
-    const vm = { foo:'bar', dto:this.route.dto }
-    return vm
+    this.viewModel.body.foo = 'foo'
+    this.viewModel.body.dto = this.route.dto
   }
 }
 

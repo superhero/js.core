@@ -2,12 +2,13 @@ const NotImplementedError = require('./error/not-implemented')
 
 class ServerDispatcher
 {
-  constructor(route, request, session, locator)
+  constructor(route, request, session, locator, viewModel)
   {
-    this.route   = route
-    this.request = request
-    this.session = session
-    this.locator = locator
+    this.route      = route
+    this.request    = request
+    this.session    = session
+    this.locator    = locator
+    this.viewModel  = viewModel
   }
 
   dispatch()

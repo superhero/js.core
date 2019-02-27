@@ -1,14 +1,11 @@
-const Dispatcher = require('../server/dispatcher')
+const Dispatcher = require('../../server/dispatcher')
 
 class TestMiddlewareOne extends Dispatcher
 {
-  dispatch(next)
+  async dispatch(next)
   {
-    require('@superhero/debug').log('2')
-    const vm = await next()
-    vm.foo = 'baz'
-
-    return vm
+    await next()
+    this.viewModel.body.foo = 'bar'
   }
 }
 

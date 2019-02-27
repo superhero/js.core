@@ -9,7 +9,7 @@ module.exports =
         'test-foo':
         {
           action  : '/test/foo',
-          endpoint: 'test/endpoint'
+          endpoint: 'test/endpoint',
         },
         'test-bar':
         {

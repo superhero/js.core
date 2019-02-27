@@ -9,7 +9,7 @@ describe('Core', () =>
 
   let core
 
-  before(() =>
+  before(async () =>
   {
     const
     CoreFactory = require('./factory'),
@@ -17,12 +17,14 @@ describe('Core', () =>
 
     core = coreFactory.create()
 
+    core.add('bootstrap')
     core.add('console')
     core.add('deepcopy')
     core.add('deepfind')
     core.add('deepfreeze')
     core.add('deepmerge')
     core.add('eventbus')
+    core.add('eventbus/bootstrap')
     core.add('path')
     core.add('process')
     core.add('server/dispatcher/chain')
@@ -34,10 +36,12 @@ describe('Core', () =>
     core.add('view/json')
     core.add('view/text')
     core.add('test')
+    core.add('test/observer/foobar')
 
     core.load()
 
     core.locate('path').main.dirname = __dirname
+    await core.locate('bootstrap').bootstrap()
     core.locate('server/http').listen(9001)
   })
 
@@ -48,9 +52,43 @@ describe('Core', () =>
 
   it('testing route "foo"', async function()
   {
-    context(this, { title:'route', value:config.server.http.routes.foo })
+    const configuration = core.locate('configuration')
+    context(this, { title:'route', value:configuration.config.server.http.routes.foo })
     const response = await request.get('http://localhost:9001/test/foo')
-    require('@superhero/debug').log(response)
     expect(response.data.foo).to.be.equal('foo')
+    expect(response.data.dto).to.deep.equal({})
+  })
+
+  it('testing route "bar"', async function()
+  {
+    const configuration = core.locate('configuration')
+    context(this, { title:'route', value:configuration.config.server.http.routes.bar })
+    const response = await request.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')
+    expect(response.data.foo).to.be.equal('bar')
+    expect(response.data.baz).to.be.equal('qux')
+    expect(response.data.dto).to.deep.equal({})
+  })
+
+  it('testing route "baz"', async function()
+  {
+    const configuration = core.locate('configuration')
+    context(this, { title:'route', value:configuration.config.server.http.routes.baz })
+    const response = await request.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')
+    expect(response.data.foo).to.be.equal('bar')
+    expect(response.data.baz).to.be.equal('qux')
+    expect(response.data.dto).to.deep.equal({ foo:'foobar', bar:'bazqux' })
+  })
+
+  it('testing the eventbus "foobar"', function(done)
+  {
+    const configuration = core.locate('configuration')
+    context(this, { title:'eventbus.observers', value:configuration.config.eventbus.observers })
+    const eventbus = core.locate('eventbus')
+    eventbus.on('foobar.received', (event) =>
+    {
+      expect(event.data).to.be.equal('bazqux')
+      done()
+    })
+    eventbus.emit('foobar', 'bazqux')
   })
 })

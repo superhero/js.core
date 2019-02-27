@@ -6,23 +6,23 @@ class ServerDispatcherCollectionBuilder
     this.locator  = locator
   }
 
-  build(route, request, session)
+  build(route, request, session, viewModel)
   {
     const dispatchers = []
 
     for(const i in route.chain)
     {
-      const dispatcher = this.createDispatcher(route.chain[i], route, request, session)
+      const dispatcher = this.createDispatcher(route.chain[i], route, request, session, viewModel)
       dispatchers.push(dispatcher)
     }
 
-    const endpoint = this.createDispatcher(route.endpoint, route, request, session)
+    const endpoint = this.createDispatcher(route.endpoint, route, request, session, viewModel)
     dispatchers.push(endpoint)
 
     return dispatchers
   }
 
-  createDispatcher(pathname, route, request, session)
+  createDispatcher(pathname, route, request, session, viewModel)
   {
     pathname = `${this.path.main.dirname}/${pathname}`
 
@@ -30,7 +30,7 @@ class ServerDispatcherCollectionBuilder
     {
       const
       Dispatcher  = require(pathname),
-      dispatcher  = new Dispatcher(route, request, session, this.locator)
+      dispatcher  = new Dispatcher(route, request, session, this.locator, viewModel)
 
       if(typeof dispatcher.dispatch !== 'function')
       {

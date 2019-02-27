@@ -1,17 +1,14 @@
 class ViewJson
 {
-  write(output, vm, route)
+  write(output, viewModel, route)
   {
-    if(!vm.headers)
-      vm.headers = {}
+    viewModel.headers['content-type'] = 'application/json'
 
-    vm.headers['content-type'] = 'application/json'
+    const body = viewModel.meta.pretty || route.pretty
+    ? JSON.stringify(viewModel.body, null, 2)
+    : JSON.stringify(viewModel.body)
 
-    const body = vm.pretty || route.pretty
-    ? JSON.stringify(vm.body, null, 2)
-    : JSON.stringify(vm.body)
-
-    output.writeHead(vm.status || 200, vm.headers)
+    output.writeHead(viewModel.meta.status || 200, viewModel.headers)
     output.end(body)
   }
 }

@@ -1,14 +1,11 @@
 class ViewText
 {
-  write(output, vm)
+  write(output, viewModel)
   {
-    if(!vm.headers)
-      vm.headers = {}
+    viewModel.headers['content-type'] = 'text/plain'
 
-    vm.headers['content-type'] = 'text/plain'
-
-    this.out.writeHead(vm.status || 200, vm.headers)
-    this.out.end(`${vm.body}`)
+    this.out.writeHead(viewModel.status || 200, viewModel.headers)
+    this.out.end(`${viewModel.body}`)
   }
 }
 

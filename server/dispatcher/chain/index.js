@@ -9,10 +9,10 @@ class ServerDispatcherChain
   {
     const
     dispatcher  = dispatchers[i++],
-    next        = this.dispatch.bind(this, dispatchers, i),
-    viewModel   = await dispatcher.dispatch(next)
+    next        = this.dispatch.bind(this, dispatchers, i)
 
-    return viewModel
+    await dispatcher.dispatch(next)
+    return dispatcher.viewModel
   }
 
   async dispatch(dispatchers, i = 0)
