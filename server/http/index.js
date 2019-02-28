@@ -5,7 +5,8 @@ class ServerHttp
   /**
    * @param {http.Server} server
    */
-  constructor(server, requestBuilder, sessionBuilder, routeBuilder, dispatcherCollectionBuilder, dispatcherChain, locator)
+  constructor(server, requestBuilder, sessionBuilder, routeBuilder, dispatcherCollectionBuilder, dispatcherChain,
+              configuration, locator, eventbus)
   {
     this.server                       = server
     this.requestBuilder               = requestBuilder
@@ -13,7 +14,9 @@ class ServerHttp
     this.routeBuilder                 = routeBuilder
     this.dispatcherCollectionBuilder  = dispatcherCollectionBuilder
     this.dispatcherChain              = dispatcherChain
+    this.configuration                = configuration
     this.locator                      = locator
+    this.eventbus                     = eventbus
   }
 
   listen(...args)
@@ -30,25 +33,11 @@ class ServerHttp
         : accept()))
   }
 
-  async dispatch(input, output)
+  async onRequest(input, output)
   {
     try
     {
-      const
-      routes      = this.locator.locate('configuration').find('server.http.routes'),
-      session     = await this.sessionBuilder.build(input, output),
-      request     = await this.requestBuilder.build(input),
-      route       = await this.routeBuilder.build(routes, request, session),
-      viewModel   = this.createViewModel(),
-      dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
-
-      await this.dispatcherChain.dispatch(dispatchers)
-
-      const
-      viewType    = viewModel.view || route.view || 'view/json',
-      view        = this.locator.locate(viewType)
-
-      await view.write(output, viewModel, route)
+      await dispatch()
     }
     catch(error)
     {
@@ -59,9 +48,31 @@ class ServerHttp
       }
       else
       {
-        throw error
+        this.eventbus.emit('core.error', error)
+
+        output.writeHead(500)
+        output.end('Internal Server Error')
       }
     }
+  }
+
+  async dispatch()
+  {
+    const
+    routes      = this.configuration.find('server.http.routes'),
+    session     = await this.sessionBuilder.build(input, output),
+    request     = await this.requestBuilder.build(input),
+    route       = await this.routeBuilder.build(routes, request, session),
+    viewModel   = this.createViewModel(),
+    dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+
+    await this.dispatcherChain.dispatch(dispatchers)
+
+    const
+    viewType    = viewModel.view || route.view || 'view/json',
+    view        = this.locator.locate(viewType)
+
+    await view.write(output, viewModel, route)
   }
 
   createViewModel()

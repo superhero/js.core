@@ -18,11 +18,13 @@ class ServerHttpLocator
     routeBuilder                = this.locator.locate('server/route/builder'),
     dispatcherCollectionBuilder = this.locator.locate('server/dispatcher/collection/builder'),
     dispatcherChain             = this.locator.locate('server/dispatcher/chain'),
+    eventbus                    = this.locator.locate('eventbus'),
     httpServer                  = new ServerHttp(server, requestBuilder, sessionFactory, routeBuilder,
-                                                 dispatcherCollectionBuilder, dispatcherChain, this.locator)
+                                                 dispatcherCollectionBuilder, dispatcherChain, configuration,
+                                                 this.locator, eventbus)
 
     server.timeout = configuration.find('server.http.timeout')
-    server.on('request', httpServer.dispatch.bind(httpServer))
+    server.on('request', httpServer.onRequest.bind(httpServer))
 
     return httpServer
   }
