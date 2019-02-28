@@ -1,4 +1,4 @@
-const ServerError = require('../')
+const ServerError = require('../error')
 
 class ServerHttp
 {
@@ -37,7 +37,7 @@ class ServerHttp
   {
     try
     {
-      await dispatch()
+      await this.dispatch(input, output)
     }
     catch(error)
     {
@@ -56,7 +56,7 @@ class ServerHttp
     }
   }
 
-  async dispatch()
+  async dispatch(input, output)
   {
     const
     routes      = this.configuration.find('server.http.routes'),
