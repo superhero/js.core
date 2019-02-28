@@ -87,7 +87,7 @@ describe('Core', () =>
   it('testing the eventbus "foobar"', function(done)
   {
     const configuration = core.locate('configuration')
-    context(this, { title:'eventbus.observers', value:configuration.config.eventbus.observers })
+    context(this, { title:'eventbus.observers', value:configuration.find('eventbus.observers') })
     const eventbus = core.locate('eventbus')
     eventbus.on('foobar.received', (event) =>
     {
