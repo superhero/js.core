@@ -1,7 +1,7 @@
 const
 ServerDispatcher    = require('.'),
-BadRequestError     = require('./error/bad-request'),
-NotImplementedError = require('./error/not-implemented')
+BadRequestError     = require('../error/bad-request'),
+NotImplementedError = require('../error/not-implemented')
 
 class ServerRestDispatcher extends ServerDispatcher
 {

@@ -1,4 +1,4 @@
-const NotImplementedError = require('./error/not-implemented')
+const NotImplementedError = require('../error/not-implemented')
 
 class ServerDispatcher
 {

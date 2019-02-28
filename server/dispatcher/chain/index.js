@@ -1,3 +1,5 @@
+const DispatcherChainEndedError = require('./error/dispatcher-chain-ended')
+
 class ServerDispatcherChain
 {
   constructor(path)
@@ -23,9 +25,8 @@ class ServerDispatcherChain
       return viewModel
     }
 
-    // TODO fix error
     const msg = `dispatcher chain has already finished "${i}/${dispatchers.length}"`
-    throw new Error(msg)
+    throw new DispatcherChainEndedError(msg)
   }
 }
 

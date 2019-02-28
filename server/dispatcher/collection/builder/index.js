@@ -1,3 +1,7 @@
+const
+NotHoneringDispatcherContractError  = require('./error/not-honering-dispatcher-contract'),
+DispatcherCanNotBeResolvedError     = require('./error/dispatcher-can-not-be-resolved')
+
 class ServerDispatcherCollectionBuilder
 {
   constructor(path, locator)
@@ -24,26 +28,26 @@ class ServerDispatcherCollectionBuilder
 
   createDispatcher(pathname, route, request, session, viewModel)
   {
-    pathname = `${this.path.main.dirname}/${pathname}`
+    const fullPathname = `${this.path.main.dirname}/${pathname}`
 
-    if(this.path.isResolvable(pathname))
+    if(this.path.isResolvable(fullPathname))
     {
       const
-      Dispatcher  = require(pathname),
+      Dispatcher  = require(fullPathname),
       dispatcher  = new Dispatcher(route, request, session, this.locator, viewModel)
 
       if(typeof dispatcher.dispatch !== 'function')
       {
-        // TODO ...
-        throw new Error('not honering server dispatcher contract')
+        const msg = `dispatcher "${pathname}" is not honering the server dispatcher contract`
+        throw new NotHoneringDispatcherContractError(msg)
       }
 
       return dispatcher
     }
     else
     {
-      // TODO ...
-      throw new ReferenceError(`dispatcher "${pathname}" can not be resolved`)
+      const msg = `dispatcher "${pathname}" can not be resolved`
+      throw new DispatcherCanNotBeResolvedError(msg)
     }
   }
 }
