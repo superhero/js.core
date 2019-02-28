@@ -7,6 +7,6 @@ module.exports =
   eventbus:
   {
     options   : {},
-    observers : []
+    observers : {}
   }
 }
