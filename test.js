@@ -27,6 +27,7 @@ describe('Core', () =>
     core.add('eventbus/bootstrap')
     core.add('path')
     core.add('process')
+    core.add('process/bootstrap')
     core.add('server/dispatcher/chain')
     core.add('server/dispatcher/collection/builder')
     core.add('server/request/builder')

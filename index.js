@@ -1,6 +1,3 @@
-// TODO this should be placed elsewhere, and handled differetn
-process.on('unhandledRejection', (...args) => console.log('unhandledRejection', ...args))
-
 class Core
 {
   constructor(locator)
