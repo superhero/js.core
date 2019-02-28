@@ -55,7 +55,7 @@ describe('Core', () =>
   it('testing route "foo"', async function()
   {
     const configuration = core.locate('configuration')
-    context(this, { title:'route', value:configuration.config.server.http.routes.foo })
+    context(this, { title:'route', value:configuration.find('server.http.routes.test-foo') })
     const response = await request.get('http://localhost:9001/test/foo')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('foo')
@@ -65,7 +65,7 @@ describe('Core', () =>
   it('testing route "bar"', async function()
   {
     const configuration = core.locate('configuration')
-    context(this, { title:'route', value:configuration.config.server.http.routes.bar })
+    context(this, { title:'route', value:configuration.find('server.http.routes.test-bar') })
     const response = await request.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('bar')
@@ -76,7 +76,7 @@ describe('Core', () =>
   it('testing route "baz" with dto', async function()
   {
     const configuration = core.locate('configuration')
-    context(this, { title:'route', value:configuration.config.server.http.routes.baz })
+    context(this, { title:'route', value:configuration.find('server.http.routes.test-baz') })
     const response = await request.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('bar')
