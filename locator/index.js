@@ -12,6 +12,11 @@ class Locator
     this.services[name] = service
   }
 
+  has(name)
+  {
+    return name in this.services
+  }
+
   locate(service)
   {
     if(service in this.services)
