@@ -3,9 +3,7 @@ describe('Core', () =>
   const
   expect  = require('chai').expect,
   context = require('mochawesome/addContext'),
-  config  = require('./test/config'),
-  Request = require('@superhero/request'),
-  request = new Request()
+  config  = require('./test/config')
 
   let core
 
@@ -35,8 +33,9 @@ describe('Core', () =>
   it('testing route "foo"', async function()
   {
     const configuration = core.locate('configuration')
+    const http          = core.locate('http')
     context(this, { title:'route', value:configuration.find('http.routes.test-foo') })
-    const response = await request.get('http://localhost:9001/test/foo')
+    const response = await http.request.get('http://localhost:9001/test/foo')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('foo')
     expect(response.data.dto).to.deep.equal({})
@@ -45,8 +44,9 @@ describe('Core', () =>
   it('testing route "bar"', async function()
   {
     const configuration = core.locate('configuration')
+    const http          = core.locate('http')
     context(this, { title:'route', value:configuration.find('http.routes.test-bar') })
-    const response = await request.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')
+    const response = await http.request.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('bar')
     expect(response.data.baz).to.be.equal('qux')
@@ -56,8 +56,9 @@ describe('Core', () =>
   it('testing route "baz" with dto', async function()
   {
     const configuration = core.locate('configuration')
+    const http          = core.locate('http')
     context(this, { title:'route', value:configuration.find('http.routes.test-baz') })
-    const response = await request.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')
+    const response = await http.request.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')
     // core.locate('console').log(response)
     expect(response.data.foo).to.be.equal('bar')
     expect(response.data.baz).to.be.equal('qux')

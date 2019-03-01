@@ -18,12 +18,12 @@
     "test": "mocha './test.js'"
   },
   "dependencies": {
+    "@superhero/request": "1.0.9",
     "@superhero/debug": "1.1.11",
     "cookies": "0.7.2"
   },
   "devDependencies": {
     "@superhero/syntax-check": "0.0.1",
-    "@superhero/request": "1.0.9",
     "mocha": "5.1.0",
     "mochawesome": "3.0.2",
     "chai": "4.1.2",

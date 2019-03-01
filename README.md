@@ -42,18 +42,25 @@ A simple example application to get started.
 ### Example Application › File structure
 
 ```
-App
-├── foo
-│   ├── config.js
-│   └── endpoint.js
-├── bar
-│   ├── config.js
-│   └── endpoint.js
-├── baz
-│   ├── config.js
+super-duper-app
+├── src
+│   ├── foo
+│   │   ├── config.js
+│   │   └── endpoint.js
+│   ├── bar
+│   │   ├── config.js
+│   │   └── endpoint.js
+│   ├── baz
+│   │   ├── config.js
+│   │   ├── index.js
+│   │   └── locator.js
+│   └── index.js
+├── test
+│   ├── test.foo.js
+│   ├── test.bar.js
+│   ├── test.baz.js
 │   ├── index.js
-│   └── locator.js
-├── index.js
+│   └── mocha.opts
 └── package.json
 ```
 
@@ -65,8 +72,23 @@ App
   "version": "0.0.1",
   "description": "An example meant to describe the libraries fundamentals",
   "license": "MIT",
+  "main": "src/index.js",
+  "author": {
+    "name": "Erik Landvall",
+    "email": "erik@landvall.se",
+    "url": "http://erik.landvall.se"
+  },
+  "scripts": {
+    "test": "nyc mocha './{,!(node_modules)/**}/*.test.js' --opts ./test/mocha.opts"
+  },
   "dependencies": {
     "@superhero/core": "*"
+  },
+  "devDependencies": {
+    "mocha": "5.1.0",
+    "mochawesome": "3.0.2",
+    "chai": "4.1.2",
+    "nyc": "11.7.1"
   }
 }
 

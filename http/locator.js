@@ -1,4 +1,6 @@
-const Http = require('.')
+const
+Request = require('@superhero/request'),
+Http    = require('.')
 
 class HttpLocator
 {
@@ -11,7 +13,7 @@ class HttpLocator
   {
     const
     configuration               = this.locator.locate('configuration'),
-    serverOptions               = configuration.find('http.options'),
+    serverOptions               = configuration.find('http.server.options'),
     server                      = require('http').createServer(serverOptions),
     requestBuilder              = this.locator.locate('http/request/builder'),
     sessionFactory              = this.locator.locate('http/session/builder'),
@@ -19,9 +21,10 @@ class HttpLocator
     dispatcherCollectionBuilder = this.locator.locate('http/dispatcher/collection/builder'),
     dispatcherChain             = this.locator.locate('http/dispatcher/chain'),
     eventbus                    = this.locator.locate('eventbus'),
+    request                     = new Request(),
     httpServer                  = new Http(server, requestBuilder, sessionFactory, routeBuilder,
                                            dispatcherCollectionBuilder, dispatcherChain, configuration,
-                                           this.locator, eventbus)
+                                           this.locator, eventbus, request)
 
     server.timeout = configuration.find('http.timeout')
     server.on('request', httpServer.onRequest.bind(httpServer))

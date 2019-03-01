@@ -4,7 +4,7 @@ class Http
    * @param {http.Server} server
    */
   constructor(server, requestBuilder, sessionBuilder, routeBuilder, dispatcherCollectionBuilder, dispatcherChain,
-              configuration, locator, eventbus)
+              configuration, locator, eventbus, request)
   {
     this.server                       = server
     this.requestBuilder               = requestBuilder
@@ -15,6 +15,7 @@ class Http
     this.configuration                = configuration
     this.locator                      = locator
     this.eventbus                     = eventbus
+    this.request                      = request
   }
 
   listen(...args)
