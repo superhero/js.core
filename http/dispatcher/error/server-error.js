@@ -1,12 +1,12 @@
 const HttpError = require('.')
 
-class Conflict extends HttpError
+class ServerError extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.status = 409
+    this.status = 500
   }
 }
 
-module.exports = Conflict
+module.exports = ServerError

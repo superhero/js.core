@@ -1,6 +1,6 @@
 const NotImplementedError = require('./error/not-implemented')
 
-class ServerDispatcher
+class HttpDispatcher
 {
   constructor(route, request, session, locator, viewModel)
   {
@@ -16,6 +16,11 @@ class ServerDispatcher
     const msg = '"dispatch" method is not implemented'
     throw new NotImplementedError(msg)
   }
+
+  onError(error)
+  {
+    throw error
+  }
 }
 
-module.exports = ServerDispatcher
+module.exports = HttpDispatcher

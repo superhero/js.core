@@ -1,9 +1,9 @@
 const
-ServerDispatcher    = require('.'),
+HttpDispatcher      = require('.'),
 BadRequestError     = require('./error/bad-request'),
 NotImplementedError = require('./error/not-implemented')
 
-class ServerRestDispatcher extends ServerDispatcher
+class HttpDispatcherRest extends HttpDispatcher
 {
   dispatch()
   {
@@ -29,4 +29,4 @@ class ServerRestDispatcher extends ServerDispatcher
   delete()  { throw new NotImplementedError }
 }
 
-module.exports = ServerRestDispatcher
+module.exports = HttpDispatcherRest

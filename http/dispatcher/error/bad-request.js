@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorBadRequest extends ServerError
+class BadRequest extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 400
+    this.status = 400
   }
 }
 
-module.exports = ServerErrorBadRequest
+module.exports = BadRequest

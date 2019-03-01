@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorPageNotFound extends ServerError
+class PageNotFound extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 404
+    this.status = 404
   }
 }
 
-module.exports = ServerErrorPageNotFound
+module.exports = PageNotFound

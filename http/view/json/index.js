@@ -1,4 +1,4 @@
-class ViewJson
+class HttpViewJson
 {
   write(output, viewModel, route)
   {
@@ -13,4 +13,4 @@ class ViewJson
   }
 }
 
-module.exports = ViewJson
+module.exports = HttpViewJson

@@ -1,4 +1,4 @@
-class ViewText
+class HttpViewText
 {
   write(output, viewModel)
   {
@@ -9,4 +9,4 @@ class ViewText
   }
 }
 
-module.exports = ViewText
+module.exports = HttpViewText

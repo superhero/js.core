@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorForbidden extends ServerError
+class Forbidden extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 403
+    this.status = 403
   }
 }
 
-module.exports = ServerErrorForbidden
+module.exports = Forbidden

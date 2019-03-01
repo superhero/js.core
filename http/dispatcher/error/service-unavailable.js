@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorServiceUnavailable extends ServerError
+class ServiceUnavailable extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 503
+    this.status = 503
   }
 }
 
-module.exports = ServerErrorServiceUnavailable
+module.exports = ServiceUnavailable

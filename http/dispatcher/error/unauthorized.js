@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorUnauthorized extends ServerError
+class Unauthorized extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 401
+    this.status = 401
   }
 }
 
-module.exports = ServerErrorUnauthorized
+module.exports = Unauthorized

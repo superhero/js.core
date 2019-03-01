@@ -1,6 +1,4 @@
-const ServerError = require('./dispatcher/error')
-
-class ServerHttp
+class Http
 {
   /**
    * @param {http.Server} server
@@ -41,9 +39,9 @@ class ServerHttp
     }
     catch(error)
     {
-      if(error instanceof ServerError)
+      if(error.code === 'HTTP_DISPATCHER_ERROR')
       {
-        output.writeHead(error.code)
+        output.writeHead(error.status)
         output.end(error.message)
       }
       else
@@ -82,4 +80,4 @@ class ServerHttp
   }
 }
 
-module.exports = ServerHttp
+module.exports = Http

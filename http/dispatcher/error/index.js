@@ -1,10 +1,10 @@
-class ServerError extends Error
+class HttpError extends Error
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 500
+    this.code = 'HTTP_DISPATCHER_ERROR'
   }
 }
 
-module.exports = ServerError
+module.exports = HttpError

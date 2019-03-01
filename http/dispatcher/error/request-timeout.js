@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorRequestTimeout extends ServerError
+class RequestTimeout extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 408
+    this.status = 408
   }
 }
 
-module.exports = ServerErrorRequestTimeout
+module.exports = RequestTimeout

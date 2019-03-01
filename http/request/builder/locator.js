@@ -1,6 +1,6 @@
-const ServerRequestBuilder = require('.')
+const HttpRequestBuilder = require('.')
 
-class ServerRequestBuilderLocator
+class HttpRequestBuilderLocator
 {
   constructor(locator)
   {
@@ -10,11 +10,11 @@ class ServerRequestBuilderLocator
   locate()
   {
     const
-    deepfreeze            = this.locator.locate('deepfreeze'),
-    serverRequestBuilder  = new ServerRequestBuilder(deepfreeze)
+    deepfreeze          = this.locator.locate('deepfreeze'),
+    httpRequestBuilder  = new HttpRequestBuilder(deepfreeze)
 
-    return serverRequestBuilder
+    return httpRequestBuilder
   }
 }
 
-module.exports = ServerRequestBuilderLocator
+module.exports = HttpRequestBuilderLocator

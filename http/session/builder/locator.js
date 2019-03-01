@@ -1,11 +1,11 @@
-const ServerSessionBuilder = require('.')
+const SessionBuilder = require('.')
 
-class ServerSessionBuilderLocator
+class SessionBuilderLocator
 {
   locate()
   {
-    return new ServerSessionBuilder
+    return new SessionBuilder
   }
 }
 
-module.exports = ServerSessionBuilderLocator
+module.exports = SessionBuilderLocator

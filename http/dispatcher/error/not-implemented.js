@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorNotImplemented extends ServerError
+class NotImplemented extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 501
+    this.status = 501
   }
 }
 
-module.exports = ServerErrorNotImplemented
+module.exports = NotImplemented

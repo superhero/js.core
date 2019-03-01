@@ -1,4 +1,4 @@
-class ServerRouteBuilder
+class HttpRouteBuilder
 {
   constructor(deepmerge)
   {
@@ -79,4 +79,4 @@ class ServerRouteBuilder
   }
 }
 
-module.exports = ServerRouteBuilder
+module.exports = HttpRouteBuilder

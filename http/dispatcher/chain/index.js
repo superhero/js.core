@@ -13,7 +13,15 @@ class ServerDispatcherChain
     dispatcher  = dispatchers[i++],
     next        = this.dispatch.bind(this, dispatchers, i)
 
-    await dispatcher.dispatch(next)
+    try
+    {
+      await dispatcher.dispatch(next)
+    }
+    catch(error)
+    {
+      await dispatcher.onError(error)
+    }
+
     return dispatcher.viewModel
   }
 

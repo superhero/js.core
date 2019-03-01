@@ -1,11 +1,11 @@
-const ViewJson = require('.')
+const HttpViewJson = require('.')
 
-class ViewJsonLocator
+class HttpViewJsonLocator
 {
   locate()
   {
-    return new ViewJson
+    return new HttpViewJson
   }
 }
 
-module.exports = ViewJsonLocator
+module.exports = HttpViewJsonLocator

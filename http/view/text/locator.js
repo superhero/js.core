@@ -1,11 +1,11 @@
-const ViewText = require('.')
+const HttpViewText = require('.')
 
-class ViewTextLocator
+class HttpViewTextLocator
 {
   locate()
   {
-    return new ViewText
+    return new HttpViewText
   }
 }
 
-module.exports = ViewTextLocator
+module.exports = HttpViewTextLocator

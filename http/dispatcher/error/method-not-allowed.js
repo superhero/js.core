@@ -1,12 +1,12 @@
-const ServerError = require('.')
+const HttpError = require('.')
 
-class ServerErrorMethodNotAllowed extends ServerError
+class MethodNotAllowed extends HttpError
 {
   constructor(...args)
   {
     super(...args)
-    this.code = 405
+    this.status = 405
   }
 }
 
-module.exports = ServerErrorMethodNotAllowed
+module.exports = MethodNotAllowed

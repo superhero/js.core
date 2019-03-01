@@ -36,7 +36,8 @@ class ServerDispatcherCollectionBuilder
       Dispatcher  = require(fullPathname),
       dispatcher  = new Dispatcher(route, request, session, this.locator, viewModel)
 
-      if(typeof dispatcher.dispatch !== 'function')
+      if(typeof dispatcher.dispatch !== 'function'
+      || typeof dispatcher.onError  !== 'function')
       {
         const msg = `dispatcher "${pathname}" is not honering the server dispatcher contract`
         throw new NotHoneringDispatcherContractError(msg)

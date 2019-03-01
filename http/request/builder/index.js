@@ -2,7 +2,7 @@ const
 url         = require('url'),
 querystring = require('querystring')
 
-class ServerRequestBuilder
+class HttpRequestBuilder
 {
   constructor(deepfreeze)
   {
@@ -50,4 +50,4 @@ class ServerRequestBuilder
   }
 }
 
-module.exports = ServerRequestBuilder
+module.exports = HttpRequestBuilder

@@ -1,6 +1,6 @@
-const ServerHttp = require('.')
+const Http = require('.')
 
-class ServerHttpLocator
+class HttpLocator
 {
   constructor(locator)
   {
@@ -19,9 +19,9 @@ class ServerHttpLocator
     dispatcherCollectionBuilder = this.locator.locate('http/dispatcher/collection/builder'),
     dispatcherChain             = this.locator.locate('http/dispatcher/chain'),
     eventbus                    = this.locator.locate('eventbus'),
-    httpServer                  = new ServerHttp(server, requestBuilder, sessionFactory, routeBuilder,
-                                                 dispatcherCollectionBuilder, dispatcherChain, configuration,
-                                                 this.locator, eventbus)
+    httpServer                  = new Http(server, requestBuilder, sessionFactory, routeBuilder,
+                                           dispatcherCollectionBuilder, dispatcherChain, configuration,
+                                           this.locator, eventbus)
 
     server.timeout = configuration.find('http.timeout')
     server.on('request', httpServer.onRequest.bind(httpServer))
@@ -30,4 +30,4 @@ class ServerHttpLocator
   }
 }
 
-module.exports = ServerHttpLocator
+module.exports = HttpLocator

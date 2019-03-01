@@ -1,6 +1,6 @@
 const Cookies = require('cookies')
 
-class ServerSessionBuilder
+class SessionBuilder
 {
   build(request, response)
   {
@@ -25,4 +25,4 @@ class ServerSessionBuilder
   }
 }
 
-module.exports = ServerSessionBuilder
+module.exports = SessionBuilder
