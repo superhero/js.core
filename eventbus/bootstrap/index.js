@@ -2,17 +2,16 @@ const ObserverContractNotHoneredError = require('./error/observer-contract-not-h
 
 class EventBusBootstrap
 {
-  constructor(locator)
+  constructor(configuration, eventbus, locator)
   {
-    this.locator = locator
+    this.configuration  = configuration
+    this.eventbus       = eventbus
+    this.locator        = locator
   }
 
   bootstrap()
   {
-    const
-    configuration = this.locator.locate('configuration'),
-    eventbus      = this.locator.locate('eventbus'),
-    observers     = configuration.find('eventbus.observers')
+    const observers = this.configuration.find('eventbus.observers')
 
     for(const event in observers)
       for(const serviceName of observers[event])
@@ -26,7 +25,7 @@ class EventBusBootstrap
         }
 
         const observer = service.observe.bind(service)
-        eventbus.on(event, observer)
+        this.eventbus.on(event, observer)
       }
   }
 }

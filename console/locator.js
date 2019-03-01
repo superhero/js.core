@@ -10,8 +10,9 @@ class ConsoleLocator
   locate()
   {
     const
-    options = this.locator.locate('configuration').find('config.console'),
-    console = new Console(options)
+    configuration = this.locator.locate('configuration'),
+    options       = configuration.find('config.console'),
+    console       = new Console(options)
 
     return console
   }

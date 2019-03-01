@@ -2,45 +2,56 @@ class Core
 {
   constructor(locator)
   {
-    this.locator = locator
+    this.locator    = locator
+    this.components = {}
   }
 
-  add(component)
+  add(component, pathname)
   {
-    const
-    configuration = this.locate('configuration'),
-    path          = this.locate('path'),
-    // component paths
-    localPath     = `${path.main.dirname}/${component}/config`,
-    dependentPath = `${component}/config`,
-    corePath      = `${__dirname}/${component}/config`
-
-    if(path.isResolvable(localPath))
-    {
-      const config = require(localPath)
-      configuration.extend(config)
-    }
-    else if(path.isResolvable(dependentPath))
-    {
-      const config = require(dependentPath)
-      configuration.extend(config)
-    }
-    else if(path.isResolvable(corePath))
-    {
-      const config = require(corePath)
-      configuration.extend(config)
-    }
-    else
-    {
-      throw new Error(`could not add component "${component}"`)
-    }
+    this.components[component] = pathname
   }
 
   load()
   {
-    const configuration = this.locator.locate('configuration')
+    const configuration = this.locate('configuration')
+
+    // extending the configurations of every component
+    for(const component in this.components)
+    {
+      const config = this.fetchComponentConfig(component, this.components[component])
+      configuration.extend(config)
+    }
+
+    // eager loading the services in the sevice locator
     for(const name in configuration.config.locator)
+    {
       this.loadService(name)
+    }
+  }
+
+  fetchComponentConfig(component, pathname)
+  {
+    const
+    path          = this.locate('path'),
+    specifiedPath = `${pathname}/config`,
+    localPath     = `${path.main.dirname}/${component}/config`,
+    absolutePath  = `${component}/config`,
+    corePath      = `${__dirname}/${component}/config`
+
+    if(path.isResolvable(specifiedPath))
+      return require(specifiedPath)
+
+    else if(path.isResolvable(localPath))
+      return require(localPath)
+
+    else if(path.isResolvable(absolutePath))
+      return require(absolutePath)
+
+    else if(path.isResolvable(corePath))
+      return require(corePath)
+
+    else
+      throw new Error(`could not resolve path to component "${component}"`)
   }
 
   loadService(name)

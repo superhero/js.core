@@ -12,8 +12,21 @@ class CoreFactory
 {
   create()
   {
-    const locator = this.createLocator()
-    return new Core(locator)
+    const
+    locator = this.createLocator(),
+    core    = new Core(locator)
+
+    core.add('core')
+    core.add('bootstrap')
+    core.add('console')
+    core.add('console/observer/error')
+    core.add('console/observer/info')
+    core.add('eventbus')
+    core.add('eventbus/bootstrap')
+    core.add('process')
+    core.add('process/bootstrap')
+
+    return core
   }
 
   createLocator()

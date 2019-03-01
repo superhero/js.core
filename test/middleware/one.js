@@ -1,4 +1,4 @@
-const Dispatcher = require('../../server/dispatcher')
+const Dispatcher = require('../../http/dispatcher')
 
 class TestMiddlewareOne extends Dispatcher
 {

@@ -9,7 +9,11 @@ class EventBusBootstrapLocator
 
   locate()
   {
-    return new EventBusBootstrap(this.locator)
+    const
+    configuration = this.locator.locate('configuration'),
+    eventbus      = this.locator.locate('eventbus')
+
+    return new EventBusBootstrap(configuration, eventbus, this.locator)
   }
 }
 
