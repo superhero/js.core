@@ -8,8 +8,8 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 
 - A core framework I use when developing in nodejs.
 - The framework is designed to have little to no production dependencies.
-- The framework offers solutions for different topics.
-- The vision of the framework is to offer a code structure to the developer that will help you develop and separate responsibility through an OOP approach.
+- The framework offers solutions for different topics, not necessarily an http server.
+- The vision of the framework is to offer a code structure to the developer that will help to separate responsibilities in projects through an OOP approach.
 
 ## Addons
 
