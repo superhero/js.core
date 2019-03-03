@@ -61,8 +61,7 @@ super-duper-app
 │   │   └── locator.js
 │   └── index.js
 ├── test
-│   ├── test.append-calculation.js
-│   ├── test.create-calculation.js
+│   ├── test.calculations.js
 │   ├── index.js
 │   └── mocha.opts
 ├── .gitignore
@@ -126,7 +125,9 @@ core.add('http/server')
 core.load()
 
 core.locate('bootstrap').bootstrap().then(() =>
-core.locate('http/server').listen(80))
+core.locate('http/server').listen(9001))
+
+module.exports = core
 ```
 
 We start of by creating a core factory that will create the core object, central to our application. The core is designed to keep track of a global state related to it's context. You can create multiple cores if necessary, but normally it makes sens to only use one. This example will only use one core.
@@ -201,7 +202,7 @@ class CreateCalculationEndpoint extends Dispatcher
     calculator    = this.locator.locate('calculator'),
     calculationId = calculator.createCalculation()
 
-    this.view.body['calculation-id'] = calculationId
+    this.view.body.id = calculationId
   }
 }
 
@@ -235,7 +236,7 @@ class AppendCalculationEndpoint extends Dispatcher
     calculator  = this.locator.locate('calculator'),
     result      = calculator.appendToCalculation(id, type, value)
 
-    this.view.body['result'] = result
+    this.view.body.result = result
   }
 
   onError(error)
@@ -385,8 +386,57 @@ Another specific error...
 
 #### `test/mocha.opts`
 
+```
+--require test/index
+--full-trace
+```
+
 #### `test/index.js`
 
-#### `test/test.create-calculation.js`
+```js
+const core = require('../src')
+core.locate('path').main.dirname = __dirname + '/../src'
+module.exports = core
+```
 
-#### `test/test.append-calculation.js`
+#### `test/test.calculations.js`
+
+```js
+describe('Calculations', () =>
+{
+  const
+  expect  = require('chai').expect,
+  context = require('mochawesome/addContext')
+
+  let core
+
+  before(() =>
+  {
+    core = require('.')
+  })
+
+  after(() =>
+  {
+    core.locate('http/server').close()
+  })
+
+  it('create calculation', async function()
+  {
+    const configuration = core.locate('configuration')
+    const httpRequest   = core.locate('http/request')
+    context(this, { title:'route', value:configuration.find('http.server.routes.create-calculation') })
+    const response = await httpRequest.post('http://localhost:9001/calculations')
+    expect(response.data.id).to.be.equal(0)
+  })
+
+  it('append calculation', async function()
+  {
+    const configuration = core.locate('configuration')
+    const httpRequest   = core.locate('http/request')
+    context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
+    const data = { id:0, type:'addition', value:100 }
+    const response = await httpRequest.put({ url:'http://localhost:9001/calculations/0', data })
+    expect(response.data.result).to.be.equal(100)
+  })
+})
+```
