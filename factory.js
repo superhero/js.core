@@ -23,6 +23,7 @@ class CoreFactory
     core.add('console/observer/info')
     core.add('eventbus')
     core.add('eventbus/bootstrap')
+    core.add('http/request')
     core.add('process')
     core.add('process/bootstrap')
 

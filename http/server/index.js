@@ -1,10 +1,11 @@
-class Http
+class HttpServer
 {
   /**
    * @param {http.Server} server
    */
-  constructor(server, requestBuilder, sessionBuilder, routeBuilder, dispatcherCollectionBuilder, dispatcherChain,
-              configuration, locator, eventbus, request)
+  constructor(server, requestBuilder, sessionBuilder, routeBuilder,
+              dispatcherCollectionBuilder, dispatcherChain, configuration,
+              locator, eventbus)
   {
     this.server                       = server
     this.requestBuilder               = requestBuilder
@@ -15,7 +16,6 @@ class Http
     this.configuration                = configuration
     this.locator                      = locator
     this.eventbus                     = eventbus
-    this.request                      = request
   }
 
   listen(...args)
@@ -58,7 +58,7 @@ class Http
   async dispatch(input, output)
   {
     const
-    routes      = this.configuration.find('http.routes'),
+    routes      = this.configuration.find('http.server.routes'),
     session     = await this.sessionBuilder.build(input, output),
     request     = await this.requestBuilder.build(input),
     route       = await this.routeBuilder.build(routes, request, session),
@@ -68,7 +68,7 @@ class Http
     await this.dispatcherChain.dispatch(dispatchers)
 
     const
-    viewType    = viewModel.view || route.view || 'http/view/json',
+    viewType    = viewModel.meta.view || route.view || 'http/server/view/json',
     view        = this.locator.locate(viewType)
 
     await view.write(output, viewModel, route)
@@ -81,4 +81,4 @@ class Http
   }
 }
 
-module.exports = Http
+module.exports = HttpServer

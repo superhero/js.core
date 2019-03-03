@@ -1,11 +1,11 @@
-const Dispatcher = require('../http/dispatcher')
+const Dispatcher = require('../http/server/dispatcher')
 
 class TestEndpoint extends Dispatcher
 {
   dispatch()
   {
-    this.viewModel.body.foo = 'foo'
-    this.viewModel.body.dto = this.route.dto
+    this.view.body.foo = 'foo'
+    this.view.body.dto = this.route.dto
   }
 }
 

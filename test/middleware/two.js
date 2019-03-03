@@ -1,11 +1,11 @@
-const Dispatcher = require('../../http/dispatcher')
+const Dispatcher = require('../../http/server/dispatcher')
 
 class TestMiddlewareTwo extends Dispatcher
 {
   async dispatch(next)
   {
     await next()
-    this.viewModel.body.baz = 'qux'
+    this.view.body.baz = 'qux'
   }
 }
 

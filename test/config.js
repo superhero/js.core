@@ -16,38 +16,41 @@ module.exports =
   },
   http:
   {
-    routes:
+    server:
     {
-      'test-foo':
+      routes:
       {
-        action  : '/test/foo',
-        endpoint: 'test/endpoint',
-      },
-      'test-bar':
-      {
-        action  : '/test/bar',
-        method  : 'get',
-        endpoint: 'test/endpoint',
-        chain   :
-        [
-          'test/middleware/one',
-          'test/middleware/two'
-        ]
-      },
-      'test-baz':
-      {
-        action  : '/test/baz',
-        method  : 'get',
-        endpoint: 'test/endpoint',
-        chain   :
-        [
-          'test/middleware/one',
-          'test/middleware/two'
-        ],
-        dto     :
+        'test-foo':
         {
-          'foo' : { 'query' : 'foo' },
-          'bar' : { 'query' : 'bar' }
+          action  : '/test/foo',
+          endpoint: 'test/endpoint',
+        },
+        'test-bar':
+        {
+          action  : '/test/bar',
+          method  : 'get',
+          endpoint: 'test/endpoint',
+          chain   :
+          [
+            'test/middleware/one',
+            'test/middleware/two'
+          ]
+        },
+        'test-baz':
+        {
+          action  : '/test/baz',
+          method  : 'get',
+          endpoint: 'test/endpoint',
+          chain   :
+          [
+            'test/middleware/one',
+            'test/middleware/two'
+          ],
+          dto     :
+          {
+            'foo' : { 'query' : 'foo' },
+            'bar' : { 'query' : 'bar' }
+          }
         }
       }
     }

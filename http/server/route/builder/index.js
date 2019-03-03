@@ -56,7 +56,7 @@ class HttpRouteBuilder
             dto[key] = request.body[body_key]
             break
           }
-          case 'url':
+          case 'path':
           {
             const url_index = parseInt(map[key][type])
             dto[key] = request.url.split('/')[url_index]
