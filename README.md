@@ -16,9 +16,9 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 Consider extending the framework with one or multiple plugins where the extra functionality is required:  
 *Please note; you should use matching versions for core and the plugins by major and future releases*
 
-- [Core.Handlebars](http://github.com/superhero/js.core.handlebars)
-- [Core.Resource](http://github.com/superhero/js.core.resource)
-- [Core.Websocket](http://github.com/superhero/js.core.websocket)
+- [core-handlebars](http://github.com/superhero/js.core.handlebars)
+- [core-resource](http://github.com/superhero/js.core.resource)
+- [core-websocket](http://github.com/superhero/js.core.websocket)
 
 ## Install
 
