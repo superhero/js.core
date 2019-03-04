@@ -5,9 +5,9 @@
     "passes": 4,
     "pending": 0,
     "failures": 0,
-    "start": "2019-03-04T11:53:02.949Z",
-    "end": "2019-03-04T11:53:03.006Z",
-    "duration": 57,
+    "start": "2019-03-04T12:07:04.077Z",
+    "end": "2019-03-04T12:07:04.137Z",
+    "duration": 60,
     "testsRegistered": 4,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "d2556a39-8692-4e50-9992-c1effc8cb915",
+    "uuid": "6527e3cf-a804-4e61-a984-ea1905368303",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -28,7 +28,7 @@
     "tests": [],
     "suites": [
       {
-        "uuid": "e517b630-5e45-4d77-a376-9a7f29021287",
+        "uuid": "4663c35e-15bf-4d18-8def-4f461740ed94",
         "title": "Core",
         "fullFile": "/home/erik/Projects/@superhero/js.core/test.js",
         "file": "/test.js",
@@ -37,14 +37,14 @@
             "title": "\"before all\" hook",
             "fullTitle": "Core \"before all\" hook",
             "timedOut": false,
-            "duration": 23,
+            "duration": 27,
             "pass": false,
             "fail": false,
             "pending": false,
             "code": "const\nCoreFactory = require('./factory'),\ncoreFactory = new CoreFactory\ncore = coreFactory.create()\ncore.add('http/server')\ncore.add('test')\ncore.load()\ncore.locate('path').main.dirname = __dirname\nawait core.locate('bootstrap').bootstrap()\ncore.locate('http/server').listen(9001)",
             "err": {},
             "isRoot": false,
-            "uuid": "7d480d5a-9a7e-4b1f-8978-0a3a3c38aa28",
+            "uuid": "0e86fbb3-8c76-4bc5-aa4a-7952307e254b",
             "isHook": true,
             "skipped": false
           }
@@ -54,14 +54,14 @@
             "title": "\"after all\" hook",
             "fullTitle": "Core \"after all\" hook",
             "timedOut": false,
-            "duration": 1,
+            "duration": 0,
             "pass": false,
             "fail": false,
             "pending": false,
             "code": "await core.locate('http/server').close()",
             "err": {},
             "isRoot": false,
-            "uuid": "df07a220-3fce-4259-8c04-c633de7bf024",
+            "uuid": "c94d80e6-0b39-4e22-bd4e-e7acc2c4ae34",
             "isHook": true,
             "skipped": false
           }
@@ -71,7 +71,7 @@
             "title": "testing route \"foo\"",
             "fullTitle": "Core testing route \"foo\"",
             "timedOut": false,
-            "duration": 24,
+            "duration": 14,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -81,7 +81,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-foo') })\nconst response = await httpRequest.get('http://localhost:9001/test/foo')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('foo')\nexpect(response.data.dto).to.deep.equal({})",
             "err": {},
             "isRoot": false,
-            "uuid": "de9b2555-0660-41b2-bf89-cb5f029b3f0c",
+            "uuid": "f37063f6-9917-4fd6-bd99-bb16055b384b",
             "isHook": false,
             "skipped": false
           },
@@ -89,7 +89,7 @@
             "title": "testing route \"bar\"",
             "fullTitle": "Core testing route \"bar\"",
             "timedOut": false,
-            "duration": 2,
+            "duration": 3,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -99,7 +99,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-bar') })\nconst response = await httpRequest.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('bar')\nexpect(response.data.baz).to.be.equal('qux')\nexpect(response.data.dto).to.deep.equal({})",
             "err": {},
             "isRoot": false,
-            "uuid": "b9008796-be70-499f-a9dd-b5d442c163b9",
+            "uuid": "88735205-df25-45ef-b52d-9bd5a01a21e8",
             "isHook": false,
             "skipped": false
           },
@@ -107,7 +107,7 @@
             "title": "testing route \"baz\" with dto",
             "fullTitle": "Core testing route \"baz\" with dto",
             "timedOut": false,
-            "duration": 2,
+            "duration": 1,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -117,7 +117,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-baz') })\nconst response = await httpRequest.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('bar')\nexpect(response.data.baz).to.be.equal('qux')\nexpect(response.data.dto).to.deep.equal({ foo:'foobar', bar:'bazqux' })",
             "err": {},
             "isRoot": false,
-            "uuid": "3b85f904-2d0e-49ec-acab-18c8baed05a0",
+            "uuid": "f7f6c8f2-9ffe-423a-a422-b40502171b0a",
             "isHook": false,
             "skipped": false
           },
@@ -135,22 +135,22 @@
             "code": "const configuration = core.locate('configuration')\ncontext(this, { title:'eventbus.observers', value:configuration.find('eventbus.observers') })\nconst eventbus = core.locate('eventbus')\neventbus.on('foobar.received', (event) =>\n{\n  expect(event.data).to.be.equal('bazqux')\n  done()\n})\neventbus.emit('foobar', 'bazqux')",
             "err": {},
             "isRoot": false,
-            "uuid": "e80b9516-ffbd-4512-9055-9e33314d3af6",
+            "uuid": "e617e1e8-7f96-4c54-9778-89639b449874",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "de9b2555-0660-41b2-bf89-cb5f029b3f0c",
-          "b9008796-be70-499f-a9dd-b5d442c163b9",
-          "3b85f904-2d0e-49ec-acab-18c8baed05a0",
-          "e80b9516-ffbd-4512-9055-9e33314d3af6"
+          "f37063f6-9917-4fd6-bd99-bb16055b384b",
+          "88735205-df25-45ef-b52d-9bd5a01a21e8",
+          "f7f6c8f2-9ffe-423a-a422-b40502171b0a",
+          "e617e1e8-7f96-4c54-9778-89639b449874"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 28,
+        "duration": 18,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000

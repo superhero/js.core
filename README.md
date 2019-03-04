@@ -6,10 +6,11 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 
 [![npm version](https://badge.fury.io/js/%40superhero%2Fcore.svg)](https://badge.fury.io/js/%40superhero%2Fcore)
 
-- A core framework I use when developing in nodejs.
+- A core framework I use when developing in [nodejs](https://nodejs.org/en/docs/).
+- I built the framework to help me build applications after a reactive domain driven design ([DDD](https://en.wikipedia.org/wiki/Domain-driven_design)) approch.
 - The framework is designed to have little to no production dependencies.
 - The framework offers solutions for different topics, not necessarily an http server.
-- The vision of the framework is to offer a code structure to the developer that will help to separate responsibilities in projects through an OOP approach.
+- The vision of the framework is to offer a code structure to the developer that will help segregate responsibilities in projects through a [SOLID(https://en.wikipedia.org/wiki/SOLID)] [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) approach.
 
 ## Addons
 
@@ -122,7 +123,7 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
 }
 ```
 
-Our `package.json` file will dictate what dependencies we use. This example application will go through test cases, why we have a few `devDependencies` defined.
+Our [`package.json`](https://docs.npmjs.com/files/package.json) file will dictate what dependencies we use. This example application will go through test cases, why we have a few `devDependencies` defined.
 
 #### `index.js`
 
@@ -537,7 +538,7 @@ The logger locator creates the logger for the `service locator`.
 --timeout 5000
 ```
 
-There will probably be a lot of settings you need to set for mocha, sooner or later; just as well that we make it a praxis to define the options outside your `package.json` file.
+There will probably be a lot of [settings you need to set for mocha](https://mochajs.org/api/mocha), sooner or later; just as well that we make it a praxis to define the options outside your `package.json` file.
 
 #### `test/index.js`
 

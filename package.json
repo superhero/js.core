@@ -1,10 +1,17 @@
 {
   "name": "@superhero/core",
-  "version": "1.0.2",
-  "description": "Framework",
+  "version": "1.0.3",
+  "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
   "license": "MIT",
+  "keywords": [
+    "framework",
+    "http",
+    "server",
+    "eventbus",
+    "ddd"
+  ],
   "author": {
     "name": "Erik Landvall",
     "email": "erik@landvall.se",
