@@ -59,6 +59,10 @@ super-duper-app
 │   │   ├── config.js
 │   │   ├── index.js
 │   │   └── locator.js
+│   ├── logger
+│   │   ├── config.js
+│   │   ├── index.js
+│   │   └── locator.js
 │   └── index.js
 ├── test
 │   ├── test.calculations.js
@@ -68,6 +72,12 @@ super-duper-app
 ├── package.json
 └── README.md
 ```
+
+The file structure is here divided to only 3 modules
+
+- One called `api` *- that's responsible for the endpoints.*
+- A second one called `calculator` *- that is responsible for domain logic.*
+- The third one called `logger` *- an infrastructure layer that will log events to the console.*
 
 #### `.gitignore`
 
@@ -79,24 +89,26 @@ package-lock.json
 .nyc_output
 ```
 
+Set up a `.gitignore` file to ignore some auto-generated files to keep a clean repository.
+
 #### `package.js`
 
 ```js
 {
   "name": "Super Duper App",
   "version": "0.0.1",
-  "description": "An example meant to describe the libraries fundamentals",
+  "description": "An example application of the superhero/core framework",
   "license": "MIT",
   "main": "src/index.js",
   "author": {
-    "name": "Erik Landvall",
-    "email": "erik@landvall.se",
-    "url": "http://erik.landvall.se"
+    "name": "Padawan",
+    "email": "padawan@example.com"
   },
   "scripts": {
     "docs-coverage": "nyc report --reporter=html --report-dir=./docs/generated/coverage",
     "docs-tests": "mocha './test/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
-    "test": "nyc mocha './test/*.test.js' --opts ./test/mocha.opts"
+    "test": "nyc mocha './test/*.test.js' --opts ./test/mocha.opts",
+    "start": "node ./src/index.js"
   },
   "dependencies": {
     "@superhero/core": "*"
@@ -109,6 +121,8 @@ package-lock.json
   }
 }
 ```
+
+Our `package.json` file will dictate what dependencies we use. This example application will go through test cases, why we have a few `devDependencies` defined.
 
 #### `index.js`
 
@@ -125,9 +139,7 @@ core.add('http/server')
 core.load()
 
 core.locate('bootstrap').bootstrap().then(() =>
-core.locate('http/server').listen(9001))
-
-module.exports = core
+core.locate('http/server').listen(process.env.HTTP_PORT))
 ```
 
 We start of by creating a core factory that will create the core object, central to our application. The core is designed to keep track of a global state related to it's context. You can create multiple cores if necessary, but normally it makes sens to only use one. This example will only use one core.
@@ -194,6 +206,9 @@ I set up two routes: `create-calculation` and `append-calculation`.
 ```js
 const Dispatcher = require('@superhero/core/http/server/dispatcher')
 
+/**
+ * @extends {@superhero/core/http/server/dispatcher}
+ */
 class CreateCalculationEndpoint extends Dispatcher
 {
   dispatch()
@@ -225,6 +240,9 @@ Dispatcher    = require('@superhero/core/http/server/dispatcher'),
 NotFoundError = require('@superhero/core/http/server/dispatcher/error/not-found'),
 BadQueryError = require('@superhero/core/http/server/dispatcher/error/bad-query')
 
+/**
+ * @extends {@superhero/core/http/server/dispatcher}
+ */
 class AppendCalculationEndpoint extends Dispatcher
 {
   dispatch()
@@ -280,7 +298,7 @@ module.exports =
 }
 ```
 
-In the `calculator config` we define where a path to a module is located, and where the locator can find a "composit" to locate the service through.
+In the `calculator config` we define where a path to a module is located, and where the locator can find a "composite" to locate the service through.
 
 #### `src/calculator/index.js`
 
@@ -289,22 +307,44 @@ const
 CalculationCouldNotBeFoundError = require('./error/calculation-could-not-be-found'),
 InvalidCalculationTypeError     = require('./error/invalid-calculation-type')
 
+/**
+ * Calculator service, manages calculations
+ */
 class Calculator
 {
-  constructor(console)
+  /**
+   * @param {@superhero/eventbus} eventbus
+   */
+  constructor(eventbus)
   {
+    this.eventbus     = eventbus
     this.calculations = []
   }
 
+  /**
+   * @returns {number} the id of the created calculation
+   */
   createCalculation()
   {
-    return this.calculations.push(0)
+    const id = this.calculations.push(0)
+    this.eventbus.emit('calculator.calculation-created', { id })
+    return id
   }
 
+  /**
+   * @throws {E_CALCULATION_COULD_NOT_BE_FOUND}
+   * @throws {E_INVALID_CALCULATION_TYPE}
+   *
+   * @param {number} id the id of the calculation
+   * @param {string} type the type of calculation to be appended
+   * @param {number} value the value to be appended
+   *
+   * @returns {number} the result of the calculation
+   */
   appendToCalculation(id, type, value)
   {
-    if(id < 0
-    || id >= this.calculations.length)
+    if(id < 1
+    || id > this.calculations.length)
     {
       throw new CalculationCouldNotBeFoundError(`Id out of range: "${id}/${this.calculations.length}"`)
     }
@@ -312,10 +352,14 @@ class Calculator
     switch(type)
     {
       case 'addition':
-        return this.calculations[id] += value
+        const calculation = this.calculations[id - 1] += value
+        this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
+        return calculation
 
       case 'subtraction':
-        return this.calculations[id] -= value
+        const calculation = this.calculations[id - 1] -= value
+        this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
+        return calculation
 
       default:
         throw new InvalidCalculationTypeError(`Unrecognized type used for calculation: "${type}"`)
@@ -328,18 +372,27 @@ module.exports = Calculator
 
 The calculator service is here defined. Good practice dictate that we should define isolated errors for everything that can go wrong. On top of the service we require these errors to have access to the type and to be able to trow when needed.
 
-It's a simple service, I let the code speak for it-self what it does...
+It's a simple service that creates a calculation and allows to append an additional calculation to an already created calculation.
 
 #### `src/calculator/locator.js`
 
 ```js
-const Calculator = require('.')
+const
+Calculator        = require('.'),
+LocatorComposite  = require('@superhero/core/locator/composite')
 
-class CalculatorLocator
+/**
+ * @extends {@superhero/core/locator/composite}
+ */
+class CalculatorLocator extends LocatorComposite
 {
+  /**
+   * @returns {Calculator}
+   */
   locate()
   {
-    return new Calculator
+    const eventbus = this.locator.locate('eventbus')
+    return new Calculator(eventbus)
   }
 }
 
@@ -351,6 +404,9 @@ The locator is responsible for dependency injection related to the service it cr
 #### `src/calculator/error/calculation-could-not-be-found.js`
 
 ```js
+/**
+ * @extends {Error}
+ */
 class CalculationCouldNotBeFoundError extends Error
 {
   constructor(...args)
@@ -368,6 +424,9 @@ A specific error with a specific error code; specifying what specific type of er
 #### `src/calculator/error/invalid-calculation-type.js`
 
 ```js
+/**
+ * @extends {Error}
+ */
 class InvalidCalculationTypeError extends Error
 {
   constructor(...args)
@@ -382,22 +441,105 @@ module.exports = InvalidCalculationTypeError
 
 Another specific error...
 
+## Logger
+
+#### `src/logger/config.js`
+
+```js
+module.exports =
+{
+  eventbus:
+  {
+    observers:
+    {
+      'calculator.calculation-created'  : [ 'logger' ],
+      'calculator.calculation-appended' : [ 'logger' ]
+    }
+  },
+  locator:
+  {
+    'logger' : __dirname
+  }
+}
+```
+
+#### `src/logger/index.js`
+
+```js
+/**
+ * @implements {@superhero/eventbus/observer}
+ */
+class Logger
+{
+  constructor(console, eventbus)
+  {
+    this.console  = console
+    this.eventbus = eventbus
+  }
+
+  observe(event)
+  {
+    this.console.log(event)
+    this.eventbus.emit('logger.logged-event', event)
+  }
+}
+
+module.exports = Logger
+```
+
+#### `src/logger/locator.js`
+
+```js
+const
+Logger            = require('.'),
+LocatorComposite  = require('@superhero/core/locator/composite')
+
+/**
+ * @extends {@superhero/core/locator/composite}
+ */
+class LoggerLocator extends LocatorComposite
+{
+  /**
+   * @returns {Logger}
+   */
+  locate()
+  {
+    const
+    console   = this.locator.locate('console'),
+    eventbus  = this.locator.locate('eventbus')
+
+    return new Logger(console, eventbus)
+  }
+}
+
+module.exports = LoggerLocator
+```
+
 ## Test
 
 #### `test/mocha.opts`
 
 ```
---require test/index
+--ui bdd
 --full-trace
+--timeout 5000
 ```
+
+There will probably be a lot of settings you need to set for mocha, sooner or later; just as well that we make it a praxis to define the options outside your `package.json` file.
 
 #### `test/index.js`
 
 ```js
-const core = require('../src')
-core.locate('path').main.dirname = __dirname + '/../src'
-module.exports = core
+require.main.filename = __dirname + '/../src/index.js'
+require.main.dirname  = __dirname + '/../src'
+process.env.HTTP_PORT = 9001
+
+module.exports = require('../src')
 ```
+
+The init script must set some variables for the core to function as expected in testing.
+
+The port is by design set through the environment variable `HTTP_PORT`. While testing we can set the variable to what ever we like, and what ever is suitable for the local machine we are on.
 
 #### `test/test.calculations.js`
 
@@ -410,9 +552,10 @@ describe('Calculations', () =>
 
   let core
 
-  before(() =>
+  before((done) =>
   {
     core = require('.')
+    core.locate('http/server').onListening(done)
   })
 
   after(() =>
@@ -426,7 +569,7 @@ describe('Calculations', () =>
     const httpRequest   = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.create-calculation') })
     const response = await httpRequest.post('http://localhost:9001/calculations')
-    expect(response.data.id).to.be.equal(0)
+    expect(response.data.id).to.be.equal(1)
   })
 
   it('append calculation', async function()
@@ -434,9 +577,46 @@ describe('Calculations', () =>
     const configuration = core.locate('configuration')
     const httpRequest   = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
-    const data = { id:0, type:'addition', value:100 }
-    const response = await httpRequest.put({ url:'http://localhost:9001/calculations/0', data })
+    const data = { id:1, type:'addition', value:100 }
+    const response = await httpRequest.put({ url:'http://localhost:9001/calculations/1', data })
     expect(response.data.result).to.be.equal(100)
   })
+
+  it('the logger is logging', function(done)
+  {
+    const configuration = core.locate('configuration')
+    const eventbus      = core.locate('eventbus')
+    context(this, { title:'observers', value:configuration.find('http.eventbus.observers') })
+    eventbus.once('logger.logged-event', done)
+    eventbus.emit('calculator.calculation-created', 'test')
+  })
 })
+```
+
+Finally I have designed 2 simple tests that proves the pattern, and gives insight to the expected interface.
+
+#### To run the application:
+
+```
+npm install --production
+npm start
+```
+
+#### To test the application:
+
+```
+npm install
+npm test
+```
+
+#### For an auto-generated coverage report in html:
+
+```
+npm run docs-coverage
+```
+
+#### For an auto-generated test report in html:
+
+```
+npm run docs-tests
 ```
