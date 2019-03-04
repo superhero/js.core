@@ -23,6 +23,13 @@ class HttpServer
     this.server.listen(...args)
   }
 
+  onListening(done)
+  {
+    return this.server.listening
+    ? done()
+    : this.server.once('listening', done)
+  }
+
   close()
   {
     return new Promise((accept, reject) =>
