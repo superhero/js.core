@@ -10,7 +10,7 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 - I built the framework to help me build applications after a reactive domain driven design ([DDD](https://en.wikipedia.org/wiki/Domain-driven_design)) approch.
 - The framework is designed to have little to no production dependencies.
 - The framework offers solutions for different topics, not necessarily an http server.
-- The vision of the framework is to offer a code structure to the developer that will help segregate responsibilities in projects through a [SOLID(https://en.wikipedia.org/wiki/SOLID)] [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) approach.
+- The vision of the framework is to offer a code structure to the developer that will help segregate responsibilities in projects through a [SOLID](https://en.wikipedia.org/wiki/SOLID) [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) approach.
 
 ## Addons
 

@@ -5,9 +5,9 @@
     "passes": 4,
     "pending": 0,
     "failures": 0,
-    "start": "2019-03-04T12:07:04.077Z",
-    "end": "2019-03-04T12:07:04.137Z",
-    "duration": 60,
+    "start": "2019-03-04T12:08:23.879Z",
+    "end": "2019-03-04T12:08:23.947Z",
+    "duration": 68,
     "testsRegistered": 4,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -19,7 +19,7 @@
     "pendingPercentClass": "danger"
   },
   "suites": {
-    "uuid": "6527e3cf-a804-4e61-a984-ea1905368303",
+    "uuid": "980b3fef-e49c-4f7f-9a0c-732bc23e0152",
     "title": "",
     "fullFile": "",
     "file": "",
@@ -28,7 +28,7 @@
     "tests": [],
     "suites": [
       {
-        "uuid": "4663c35e-15bf-4d18-8def-4f461740ed94",
+        "uuid": "719d290e-f00a-45e0-9731-8c436b29937a",
         "title": "Core",
         "fullFile": "/home/erik/Projects/@superhero/js.core/test.js",
         "file": "/test.js",
@@ -37,14 +37,14 @@
             "title": "\"before all\" hook",
             "fullTitle": "Core \"before all\" hook",
             "timedOut": false,
-            "duration": 27,
+            "duration": 25,
             "pass": false,
             "fail": false,
             "pending": false,
             "code": "const\nCoreFactory = require('./factory'),\ncoreFactory = new CoreFactory\ncore = coreFactory.create()\ncore.add('http/server')\ncore.add('test')\ncore.load()\ncore.locate('path').main.dirname = __dirname\nawait core.locate('bootstrap').bootstrap()\ncore.locate('http/server').listen(9001)",
             "err": {},
             "isRoot": false,
-            "uuid": "0e86fbb3-8c76-4bc5-aa4a-7952307e254b",
+            "uuid": "c61a2a92-a14b-40eb-a86f-f3d9785fd3fb",
             "isHook": true,
             "skipped": false
           }
@@ -61,7 +61,7 @@
             "code": "await core.locate('http/server').close()",
             "err": {},
             "isRoot": false,
-            "uuid": "c94d80e6-0b39-4e22-bd4e-e7acc2c4ae34",
+            "uuid": "24ac42df-7a6c-47dc-8159-12c2f149fa92",
             "isHook": true,
             "skipped": false
           }
@@ -71,7 +71,7 @@
             "title": "testing route \"foo\"",
             "fullTitle": "Core testing route \"foo\"",
             "timedOut": false,
-            "duration": 14,
+            "duration": 26,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -81,7 +81,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-foo') })\nconst response = await httpRequest.get('http://localhost:9001/test/foo')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('foo')\nexpect(response.data.dto).to.deep.equal({})",
             "err": {},
             "isRoot": false,
-            "uuid": "f37063f6-9917-4fd6-bd99-bb16055b384b",
+            "uuid": "5b1c5b07-c72a-4c5b-8d5d-30bd7b75689e",
             "isHook": false,
             "skipped": false
           },
@@ -89,7 +89,7 @@
             "title": "testing route \"bar\"",
             "fullTitle": "Core testing route \"bar\"",
             "timedOut": false,
-            "duration": 3,
+            "duration": 9,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -99,7 +99,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-bar') })\nconst response = await httpRequest.get('http://localhost:9001/test/bar?foo=foobar&bar=bazqux')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('bar')\nexpect(response.data.baz).to.be.equal('qux')\nexpect(response.data.dto).to.deep.equal({})",
             "err": {},
             "isRoot": false,
-            "uuid": "88735205-df25-45ef-b52d-9bd5a01a21e8",
+            "uuid": "c61bd98e-630b-4c92-96e8-27a56d033e15",
             "isHook": false,
             "skipped": false
           },
@@ -107,7 +107,7 @@
             "title": "testing route \"baz\" with dto",
             "fullTitle": "Core testing route \"baz\" with dto",
             "timedOut": false,
-            "duration": 1,
+            "duration": 2,
             "state": "passed",
             "speed": "fast",
             "pass": true,
@@ -117,7 +117,7 @@
             "code": "const configuration = core.locate('configuration')\nconst httpRequest   = core.locate('http/request')\ncontext(this, { title:'route', value:configuration.find('http.server.routes.test-baz') })\nconst response = await httpRequest.get('http://localhost:9001/test/baz?foo=foobar&bar=bazqux')\n// core.locate('console').log(response)\nexpect(response.data.foo).to.be.equal('bar')\nexpect(response.data.baz).to.be.equal('qux')\nexpect(response.data.dto).to.deep.equal({ foo:'foobar', bar:'bazqux' })",
             "err": {},
             "isRoot": false,
-            "uuid": "f7f6c8f2-9ffe-423a-a422-b40502171b0a",
+            "uuid": "fce309d8-8d7f-48ca-9590-7fbc68e664fe",
             "isHook": false,
             "skipped": false
           },
@@ -135,22 +135,22 @@
             "code": "const configuration = core.locate('configuration')\ncontext(this, { title:'eventbus.observers', value:configuration.find('eventbus.observers') })\nconst eventbus = core.locate('eventbus')\neventbus.on('foobar.received', (event) =>\n{\n  expect(event.data).to.be.equal('bazqux')\n  done()\n})\neventbus.emit('foobar', 'bazqux')",
             "err": {},
             "isRoot": false,
-            "uuid": "e617e1e8-7f96-4c54-9778-89639b449874",
+            "uuid": "0f1af164-c091-4148-8596-eae545fe4c93",
             "isHook": false,
             "skipped": false
           }
         ],
         "suites": [],
         "passes": [
-          "f37063f6-9917-4fd6-bd99-bb16055b384b",
-          "88735205-df25-45ef-b52d-9bd5a01a21e8",
-          "f7f6c8f2-9ffe-423a-a422-b40502171b0a",
-          "e617e1e8-7f96-4c54-9778-89639b449874"
+          "5b1c5b07-c72a-4c5b-8d5d-30bd7b75689e",
+          "c61bd98e-630b-4c92-96e8-27a56d033e15",
+          "fce309d8-8d7f-48ca-9590-7fbc68e664fe",
+          "0f1af164-c091-4148-8596-eae545fe4c93"
         ],
         "failures": [],
         "pending": [],
         "skipped": [],
-        "duration": 18,
+        "duration": 37,
         "root": false,
         "rootEmpty": false,
         "_timeout": 2000
