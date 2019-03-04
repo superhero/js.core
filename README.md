@@ -159,6 +159,8 @@ By bootstrapping the core, we run a few scripts that needs to run for some modul
 
 And in the end, after we have added, loaded and bootstrapped the modules related to the context, we tell the server to listen to a specific port for network activity.
 
+### Api
+
 #### `src/api/config.js`
 
 ```js
@@ -285,6 +287,8 @@ The `append calculation` endpoint is here defined.
 - And finally we populate the `view model` with the result of the calculation.
 
 Apart from the `dispatch` method, this time, we also define an `onError` method. This is the method that will be called if an error is thrown in the `dispatch` method. The first parameter to the `onError` method is the error that was thrown in the `dispatch` method.
+
+## Calculator
 
 #### `src/calculator/config.js`
 
@@ -441,7 +445,7 @@ module.exports = InvalidCalculationTypeError
 
 Another specific error...
 
-## Logger
+### Logger
 
 #### `src/logger/config.js`
 
@@ -462,6 +466,8 @@ module.exports =
   }
 }
 ```
+
+Attaching a logger observer to specific events. Notice that the `locator` describes where the service can be located from, then used in the `eventbus.observers` context.
 
 #### `src/logger/index.js`
 
@@ -486,6 +492,10 @@ class Logger
 
 module.exports = Logger
 ```
+
+The logger observer simply implements an interface to be recogized as an observer by the `eventbus`.
+
+After we have logged the event to the console, we emit an event broadcasting that we have done so. By doing so, we can hook up to this event in the future if we like. For instance, when you like to create a test for the method, we can listen to this event.
 
 #### `src/logger/locator.js`
 
@@ -515,7 +525,9 @@ class LoggerLocator extends LocatorComposite
 module.exports = LoggerLocator
 ```
 
-## Test
+The logger locator creates the logger for the `service locator`.
+
+### Test
 
 #### `test/mocha.opts`
 
@@ -594,6 +606,8 @@ describe('Calculations', () =>
 ```
 
 Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface.
+
+### Npm scripts
 
 #### To run the application:
 
