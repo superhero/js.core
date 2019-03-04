@@ -8,7 +8,7 @@ class Bootstrap
   async bootstrap()
   {
     const configuration = this.locator.locate('configuration')
-    for(const key in configuration.find('bootstrap'))
+    for(const key in configuration.config.bootstrap)
     {
       const bootstrap = this.locator.locate(configuration.config.bootstrap[key])
       await bootstrap.bootstrap()
