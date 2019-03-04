@@ -66,9 +66,10 @@ super-duper-app
 │   │   └── locator.js
 │   └── index.js
 ├── test
-│   ├── test.calculations.js
 │   ├── index.js
-│   └── mocha.opts
+│   ├── mocha.opts
+│   ├── test.calculations.js
+│   └── test.logger.js
 ├── .gitignore
 ├── package.json
 └── README.md
@@ -107,8 +108,8 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
   },
   "scripts": {
     "docs-coverage": "nyc report --reporter=html --report-dir=./docs/generated/coverage",
-    "docs-tests": "mocha './test/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
-    "test": "nyc mocha './test/*.test.js' --opts ./test/mocha.opts",
+    "docs-tests": "mocha './test/test.*.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
+    "test": "nyc mocha './test/test.*.js' --opts ./test/mocha.opts",
     "start": "node ./src/index.js"
   },
   "dependencies": {
@@ -135,6 +136,7 @@ core        = coreFactory.create()
 
 core.add('api')
 core.add('calculator')
+core.add('logger')
 core.add('http/server')
 
 core.load()
@@ -186,9 +188,9 @@ module.exports =
           endpoint: 'api/endpoint/append-calculation',
           dto     :
           {
-            'calculation-id'  : { 'path' : 4 },
-            'type'            : { 'body' : 'type' },
-            'value'           : { 'body' : 'value' }
+            'id'    : { 'path' : 2 },
+            'type'  : { 'body' : 'type' },
+            'value' : { 'body' : 'value' }
           }
         }
       }
@@ -239,9 +241,9 @@ The `create calculation` endpoint is here defined.
 
 ```js
 const
-Dispatcher    = require('@superhero/core/http/server/dispatcher'),
-NotFoundError = require('@superhero/core/http/server/dispatcher/error/not-found'),
-BadQueryError = require('@superhero/core/http/server/dispatcher/error/bad-query')
+Dispatcher        = require('@superhero/core/http/server/dispatcher'),
+PageNotFoundError = require('@superhero/core/http/server/dispatcher/error/not-found'),
+BadRequestError   = require('@superhero/core/http/server/dispatcher/error/bad-query')
 
 /**
  * @extends {@superhero/core/http/server/dispatcher}
@@ -255,7 +257,7 @@ class AppendCalculationEndpoint extends Dispatcher
     type        = this.route.dto.type,
     value       = this.route.dto.value,
     calculator  = this.locator.locate('calculator'),
-    result      = calculator.appendToCalculation(id, type, value)
+    result      = calculator.appendToCalculation(+id, type, +value)
 
     this.view.body.result = result
   }
@@ -265,11 +267,11 @@ class AppendCalculationEndpoint extends Dispatcher
     switch(error)
     {
       case 'E_CALCULATION_COULD_NOT_BE_FOUND':
-        throw new NotFoundError('Calculation could not be found')
+        throw new PageNotFoundError('Calculation could not be found')
         break
 
       case 'E_INVALID_CALCULATION_TYPE':
-        throw new BadQueryError(`Unrecognized type: "${this.route.dto.type}"`)
+        throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
         break
 
       default: throw error
@@ -289,7 +291,7 @@ The `append calculation` endpoint is here defined.
 
 Apart from the `dispatch` method, this time, we also define an `onError` method. This is the method that will be called if an error is thrown in the `dispatch` method. The first parameter to the `onError` method is the error that was thrown in the `dispatch` method.
 
-## Calculator
+### Calculator
 
 #### `src/calculator/config.js`
 
@@ -533,6 +535,7 @@ The logger locator creates the logger for the `service locator`.
 #### `test/mocha.opts`
 
 ```
+--require test/init.js
 --ui bdd
 --full-trace
 --timeout 5000
@@ -540,14 +543,11 @@ The logger locator creates the logger for the `service locator`.
 
 There will probably be a lot of [settings you need to set for mocha](https://mochajs.org/api/mocha), sooner or later; just as well that we make it a praxis to define the options outside your `package.json` file.
 
-#### `test/index.js`
+#### `test/init.js`
 
 ```js
 require.main.filename = __dirname + '/../src/index.js'
 require.main.dirname  = __dirname + '/../src'
-process.env.HTTP_PORT = 9001
-
-module.exports = require('../src')
 ```
 
 The init script must set some variables for the core to function as expected in testing.
@@ -567,8 +567,24 @@ describe('Calculations', () =>
 
   before((done) =>
   {
-    core = require('.')
-    core.locate('http/server').onListening(done)
+    const
+    CoreFactory = require('@superhero/core/factory'),
+    coreFactory = new CoreFactory
+
+    core = coreFactory.create()
+
+    core.add('api')
+    core.add('calculator')
+    core.add('logger')
+    core.add('http/server')
+
+    core.load()
+
+    core.locate('bootstrap').bootstrap().then(() =>
+    {
+      core.locate('http/server').listen(9001)
+      done()
+    })
   })
 
   after(() =>
@@ -594,13 +610,44 @@ describe('Calculations', () =>
     const response = await httpRequest.put({ url:'http://localhost:9001/calculations/1', data })
     expect(response.data.result).to.be.equal(100)
   })
+})
+```
+
+#### `test/test.logger.js`
+
+```js
+describe('Logger', () =>
+{
+  const
+  expect  = require('chai').expect,
+  context = require('mochawesome/addContext')
+
+  let core
+
+  before((done) =>
+  {
+    const
+    CoreFactory = require('@superhero/core/factory'),
+    coreFactory = new CoreFactory
+
+    core = coreFactory.create()
+
+    core.add('api')
+    core.add('calculator')
+    core.add('logger')
+    core.add('http/server')
+
+    core.load()
+
+    core.locate('bootstrap').bootstrap().then(done)
+  })
 
   it('the logger is logging', function(done)
   {
     const configuration = core.locate('configuration')
     const eventbus      = core.locate('eventbus')
     context(this, { title:'observers', value:configuration.find('http.eventbus.observers') })
-    eventbus.once('logger.logged-event', done)
+    eventbus.once('logger.logged-event', () => done())
     eventbus.emit('calculator.calculation-created', 'test')
   })
 })
