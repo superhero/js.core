@@ -7,7 +7,7 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40superhero%2Fcore.svg)](https://badge.fury.io/js/%40superhero%2Fcore)
 
 - A core framework I use when developing in [nodejs](https://nodejs.org/en/docs/).
-- I built the framework to help me build applications after a reactive domain driven design ([DDD](https://en.wikipedia.org/wiki/Domain-driven_design)) approch.
+- I built the framework to help me build applications after a reactive [domain driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design) approch.
 - The framework is designed to have little to no production dependencies.
 - The framework offers solutions for different topics, not necessarily an http server.
 - The vision of the framework is to offer a code structure to the developer that will help segregate responsibilities in projects through a [SOLID](https://en.wikipedia.org/wiki/SOLID) [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) approach.
