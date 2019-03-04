@@ -593,7 +593,7 @@ describe('Calculations', () =>
 })
 ```
 
-Finally I have designed 2 simple tests that proves the pattern, and gives insight to the expected interface.
+Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface.
 
 #### To run the application:
 
