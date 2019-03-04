@@ -18,7 +18,7 @@
     "url": "http://erik.landvall.se"
   },
   "scripts": {
-    "doc-coverage": "nyc report --reporter=html --report-dir=./docs/coverage",
+    "doc-coverage": "nyc mocha './test/test.*.js' && nyc report --reporter=html --report-dir=./docs/coverage",
     "doc-tests": "mocha './test/test.*.js' --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index,showHooks=always",
     "test-coverage": "syntax-check && nyc mocha './test/test.*.js'",
     "test": "mocha './test/test.*.js'"
