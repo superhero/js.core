@@ -66,7 +66,7 @@ super-duper-app
 │   │   └── locator.js
 │   └── index.js
 ├── test
-│   ├── index.js
+│   ├── init.js
 │   ├── mocha.opts
 │   ├── test.calculations.js
 │   └── test.logger.js
@@ -496,7 +496,7 @@ class Logger
 module.exports = Logger
 ```
 
-The logger observer simply implements an interface to be recogized as an observer by the `eventbus`.
+The logger observer simply implements an interface to be recognized as an observer by the `eventbus`.
 
 After we have logged the event to the console, we emit an event broadcasting that we have done so. By doing so, we can hook up to this event in the future if we like. For instance, when you like to create a test for the method, we can listen to this event.
 
@@ -592,7 +592,7 @@ describe('Calculations', () =>
     core.locate('http/server').close()
   })
 
-  it('create calculation', async function()
+  it('A client can create a calculation', async function()
   {
     const configuration = core.locate('configuration')
     const httpRequest   = core.locate('http/request')
@@ -601,7 +601,7 @@ describe('Calculations', () =>
     expect(response.data.id).to.be.equal(1)
   })
 
-  it('append calculation', async function()
+  it('A client can append a calculation to the result of a former calculation', async function()
   {
     const configuration = core.locate('configuration')
     const httpRequest   = core.locate('http/request')
@@ -642,7 +642,7 @@ describe('Logger', () =>
     core.locate('bootstrap').bootstrap().then(done)
   })
 
-  it('the logger is logging', function(done)
+  it('Events are logged to the console', function(done)
   {
     const configuration = core.locate('configuration')
     const eventbus      = core.locate('eventbus')
@@ -653,7 +653,7 @@ describe('Logger', () =>
 })
 ```
 
-Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface.
+Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface. Here I use a [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) approach.
 
 ### Npm scripts
 
