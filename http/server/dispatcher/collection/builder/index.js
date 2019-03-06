@@ -47,7 +47,7 @@ class ServerDispatcherCollectionBuilder
     }
     else
     {
-      const msg = `dispatcher "${pathname}" can not be resolved`
+      const msg = `dispatcher "${pathname}" can not be resolved in request: ${request.method} -> ${request.url}`
       throw new DispatcherCanNotBeResolvedError(msg)
     }
   }
