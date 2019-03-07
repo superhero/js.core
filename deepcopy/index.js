@@ -1,3 +1,5 @@
+const FailedToFastCopyError = require('./error/failed-to-fast-copy')
+
 class DeepCopy
 {
   fast(obj)
@@ -8,9 +10,7 @@ class DeepCopy
     }
     catch(error)
     {
-      // TODO add error
-      require('@superhero/debug').log('deepcopy failed for:', obj)
-      throw error
+      throw new FailedToFastCopyError(error.message)
     }
   }
 }

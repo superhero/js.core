@@ -16,7 +16,7 @@ class HttpRequestBuilder
     request   =
     {
       headers : input.headers,
-      method  : input.method,
+      method  : input.method.toUpperCase(),
       url     : parsedUrl.pathname,
       query   : parsedUrl.query,
       body    : await this.fetchBody(input)

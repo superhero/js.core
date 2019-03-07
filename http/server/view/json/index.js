@@ -2,11 +2,12 @@ class HttpViewJson
 {
   write(output, viewModel, route)
   {
-    viewModel.headers['content-type'] = 'application/json'
-
     const body = viewModel.meta.pretty || route.pretty
     ? JSON.stringify(viewModel.body, null, 2)
     : JSON.stringify(viewModel.body)
+
+    viewModel.headers['Content-Type']   = 'application/json'
+    viewModel.headers['Content-Length'] = body.length
 
     output.writeHead(viewModel.meta.status || 200, viewModel.headers)
     output.end(body)

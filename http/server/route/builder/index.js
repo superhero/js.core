@@ -1,3 +1,7 @@
+const
+RoutesInvalidTypeError    = require('./error/routes-invalid-type'),
+DtoInvalidReferenceError  = require('./error/dto-invalid-reference')
+
 class HttpRouteBuilder
 {
   constructor(deepmerge)
@@ -7,13 +11,14 @@ class HttpRouteBuilder
 
   build(routes, request)
   {
-    // TODO validate that "routes" is an object
+    if(typeof routes !== 'object')
+    {
+      throw new RoutesInvalidTypeError(`routes must be built from an object`)
+    }
 
     const
     validRoutes = this.fetchValidRoutes(routes, request),
     route       = this.deepmerge.merge({}, ...validRoutes)
-
-    // TODO validate that the route has an endpoint
 
     route.dto = this.composeDto(request, route.dto)
 
@@ -37,7 +42,9 @@ class HttpRouteBuilder
 
         // once we found an endpoint, the route is completed
         if(route.endpoint)
+        {
           break
+        }
       }
     }
     return validRoutes
@@ -70,8 +77,7 @@ class HttpRouteBuilder
           }
           default:
           {
-            // TODO ...
-            throw new ReferenceError(`type "${type}" is not recognized for request mapping`)
+            throw new DtoInvalidReferenceError(`type "${type}" is not recognized for request to DTO mapping`)
           }
         }
 

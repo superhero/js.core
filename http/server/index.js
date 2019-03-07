@@ -1,3 +1,5 @@
+const NoEndpointDefinedInRouteError = require('./error/no-endpoint-defined-in-route')
+
 class HttpServer
 {
   /**
@@ -47,17 +49,30 @@ class HttpServer
     }
     catch(error)
     {
-      if(error.code === 'HTTP_DISPATCHER_ERROR')
+      switch(error.code)
       {
-        output.writeHead(error.status)
-        output.end(error.message)
-      }
-      else
-      {
-        this.eventbus.emit('core.error', error)
+        case 'E_HTTP_DISPATCHER':
+        {
+          output.writeHead(error.status)
+          output.end(error.message)
+          break
+        }
+        case 'E_NO_ENDPOINT_DEFINED_IN_ROUTE':
+        {
+          this.eventbus.emit('core.error', error)
 
-        output.writeHead(500)
-        output.end('Internal Server Error')
+          output.writeHead(404)
+          output.end('Not Found')
+          break
+        }
+        default:
+        {
+          this.eventbus.emit('core.error', error)
+
+          output.writeHead(500)
+          output.end('Internal Server Error')
+          break
+        }
       }
     }
   }
@@ -69,9 +84,14 @@ class HttpServer
     session     = await this.sessionBuilder.build(input, output),
     request     = await this.requestBuilder.build(input),
     route       = await this.routeBuilder.build(routes, request, session),
-    viewModel   = this.createViewModel(),
-    dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+    viewModel   = this.createViewModel()
 
+    if(!route.endpoint)
+    {
+      throw new NoEndpointDefinedInRouteError(`No endpoint defined in route for the request: ${request.method} -> ${request.url}`)
+    }
+
+    const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
     await this.dispatcherChain.dispatch(dispatchers)
 
     const
