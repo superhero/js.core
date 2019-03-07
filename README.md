@@ -242,8 +242,8 @@ The `create calculation` endpoint is here defined.
 ```js
 const
 Dispatcher        = require('@superhero/core/http/server/dispatcher'),
-PageNotFoundError = require('@superhero/core/http/server/dispatcher/error/not-found'),
-BadRequestError   = require('@superhero/core/http/server/dispatcher/error/bad-query')
+PageNotFoundError = require('@superhero/core/http/server/dispatcher/error/page-not-found'),
+BadRequestError   = require('@superhero/core/http/server/dispatcher/error/bad-request')
 
 /**
  * @extends {@superhero/core/http/server/dispatcher}

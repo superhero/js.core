@@ -1,4 +1,4 @@
-class ServerDispatcherChainEndedError extends Error
+class DispatcherChainEndedError extends Error
 {
   constructor(...args)
   {
@@ -7,4 +7,4 @@ class ServerDispatcherChainEndedError extends Error
   }
 }
 
-module.exports = ServerDispatcherChainEndedError
+module.exports = DispatcherChainEndedError

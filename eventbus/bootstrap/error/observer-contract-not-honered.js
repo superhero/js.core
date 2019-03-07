@@ -1,4 +1,4 @@
-class EventBusBootstrapObserverContractNotHoneredError extends Error
+class ObserverContractNotHoneredError extends Error
 {
   constructor(...a)
   {
@@ -7,4 +7,4 @@ class EventBusBootstrapObserverContractNotHoneredError extends Error
   }
 }
 
-module.exports = EventBusBootstrapObserverContractNotHoneredError
+module.exports = ObserverContractNotHoneredError
