@@ -14,9 +14,9 @@ class ServerDispatcherCollectionBuilder
   {
     const dispatchers = []
 
-    for(const i in route.chain)
+    for(const i in route.middleware)
     {
-      const dispatcher = this.createDispatcher(route.chain[i], route, request, session, viewModel)
+      const dispatcher = this.createDispatcher(route.middleware[i], route, request, session, viewModel)
       dispatchers.push(dispatcher)
     }
 

@@ -9,12 +9,7 @@ class HttpDispatcherRest extends HttpDispatcher
 {
   async dispatch()
   {
-    if(!this.route.allowed)
-    {
-      throw new ServerError('No allowed methods are defined in the route')
-    }
-
-    const allowed = this.route.allowed.filter((method) => method.toUpperCase())
+    const allowed = this.fetchAllowedMethods(this.route)
 
     if(allowed.includes(this.request.method))
     {
@@ -24,7 +19,7 @@ class HttpDispatcherRest extends HttpDispatcher
 
     switch(this.request.method)
     {
-      case 'OPTION' :
+      case 'OPTIONS':
       {
         this.view.headers['Allowed'] = allowed.join(',')
         break
@@ -40,10 +35,35 @@ class HttpDispatcherRest extends HttpDispatcher
       }
       default :
       {
-        const msg = `Unrecognized method "${method}"`
+        const msg = `Unrecognized method "${method}", expected one of: "${allowed.join(',')}"`
         throw new BadRequestError(msg)
       }
     }
+  }
+
+  fetchAllowedMethods(route)
+  {
+    if(!route.allowed)
+    {
+      throw new ServerError('No allowed methods are defined in the route')
+    }
+    if(!Array.isArray(route.allowed))
+    {
+      throw new ServerError('Allowed methods in route is not defined as an array')
+    }
+    if(!route.allowed.every((allowed) => typeof allowed === 'string'))
+    {
+      throw new ServerError('Allowed http method must be a set of strings')
+    }
+
+    const allowed = route.allowed.filter((method) => method.toUpperCase())
+
+    if(!allowed.includes('OPTIONS'))
+    {
+      allowed.push('OPTIONS')
+    }
+
+    return allowed
   }
 
   get()     { throw new NotImplementedError }
