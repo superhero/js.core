@@ -95,7 +95,7 @@ package-lock.json
 
 Set up a `.gitignore` file to ignore some auto-generated files to keep a clean repository.
 
-#### `package.js`
+#### `package.json`
 
 ```js
 {
