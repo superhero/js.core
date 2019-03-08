@@ -152,7 +152,7 @@ The framework will try to add services depending on a hierarchy of paths.
 
 - First it will try to load in relation to your `main script`
 - next it attempts by dependency defined in your `package.json` file
-- and finally it will attempt to load related to the core library of existing services.  
+- and finally it will attempt to load related to the core library of existing services.
 
 *This hierarchy allows you, as a developer, to overwrite anything in the framework with custom logic.*
 
@@ -181,6 +181,13 @@ module.exports =
           method  : 'post',
           endpoint: 'api/endpoint/create-calculation'
         },
+        'authentication':
+        {
+          middleware :
+          [
+            'api/middleware/authentication'
+          ]
+        },
         'append-calculation':
         {
           action  : '/calculations/.+',
@@ -195,16 +202,22 @@ module.exports =
         }
       }
     }
+  },
+  authentication:
+  {
+    apikey : 'ABC123456789'
   }
 }
 ```
 
 I have here chosen to set up a folder structure with one module called `api`. This module will contain all the endpoints. As such, the config file of this module will specify the router setting for these endpoints.
 
-I set up two routes: `create-calculation` and `append-calculation`.
+I set up two explicit routes: `create-calculation` and `append-calculation`, and one middleware route: `authentication`.
 
 - The **action** attribute declares on what **url pathname** the route will be valid for.
 - The **method** attribute declares on what **url method** the route will be valid for
+
+The middleware route does not have an action or method constraint specified, so it's considered valid, but it does not have an endpoint specified; declaring it not unterminated. When a route is valid, but unterminated, then it will be merged together with every other valid route specified until one that is terminated appears, eg: one that has declared an endpoint.
 
 #### `src/api/endpoint/create-calculation.js`
 
@@ -290,6 +303,50 @@ The `append calculation` endpoint is here defined.
 - And finally we populate the `view model` with the result of the calculation.
 
 Apart from the `dispatch` method, this time, we also define an `onError` method. This is the method that will be called if an error is thrown in the `dispatch` method. The first parameter to the `onError` method is the error that was thrown in the `dispatch` method.
+
+#### `src/api/middleware/authentication.js`
+
+```js
+const
+Dispatcher    = require('@superhero/core/http/server/dispatcher'),
+Unauthorized  = require('@superhero/core/http/server/dispatcher/error/unauthorized')
+
+/**
+ * @extends {@superhero/core/http/server/dispatcher}
+ */
+class AuthenticationMiddleware extends Dispatcher
+{
+  async dispatch(next)
+  {
+    const
+    configuration = this.locator.locate('configuration'),
+    apikey        = this.request.headers['api-key']
+
+    if(apikey === configuration.find('authentication.apikey'))
+    {
+      await next()
+    }
+    else
+    {
+      throw new Unauthorized('You are not authorized to access the requested resource')
+    }
+  }
+}
+
+module.exports = AuthenticationMiddleware
+```
+
+This middleware is used for authentication. It's a simple implementation, one should look at using a more robust solution, involving an ACL, when creating a solution for production environment. This example serves a purpose to show a good use-case for when to apply a middleware, not how best practice regarding authentication is defined.
+
+**OBS!** The post handling (after the `next` callback has been called) will be handled in reversed order.
+
+```
+    Middleware
+      ↓    ↑
+    Middleware
+      ↓    ↑
+     Endpoint
+```
 
 ### Calculator
 
@@ -595,7 +652,7 @@ describe('Calculations', () =>
   it('A client can create a calculation', async function()
   {
     const configuration = core.locate('configuration')
-    const httpRequest   = core.locate('http/request')
+    const httpRequest = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.create-calculation') })
     const response = await httpRequest.post('http://localhost:9001/calculations')
     expect(response.data.id).to.be.equal(1)
@@ -604,11 +661,13 @@ describe('Calculations', () =>
   it('A client can append a calculation to the result of a former calculation', async function()
   {
     const configuration = core.locate('configuration')
-    const httpRequest   = core.locate('http/request')
+    const httpRequest = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
+    const headers = { 'Api-Key':'ABC123456789' }
+    const url = 'http://localhost:9001/calculations/1'
     const data = { id:1, type:'addition', value:100 }
-    const response = await httpRequest.put({ url:'http://localhost:9001/calculations/1', data })
-    expect(response.data.result).to.be.equal(100)
+    const response = await httpRequest.put({ headers, url, data })
+    expect(response.data.result).to.be.equal(data.value)
   })
 })
 ```

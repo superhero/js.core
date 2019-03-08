@@ -33,22 +33,24 @@ describe('Calculations', () =>
     core.locate('http/server').close()
   })
 
-  it('create calculation', async function()
+  it('A client can create a calculation', async function()
   {
     const configuration = core.locate('configuration')
-    const httpRequest   = core.locate('http/request')
+    const httpRequest = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.create-calculation') })
     const response = await httpRequest.post('http://localhost:9001/calculations')
     expect(response.data.id).to.be.equal(1)
   })
 
-  it('append calculation', async function()
+  it('A client can append a calculation to the result of a former calculation', async function()
   {
     const configuration = core.locate('configuration')
-    const httpRequest   = core.locate('http/request')
+    const httpRequest = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
+    const headers = { 'Api-Key':'ABC123456789' }
+    const url = 'http://localhost:9001/calculations/1'
     const data = { id:1, type:'addition', value:100 }
-    const response = await httpRequest.put({ url:'http://localhost:9001/calculations/1', data })
-    expect(response.data.result).to.be.equal(100)
+    const response = await httpRequest.put({ headers, url, data })
+    expect(response.data.result).to.be.equal(data.value)
   })
 })

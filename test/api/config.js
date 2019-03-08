@@ -12,6 +12,13 @@ module.exports =
           method  : 'post',
           endpoint: 'api/endpoint/create-calculation'
         },
+        'authentication':
+        {
+          middleware :
+          [
+            'api/middleware/authentication'
+          ]
+        },
         'append-calculation':
         {
           action  : '/calculations/.+',
@@ -26,5 +33,9 @@ module.exports =
         }
       }
     }
+  },
+  authentication:
+  {
+    apikey : 'ABC123456789'
   }
 }
