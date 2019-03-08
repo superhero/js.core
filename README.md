@@ -52,6 +52,8 @@ super-duper-app
 │   │   ├── endpoint
 │   │   │   ├── append-calculation.js
 │   │   │   └── create-calculation.js
+│   │   ├── middleware
+│   │   │   └── authentication.js
 │   │   └── config.js
 │   ├── calculator
 │   │   ├── error
