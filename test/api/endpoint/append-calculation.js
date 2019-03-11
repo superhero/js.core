@@ -26,13 +26,12 @@ class AppendCalculationEndpoint extends Dispatcher
     {
       case 'E_CALCULATION_COULD_NOT_BE_FOUND':
         throw new PageNotFoundError('Calculation could not be found')
-        break
 
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
-        break
 
-      default: throw error
+      default:
+        throw error
     }
   }
 }
