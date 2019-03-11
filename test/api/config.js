@@ -8,7 +8,7 @@ module.exports =
       {
         'create-calculation':
         {
-          action  : '/calculations',
+          url     : '/calculations',
           method  : 'post',
           endpoint: 'api/endpoint/create-calculation'
         },
@@ -21,14 +21,14 @@ module.exports =
         },
         'append-calculation':
         {
-          action  : '/calculations/.+',
+          url     : '/calculations/.+',
           method  : 'put',
           endpoint: 'api/endpoint/append-calculation',
           dto     :
           {
-            'id'    : { 'path' : 2 },
-            'type'  : { 'body' : 'type' },
-            'value' : { 'body' : 'value' }
+            'id'    : { 'url'   : 2 },
+            'type'  : { 'body'  : 'type' },
+            'value' : { 'body'  : 'value' }
           }
         }
       }

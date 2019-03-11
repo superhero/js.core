@@ -31,11 +31,11 @@ class HttpRouteBuilder
     for(const name in routes)
     {
       const
-      route  = routes[name],
-      action = route.action && new RegExp(`^${route.action}$`),
-      method = route.method && new RegExp(`^${route.method}$`, 'i')
+      route   = routes[name],
+      url     = route.url     && new RegExp(`^${route.url}$`),
+      method  = route.method  && new RegExp(`^${route.method}$`, 'i')
 
-      if(request.url    .match(action)
+      if(request.url    .match(url)
       && request.method .match(method))
       {
         validRoutes.push(route)
@@ -63,7 +63,7 @@ class HttpRouteBuilder
             dto[key] = request.body[body_key]
             break
           }
-          case 'path':
+          case 'url':
           {
             const url_index = parseInt(map[key][type])
             dto[key] = request.url.split('/')[url_index]
