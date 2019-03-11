@@ -5,7 +5,7 @@ class HttpViewText
     const body = `${viewModel.body}`
 
     viewModel.headers['Content-Type']   = 'text/plain'
-    viewModel.headers['Content-Length'] = body.length
+    viewModel.headers['Content-Length'] = Buffer.byteLength(body)
 
     output.writeHead(viewModel.status || 200, viewModel.headers)
     output.end(body)
