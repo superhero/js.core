@@ -11,7 +11,7 @@ class HttpDispatcherRest extends HttpDispatcher
   {
     const allowed = this.fetchAllowedMethods(this.route)
 
-    if(allowed.includes(this.request.method))
+    if(!allowed.includes(this.request.method))
     {
       this.view.headers['Allowed'] = allowed.join(',')
       throw new MethodNotAllowedError(`Method not allowed: "${this.request.method}"`)
