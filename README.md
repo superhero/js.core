@@ -660,16 +660,18 @@ describe('Calculations', () =>
     expect(response.data.id).to.be.equal(1)
   })
 
-  it('A client can append a calculation to the result of a former calculation', async function()
+  it('A client can append a calculation to the result of a former calculation if authentication Api-Key', async function()
   {
     const configuration = core.locate('configuration')
     const httpRequest = core.locate('http/request')
     context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
-    const headers = { 'Api-Key':'ABC123456789' }
     const url = 'http://localhost:9001/calculations/1'
     const data = { id:1, type:'addition', value:100 }
-    const response = await httpRequest.put({ headers, url, data })
-    expect(response.data.result).to.be.equal(data.value)
+    const response_unauthorized = await httpRequest.put({ url, data })
+    expect(response_unauthorized.status).to.be.equal(401)
+    const headers = { 'Api-Key':'ABC123456789' }
+    const response_authorized = await httpRequest.put({ headers, url, data })
+    expect(response_authorized.data.result).to.be.equal(data.value)
   })
 })
 ```
