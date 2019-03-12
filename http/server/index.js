@@ -101,9 +101,28 @@ class HttpServer
     await view.write(output, viewModel, route)
   }
 
+  /**
+   * Allowing the body to be set, in order to be able to have arrays and strings as a response body
+   * @returns {Object} frozen
+   */
   createViewModel()
   {
-    const viewModel = { body:{}, headers:{}, meta:{} }
+    let body = {}
+
+    const viewModel =
+    {
+      get body()
+      {
+        return body
+      },
+      set body(_body)
+      {
+        body = _body
+      },
+      headers : {},
+      meta    : {}
+    }
+
     return Object.freeze(viewModel)
   }
 }
