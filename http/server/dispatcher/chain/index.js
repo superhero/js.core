@@ -21,20 +21,19 @@ class ServerDispatcherChain
     {
       await dispatcher.onError(error)
     }
-
-    return dispatcher.viewModel
   }
 
   async dispatch(dispatchers, i = 0)
   {
     if(i < dispatchers.length)
     {
-      const viewModel = await this.chain(dispatchers, i)
-      return viewModel
+      await this.chain(dispatchers, i)
     }
-
-    const msg = `dispatcher chain has already finished "${i}/${dispatchers.length}"`
-    throw new DispatcherChainEndedError(msg)
+    else
+    {
+      const msg = `dispatcher chain has already finished "${i}/${dispatchers.length}"`
+      throw new DispatcherChainEndedError(msg)
+    }
   }
 }
 
