@@ -15,7 +15,7 @@ module.exports =
   {
     server:
     {
-      timeout: 4e3
+      timeout: 30e3
     }
   }
 }

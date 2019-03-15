@@ -11,11 +11,13 @@ class ServerDispatcherChain
   {
     const
     dispatcher  = dispatchers[i++],
-    next        = this.dispatch.bind(this, dispatchers, i)
+    next        = this.dispatch.bind(this, dispatchers, i),
+    boundedNext = dispatcher.session.domain.bind(next)
 
     try
     {
-      await dispatcher.dispatch(next)
+      dispatcher.session.response.writeProcessing()
+      await dispatcher.dispatch(boundedNext)
     }
     catch(error)
     {

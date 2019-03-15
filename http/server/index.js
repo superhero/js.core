@@ -7,7 +7,7 @@ class HttpServer
    */
   constructor(server, requestBuilder, sessionBuilder, routeBuilder,
               dispatcherCollectionBuilder, dispatcherChain, configuration,
-              locator, eventbus)
+              locator, eventbus, domainFactory)
   {
     this.server                       = server
     this.requestBuilder               = requestBuilder
@@ -18,6 +18,7 @@ class HttpServer
     this.configuration                = configuration
     this.locator                      = locator
     this.eventbus                     = eventbus
+    this.domainFactory                = domainFactory
   }
 
   listen(...args)
@@ -41,50 +42,108 @@ class HttpServer
         : accept()))
   }
 
-  async onRequest(input, output)
+  onRequest(input, output)
   {
-    try
+    const domain = this.domainFactory.create()
+
+    domain.add(input)
+    domain.add(output)
+
+    domain.enter()
+
+    // domain context
+    domain.on('error',    this.onError.bind(this, input, output, domain))
+    // request stream
+    input.on('aborted',   this.onAborted.bind(this, output))
+    // response stream
+    output.on('timeout',  this.onTimeout.bind(this, output))
+    output.on('finish',   this.onFinish .bind(this, input, output, domain))
+
+    output.writeProcessing()
+
+    this.dispatch(input, output, domain).catch(
+      (error) => domain.emit('error', error))
+  }
+
+  onAborted(output)
+  {
+    output.end()
+  }
+
+  onFinish(input, output, domain)
+  {
+    let
+    emitters = 0,
+    timeouts = 0
+
+    for(const member of domain.members)
+      'removeAllListeners' in member
+      ? emitters++
+      : timeouts++
+
+    if(domain.members.length > 2)
     {
-      await this.dispatch(input, output)
+      const msg =
+      [
+        `Finished session did not clear all domain members!`,
+        `Expected: 2 (response and request)`,
+        `Recieved: ${domain.members.length}`,
+        `Emitters: ${emitters}`,
+        `Timeouts: ${timeouts}`
+      ].join('\n')
+
+      this.eventbus.emit('core.warning', msg)
     }
-    catch(error)
+
+    domain.exit()
+    domain.removeAllListeners()
+    input .removeAllListeners()
+    output.removeAllListeners()
+  }
+
+  onTimeout(output)
+  {
+    output.writeHead(408)
+    output.end('Request Timeout')
+  }
+
+  onError(input, output, domain, error)
+  {
+    switch(error.code)
     {
-      switch(error.code)
+      case 'E_HTTP_DISPATCHER':
       {
-        case 'E_HTTP_DISPATCHER':
-        {
-          output.writeHead(error.status)
-          output.end(error.message)
-          break
-        }
-        case 'E_NO_ENDPOINT_DEFINED_IN_ROUTE':
-        {
-          this.eventbus.emit('core.error', error)
+        output.writeHead(error.status)
+        output.end(error.message)
+        break
+      }
+      case 'E_NO_ENDPOINT_DEFINED_IN_ROUTE':
+      {
+        this.eventbus.emit('core.error', error)
 
-          output.writeHead(404)
-          output.end('Not Found')
-          break
-        }
-        default:
-        {
-          this.eventbus.emit('core.error', error)
+        output.writeHead(404)
+        output.end('Endpoint Not Found')
+        break
+      }
+      default:
+      {
+        this.eventbus.emit('core.error', error)
 
-          output.writeHead(500)
-          output.end('Internal Server Error')
-          break
-        }
+        output.writeHead(500)
+        output.end('Internal Server Error')
+        break
       }
     }
   }
 
-  async dispatch(input, output)
+  async dispatch(input, output, domain)
   {
     const
-    routes      = this.configuration.find('http.server.routes'),
-    session     = await this.sessionBuilder.build(input, output),
-    request     = await this.requestBuilder.build(input),
-    route       = await this.routeBuilder.build(routes, request, session),
-    viewModel   = this.createViewModel()
+    routes    = this.configuration.find('http.server.routes'),
+    session   = await this.sessionBuilder.build(input, output, domain),
+    request   = await this.requestBuilder.build(input),
+    route     = await this.routeBuilder.build(routes, request),
+    viewModel = this.createViewModel()
 
     if(!route.endpoint)
     {
@@ -94,11 +153,16 @@ class HttpServer
     const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
     await this.dispatcherChain.dispatch(dispatchers)
 
-    const
-    viewType    = viewModel.meta.view || route.view || 'http/server/view/json',
-    view        = this.locator.locate(viewType)
+    if(!output.finished)
+    {
+      output.writeProcessing()
 
-    await view.write(output, viewModel, route)
+      const
+      viewType  = viewModel.meta.view || route.view || 'http/server/view/json',
+      view      = this.locator.locate(viewType)
+
+      await view.write(output, viewModel, route)
+    }
   }
 
   /**

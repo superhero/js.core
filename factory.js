@@ -16,16 +16,17 @@ class CoreFactory
     locator = this.createLocator(),
     core    = new Core(locator)
 
-    core.add('core')
     core.add('bootstrap')
     core.add('console')
     core.add('console/observer/error')
     core.add('console/observer/info')
+    core.add('console/observer/warning')
     core.add('eventbus')
     core.add('eventbus/bootstrap')
     core.add('http/request')
     core.add('process')
     core.add('process/bootstrap')
+    core.add('core')
 
     return core
   }
