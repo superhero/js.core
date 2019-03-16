@@ -32,7 +32,11 @@ class EventBusBootstrap
 
   onSignal(signal)
   {
-    this.eventbus.emit('core.warning', `Process signal received: "${signal}"`)
+    const warning = `Process signal received: "${signal}", `
+                  + `event "core.process.signal" emitted, `
+                  + `manual configuration required to end the process`
+
+    this.eventbus.emit('core.warning', warning)
     this.eventbus.emit('core.process.signal', signal)
   }
 }
