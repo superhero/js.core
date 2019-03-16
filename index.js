@@ -1,3 +1,5 @@
+const CoreError = require('./core/error')
+
 class Core
 {
   constructor(locator)
@@ -51,7 +53,7 @@ class Core
       return require(corePath)
 
     else
-      throw new Error(`could not resolve path to component "${component}"`)
+      throw new CoreError(`could not resolve path to component "${component}"`)
   }
 
   loadService(name)
@@ -72,7 +74,7 @@ class Core
     }
     else
     {
-      throw new Error(`locator could not be found for ${name}`)
+      throw new CoreError(`locator could not be found for ${name}`)
     }
   }
 
