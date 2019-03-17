@@ -22,10 +22,9 @@ class CoreFactory
     core.add('console/observer/info')
     core.add('console/observer/warning')
     core.add('eventbus')
-    core.add('eventbus/bootstrap')
     core.add('http/request')
     core.add('process')
-    core.add('process/bootstrap')
+    core.add('validator')
     core.add('core')
 
     return core
