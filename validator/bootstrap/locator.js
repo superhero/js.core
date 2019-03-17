@@ -9,8 +9,11 @@ class ValidatorBootstrapLocator
 
   locate()
   {
-    const configuration = this.locator.locate('configuration')
-    return new ValidatorBootstrap(this.locator, configuration)
+    const
+    configuration = this.locator.locate('configuration'),
+    path          = this.locator.locate('path')
+
+    return new ValidatorBootstrap(this.locator, configuration, path)
   }
 }
 

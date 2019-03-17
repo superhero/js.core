@@ -1,9 +1,7 @@
 const
-SchemaNotFoundError                   = require('./error/schema-not-found'),
+InvalidSchemaError                    = require('./error/schema-not-found'),
 ConstituentIsNotHoneringContractError = require('./error/constituent-is-not-honering-contract'),
-ConstituentNotFoundError              = require('./error/constituent-not-found'),
-SchemaNotAnObjectError                = require('./error/schema-not-an-object'),
-TypeNotDefinedError                   = require('./error/type-not-defined')
+ConstituentNotFoundError              = require('./error/constituent-not-found')
 
 class Validator
 {
@@ -53,15 +51,23 @@ class Validator
     if(typeof schema !== 'object')
     {
       const msg = `Schema "${schemaName}" must be an object`
-      throw new SchemaNotAnObjectError(msg)
+      throw new InvalidSchemaError(msg)
     }
 
     for(const attribute in schema)
-      if(schema[attribute].type !== 'string')
+    {
+      if(typeof schema[attribute].type !== 'string')
       {
         const msg = `Attribute "${attribute}" does not have a type defined`
-        throw new TypeNotDefinedError(msg)
+        throw new InvalidSchemaError(msg)
       }
+
+      if('enum' in schema[attribute] && !Array.isArray(schema[attribute].enum))
+      {
+        const msg = `Attribute "${attribute}" enum must be an array`
+        throw new InvalidSchemaError(msg)
+      }
+    }
 
     this.validSchema(schema)
     this.schemas[schemaName] = schema
