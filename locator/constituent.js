@@ -1,11 +1,11 @@
 const LocatorNotImplementedError = require('./error/locator-not-implemented')
 
 /**
- * For classes that represent a locator composite.
+ * For classes that represent a locator constituent of a composite pattern.
  *
  * @abstract
  */
-class LocatorComposite
+class LocatorConstituent
 {
   constructor(locator)
   {
@@ -23,4 +23,4 @@ class LocatorComposite
   }
 }
 
-module.exports = LocatorComposite
+module.exports = LocatorConstituent

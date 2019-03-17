@@ -363,7 +363,7 @@ module.exports =
 }
 ```
 
-In the `calculator config` we define where a path to a module is located, and where the locator can find a "composite" to locate the service through.
+In the `calculator config` we define where a path to a module is located, and where the locator can find a constituent locator to locate the service through.
 
 #### `src/calculator/index.js`
 
@@ -443,13 +443,13 @@ It's a simple service that creates a calculation and allows to append an additio
 
 ```js
 const
-Calculator        = require('.'),
-LocatorComposite  = require('@superhero/core/locator/composite')
+Calculator          = require('.'),
+LocatorConstituent  = require('@superhero/core/locator/constituent')
 
 /**
- * @extends {@superhero/core/locator/composite}
+ * @extends {@superhero/core/locator/constituent}
  */
-class CalculatorLocator extends LocatorComposite
+class CalculatorLocator extends LocatorConstituent
 {
   /**
    * @returns {Calculator}
@@ -562,13 +562,13 @@ After we have logged the event to the console, we emit an event broadcasting tha
 
 ```js
 const
-Logger            = require('.'),
-LocatorComposite  = require('@superhero/core/locator/composite')
+Logger              = require('.'),
+LocatorConstituent  = require('@superhero/core/locator/constituent')
 
 /**
- * @extends {@superhero/core/locator/composite}
+ * @extends {@superhero/core/locator/constituent}
  */
-class LoggerLocator extends LocatorComposite
+class LoggerLocator extends LocatorConstituent
 {
   /**
    * @returns {Logger}

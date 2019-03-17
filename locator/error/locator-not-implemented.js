@@ -1,4 +1,4 @@
-class LocatorNotImplementedError extends ReferenceError
+class LocatorNotImplementedError extends Error
 {
   constructor(...a)
   {
