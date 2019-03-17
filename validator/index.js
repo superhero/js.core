@@ -17,7 +17,7 @@ class Validator
    * @throws {E_SCHEMA_NOT_FOUND}
    * @throws {E_CONSTITUENT_NOT_FOUND}
    */
-  valid(name, dto)
+  async valid(name, dto)
   {
     if(name in this.schemas === false)
     {
@@ -36,7 +36,7 @@ class Validator
       }
 
       const validator = this.constituents[schema[key].type]
-      validator.valid(schema[key], dto[key])
+      await validator.valid(schema[key], dto[key])
     }
   }
 
