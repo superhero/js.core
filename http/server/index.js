@@ -49,20 +49,14 @@ class HttpServer
     domain.add(input)
     domain.add(output)
 
-    domain.enter()
-
-    // domain context
-    domain.on('error',    this.onError.bind(this, input, output, domain))
-    // request stream
-    input.on('aborted',   this.onAborted.bind(this, output))
-    // response stream
-    output.on('timeout',  this.onTimeout.bind(this, output))
-    output.on('finish',   this.onFinish .bind(this, input, output, domain))
+    domain.on('error', this.onError.bind(this, input, output, domain))
+    input.on('aborted', this.onAborted.bind(this, output))
+    output.on('timeout', this.onTimeout.bind(this, output))
+    output.on('finish', this.onFinish .bind(this, input, output, domain))
 
     output.writeProcessing()
 
-    this.dispatch(input, output, domain).catch(
-      (error) => domain.emit('error', error))
+    domain.run(() => this.dispatch(input, output, domain))
   }
 
   onAborted(output)
