@@ -46,15 +46,15 @@ class Calculator
     {
       case 'addition':
       {
-        const calculation = this.calculations[id - 1] += value
-        this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
-        return calculation
+        const result = this.calculations[id - 1] += value
+        this.eventbus.emit('calculator.calculation-appended', { id, type, result })
+        return result
       }
       case 'subtraction':
       {
-        const calculation = this.calculations[id - 1] -= value
-        this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
-        return calculation
+        const result = this.calculations[id - 1] -= value
+        this.eventbus.emit('calculator.calculation-appended', { id, type, result })
+        return result
       }
       default:
       {
