@@ -1,0 +1,21 @@
+/**
+ * @implements {ComposerFilter}
+ */
+class ComposerFilterJson
+{
+  filter(options, data)
+  {
+    try
+    {
+      return JSON.stringify(data, null, options.indentation)
+    }
+    catch(error)
+    {
+      // it's not up to the filter to validate
+      // if we can't filter the data, then we simply pass the data forward
+      return data
+    }
+  }
+}
+
+module.exports = ComposerFilterJson

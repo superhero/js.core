@@ -1,6 +1,6 @@
 {
   "name": "@superhero/core",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -34,5 +34,11 @@
     "mochawesome": "3.0.2",
     "chai": "4.1.2",
     "nyc": "11.7.1"
-  }
+  },
+  "os" : [
+    "linux"
+  ],
+  "engines" : {
+     "node" : ">=10.0.0"
+   }
 }
