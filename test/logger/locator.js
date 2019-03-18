@@ -1,11 +1,11 @@
 const
-Logger            = require('.'),
-LocatorComposite  = require('../../locator/composite')
+Logger              = require('.'),
+LocatorConstituent  = require('../../locator/constituent')
 
 /**
- * @extends {@superhero/core/locator/composite}
+ * @extends {@superhero/core/locator/constituent}
  */
-class LoggerLocator extends LocatorComposite
+class LoggerLocator extends LocatorConstituent
 {
   /**
    * @returns {Logger}

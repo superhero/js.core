@@ -59,6 +59,7 @@ super-duper-app
 │   │   ├── error
 │   │   |   ├── calculation-could-not-be-found.js
 │   │   |   └── invalid-calculation-type.js
+│   │   ├── calculation.js
 │   │   ├── config.js
 │   │   ├── index.js
 │   │   └── locator.js
@@ -268,11 +269,10 @@ class AppendCalculationEndpoint extends Dispatcher
   dispatch()
   {
     const
-    id          = this.route.dto.id,
-    type        = this.route.dto.type,
-    value       = this.route.dto.value,
     calculator  = this.locator.locate('calculator'),
-    result      = calculator.appendToCalculation(+id, type, +value)
+    composer    = this.locator.locate('composer'),
+    calculation = await composer.compose('calculation', this.route.dto),
+    result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
   }
@@ -286,6 +286,9 @@ class AppendCalculationEndpoint extends Dispatcher
 
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
+
+      case 'E_COMPOSER_INVALID_ATTRIBUTE':
+        throw new BadRequestError(error.message)
 
       default:
         throw error
@@ -351,11 +354,54 @@ This middleware is used for authentication. It's a simple implementation, one sh
 
 ### Calculator
 
+#### `src/calculator/calculation.js`
+
+```js
+/**
+ * @typedef {Object} CalculatorCalculationDto
+ * @property {number} id
+ * @property {string} type
+ * @property {number} value
+ */
+const dto =
+{
+  'id':
+  {
+    'type'    : 'integer',
+    'unsigned': true
+  },
+  'type':
+  {
+    'type': 'string',
+    'enum':
+    [
+      'addition',
+      'subtraction'
+    ]
+  },
+  'value':
+  {
+    'type': 'decimal'
+  }
+}
+
+module.exports = dto
+```
+
+Defining a JSON schema for a dto; calculation. It's a good praxis to also define the type in "jsdoc", as seen above.
+
 #### `src/calculator/config.js`
 
 ```js
 module.exports =
 {
+  composer:
+  {
+    schema:
+    {
+      'calculation' : __dirname + '/calculation'
+    }
+  },
   locator:
   {
     'calculator' : __dirname
@@ -400,13 +446,11 @@ class Calculator
    * @throws {E_CALCULATION_COULD_NOT_BE_FOUND}
    * @throws {E_INVALID_CALCULATION_TYPE}
    *
-   * @param {number} id the id of the calculation
-   * @param {string} type the type of calculation to be appended
-   * @param {number} value the value to be appended
+   * @param {CalculatorCalculation} dto
    *
    * @returns {number} the result of the calculation
    */
-  appendToCalculation(id, type, value)
+  appendToCalculation({ id, type, value })
   {
     if(id < 1
     || id > this.calculations.length)
@@ -417,17 +461,21 @@ class Calculator
     switch(type)
     {
       case 'addition':
+      {
         const calculation = this.calculations[id - 1] += value
         this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
-        return calculation
-
+        return calculation  
+      }
       case 'subtraction':
+      {
         const calculation = this.calculations[id - 1] -= value
         this.eventbus.emit('calculator.calculation-appended', { id, type, calculation })
-        return calculation
-
+        return calculation  
+      }
       default:
+      {
         throw new InvalidCalculationTypeError(`Unrecognized type used for calculation: "${type}"`)
+      }
     }
   }
 }

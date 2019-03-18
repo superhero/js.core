@@ -24,7 +24,7 @@ class CoreFactory
     core.add('eventbus')
     core.add('http/request')
     core.add('process')
-    core.add('validator')
+    core.add('composer')
     core.add('core')
 
     return core

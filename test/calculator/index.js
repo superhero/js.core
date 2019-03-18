@@ -30,13 +30,11 @@ class Calculator
    * @throws {E_CALCULATION_COULD_NOT_BE_FOUND}
    * @throws {E_INVALID_CALCULATION_TYPE}
    *
-   * @param {number} id the id of the calculation
-   * @param {string} type the type of calculation to be appended
-   * @param {number} value the value to be appended
+   * @param {CalculatorCalculation} dto
    *
    * @returns {number} the result of the calculation
    */
-  appendToCalculation(id, type, value)
+  appendToCalculation({ id, type, value })
   {
     if(id < 1
     || id > this.calculations.length)

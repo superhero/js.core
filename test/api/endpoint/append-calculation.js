@@ -8,14 +8,13 @@ BadRequestError   = require('../../../http/server/dispatcher/error/bad-request')
  */
 class AppendCalculationEndpoint extends Dispatcher
 {
-  dispatch()
+  async dispatch()
   {
     const
-    id          = this.route.dto.id,
-    type        = this.route.dto.type,
-    value       = this.route.dto.value,
     calculator  = this.locator.locate('calculator'),
-    result      = calculator.appendToCalculation(+id, type, +value)
+    composer    = this.locator.locate('composer'),
+    calculation = await composer.compose('calculation', this.route.dto),
+    result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
   }
@@ -29,6 +28,9 @@ class AppendCalculationEndpoint extends Dispatcher
 
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
+
+      case 'E_COMPOSER_INVALID_ATTRIBUTE':
+        throw new BadRequestError(error.message)
 
       default:
         throw error
