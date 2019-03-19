@@ -54,6 +54,18 @@ class ComposerValidatorString
       const msg = `Expected one of the enumeral values: "${options.enum}"`
       throw new InvalidStringError(msg)
     }
+
+    if(options.uppercase && data !== data.toUpperCase())
+    {
+      const msg = `Upper case string expected`
+      throw new InvalidStringError(msg)
+    }
+
+    if(options.lowercase && data !== data.toLowerCase())
+    {
+      const msg = `Lower case string expected`
+      throw new InvalidStringError(msg)
+    }
   }
 }
 

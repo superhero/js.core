@@ -6,11 +6,11 @@ class ComposerFilterString
   filter(options, data)
   {
     return options.collection
-    ? this.filterCollection(data)
-    : this.filterSingle(data)
+    ? this.filterCollection(options, data)
+    : this.filterSingle(options, data)
   }
 
-  filterCollection(data)
+  filterCollection(options, data)
   {
     if(!Array.isArray(data))
       return data
@@ -19,20 +19,29 @@ class ComposerFilterString
 
     for(const item of data)
     {
-      const filtered = this.filterSingle(item)
+      const filtered = this.filterSingle(options, item)
       collection.push(filtered)
     }
 
     return collection
   }
 
-  filterSingle(data)
+  filterSingle(options, data)
   {
     if(typeof data === 'number')
-      return `${data}`
+      data = `${data}`
 
     if(typeof data === 'boolean')
-      return `${data}`
+      data = `${data}`
+
+    if(typeof data === 'string')
+    {
+      if(options.uppercase)
+        data = data.toUpperCase()
+
+      if(options.lowercase)
+        data = data.toLowerCase()
+    }
 
     return data
   }
