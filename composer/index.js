@@ -56,7 +56,16 @@ class Composer
       try
       {
         const validator = this.validators[schema[attribute].type]
-        await validator.valid(schema[attribute], output[attribute])
+
+        if(schema[attribute].optional === true
+        &&(output[attribute] === undefined || output[attribute] === null))
+        {
+          continue
+        }
+        else
+        {
+          await validator.valid(schema[attribute], output[attribute])
+        }
       }
       catch(error)
       {
