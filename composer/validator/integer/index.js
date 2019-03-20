@@ -37,7 +37,7 @@ class ComposerValidatorInteger
       throw new InvalidIntegerError(msg)
     }
 
-    if(options.unsigned && data < 0)
+    if(options.unsigned && data <= 0)
     {
       const msg = `Expected an unsigned integer `
       throw new InvalidIntegerError(msg)

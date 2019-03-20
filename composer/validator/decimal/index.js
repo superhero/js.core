@@ -31,7 +31,7 @@ class ComposerValidatorDecimal
       throw new InvalidDecimalError(msg)
     }
 
-    if(options.unsigned && data < 0)
+    if(options.unsigned && data <= 0)
     {
       const msg = `Expected an unsigned decimal`
       throw new InvalidDecimalError(msg)
