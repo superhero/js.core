@@ -39,6 +39,13 @@ class Composer
     {
       output[attribute] = dto[attribute]
 
+      // if optional, and undefined or null, then we don't need to filter or validate
+      if(schema[attribute].optional === true
+      &&(output[attribute] === undefined || output[attribute] === null))
+      {
+        continue
+      }
+
       // Filtering attributes if a filter has been defined for the type
       if(schema[attribute].type in this.filters)
       {
@@ -56,16 +63,7 @@ class Composer
       try
       {
         const validator = this.validators[schema[attribute].type]
-
-        if(schema[attribute].optional === true
-        &&(output[attribute] === undefined || output[attribute] === null))
-        {
-          continue
-        }
-        else
-        {
-          await validator.valid(schema[attribute], output[attribute])
-        }
+        await validator.valid(schema[attribute], output[attribute])
       }
       catch(error)
       {
