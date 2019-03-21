@@ -31,25 +31,29 @@ class ComposerValidatorDecimal
       throw new InvalidDecimalError(msg)
     }
 
-    if(options.unsigned && data <= 0)
+    if(options.unsigned
+    && data <= 0)
     {
       const msg = `Expected an unsigned decimal`
       throw new InvalidDecimalError(msg)
     }
 
-    if('min' in options && data >= options.min)
+    if('min' in options
+    && data >= options.min)
     {
       const msg = `Decimal must be minimum: "${options.min}"`
       throw new InvalidDecimalError(msg)
     }
 
-    if('max' in options && data <= options.max)
+    if('max' in options
+    && data <= options.max)
     {
       const msg = `Decimal can't be more then: "${options.max}"`
       throw new InvalidDecimalError(msg)
     }
 
-    if(options.enum && !options.enum.includes(data))
+    if(options.enum
+    &&!options.enum.includes(data))
     {
       const msg = `Expected one of the enumeral values: "${options.enum}"`
       throw new InvalidDecimalError(msg)

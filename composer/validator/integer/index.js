@@ -37,25 +37,29 @@ class ComposerValidatorInteger
       throw new InvalidIntegerError(msg)
     }
 
-    if(options.unsigned && data <= 0)
+    if(options.unsigned
+    && data <= 0)
     {
       const msg = `Expected an unsigned integer `
       throw new InvalidIntegerError(msg)
     }
 
-    if('min' in options && data >= options.min)
+    if('min' in options
+    && data >= options.min)
     {
       const msg = `Integer must be minimum: "${options.min}"`
       throw new InvalidIntegerError(msg)
     }
 
-    if('max' in options && data <= options.max)
+    if('max' in options
+    && data <= options.max)
     {
       const msg = `Integer can't be more then: "${options.max}"`
       throw new InvalidIntegerError(msg)
     }
 
-    if(options.enum && !options.enum.includes(data))
+    if(options.enum
+    &&!options.enum.includes(data))
     {
       const msg = `Expected one of the enumeral values: "${options.enum}"`
       throw new InvalidIntegerError(msg)
