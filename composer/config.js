@@ -8,11 +8,12 @@ module.exports =
   {
     filter:
     {
-      'boolean' : 'composer/filter/boolean',
-      'decimal' : 'composer/filter/decimal',
-      'integer' : 'composer/filter/integer',
-      'json'    : 'composer/filter/json',
-      'string'  : 'composer/filter/string'
+      'boolean'   : 'composer/filter/boolean',
+      'decimal'   : 'composer/filter/decimal',
+      'integer'   : 'composer/filter/integer',
+      'json'      : 'composer/filter/json',
+      'string'    : 'composer/filter/string',
+      'timestamp' : 'composer/filter/timestamp'
     },
     validator:
     {
@@ -33,6 +34,7 @@ module.exports =
     'composer/filter/integer'       : __dirname + '/filter/integer',
     'composer/filter/json'          : __dirname + '/filter/json',
     'composer/filter/string'        : __dirname + '/filter/string',
+    'composer/filter/timestamp'     : __dirname + '/filter/timestamp',
     'composer/validator/boolean'    : __dirname + '/validator/boolean',
     'composer/validator/decimal'    : __dirname + '/validator/decimal',
     'composer/validator/integer'    : __dirname + '/validator/integer',
