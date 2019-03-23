@@ -67,7 +67,7 @@ class Composer
       }
       catch(error)
       {
-        const msg = `Invalid attribute: "${attribute}", msg: "${error.message}"`
+        const msg = `Invalid attribute: "${attribute}", error: ${error.message}`
         throw new InvalidAttributeError(msg)
       }
     }

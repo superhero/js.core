@@ -74,12 +74,12 @@ class Core
         const service = locator.locate()
         this.locator.set(name, service)
       }
-      catch(erro)
+      catch(error)
       {
         switch(error.code)
         {
           case 'E_SERVICE_UNDEFINED':
-            const msg = `An unmet dependency was found for service "${name}", error: "${error.message}"`
+            const msg = `An unmet dependency was found for service "${name}", error: ${error.message}`
             throw new CoreError(msg)
 
           default:
