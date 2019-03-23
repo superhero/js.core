@@ -52,6 +52,20 @@ class ComposerValidatorDecimal
       throw new InvalidDecimalError(msg)
     }
 
+    if('gt' in options
+    && data > options.gt)
+    {
+      const msg = `Decimal must be more then: "${options.gt}"`
+      throw new InvalidDecimalError(msg)
+    }
+
+    if('lt' in options
+    && data <= options.lt)
+    {
+      const msg = `Decimal must be less then: "${options.lt}"`
+      throw new InvalidDecimalError(msg)
+    }
+
     if(options.enum
     &&!options.enum.includes(data))
     {
