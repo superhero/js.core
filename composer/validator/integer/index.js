@@ -66,7 +66,7 @@ class ComposerValidatorInteger
     }
 
     if('lt' in options
-    && data <= options.lt)
+    && data < options.lt)
     {
       const msg = `Integer must be less then: "${options.lt}"`
       throw new InvalidIntegerError(msg)

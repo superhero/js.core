@@ -60,7 +60,7 @@ class ComposerValidatorDecimal
     }
 
     if('lt' in options
-    && data <= options.lt)
+    && data < options.lt)
     {
       const msg = `Decimal must be less then: "${options.lt}"`
       throw new InvalidDecimalError(msg)
