@@ -689,7 +689,7 @@ describe('Calculations', () =>
     core.locate('bootstrap').bootstrap().then(() =>
     {
       core.locate('http/server').listen(9001)
-      done()
+      core.locate('http/server').onListening(done)
     })
   })
 
