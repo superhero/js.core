@@ -4,7 +4,8 @@ class ComposerLocator
 {
   locate()
   {
-    return new Composer
+    const deepmerge = this.locator.locate('deepmerge')
+    return new Composer(deepmerge)
   }
 }
 

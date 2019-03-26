@@ -8,8 +8,9 @@ ValidatorNotFoundError              = require('./error/validator-not-found')
 
 class Composer
 {
-  constructor()
+  constructor(deepmerge)
   {
+    this.deepmerge  = deepmerge
     this.schemas    = {}
     this.filters    = {}
     this.validators = {}
@@ -17,19 +18,21 @@ class Composer
 
   /**
    * @param {string} name
-   * @param {Object} dto
+   * @param {...Object} dto
    * @throws {E_SCHEMA_NOT_FOUND}
    * @throws {E_VALIDATOR_NOT_FOUND}
    * @throws {E_COMPOSER_INVALID_ATTRIBUTE}
    * @returns {Object}
    */
-  async compose(name, dto)
+  async compose(name, ...dto)
   {
     if(name in this.schemas === false)
     {
       const msg = `Schema: "${name}" not found`
       throw new SchemaNotFoundError(msg)
     }
+
+    dto = this.deepmerge.merge({}, ...dto)
 
     const
     schema = this.schemas[name],
