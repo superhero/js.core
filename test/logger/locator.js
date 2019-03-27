@@ -12,11 +12,8 @@ class LoggerLocator extends LocatorConstituent
    */
   locate()
   {
-    const
-    console   = this.locator.locate('console'),
-    eventbus  = this.locator.locate('eventbus')
-
-    return new Logger(console, eventbus)
+    const eventbus = this.locator.locate('eventbus')
+    return new Logger(eventbus)
   }
 }
 

@@ -586,15 +586,13 @@ Attaching a logger observer to specific events. Notice that the `locator` descri
  */
 class Logger
 {
-  constructor(console, eventbus)
+  constructor(eventbus)
   {
-    this.console  = console
     this.eventbus = eventbus
   }
 
   observe(event)
   {
-    this.console.log(event)
     this.eventbus.emit('logger.logged-event', event)
   }
 }
@@ -623,11 +621,8 @@ class LoggerLocator extends LocatorConstituent
    */
   locate()
   {
-    const
-    console   = this.locator.locate('console'),
-    eventbus  = this.locator.locate('eventbus')
-
-    return new Logger(console, eventbus)
+    const eventbus = this.locator.locate('eventbus')
+    return new Logger(eventbus)
   }
 }
 

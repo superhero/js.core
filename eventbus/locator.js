@@ -15,7 +15,8 @@ class EventBusLocator
     observers       = configuration.find('eventbus.observers'),
     observersKeys   = Object.keys(observers || {}),
     path            = this.locator.locate('path'),
-    eventbus        = new EventBus(eventbusOptions, observersKeys)
+    console         = this.locator.locate('console'),
+    eventbus        = new EventBus(eventbusOptions, observersKeys, console)
 
     return eventbus
   }
