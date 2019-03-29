@@ -32,7 +32,7 @@ class ComposerValidatorString
     }
 
     if(options['not-empty']
-    && data.length)
+    && !data.length)
     {
       const msg = `Must not be empty`
       throw new InvalidStringError(msg)
