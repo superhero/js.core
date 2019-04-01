@@ -39,14 +39,14 @@ class ComposerValidatorString
     }
 
     if('min' in options
-    && data.length >= options.min)
+    && data.length < options.min)
     {
       const msg = `String length must be minimum: "${options.min}" long`
       throw new InvalidStringError(msg)
     }
 
     if('max' in options
-    && data.length <= options.max)
+    && data.length > options.max)
     {
       const msg = `String length can't be more then: "${options.max}" long`
       throw new InvalidStringError(msg)

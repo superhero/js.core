@@ -34,14 +34,14 @@ class ComposerValidatorTimestamp
     const date = new Date(data)
 
     if('min' in options
-    && date.getTime() >= new Date(options.min).getTime())
+    && date.getTime() < new Date(options.min).getTime())
     {
       const msg = `Timestamp must be at least: "${options.min}"`
       throw new InvalidTimestampError(msg)
     }
 
     if('max' in options
-    && date.getTime() <= new Date(options.max).getTime())
+    && date.getTime() > new Date(options.max).getTime())
     {
       const msg = `Timestamp can't be more then: "${options.max}"`
       throw new InvalidTimestampError(msg)

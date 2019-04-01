@@ -32,21 +32,21 @@ class ComposerValidatorDecimal
     }
 
     if(options.unsigned
-    && data <= 0)
+    && data < 0)
     {
       const msg = `Expected an unsigned decimal`
       throw new InvalidDecimalError(msg)
     }
 
     if('min' in options
-    && data >= options.min)
+    && data < options.min)
     {
       const msg = `Decimal must be minimum: "${options.min}"`
       throw new InvalidDecimalError(msg)
     }
 
     if('max' in options
-    && data <= options.max)
+    && data > options.max)
     {
       const msg = `Decimal can't be more then: "${options.max}"`
       throw new InvalidDecimalError(msg)
