@@ -390,6 +390,21 @@ module.exports = dto
 
 Defining a JSON schema for a dto; calculation. It's a good praxis to also define the type in "jsdoc", as seen above.
 
+A table over validation and filtration rules follows...
+
+|           | boolean   | decimal   | integer   | json      | schema    | string    | timestamp |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| unsigned  | -         | boolean   | boolean   | -         | -         | -         | -         |
+| min       | -         | number    | number    | -         | -         | number    | timestamp |
+| max       | -         | number    | number    | -         | -         | number    | timestamp |
+| gt        | -         | number    | number    | -         | -         | number    | timestamp |
+| lt        | -         | number    | number    | -         | -         | number    | timestamp |
+| enum      | array     | array     | array     | -         | -         | array     | array     |
+| uppercase | -         | -         | -         | -         | -         | boolean   | -         |
+| lowercase | -         | -         | -         | -         | -         | boolean   | -         |
+| not-empty | -         | -         | -         | -         | -         | boolean   | -         |
+| optional  | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+
 #### `src/calculator/config.js`
 
 ```js
