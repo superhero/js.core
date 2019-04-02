@@ -773,7 +773,7 @@ describe('Logger', () =>
 })
 ```
 
-Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface. Here I use a [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) approach.
+Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface. Here I suggest using a [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) approach.
 
 ### Npm scripts
 
