@@ -103,6 +103,7 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
   "name": "Super Duper App",
   "version": "0.0.1",
   "description": "An example application of the superhero/core framework",
+  "repository": "https://github.com/...",
   "license": "MIT",
   "main": "src/index.js",
   "author": {
