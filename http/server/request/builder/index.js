@@ -17,7 +17,7 @@ class HttpRequestBuilder
     {
       headers : input.headers,
       method  : input.method.toUpperCase(),
-      url     : parsedUrl.pathname,
+      url     : parsedUrl.pathname.replace(/\/+$/g, ''),
       query   : parsedUrl.query,
       body    : await this.fetchBody(input)
     }

@@ -32,7 +32,7 @@ class HttpRouteBuilder
     {
       const
       route   = routes[name],
-      url     = route.url     && new RegExp(`^${route.url}$`),
+      url     = route.url     && new RegExp(`^${route.url.replace(/\/+$/g, '')}$`),
       method  = route.method  && new RegExp(`^${route.method}$`, 'i')
 
       if(request.url    .match(url)
