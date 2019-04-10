@@ -8,7 +8,9 @@ class ComposerValidatorJson
   {
     try
     {
-      JSON.parse(data)
+      options.stringified
+      ? JSON.parse(data)
+      : JSON.stringify(data)
     }
     catch(error)
     {

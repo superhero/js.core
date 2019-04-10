@@ -7,7 +7,9 @@ class ComposerFilterJson
   {
     try
     {
-      return JSON.stringify(data, null, options.indentation)
+      return options.stringified
+      ? JSON.stringify(data, null, options.indentation)
+      : data
     }
     catch(error)
     {
