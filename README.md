@@ -395,6 +395,8 @@ A table over validation and filtration rules follows...
 
 |             | boolean   | decimal   | integer   | json      | schema    | string    | timestamp |
 |-------------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| collection  | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+| optional    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | unsigned    | -         | boolean   | boolean   | -         | -         | -         | -         |
 | min         | -         | number    | number    | -         | -         | number    | timestamp |
 | max         | -         | number    | number    | -         | -         | number    | timestamp |
@@ -404,7 +406,6 @@ A table over validation and filtration rules follows...
 | uppercase   | -         | -         | -         | -         | -         | boolean   | -         |
 | lowercase   | -         | -         | -         | -         | -         | boolean   | -         |
 | not-empty   | -         | -         | -         | -         | -         | boolean   | -         |
-| optional    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | stringified | -         | -         | -         | boolean   | -         | -         | -         |
 | indentation | -         | -         | -         | number    | -         | -         | -         |
 

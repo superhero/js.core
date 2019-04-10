@@ -1,5 +1,6 @@
 const
 InvalidAttributeError               = require('./error/invalid-attribute'),
+InvalidCollectionError              = require('./error/invalid-collection'),
 InvalidSchemaError                  = require('./error/invalid-schema'),
 SchemaNotFoundError                 = require('./error/schema-not-found'),
 FilterIsNotHoneringContractError    = require('./error/filter-is-not-honering-contract'),
@@ -19,9 +20,11 @@ class Composer
   /**
    * @param {string} name
    * @param {...Object} dto
+   *
    * @throws {E_SCHEMA_NOT_FOUND}
    * @throws {E_VALIDATOR_NOT_FOUND}
    * @throws {E_COMPOSER_INVALID_ATTRIBUTE}
+   *
    * @returns {Object}
    */
   async compose(name, ...dto)
@@ -40,33 +43,52 @@ class Composer
 
     for(const attribute in schema)
     {
+      const options = schema[attribute]
+
       output[attribute] = dto[attribute]
 
       // if optional, and undefined or null, then we don't need to filter or validate
-      if(schema[attribute].optional === true
+      if(options.optional  === true
       &&(output[attribute] === undefined || output[attribute] === null))
       {
         continue
       }
 
       // Filtering attributes if a filter has been defined for the type
-      if(schema[attribute].type in this.filters)
+      if(options.type in this.filters)
       {
-        const filter = this.filters[schema[attribute].type]
-        output[attribute] = filter.filter(schema[attribute], output[attribute])
+        const filter = this.filters[options.type]
+        output[attribute] = filter.filter(options, output[attribute])
       }
 
       // Validating type
-      if(schema[attribute].type in this.validators === false)
+      if(options.type in this.validators === false)
       {
-        const msg = `Validator: "${schema[attribute].type}" not found`
+        const msg = `Validator: "${options.type}" not found`
         throw new ValidatorNotFoundError(msg)
       }
 
       try
       {
-        const validator = this.validators[schema[attribute].type]
-        await validator.valid(schema[attribute], output[attribute])
+        const validator = this.validators[options.type]
+
+        if(options.collection)
+        {
+          if(!Array.isArray(output[attribute]))
+          {
+            const msg = `Invalid type: "${typeof output[attribute]}", array expected`
+            throw new InvalidCollectionError(msg)
+          }
+
+          for(const item of output[attribute])
+          {
+            await validator.valid(options, item)
+          }
+        }
+        else
+        {
+          await validator.valid(options, output[attribute])
+        }
       }
       catch(error)
       {
