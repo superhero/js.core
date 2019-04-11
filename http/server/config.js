@@ -9,7 +9,7 @@ module.exports =
     'http/server/session/builder'                 : __dirname + '/session/builder',
     'http/server/view/json'                       : __dirname + '/view/json',
     'http/server/view/text'                       : __dirname + '/view/text',
-    'http/server/view/raw'                        : __dirname + '/view/raw',
+    'http/server/view'                            : __dirname + '/view',
     'http/server'                                 : __dirname
   },
   http:
