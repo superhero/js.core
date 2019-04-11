@@ -1,4 +1,4 @@
-class HttpViewRaw
+class HttpView
 {
   write(output, viewModel)
   {
@@ -9,4 +9,4 @@ class HttpViewRaw
   }
 }
 
-module.exports = HttpViewRaw
+module.exports = HttpView
