@@ -152,7 +152,7 @@ class HttpServer
       output.writeProcessing()
 
       const
-      viewType  = viewModel.meta.view || route.view || 'http/server/view/json',
+      viewType  = viewModel.meta.view || route.view || 'http/server/view',
       view      = this.locator.locate(viewType)
 
       await view.write(output, viewModel, route)

@@ -10,7 +10,8 @@ module.exports =
         {
           url     : '/calculations',
           method  : 'post',
-          endpoint: 'api/endpoint/create-calculation'
+          endpoint: 'api/endpoint/create-calculation',
+          view    : 'http/server/view/json'
         },
         'authentication':
         {
@@ -24,6 +25,7 @@ module.exports =
           url     : '/calculations/.+',
           method  : 'put',
           endpoint: 'api/endpoint/append-calculation',
+          view    : 'http/server/view/json',
           dto     :
           {
             'id'    : { 'url'   : 2 },
