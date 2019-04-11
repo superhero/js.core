@@ -2,7 +2,8 @@ class DeepFind
 {
   find(path, obj)
   {
-    const keys = path.split('.')
+    // split on "." or "/"
+    const keys = path.split(/\.|\//)
     return keys.reduce((obj, key) => obj && obj[key], obj)
   }
 }
