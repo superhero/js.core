@@ -27,7 +27,7 @@ class Composer
    *
    * @returns {Object}
    */
-  async compose(name, ...dto)
+  compose(name, ...dto)
   {
     if(name in this.schemas === false)
     {
@@ -82,12 +82,12 @@ class Composer
 
           for(const item of output[attribute])
           {
-            await validator.valid(options, item)
+            validator.valid(options, item)
           }
         }
         else
         {
-          await validator.valid(options, output[attribute])
+          validator.valid(options, output[attribute])
         }
       }
       catch(error)

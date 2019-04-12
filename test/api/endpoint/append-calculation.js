@@ -8,12 +8,12 @@ BadRequestError   = require('../../../http/server/dispatcher/error/bad-request')
  */
 class AppendCalculationEndpoint extends Dispatcher
 {
-  async dispatch()
+  dispatch()
   {
     const
     calculator  = this.locator.locate('calculator'),
     composer    = this.locator.locate('composer'),
-    calculation = await composer.compose('calculation', this.route.dto),
+    calculation = composer.compose('calculation', this.route.dto),
     result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
