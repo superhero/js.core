@@ -410,6 +410,7 @@ A table over validation and filtration rules follows...
 | not-empty   | -         | -         | -         | -         | -         | boolean   | -         |
 | stringified | -         | -         | -         | boolean   | -         | -         | -         |
 | indentation | -         | -         | -         | number    | -         | -         | -         |
+| schema      | -         | -         | -         | -         | string    | -         | -         |
 
 #### `src/calculator/config.js`
 
