@@ -141,7 +141,8 @@ class HttpServer
 
     if(!route.endpoint)
     {
-      throw new NoEndpointDefinedInRouteError(`No endpoint defined in route for the request: ${request.method} -> ${request.url}`)
+      const msg = `No endpoint defined in route for the request: ${request.method} -> ${request.url}`
+      throw new NoEndpointDefinedInRouteError(msg)
     }
 
     const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
