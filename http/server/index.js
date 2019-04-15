@@ -1,4 +1,6 @@
-const NoEndpointDefinedInRouteError = require('./error/no-endpoint-defined-in-route')
+const
+NoEndpointDefinedInRouteError = require('./error/no-endpoint-defined-in-route'),
+ViewContractNotHoneredError   = require('./error/view-contract-not-honered')
 
 class HttpServer
 {
@@ -155,6 +157,12 @@ class HttpServer
       const
       viewType  = viewModel.meta.view || route.view || 'http/server/view',
       view      = this.locator.locate(viewType)
+
+      if(typeof view.write !== 'function')
+      {
+        const msg = `The service "${viewType}" does not honer the view contract`
+        throw new ViewContractNotHoneredError(msg)
+      }
 
       await view.write(output, viewModel, route)
     }
