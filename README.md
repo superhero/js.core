@@ -399,6 +399,7 @@ A table over validation and filtration rules follows...
 |-------------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | collection  | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | optional    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+| nullable    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | unsigned    | -         | boolean   | boolean   | -         | -         | -         | -         |
 | min         | -         | number    | number    | -         | -         | number    | timestamp |
 | max         | -         | number    | number    | -         | -         | number    | timestamp |

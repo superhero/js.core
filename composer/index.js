@@ -49,7 +49,14 @@ class Composer
 
       // if optional, and undefined or null, then we don't need to filter or validate
       if(options.optional  === true
-      &&(output[attribute] === undefined || output[attribute] === null))
+      && output[attribute] === undefined)
+      {
+        delete output[attribute]
+        continue
+      }
+
+      if(options.nullable  === true
+      && output[attribute] === null)
       {
         continue
       }
