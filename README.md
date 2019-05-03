@@ -397,6 +397,7 @@ A table over validation and filtration rules follows...
 
 |             | boolean   | decimal   | integer   | json      | schema    | string    | timestamp |
 |-------------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| default     | *         | *         | *         | *         | *         | *         | *         |
 | collection  | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | optional    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
 | nullable    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |

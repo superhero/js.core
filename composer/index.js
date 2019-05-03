@@ -47,6 +47,12 @@ class Composer
 
       output[attribute] = dto[attribute]
 
+      if('default' in options
+      && output[attribute] === undefined)
+      {
+        output[attribute] = options.default
+      }
+
       // if optional, and undefined or null, then we don't need to filter or validate
       if(options.optional  === true
       && output[attribute] === undefined)
