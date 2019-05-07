@@ -56,7 +56,7 @@ class HttpDispatcherRest extends HttpDispatcher
       throw new ServerError('Allowed http method must be a set of strings')
     }
 
-    const allowed = route.allowed.filter((method) => method.toUpperCase())
+    const allowed = route.allowed.map((method) => method.toUpperCase())
 
     if(!allowed.includes('OPTIONS'))
     {
