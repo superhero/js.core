@@ -6,11 +6,14 @@ class Path
   {
     const
     filename  = require.main.filename,
-    dirname   = path.dirname(filename)
+    dirname   = this.dirname(filename)
 
     this.main = { filename, dirname }
   }
 
+  /**
+   * @see require.resolve
+   */
   isResolvable(filename)
   {
     try
@@ -22,6 +25,38 @@ class Path
     {
       return false
     }
+  }
+
+  /**
+   * @see path.dirname
+   */
+  dirname(filename)
+  {
+    return path.dirname(filename)
+  }
+
+  /**
+   * @see path.normalize
+   */
+  normalize(filename)
+  {
+    return path.normalize(filename)
+  }
+
+  /**
+   * @see path.extname
+   */
+  extension(filename)
+  {
+    return path.extname(filename)
+  }
+
+  /**
+   * @see path.isAbsolute
+   */
+  isAbsolute(filename)
+  {
+    return path.isAbsolute(filename)
   }
 }
 
