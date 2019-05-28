@@ -1,11 +1,11 @@
-const ComposerFilterString = require('.')
+const ComposerFilterJson = require('.')
 
-class ComposerFilterStringLocator
+class ComposerFilterJsonLocator
 {
   locate()
   {
-    return new ComposerFilterString
+    return new ComposerFilterJson
   }
 }
 
-module.exports = ComposerFilterStringLocator
+module.exports = ComposerFilterJsonLocator
