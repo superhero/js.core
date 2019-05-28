@@ -6,7 +6,11 @@ class CliLocator
 {
   locate()
   {
-    return new Cli(readline)
+    const
+    configuration = this.locator.locate('configuration'),
+    prompt        = configuration.find('cli.prompt')
+
+    return new Cli(readline, prompt)
   }
 }
 

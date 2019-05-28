@@ -1,8 +1,13 @@
 class Cli
 {
-  constructor(readline)
+  /**
+   * @param {readline} readline
+   * @param {string} prompt
+   */
+  constructor(readline, prompt)
   {
     this.readline = readline
+    this.prompt   = prompt
   }
 
   /**
@@ -15,7 +20,7 @@ class Cli
     {
       const rl = this.readline.createInterface(
       {
-        prompt    : '-> ',
+        prompt    : this.prompt,
         input     : process.stdin,
         output    : process.stdout,
         completer
