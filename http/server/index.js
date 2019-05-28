@@ -56,8 +56,6 @@ class HttpServer
     output.on('timeout', this.onTimeout.bind(this, output))
     output.on('finish', this.onFinish .bind(this, input, output, domain))
 
-    output.writeProcessing()
-
     domain.run(() => this.dispatch(input, output, domain))
   }
 
