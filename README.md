@@ -4,7 +4,7 @@ Licence: [MIT](https://opensource.org/licenses/MIT)
 
 ---
 
-[![npm version](https://badge.fury.io/js/%40superhero%2Fcore.svg)](https://badge.fury.io/js/%40superhero%2Fcore)
+[![npm version](https://badge.fury.io/js/superhero.svg)](https://badge.fury.io/js/superhero)
 
 - A core framework I use when developing in [nodejs](https://nodejs.org/en/docs/).
 - I built the framework to help me build applications after a reactive [domain driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design) approch.
@@ -23,7 +23,7 @@ Consider extending the framework with one or multiple plugins where the extra fu
 
 ## Install
 
-`npm install @superhero/core`
+`npm install superhero`
 
 ...or just set the dependency in your `package.json` file:
 
@@ -31,10 +31,14 @@ Consider extending the framework with one or multiple plugins where the extra fu
 {
   "dependencies":
   {
-    "@superhero/core": "*"
+    "superhero": "*"
   }
 }
 ```
+
+## Standards
+
+[Recommended standards](doc/standard) are published in this repository, stored in the [`doc/standard` folder](doc/standard).
 
 ## Example Application
 
@@ -54,35 +58,44 @@ super-duper-app
 │   │   │   └── create-calculation.js
 │   │   ├── middleware
 │   │   │   └── authentication.js
+│   │   ├── observer
+│   │   │   ├── calculation-appended
+│   │   │   │   └── log
+│   │   │   │       ├── index.js
+│   │   │   │       └── locator.js
+│   │   │   └── calculation-created
+│   │   │       └── log
+│   │   │           ├── index.js
+│   │   │           └── locator.js
 │   │   └── config.js
-│   ├── calculator
-│   │   ├── error
-│   │   |   ├── calculation-could-not-be-found.js
-│   │   |   └── invalid-calculation-type.js
-│   │   ├── calculation.js
-│   │   ├── config.js
-│   │   ├── index.js
-│   │   └── locator.js
-│   ├── logger
-│   │   ├── config.js
-│   │   ├── index.js
-│   │   └── locator.js
+│   ├── domain
+│   │   ├── aggregate
+│   │   │   └── calculator
+│   │   │       ├── error
+│   │   │       │   ├── calculation-could-not-be-found.js
+│   │   │       │   └── invalid-calculation-type.js
+│   │   │       ├── index.js
+│   │   │       └── locator.js
+│   │   ├── schema
+│   │   │   └── entity
+│   │   │       └── calculation.js
+│   │   └── config.js
 │   └── index.js
 ├── test
+│   ├── integration
+│   │   ├── test.calculations.js
+│   │   └── test.logger.js
 │   ├── init.js
-│   ├── mocha.opts
-│   ├── test.calculations.js
-│   └── test.logger.js
+│   └── mocha.opts
 ├── .gitignore
 ├── package.json
 └── README.md
 ```
 
-The file structure is here divided to only 3 modules
+The file structure is here divided to 2 different modules
 
-- One called `api` *- that's responsible for the endpoints.*
-- A second one called `calculator` *- that is responsible for domain logic.*
-- The third one called `logger` *- an infrastructure layer that will log events to the console.*
+- `api` *- responsible for the endpoints and observers.*
+- `domain` *- responsible for domain logic.*
 
 #### `.gitignore`
 
@@ -102,7 +115,7 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
 {
   "name": "Super Duper App",
   "version": "0.0.1",
-  "description": "An example application of the superhero/core framework",
+  "description": "An example application of the superhero framework",
   "repository": "https://github.com/...",
   "license": "MIT",
   "main": "src/index.js",
@@ -117,7 +130,7 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
     "start": "node ./src/index.js"
   },
   "dependencies": {
-    "@superhero/core": "*"
+    "superhero": "*"
   },
   "devDependencies": {
     "mocha": "5.1.0",
@@ -134,24 +147,23 @@ Our [`package.json`](https://docs.npmjs.com/files/package.json) file will dictat
 
 ```js
 const
-CoreFactory = require('@superhero/core/factory'),
+CoreFactory = require('superhero/core/factory'),
 coreFactory = new CoreFactory,
 core        = coreFactory.create()
 
+core.add('domain')
 core.add('api')
-core.add('calculator')
-core.add('logger')
-core.add('http/server')
+core.add('core/http/server')
 
 core.load()
 
-core.locate('bootstrap').bootstrap().then(() =>
-core.locate('http/server').listen(process.env.HTTP_PORT))
+core.locate('core/bootstrap').bootstrap().then(() =>
+core.locate('core/http/server').listen(process.env.HTTP_PORT))
 ```
 
 We start of by creating a core factory that will create the core object, central to our application. The core is designed to keep track of a global state related to it's context. You can create multiple cores if necessary, but normally it makes sens to only use one. This example will only use one core.
 
-The next step is to add services that we will use in relation to the core context. Here we add `api` and `calculator` that exists in the file tree previously defined. You also notice that we add the service `http/server` that does not exist in the file tree we defined. The `http/server` service is located in the core, but may not always be necessary to load depending on the scope of your application, so you need to add the `http/server` service when you want to set up an http server.  
+The next step is to add services that we will use in relation to the core context. Here we add `api` and `domain` that exists in the file tree previously defined. You also notice that we add the service `core/http/server` that does not exist in the file tree we defined. The `core/http/server` service is located in the core, but may not always be necessary to load depending on the scope of your application, so you need to add the `core/http/server` service when you want to set up an http server.  
 The framework will try to add services depending on a hierarchy of paths.
 
 - First it will try to load in relation to your `main script`
@@ -164,81 +176,100 @@ Next we load the core! This will eager load all the services previously added to
 
 By bootstrapping the core, we run a few scripts that needs to run for some modules to function properly. As a developer you can hook into this process in the modules you write.
 
-And in the end, after we have added, loaded and bootstrapped the modules related to the context, we tell the server to listen to a specific port for network activity.
+And in the end, after we have added, loaded and bootstrapped the modules related to the context, we tell the server to listen to a specific port for network activity. In this case, the environment variable `HTTP_PORT``is expected to be set to an integer.
 
 ### Api
 
 #### `src/api/config.js`
 
 ```js
+/**
+ * @namespace Api
+ */
 module.exports =
 {
-  http:
+  core:
   {
-    server:
+    http:
     {
-      routes:
+      server:
       {
-        'create-calculation':
+        routes:
         {
-          url     : '/calculations',
-          method  : 'post',
-          endpoint: 'api/endpoint/create-calculation',
-          view    : 'http/server/view/json'
-        },
-        'authentication':
-        {
-          middleware :
-          [
-            'api/middleware/authentication'
-          ]
-        },
-        'append-calculation':
-        {
-          url     : '/calculations/.+',
-          method  : 'put',
-          endpoint: 'api/endpoint/append-calculation',
-          view    : 'http/server/view/json',
-          dto     :
+          'create-calculation':
           {
-            'id'    : { 'url'   : 2 },
-            'type'  : { 'body'  : 'type' },
-            'value' : { 'body'  : 'value' }
+            url     : '/calculations',
+            method  : 'post',
+            endpoint: 'api/endpoint/create-calculation',
+            view    : 'core/http/server/view/json'
+          },
+          'authentication':
+          {
+            middleware :
+            [
+              'api/middleware/authentication'
+            ]
+          },
+          'append-calculation':
+          {
+            url     : '/calculations/.+',
+            method  : 'put',
+            endpoint: 'api/endpoint/append-calculation',
+            view    : 'core/http/server/view/json',
+            dto     :
+            {
+              'id'    : { 'url'   : 2 },
+              'type'  : { 'body'  : 'type' },
+              'value' : { 'body'  : 'value' }
+            }
           }
         }
       }
+    },
+    eventbus:
+    {
+      observers:
+      {
+        'calculation created'  : [ 'api/observer/calculation-created/log'  ],
+        'calculation appended' : [ 'api/observer/calculation-appended/log' ]
+      }
+    },
+    locator:
+    {
+      'api/observer/calculation-created/log'  : __dirname + '/observer/calculation-created/log',
+      'api/observer/calculation-appended/log' : __dirname + '/observer/calculation-appended/log'
     }
-  },
-  authentication:
-  {
-    apikey : 'ABC123456789'
   }
 }
+
 ```
 
-I have here chosen to set up a folder structure with one module called `api`. This module will contain all the endpoints. As such, the config file of this module will specify the router setting for these endpoints.
+I have here chosen to set up a folder structure with a module called `api`. This module will contain all the endpoints. As such, the config file of this module will specify the router setting for these endpoints.
 
 I set up two explicit routes: `create-calculation` and `append-calculation`, and one middleware route: `authentication`.
 
-- The **action** attribute declares on what **url pathname** the route will be valid for.
-- The **method** attribute declares on what **url method** the route will be valid for
+- The **url** attribute declares what **url pathname** the route will be valid for.
+- The **method** attribute declares what **method** the route will be valid for
 
-The middleware route does not have an action or method constraint specified, so it's considered valid, but it does not have an endpoint specified; declaring it not unterminated. When a route is valid, but unterminated, then it will be merged together with every other valid route specified until one that is terminated appears, eg: one that has declared an endpoint.
+The middleware route does not have an action or method constraint specified, so it's considered valid, but it does not have an endpoint specified; declaring it's unterminated. When a route is valid, but unterminated, then it will be merged together with every other valid route specified until one that is terminated appears, eg: one that has declared an endpoint.
+
+The `api` in this example is also responsible for attaching event listeners to events, or "domain events". In this example, we attach a logger observer to specific events. Notice that the `locator` describes where the observers can be located, then used in the `core.eventbus.observers` config context.
 
 #### `src/api/endpoint/create-calculation.js`
 
 ```js
-const Dispatcher = require('@superhero/core/http/server/dispatcher')
+const Dispatcher = require('superhero/core/http/server/dispatcher')
 
 /**
- * @extends {@superhero/core/http/server/dispatcher}
+ * @memberof Api
+ * @extends {superhero/core/http/server/dispatcher}
  */
 class CreateCalculationEndpoint extends Dispatcher
 {
   dispatch()
   {
     const
-    calculator    = this.locator.locate('calculator'),
+    calculator    = this.locator.locate('domain/aggregate/calculator'),
     calculationId = calculator.createCalculation()
 
     this.view.body.id = calculationId
@@ -260,21 +291,23 @@ The `create calculation` endpoint is here defined.
 
 ```js
 const
-Dispatcher        = require('@superhero/core/http/server/dispatcher'),
-PageNotFoundError = require('@superhero/core/http/server/dispatcher/error/page-not-found'),
-BadRequestError   = require('@superhero/core/http/server/dispatcher/error/bad-request')
+Dispatcher        = require('superhero/core/http/server/dispatcher'),
+PageNotFoundError = require('superhero/core/http/server/dispatcher/error/page-not-found'),
+BadRequestError   = require('superhero/core/http/server/dispatcher/error/bad-request')
+
 
 /**
- * @extends {@superhero/core/http/server/dispatcher}
+ * @memberof Api
+ * @extends {superhero/core/http/server/dispatcher}
  */
 class AppendCalculationEndpoint extends Dispatcher
 {
   dispatch()
   {
     const
-    calculator  = this.locator.locate('calculator'),
-    composer    = this.locator.locate('composer'),
-    calculation = composer.compose('calculation', this.route.dto),
+    calculator  = this.locator.locate('domain/aggregate/calculator'),
+    schema      = this.locator.locate('core/schema'),
+    calculation = schema.compose('entity/calculation', this.route.dto),
     result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
@@ -290,7 +323,7 @@ class AppendCalculationEndpoint extends Dispatcher
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
 
-      case 'E_COMPOSER_INVALID_ATTRIBUTE':
+      case 'E_SCHEMA_INVALID_ATTRIBUTE':
         throw new BadRequestError(error.message)
 
       default:
@@ -315,21 +348,22 @@ Apart from the `dispatch` method, this time, we also define an `onError` method.
 
 ```js
 const
-Dispatcher    = require('@superhero/core/http/server/dispatcher'),
-Unauthorized  = require('@superhero/core/http/server/dispatcher/error/unauthorized')
+Dispatcher    = require('superhero/core/http/server/dispatcher'),
+Unauthorized  = require('superhero/core/http/server/dispatcher/error/unauthorized')
 
 /**
- * @extends {@superhero/core/http/server/dispatcher}
+ * @memberof Api
+ * @extends {superhero/core/http/server/dispatcher}
  */
 class AuthenticationMiddleware extends Dispatcher
 {
   async dispatch(next)
   {
     const
-    configuration = this.locator.locate('configuration'),
+    configuration = this.locator.locate('core/configuration'),
     apikey        = this.request.headers['api-key']
 
-    if(apikey === configuration.find('authentication.apikey'))
+    if(apikey === 'ABC123456789')
     {
       await next()
     }
@@ -355,18 +389,286 @@ This middleware is used for authentication. It's a simple implementation, one sh
      Endpoint
 ```
 
-### Calculator
+### Api - Observer
 
-#### `src/calculator/calculation.js`
+#### `src/api/observer/calculation-appended/log/index.js`
 
 ```js
 /**
- * @typedef {Object} CalculatorCalculationDto
+ * @memberof Api
+ * @implements {superhero/core/eventbus/observer}
+ */
+class ObserverCalculationAppendedLog
+{
+  constructor(console, eventbus)
+  {
+    this.console  = console
+    this.eventbus = eventbus
+  }
+
+  observe(event)
+  {
+    this.console.log(event.data)
+    this.eventbus.emit('logged calculation appended event', event.data)
+  }
+}
+
+module.exports = ObserverCalculationAppendedLog
+```
+
+*See description below...*
+
+#### `src/api/observer/calculation-appended/log/locator.js`
+
+```js
+const
+ObserverCalculationAppendedLog  = require('.'),
+LocatorConstituent              = require('superhero/core/locator/constituent')
+
+/**
+ * @memberof Api
+ * @extends {superhero/core/locator/constituent}
+ */
+class ObserverCalculationAppendedLogLocator extends LocatorConstituent
+{
+  /**
+   * @returns {ObserverCalculationAppendedLog}
+   */
+  locate()
+  {
+    const
+    console  = this.locator.locate('core/console'),
+    eventbus = this.locator.locate('core/eventbus')
+
+    return new ObserverCalculationAppendedLog(console, eventbus)
+  }
+}
+
+module.exports = ObserverCalculationAppendedLogLocator
+```
+
+*See description below...*
+
+#### `src/api/observer/calculation-created/log/index.js`
+
+```js
+/**
+ * @memberof Api
+ * @implements {superhero/core/eventbus/observer}
+ */
+class ObserverCalculationCreatedLog
+{
+  constructor(console, eventbus)
+  {
+    this.console  = console
+    this.eventbus = eventbus
+  }
+
+  observe(event)
+  {
+    this.console.log(event.data)
+    this.eventbus.emit('logged calculation created event', event.data)
+  }
+}
+
+module.exports = ObserverCalculationCreatedLog
+```
+
+*See description below...*
+
+#### `src/api/observer/calculation-created/log/locator.js`
+
+```js
+const
+ObserverCalculationCreatedLog = require('.'),
+LocatorConstituent            = require('superhero/core/locator/constituent')
+
+/**
+ * @memberof Api
+ * @extends {superhero/core/locator/constituent}
+ */
+class ObserverCalculationCreatedLogLocator extends LocatorConstituent
+{
+  /**
+   * @returns {ObserverCalculationCreatedLog}
+   */
+  locate()
+  {
+    const
+    console  = this.locator.locate('core/console'),
+    eventbus = this.locator.locate('core/eventbus')
+
+    return new ObserverCalculationCreatedLog(console, eventbus)
+  }
+}
+
+module.exports = ObserverCalculationCreatedLogLocator
+```
+
+The logger observers simply implements an interface to be recognized as an observer by the `eventbus`.
+
+After we have logged the event to the console, we emit an event to broadcast that we have logged to the console. When broadcasting an event, we can observe this event in the future, if we like. For instance, when you like to create a test for the method, we can listen to this event to ensure the process is being fulfilled.
+
+### Domain
+
+#### `src/domain/aggregate/calculator/index.js`
+
+```js
+const
+CalculationCouldNotBeFoundError = require('./error/calculation-could-not-be-found'),
+InvalidCalculationTypeError     = require('./error/invalid-calculation-type')
+
+/**
+ * Calculator service, manages calculations
+ * @memberof Domain
+ */
+class AggregateCalculator
+{
+  /**
+   * @param {superhero/core/eventbus} eventbus
+   */
+  constructor(eventbus)
+  {
+    this.eventbus     = eventbus
+    this.calculations = []
+  }
+
+  /**
+   * @returns {number} the id of the created calculation
+   */
+  createCalculation()
+  {
+    const id = this.calculations.push(0)
+    this.eventbus.emit('calculation created', { id })
+    return id
+  }
+
+  /**
+   * @throws {E_CALCULATION_COULD_NOT_BE_FOUND}
+   * @throws {E_INVALID_CALCULATION_TYPE}
+   *
+   * @param {CalculatorCalculation} dto
+   *
+   * @returns {number} the result of the calculation
+   */
+  appendToCalculation({ id, type, value })
+  {
+    if(id < 1
+    || id > this.calculations.length)
+    {
+      throw new CalculationCouldNotBeFoundError(`ID out of range: "${id}/${this.calculations.length}"`)
+    }
+
+    switch(type)
+    {
+      case 'addition':
+      {
+        const result = this.calculations[id - 1] += value
+        this.eventbus.emit('calculation appended', { id, type, result })
+        return result
+      }
+      case 'subtraction':
+      {
+        const result = this.calculations[id - 1] -= value
+        this.eventbus.emit('calculation appended', { id, type, result })
+        return result
+      }
+      default:
+      {
+        throw new InvalidCalculationTypeError(`Unrecognized type used for calculation: "${type}"`)
+      }
+    }
+  }
+}
+
+module.exports = AggregateCalculator
+```
+
+The calculator aggregate is here defined. Good practice dictate that we should define isolated errors for everything that can go wrong. First we require and define these errors to have access to the type and to be able to trow them when needed.
+
+It's a simple aggregate that creates a calculation and allows to append an additional calculation to an already created calculation.
+
+#### `src/domain/aggregate/calculator/locator.js`
+
+```js
+const
+Calculator          = require('.'),
+LocatorConstituent  = require('superhero/core/locator/constituent')
+
+/**
+ * @memberof Domain
+ * @extends {superhero/core/locator/constituent}
+ */
+class AggregateCalculatorLocator extends LocatorConstituent
+{
+  /**
+   * @returns {AggregateCalculator}
+   */
+  locate()
+  {
+    const eventbus = this.locator.locate('core/eventbus')
+    return new AggregateCalculator(eventbus)
+  }
+}
+
+module.exports = AggregateCalculatorLocator
+```
+
+The locator is responsible for dependency injection related to the aggregates it factor.
+
+#### `src/domain/aggregate/calculator/error/calculation-could-not-be-found.js`
+
+```js
+/**
+ * @memberof Domain
+ * @extends {Error}
+ */
+class CalculationCouldNotBeFoundError extends Error
+{
+  constructor(...args)
+  {
+    super(...args)
+    this.code = 'E_CALCULATION_COULD_NOT_BE_FOUND'
+  }
+}
+
+module.exports = CalculationCouldNotBeFoundError
+```
+
+A specific error with a specific error code; specifying what specific type of error is thrown.
+
+#### `src/calculator/error/invalid-calculation-type.js`
+
+```js
+/**
+ * @memberof Domain
+ * @extends {Error}
+ */
+class InvalidCalculationTypeError extends Error
+{
+  constructor(...args)
+  {
+    super(...args)
+    this.code = 'E_INVALID_CALCULATION_TYPE'
+  }
+}
+
+module.exports = InvalidCalculationTypeError
+```
+
+Another specific error...
+
+#### `src/domain/schema/entity/calculation.js`
+
+```js
+/**
+ * @memberof Domain
+ * @typedef {Object} EntityCalculation
  * @property {number} id
  * @property {string} type
  * @property {number} value
  */
-const dto =
+const entity =
 {
   'id':
   {
@@ -388,10 +690,10 @@ const dto =
   }
 }
 
-module.exports = dto
+module.exports = entity
 ```
 
-Defining a JSON schema for a dto; calculation. It's a good praxis to also define the type in "jsdoc", as seen above.
+Defining a JSON schema for an entity; calculation. It's a good praxis to also define the type in "jsdoc", as seen above.
 
 A table over validation and filtration rules follows...
 
@@ -417,243 +719,29 @@ A table over validation and filtration rules follows...
 #### `src/calculator/config.js`
 
 ```js
+/**
+ * @namespace Domain
+ */
 module.exports =
 {
-  composer:
+  core:
   {
     schema:
     {
-      'calculation' : __dirname + '/calculation'
-    }
-  },
-  locator:
-  {
-    'calculator' : __dirname
-  }
-}
-```
-
-In the `calculator config` we define where a path to a module is located, and where the locator can find a constituent locator to locate the service through.
-
-#### `src/calculator/index.js`
-
-```js
-const
-CalculationCouldNotBeFoundError = require('./error/calculation-could-not-be-found'),
-InvalidCalculationTypeError     = require('./error/invalid-calculation-type')
-
-/**
- * Calculator service, manages calculations
- */
-class Calculator
-{
-  /**
-   * @param {@superhero/eventbus} eventbus
-   */
-  constructor(eventbus)
-  {
-    this.eventbus     = eventbus
-    this.calculations = []
-  }
-
-  /**
-   * @returns {number} the id of the created calculation
-   */
-  createCalculation()
-  {
-    const id = this.calculations.push(0)
-    this.eventbus.emit('calculator.calculation-created', { id })
-    return id
-  }
-
-  /**
-   * @throws {E_CALCULATION_COULD_NOT_BE_FOUND}
-   * @throws {E_INVALID_CALCULATION_TYPE}
-   *
-   * @param {CalculatorCalculation} dto
-   *
-   * @returns {number} the result of the calculation
-   */
-  appendToCalculation({ id, type, value })
-  {
-    if(id < 1
-    || id > this.calculations.length)
-    {
-      throw new CalculationCouldNotBeFoundError(`Id out of range: "${id}/${this.calculations.length}"`)
-    }
-
-    switch(type)
-    {
-      case 'addition':
+      schema:
       {
-        const result = this.calculations[id - 1] += value
-        this.eventbus.emit('calculator.calculation-appended', { id, type, result })
-        return result  
+        'entity/calculation' : __dirname + '/schema/entity/calculation'
       }
-      case 'subtraction':
-      {
-        const result = this.calculations[id - 1] -= value
-        this.eventbus.emit('calculator.calculation-appended', { id, type, result })
-        return result  
-      }
-      default:
-      {
-        throw new InvalidCalculationTypeError(`Unrecognized type used for calculation: "${type}"`)
-      }
-    }
-  }
-}
-
-module.exports = Calculator
-```
-
-The calculator service is here defined. Good practice dictate that we should define isolated errors for everything that can go wrong. On top of the service we require these errors to have access to the type and to be able to trow when needed.
-
-It's a simple service that creates a calculation and allows to append an additional calculation to an already created calculation.
-
-#### `src/calculator/locator.js`
-
-```js
-const
-Calculator          = require('.'),
-LocatorConstituent  = require('@superhero/core/locator/constituent')
-
-/**
- * @extends {@superhero/core/locator/constituent}
- */
-class CalculatorLocator extends LocatorConstituent
-{
-  /**
-   * @returns {Calculator}
-   */
-  locate()
-  {
-    const eventbus = this.locator.locate('eventbus')
-    return new Calculator(eventbus)
-  }
-}
-
-module.exports = CalculatorLocator
-```
-
-The locator is responsible for dependency injection related to the service it creates.
-
-#### `src/calculator/error/calculation-could-not-be-found.js`
-
-```js
-/**
- * @extends {Error}
- */
-class CalculationCouldNotBeFoundError extends Error
-{
-  constructor(...args)
-  {
-    super(...args)
-    this.code = 'E_CALCULATION_COULD_NOT_BE_FOUND'
-  }
-}
-
-module.exports = CalculationCouldNotBeFoundError
-```
-
-A specific error with a specific error code; specifying what specific type of error is thrown.
-
-#### `src/calculator/error/invalid-calculation-type.js`
-
-```js
-/**
- * @extends {Error}
- */
-class InvalidCalculationTypeError extends Error
-{
-  constructor(...args)
-  {
-    super(...args)
-    this.code = 'E_INVALID_CALCULATION_TYPE'
-  }
-}
-
-module.exports = InvalidCalculationTypeError
-```
-
-Another specific error...
-
-### Logger
-
-#### `src/logger/config.js`
-
-```js
-module.exports =
-{
-  eventbus:
-  {
-    observers:
+    },
+    locator:
     {
-      'calculator.calculation-created'  : [ 'logger' ],
-      'calculator.calculation-appended' : [ 'logger' ]
+      'domain/aggregate/calculator' : __dirname + '/aggregate/calculator'
     }
-  },
-  locator:
-  {
-    'logger' : __dirname
   }
 }
 ```
 
-Attaching a logger observer to specific events. Notice that the `locator` describes where the service can be located from, then used in the `eventbus.observers` context.
-
-#### `src/logger/index.js`
-
-```js
-/**
- * @implements {@superhero/eventbus/observer}
- */
-class Logger
-{
-  constructor(eventbus)
-  {
-    this.eventbus = eventbus
-  }
-
-  observe(event)
-  {
-    this.eventbus.emit('logger.logged-event', event)
-  }
-}
-
-module.exports = Logger
-```
-
-The logger observer simply implements an interface to be recognized as an observer by the `eventbus`.
-
-After we have logged the event to the console, we emit an event broadcasting that we have done so. By doing so, we can hook up to this event in the future if we like. For instance, when you like to create a test for the method, we can listen to this event.
-
-#### `src/logger/locator.js`
-
-```js
-const
-Logger              = require('.'),
-LocatorConstituent  = require('@superhero/core/locator/constituent')
-
-/**
- * @extends {@superhero/core/locator/constituent}
- */
-class LoggerLocator extends LocatorConstituent
-{
-  /**
-   * @returns {Logger}
-   */
-  locate()
-  {
-    const eventbus = this.locator.locate('eventbus')
-    return new Logger(eventbus)
-  }
-}
-
-module.exports = LoggerLocator
-```
-
-The logger locator creates the logger for the `service locator`.
+In the `domain` `config` we define where a path to a module is located, and where the `locator` can find a constituent `locator` to locate/find a service through.
 
 ### Test
 
@@ -693,44 +781,43 @@ describe('Calculations', () =>
   before((done) =>
   {
     const
-    CoreFactory = require('@superhero/core/factory'),
+    CoreFactory = require('superhero/core/factory'),
     coreFactory = new CoreFactory
 
     core = coreFactory.create()
 
+    core.add('domain')
     core.add('api')
-    core.add('calculator')
-    core.add('logger')
-    core.add('http/server')
+    core.add('core/http/server')
 
     core.load()
 
-    core.locate('bootstrap').bootstrap().then(() =>
+    core.locate('core/bootstrap').bootstrap().then(() =>
     {
-      core.locate('http/server').listen(9001)
-      core.locate('http/server').onListening(done)
+      core.locate('core/http/server').listen(9001)
+      core.locate('core/http/server').onListening(done)
     })
   })
 
   after(() =>
   {
-    core.locate('http/server').close()
+    core.locate('core/http/server').close()
   })
 
   it('A client can create a calculation', async function()
   {
-    const configuration = core.locate('configuration')
-    const httpRequest = core.locate('http/request')
-    context(this, { title:'route', value:configuration.find('http.server.routes.create-calculation') })
+    const configuration = core.locate('core/configuration')
+    const httpRequest = core.locate('core/http/request')
+    context(this, { title:'route', value:configuration.find('core.http.server.routes.create-calculation') })
     const response = await httpRequest.post('http://localhost:9001/calculations')
     expect(response.data.id).to.be.equal(1)
   })
 
   it('A client can append a calculation to the result of a former calculation if authentication Api-Key', async function()
   {
-    const configuration = core.locate('configuration')
-    const httpRequest = core.locate('http/request')
-    context(this, { title:'route', value:configuration.find('http.server.routes.append-calculation') })
+    const configuration = core.locate('core/configuration')
+    const httpRequest = core.locate('core/http/request')
+    context(this, { title:'route', value:configuration.find('core.http.server.routes.append-calculation') })
     const url = 'http://localhost:9001/calculations/1'
     const data = { id:1, type:'addition', value:100 }
     const response_unauthorized = await httpRequest.put({ url, data })
@@ -756,33 +843,32 @@ describe('Logger', () =>
   before((done) =>
   {
     const
-    CoreFactory = require('@superhero/core/factory'),
+    CoreFactory = require('superhero/core/factory'),
     coreFactory = new CoreFactory
 
     core = coreFactory.create()
 
+    core.add('domain')
     core.add('api')
-    core.add('calculator')
-    core.add('logger')
-    core.add('http/server')
+    core.add('core/http/server')
 
     core.load()
 
-    core.locate('bootstrap').bootstrap().then(done)
+    core.locate('core/bootstrap').bootstrap().then(done)
   })
 
-  it('Events are logged to the console', function(done)
+  it('the logger is logging', function(done)
   {
-    const configuration = core.locate('configuration')
-    const eventbus      = core.locate('eventbus')
-    context(this, { title:'observers', value:configuration.find('http.eventbus.observers') })
-    eventbus.once('logger.logged-event', () => done())
-    eventbus.emit('calculator.calculation-created', 'test')
+    const configuration = core.locate('core/configuration')
+    const eventbus      = core.locate('core/eventbus')
+    context(this, { title:'observers', value:configuration.find('core.http.eventbus.observers') })
+    eventbus.once('logged calculation created event', () => done())
+    eventbus.emit('calculation created', 'test')
   })
 })
 ```
 
-Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface. Here I suggest using a [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) approach.
+Finally I have designed a few simple tests that proves the pattern, and gives insight to the expected interface. Here I suggest using a [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) approach, though my examples are not aligned with the principles.
 
 ### Npm scripts
 

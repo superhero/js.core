@@ -1,19 +1,20 @@
 const
-Dispatcher    = require('../../../http/server/dispatcher'),
-Unauthorized  = require('../../../http/server/dispatcher/error/unauthorized')
+Dispatcher    = require('../../../core/http/server/dispatcher'),
+Unauthorized  = require('../../../core/http/server/dispatcher/error/unauthorized')
 
 /**
- * @extends {@superhero/core/http/server/dispatcher}
+ * @memberof Api
+ * @extends {superhero/core/http/server/dispatcher}
  */
 class AuthenticationMiddleware extends Dispatcher
 {
   async dispatch(next)
   {
     const
-    configuration = this.locator.locate('configuration'),
+    configuration = this.locator.locate('core/configuration'),
     apikey        = this.request.headers['api-key']
 
-    if(apikey === configuration.find('authentication.apikey'))
+    if(apikey === 'ABC123456789')
     {
       await next()
     }

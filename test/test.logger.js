@@ -9,27 +9,26 @@ describe('Logger', () =>
   before((done) =>
   {
     const
-    CoreFactory = require('../factory'),
+    CoreFactory = require('../core/factory'),
     coreFactory = new CoreFactory
 
     core = coreFactory.create()
 
+    core.add('domain')
     core.add('api')
-    core.add('calculator')
-    core.add('logger')
-    core.add('http/server')
+    core.add('core/http/server')
 
     core.load()
 
-    core.locate('bootstrap').bootstrap().then(done)
+    core.locate('core/bootstrap').bootstrap().then(done)
   })
 
   it('the logger is logging', function(done)
   {
-    const configuration = core.locate('configuration')
-    const eventbus      = core.locate('eventbus')
-    context(this, { title:'observers', value:configuration.find('http.eventbus.observers') })
-    eventbus.once('logger.logged-event', () => done())
-    eventbus.emit('calculator.calculation-created', 'test')
+    const configuration = core.locate('core/configuration')
+    const eventbus      = core.locate('core/eventbus')
+    context(this, { title:'observers', value:configuration.find('core.http.eventbus.observers') })
+    eventbus.once('logged calculation created event', () => done())
+    eventbus.emit('calculation created', 'test')
   })
 })

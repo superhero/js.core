@@ -1,5 +1,3 @@
-const CoreError = require('./core/error')
-
 class Core
 {
   constructor(locator)
@@ -15,7 +13,7 @@ class Core
 
   load()
   {
-    const configuration = this.locate('configuration')
+    const configuration = this.locate('core/configuration')
 
     // extending the configurations of every component
     for(const component in this.components)
@@ -25,7 +23,7 @@ class Core
     }
 
     // eager loading the services in the sevice locator
-    for(const name in configuration.config.locator)
+    for(const name in configuration.find('core.locator'))
     {
       this.loadService(name)
     }
@@ -34,7 +32,7 @@ class Core
   fetchComponentConfig(component, pathname)
   {
     const
-    path          = this.locate('path'),
+    path          = this.locate('core/path'),
     specifiedPath = `${pathname}/config`,
     localPath     = `${path.main.dirname}/${component}/config`,
     absolutePath  = `${component}/config`,
@@ -53,15 +51,19 @@ class Core
       return require(corePath)
 
     else
-      throw new CoreError(`could not resolve path to component "${component}"`)
+    {
+      const error = new Error(`could not resolve path to component "${component}"`)
+      error.code = 'E_COMPONENT_NOT_RESOLVABLE'
+      throw error
+    }
   }
 
   loadService(name)
   {
     const
-    configuration = this.locator.locate('configuration'),
-    path          = this.locator.locate('path'),
-    locatorPath   = `${configuration.config.locator[name]}/locator`
+    configuration = this.locator.locate('core/configuration'),
+    path          = this.locator.locate('core/path'),
+    locatorPath   = `${configuration.find('core.locator')[name]}/locator`
 
     if(path.isResolvable(locatorPath))
     {
@@ -79,8 +81,11 @@ class Core
         switch(error.code)
         {
           case 'E_SERVICE_UNDEFINED':
-            const msg = `An unmet dependency was found for service "${name}", error: ${error.message}`
-            throw new CoreError(msg)
+          {
+            const errorUnmetDependency = new Error(`An unmet dependency was found for service "${name}", error: ${error.message}`)
+            errorUnmetDependency.code = 'E_SERVICE_UNMET_DEPENDENCY'
+            throw errorUnmetDependency
+          }
 
           default:
             throw error
@@ -89,7 +94,9 @@ class Core
     }
     else
     {
-      throw new CoreError(`locator could not be found for ${name}`)
+      const error = new Error(`locator could not be found for ${name}`)
+      error.code = 'E_SERVICE_LOCATOR_NOT_FOUND'
+      throw error
     }
   }
 

@@ -1,21 +1,24 @@
 module.exports =
 {
-  eventbus:
+  core:
   {
-    observers:
+    eventbus:
     {
-      'core.error' :
-      [
-        'console/observer/error'
-      ],
-      'core.warning' :
-      [
-        'console/observer/warning'
-      ],
-      'core.info' :
-      [
-        'console/observer/info'
-      ]
+      observers:
+      {
+        'core.error' :
+        [
+          'core/console/observer/error'
+        ],
+        'core.warning' :
+        [
+          'core/console/observer/warning'
+        ],
+        'core.info' :
+        [
+          'core/console/observer/info'
+        ]
+      }
     }
   }
 }

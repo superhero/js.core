@@ -1,19 +1,20 @@
 const
-Dispatcher        = require('../../../http/server/dispatcher'),
-PageNotFoundError = require('../../../http/server/dispatcher/error/page-not-found'),
-BadRequestError   = require('../../../http/server/dispatcher/error/bad-request')
+Dispatcher        = require('../../../core/http/server/dispatcher'),
+PageNotFoundError = require('../../../core/http/server/dispatcher/error/page-not-found'),
+BadRequestError   = require('../../../core/http/server/dispatcher/error/bad-request')
 
 /**
- * @extends {@superhero/core/http/server/dispatcher}
+ * @memberof Api
+ * @extends {superhero/core/http/server/dispatcher}
  */
 class AppendCalculationEndpoint extends Dispatcher
 {
   dispatch()
   {
     const
-    calculator  = this.locator.locate('calculator'),
-    composer    = this.locator.locate('composer'),
-    calculation = composer.compose('calculation', this.route.dto),
+    calculator  = this.locator.locate('domain/aggregate/calculator'),
+    schema      = this.locator.locate('core/schema'),
+    calculation = schema.compose('entity/calculation', this.route.dto),
     result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
@@ -29,7 +30,7 @@ class AppendCalculationEndpoint extends Dispatcher
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
 
-      case 'E_COMPOSER_INVALID_ATTRIBUTE':
+      case 'E_SCHEMA_INVALID_ATTRIBUTE':
         throw new BadRequestError(error.message)
 
       default:
