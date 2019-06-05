@@ -1,8 +1,7 @@
 _**sop-test**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### Test
----
+### Test
 
 ![Test diagram](diagram/sop-test.svg)
 

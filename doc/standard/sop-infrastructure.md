@@ -1,8 +1,7 @@
 _**sop-infrastructure**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### Infrastructure
----
+### Infrastructure
 
 ![Infrastructure diagram](diagram/sop-infrastructure.svg)
 

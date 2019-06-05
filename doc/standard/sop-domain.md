@@ -1,8 +1,7 @@
 _**sop-domain**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### Domain
----
+### Domain
 
 This standard is strongly correlated with the guidelines that has grown out of the domain driven design community.
 

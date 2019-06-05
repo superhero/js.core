@@ -1,8 +1,7 @@
 _**sop-ms**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### Microservice
----
+### Microservice
 
 A microservice is defined by its context. A microservice has a responsibility that is implied by the context. A microservice is limited by the barriers that is defined by the microservice responsibility.
 

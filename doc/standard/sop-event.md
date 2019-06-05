@@ -1,8 +1,7 @@
 _**sop-event**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### Event
----
+### Event
 
 ![Event diagram](diagram/sop-event.svg)
 

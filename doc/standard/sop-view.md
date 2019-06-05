@@ -1,8 +1,7 @@
 _**sop-view**-1.0.0_
-_**Author:** Erik Landvall_
+_Author: Erik Landvall_
 # Standard Operating Procedure
-#### View
----
+### View
 
 ![View diagram](diagram/sop-view.svg)
 
