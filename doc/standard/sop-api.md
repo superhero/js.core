@@ -1,8 +1,7 @@
-_**sop-api**-1.0.0_
+_**sop-api**-1.0.0_  
 _**Author:** Erik Landvall_
 # Standard Operating Procedure
 #### API
----
 
 This standard defines a folder structure in the `API` layer. The `API` layer is where the application interfaces are defined. This standard is not exclusive, a developer can chose to extend the structure to cover additional definitions.
 
