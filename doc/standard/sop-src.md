@@ -1,8 +1,8 @@
-Standard Operating Procedure
-Source code
-sop-src-1.0.0
-
-Author: Erik Landvall
+_**sop-src**-1.0.0_
+_**Author:** Erik Landvall_
+# Standard Operating Procedure
+#### Source code
+---
 
 This standard addresses direction of dependencies between different layers of the source code. This standard is strict and must be followed with no exceptions.
 
