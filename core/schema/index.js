@@ -77,7 +77,7 @@ class Schema
       // Validating type
       if(options.type in this.validators === false)
       {
-        const msg = `Validator: "${options.type}" not found`
+        const msg = `In schema: "${name}", validator: "${options.type}" not found`
         throw new ValidatorNotFoundError(msg)
       }
 
@@ -89,7 +89,7 @@ class Schema
         {
           if(!Array.isArray(output[attribute]))
           {
-            const msg = `Invalid type: "${typeof output[attribute]}", array expected`
+            const msg = `In schema: "${name}", invalid type: "${typeof output[attribute]}", array expected`
             throw new InvalidCollectionError(msg)
           }
 
@@ -105,7 +105,7 @@ class Schema
       }
       catch(error)
       {
-        const msg = `Invalid attribute: "${attribute}", error: ${error.message}`
+        const msg = `Invalid attribute: "${attribute}", schema: "${name}", error: ${error.message}`
         throw new InvalidAttributeError(msg)
       }
     }
@@ -130,13 +130,13 @@ class Schema
     {
       if(typeof schema[attribute].type !== 'string')
       {
-        const msg = `Attribute "${attribute}" does not have a type defined`
+        const msg = `In schema "${schemaName}", attribute "${attribute}" does not have a type defined`
         throw new InvalidSchemaError(msg)
       }
 
       if('enum' in schema[attribute] && !Array.isArray(schema[attribute].enum))
       {
-        const msg = `Attribute "${attribute}" enum must be an array`
+        const msg = `In schema "${schemaName}", attribute "${attribute}" enum must be an array`
         throw new InvalidSchemaError(msg)
       }
     }
