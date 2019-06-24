@@ -37,7 +37,7 @@ class SchemaComposer
 
     dto = Array.isArray(dto)
     ? this.deepmerge.merge({}, ...dto)
-    // if not an array, we still want to ensure the object
+    // if dto is not an array, we still want to ensure the object is a clone
     : this.deepmerge.merge({},    dto)
 
     const
