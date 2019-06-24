@@ -7,7 +7,7 @@ FilterIsNotHoneringContractError    = require('./error/filter-is-not-honering-co
 ValidatorIsNotHoneringContractError = require('./error/validator-is-not-honering-contract'),
 ValidatorNotFoundError              = require('./error/validator-not-found')
 
-class Schema
+class SchemaComposer
 {
   constructor(deepmerge)
   {
@@ -27,7 +27,7 @@ class Schema
    *
    * @returns {Object}
    */
-  compose(name, ...dto)
+  compose(name, dto, errorType)
   {
     if(name in this.schemas === false)
     {
@@ -35,7 +35,10 @@ class Schema
       throw new SchemaNotFoundError(msg)
     }
 
-    dto = this.deepmerge.merge({}, ...dto)
+    dto = Array.isArray(dto)
+    ? this.deepmerge.merge({}, ...dto)
+    // if not an array, we still want to ensure the object
+    : this.deepmerge.merge({},    dto)
 
     const
     schema = this.schemas[name],
@@ -177,4 +180,4 @@ class Schema
   }
 }
 
-module.exports = Schema
+module.exports = SchemaComposer

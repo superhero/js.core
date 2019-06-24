@@ -31,7 +31,7 @@ module.exports =
     },
     locator:
     {
-      'core/schema'                      : __dirname,
+      'core/schema/composer'             : __dirname + '/composer',
       'core/schema/bootstrap'            : __dirname + '/bootstrap',
       'core/schema/filter/boolean'       : __dirname + '/filter/boolean',
       'core/schema/filter/decimal'       : __dirname + '/filter/decimal',

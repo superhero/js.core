@@ -7,7 +7,7 @@ module.exports =
   {
     schema:
     {
-      schema:
+      composer:
       {
         'entity/calculation' : __dirname + '/schema/entity/calculation'
       }

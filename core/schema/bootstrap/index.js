@@ -13,7 +13,7 @@ class SchemaBootstrap
   {
     const
     schema      = this.locator.locate('core/schema'),
-    schemas     = this.configuration.find('core.schema.schema'),
+    schemas     = this.configuration.find('core.schema.composer'),
     filters     = this.configuration.find('core.schema.filter'),
     validators  = this.configuration.find('core.schema.validator')
 

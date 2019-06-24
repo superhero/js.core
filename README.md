@@ -317,7 +317,7 @@ class AppendCalculationEndpoint extends Dispatcher
   {
     const
     calculator  = this.locator.locate('domain/aggregate/calculator'),
-    schema      = this.locator.locate('core/schema'),
+    schema      = this.locator.locate('core/schema/composer'),
     calculation = schema.compose('entity/calculation', this.route.dto),
     result      = calculator.appendToCalculation(calculation)
 
@@ -727,7 +727,7 @@ A table over validation and filtration rules follows...
 | indentation | -         | -         | -         | number    | -         | -         | -         |
 | schema      | -         | -         | -         | -         | string    | -         | -         |
 
-#### `src/calculator/config.js`
+#### `src/domain/config.js`
 
 ```js
 /**
@@ -739,7 +739,7 @@ module.exports =
   {
     schema:
     {
-      schema:
+      composer:
       {
         'entity/calculation' : __dirname + '/schema/entity/calculation'
       }
