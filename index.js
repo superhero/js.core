@@ -52,7 +52,10 @@ class Core
 
     else
     {
-      const error = new Error(`could not resolve path to component "${component}"`)
+      const
+      msg   = `could not resolve path to component "${component}"`,
+      error = new Error(msg)
+
       error.code = 'E_COMPONENT_NOT_RESOLVABLE'
       throw error
     }
@@ -82,7 +85,10 @@ class Core
         {
           case 'E_SERVICE_UNDEFINED':
           {
-            const errorUnmetDependency = new Error(`An unmet dependency was found for service "${name}", error: ${error.message}`)
+            const
+            msg                   = `An unmet dependency was found for service "${name}", error: ${error.message}`,
+            errorUnmetDependency  = new Error(msg)
+
             errorUnmetDependency.code = 'E_SERVICE_UNMET_DEPENDENCY'
             throw errorUnmetDependency
           }
@@ -94,7 +100,10 @@ class Core
     }
     else
     {
-      const error = new Error(`locator could not be found for ${name}`)
+      const
+      msg   = `locator could not be found for ${name}`,
+      error = new Error(msg)
+
       error.code = 'E_SERVICE_LOCATOR_NOT_FOUND'
       throw error
     }
