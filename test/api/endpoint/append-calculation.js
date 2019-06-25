@@ -13,8 +13,7 @@ class AppendCalculationEndpoint extends Dispatcher
   {
     const
     calculator  = this.locator.locate('domain/aggregate/calculator'),
-    composer    = this.locator.locate('core/schema/composer'),
-    calculation = composer.compose('entity/calculation', this.route.dto),
+    calculation = this.route.dto,
     result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result
@@ -29,9 +28,6 @@ class AppendCalculationEndpoint extends Dispatcher
 
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
-
-      case 'E_SCHEMA_INVALID_ATTRIBUTE':
-        throw new BadRequestError(error.message)
 
       default:
         throw error
