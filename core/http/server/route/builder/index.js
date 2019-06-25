@@ -1,28 +1,47 @@
 const
-RoutesInvalidTypeError    = require('./error/routes-invalid-type'),
-DtoInvalidReferenceError  = require('./error/dto-invalid-reference')
+RoutesInvalidTypeError  = require('./error/routes-invalid-type'),
+InvalidRouteInputError  = require('./error/invalid-route-input'),
+InvalidDtoError         = require('./error/invalid-dto')
 
 class HttpRouteBuilder
 {
-  constructor(deepmerge)
+  constructor(deepmerge, composer)
   {
-    this.deepmerge = deepmerge
+    this.deepmerge  = deepmerge
+    this.composer   = composer
   }
 
   build(routes, request)
   {
     if(typeof routes !== 'object')
     {
-      throw new RoutesInvalidTypeError(`routes must be built from an object`)
+      const msg = 'routes must be built from an object'
+      throw new RoutesInvalidTypeError(msg)
     }
 
     const
     validRoutes = this.fetchValidRoutes(routes, request),
     route       = this.deepmerge.merge({}, ...validRoutes)
 
-    route.dto = this.composeDto(request, route.dto)
+    if(!('input' in route))
+    {
+      const msg = 'route requires a defintion of an input schema, "false" is an acceptable value'
+      throw new InvalidRouteInputError(msg)
+    }
 
-    return route
+    try
+    {
+      if(route.input)
+      {
+        route.dto = this.composeDto(request, route)
+      }
+
+      return route
+    }
+    catch(error)
+    {
+      throw new InvalidDtoError(error.message)
+    }
   }
 
   fetchValidRoutes(routes, request)
@@ -32,7 +51,7 @@ class HttpRouteBuilder
     {
       const
       route   = routes[name],
-      url     = route.url     && new RegExp(`^${route.url.replace(/\/+$/g, '')}$`),
+      url     = route.url     && new RegExp(`^${route.url.replace(/\/:(\w+)/g, '/.+').replace(/\/+$/g, '')}$`),
       method  = route.method  && new RegExp(`^${route.method}$`, 'i')
 
       if(request.url    .match(url)
@@ -50,38 +69,36 @@ class HttpRouteBuilder
     return validRoutes
   }
 
-  composeDto(request, map)
+  composeDto(request, route)
   {
     const dto = {}
-    for(const key in map)
-      for(const type in map[key])
-        switch(type)
-        {
-          case 'body':
-          {
-            const body_key = map[key][type]
-            dto[key] = request.body[body_key]
-            break
-          }
-          case 'url':
-          {
-            const url_index = parseInt(map[key][type])
-            dto[key] = request.url.split('/')[url_index]
-            break
-          }
-          case 'query':
-          {
-            const query_key = map[key][type]
-            dto[key] = request.query[query_key]
-            break
-          }
-          default:
-          {
-            throw new DtoInvalidReferenceError(`type "${type}" is not recognized for request to DTO mapping`)
-          }
-        }
 
-    return dto
+    for(const key in request.query)
+    {
+      dto[key] = request.query[key]
+    }
+
+    for(const key in request.body)
+    {
+      dto[key] = request.body[key]
+    }
+
+    const
+    requestUrl  = request.url.split('/'),
+    routeUrl    = route.url.split('/')
+
+    for(const i in routeUrl)
+    {
+      const segment = routeUrl[i]
+
+      if(segment.startsWith(':'))
+      {
+        const key = segment.slice(1)
+        dto[key] = requestUrl[i]
+      }
+    }
+
+    return this.composer.compose(route.input, dto)
   }
 }
 

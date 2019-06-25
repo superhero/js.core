@@ -51,10 +51,10 @@ class HttpServer
     domain.add(input)
     domain.add(output)
 
-    domain.on('error', this.onError.bind(this, input, output, domain))
-    input.on('aborted', this.onAborted.bind(this, output))
-    output.on('timeout', this.onTimeout.bind(this, output))
-    output.on('finish', this.onFinish .bind(this, input, output, domain))
+    domain.on('error',    this.onError  .bind(this, input, output, domain))
+    input.on('aborted',   this.onAborted.bind(this, output))
+    output.on('timeout',  this.onTimeout.bind(this, output))
+    output.on('finish',   this.onFinish .bind(this, input, output, domain))
 
     domain.run(() => this.dispatch(input, output, domain))
   }
@@ -105,6 +105,12 @@ class HttpServer
   {
     switch(error.code)
     {
+      case 'E_HTTP_SERVER_ROUTE_BUILDER_INVALID_DTO':
+      {
+        output.writeHead(400)
+        output.end('Bad Request, ' + error.message)
+        break
+      }
       case 'E_HTTP_DISPATCHER':
       {
         output.writeHead(error.status)

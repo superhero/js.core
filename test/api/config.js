@@ -16,7 +16,8 @@ module.exports =
             url     : '/calculations',
             method  : 'post',
             endpoint: 'api/endpoint/create-calculation',
-            view    : 'core/http/server/view/json'
+            view    : 'core/http/server/view/json',
+            input   : false
           },
           'authentication':
           {
@@ -27,16 +28,11 @@ module.exports =
           },
           'append-calculation':
           {
-            url     : '/calculations/.+',
+            url     : '/calculations/:id',
             method  : 'put',
             endpoint: 'api/endpoint/append-calculation',
             view    : 'core/http/server/view/json',
-            dto     :
-            {
-              'id'    : { 'url'   : 2 },
-              'type'  : { 'body'  : 'type' },
-              'value' : { 'body'  : 'value' }
-            }
+            input   : 'entity/calculation'
           }
         }
       }

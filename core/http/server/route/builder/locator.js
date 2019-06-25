@@ -11,7 +11,8 @@ class HttpRouteBuilderLocator
   {
     const
     deepmerge = this.locator.locate('core/deepmerge'),
-    builder   = new HttpRouteBuilder(deepmerge)
+    composer  = this.locator.locate('core/schema/composer'),
+    builder   = new HttpRouteBuilder(deepmerge, composer)
 
     return builder
   }
