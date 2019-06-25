@@ -175,7 +175,7 @@ core.locate('core/http/server').listen(process.env.HTTP_PORT))
 We start of by creating a core factory that will create the core object, central to our application. The core is designed to keep track of a global state related to it's context. You can create multiple cores if necessary, but normally it makes sens to only use one. This example will only use one core.
 
 The next step is to add services that we will use in relation to the core context. Here we add `api` and `domain` that exists in the file tree previously defined. You also notice that we add the service `core/http/server` that does not exist in the file tree we defined. The `core/http/server` service is located in the core, but may not always be necessary to load depending on the scope of your application, so you need to add the `core/http/server` service when you want to set up an http server.  
-The framework will add services depending on a hierarchy of paths, it's possible to write over the configuration done by one component in another. This feuture allows the developer to extend, or build on to, components decalered functionality.
+The framework will add services depending on a hierarchy of paths, it's possible to write over the configuration done by one component in another. This feature allows the developer to extend, or build on to, components declared functionality.
 
 - First it will try to load in relation to your `main script`
 - next it attempts by dependency defined in your `package.json` file
