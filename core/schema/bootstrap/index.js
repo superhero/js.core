@@ -25,36 +25,36 @@ class SchemaBootstrap
   addSchemas(composer, schemas)
   {
     for(const schemaName in schemas || [])
+    {
       if(this.path.isResolvable(schemas[schemaName]))
       {
-        const schemaDefinition = require(schemas[schemaName])
-        composer.addSchema(schemaName, schemaDefinition)
+        const schema = require(schemas[schemaName])
+        composer.addSchema(schemaName, schema)
       }
       else
       {
         const msg = `Could not resolve path for schema: "${schemaName}", path: "${schemas[schemaName]}"`
         throw new SchemaNotResolvable(msg)
       }
+    }
   }
 
   addFilters(composer, filters)
   {
-    if(filters)
-      for(const filterName in filters)
-      {
-        const filter = this.locator.locate(filters[filterName])
-        composer.addFilter(filterName, filter)
-      }
+    for(const filterName in filters || [])
+    {
+      const filter = this.locator.locate(filters[filterName])
+      composer.addFilter(filterName, filter)
+    }
   }
 
   addValidators(composer, validators)
   {
-    if(validators)
-      for(const validatorName in validators)
-      {
-        const validator = this.locator.locate(validators[validatorName])
-        composer.addValidator(validatorName, validator)
-      }
+    for(const validatorName in validators || [])
+    {
+      const validator = this.locator.locate(validators[validatorName])
+      composer.addValidator(validatorName, validator)
+    }
   }
 }
 
