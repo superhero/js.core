@@ -162,9 +162,9 @@ CoreFactory = require('superhero/core/factory'),
 coreFactory = new CoreFactory,
 core        = coreFactory.create()
 
-core.add('domain')
-core.add('api')
 core.add('core/http/server')
+core.add('api')
+core.add('domain')
 
 core.load()
 

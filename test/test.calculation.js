@@ -14,8 +14,8 @@ describe('Calculations', () =>
 
     core = coreFactory.create()
 
-    core.add('domain')
     core.add('api')
+    core.add('domain')
     core.add('core/http/server')
 
     core.load()

@@ -22,11 +22,12 @@ class Core
       configuration.extend(config)
     }
 
+    const
+    serviceMap    = configuration.find('core.locator'),
+    serviceNames  = Object.keys(serviceMap)
+
     // eager loading the services in the sevice locator
-    for(const name in configuration.find('core.locator'))
-    {
-      this.loadService(name)
-    }
+    this.loadServiceRecursion(serviceNames)
   }
 
   fetchComponentConfig(component, pathname)
@@ -107,6 +108,56 @@ class Core
       error.code = 'E_SERVICE_LOCATOR_NOT_FOUND'
       throw error
     }
+  }
+
+  /**
+   * Eager loading the services in the sevice locator.
+   * Recursion queue to complete loading all services.
+   * @param {Array<string>} services names of services
+   */
+  loadServiceRecursion(services)
+  {
+    // when the queu is empty, then we are done
+    if(services.length === 0)
+      return
+
+    // incomplete services that could not be loaded in the declared order
+    const queue = []
+
+    // looping through different service names in an attempt to eager load them
+    // if an "unmet dependency" error is thrown, the service name is pushed to a queue to be located at a later stage
+    // in hope that the earlier unmet dependency then is locatable
+    for(const serviceName of services)
+    {
+      try
+      {
+        this.loadService(serviceName)
+      }
+      catch(error)
+      {
+        switch (error.code)
+        {
+          case 'E_SERVICE_UNMET_DEPENDENCY':
+            queue.push(serviceName)
+            break;
+
+          default:
+            throw error
+        }
+      }
+    }
+
+    // if the new queue is the same as the old queue, then no progress has taken place
+    if(services.length === queue.length)
+    {
+      const error = new Error(`Unmet dependencies found, could not resolve dependencies for ${queue.join(', ')}`)
+      error.code = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
+
+      throw error
+    }
+
+    // recursion until the queue is empty
+    this.loadServiceRecursion(queue)
   }
 
   locate(service)
