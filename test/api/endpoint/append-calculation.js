@@ -13,8 +13,8 @@ class AppendCalculationEndpoint extends Dispatcher
   {
     const
     calculator  = this.locator.locate('domain/aggregate/calculator'),
-    schema      = this.locator.locate('core/schema'),
-    calculation = schema.compose('entity/calculation', this.route.dto),
+    composer    = this.locator.locate('core/schema/composer'),
+    calculation = composer.compose('entity/calculation', this.route.dto),
     result      = calculator.appendToCalculation(calculation)
 
     this.view.body.result = result

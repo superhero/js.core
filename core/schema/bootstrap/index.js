@@ -12,49 +12,48 @@ class SchemaBootstrap
   bootstrap()
   {
     const
-    schema      = this.locator.locate('core/schema'),
+    composer    = this.locator.locate('core/schema/composer'),
     schemas     = this.configuration.find('core.schema.composer'),
     filters     = this.configuration.find('core.schema.filter'),
     validators  = this.configuration.find('core.schema.validator')
 
-    this.addSchemas(schema, schemas)
-    this.addFilters(schema, filters)
-    this.addValidators(schema, validators)
+    this.addSchemas(composer, schemas)
+    this.addFilters(composer, filters)
+    this.addValidators(composer, validators)
   }
 
-  addSchemas(schema, schemas)
+  addSchemas(composer, schemas)
   {
-    if(schemas)
-      for(const schemaName in schemas)
-        if(this.path.isResolvable(schemas[schemaName]))
-        {
-          const schemaDefinition = require(schemas[schemaName])
-          schema.addSchema(schemaName, schemaDefinition)
-        }
-        else
-        {
-          const msg = `Could not resolve path for schema: "${schemaName}", path: "${schemas[schemaName]}"`
-          throw new SchemaNotResolvable(msg)
-        }
+    for(const schemaName in schemas || [])
+      if(this.path.isResolvable(schemas[schemaName]))
+      {
+        const schemaDefinition = require(schemas[schemaName])
+        composer.addSchema(schemaName, schemaDefinition)
+      }
+      else
+      {
+        const msg = `Could not resolve path for schema: "${schemaName}", path: "${schemas[schemaName]}"`
+        throw new SchemaNotResolvable(msg)
+      }
   }
 
-  addFilters(schema, filters)
+  addFilters(composer, filters)
   {
     if(filters)
       for(const filterName in filters)
       {
         const filter = this.locator.locate(filters[filterName])
-        schema.addFilter(filterName, filter)
+        composer.addFilter(filterName, filter)
       }
   }
 
-  addValidators(schema, validators)
+  addValidators(composer, validators)
   {
     if(validators)
       for(const validatorName in validators)
       {
         const validator = this.locator.locate(validators[validatorName])
-        schema.addValidator(validatorName, validator)
+        composer.addValidator(validatorName, validator)
       }
   }
 }
