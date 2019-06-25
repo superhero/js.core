@@ -4,9 +4,9 @@ const MissingSchemaDefinitionError = require('./error/missing-schema-definition'
  */
 class SchemaFilterSchema
 {
-  constructor(schema)
+  constructor(composer)
   {
-    this.schema = schema
+    this.composer = composer
   }
 
   filter(options, data)
@@ -36,11 +36,11 @@ class SchemaFilterSchema
   {
     if(typeof options.schema === 'string')
     {
-      return this.schema.compose(options.schema, data)
+      return this.composer.compose(options.schema, data)
     }
     else
     {
-      const msg = `Expected the attribute "schema" to define what type/schema to filter by`
+      const msg = `Expected the attribute "schema" to declare what type of schema `
       throw new MissingSchemaDefinitionError(msg)
     }
   }
