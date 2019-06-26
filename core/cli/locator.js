@@ -4,6 +4,11 @@ readline  = require('readline')
 
 class CliLocator
 {
+  constructor(locator)
+  {
+    this.locator = locator
+  }
+
   locate()
   {
     const
