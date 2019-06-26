@@ -9,9 +9,10 @@ ValidatorNotFoundError              = require('./error/validator-not-found')
 
 class SchemaComposer
 {
-  constructor(deepmerge)
+  constructor(deepmerge, deepcopy)
   {
     this.deepmerge  = deepmerge
+    this.deepcopy   = deepcopy
     this.schemas    = {}
     this.filters    = {}
     this.validators = {}
@@ -41,8 +42,10 @@ class SchemaComposer
     }
 
     const
-    schema = this.schemas[schemaName],
+    schema = this.buildSchema(this.schemas[schemaName]),
     output = {}
+
+
 
     for(const attribute in schema)
     {
@@ -147,6 +150,36 @@ class SchemaComposer
   }
 
   /**
+   * The schema could have declared a meta field that requires a building process before used
+   * The build process will alter the schema provided through an argument
+   *
+   * @param {Object} schema
+   * @return {Object} Same instance as provided through argument
+   */
+  buildSchema(schema)
+  {
+    if('@meta' in schema)
+    {
+      if('extends' in schema['@meta']
+      || 'extend'  in schema['@meta'])
+      {
+        const extendList = schema['@meta'].extends
+                        || schema['@meta'].extend
+
+        for(const extendSchemaName of Array.isArray(extendList) ? extendList : [extendList])
+        {
+          const extend = this.buildSchema(this.schemas[extendSchemaName])
+          this.deepmerge.merge(schema, extend)
+        }
+      }
+
+      delete schema['@meta']
+    }
+
+    return schema
+  }
+
+  /**
    * @param {string} schemaName
    * @param {Object} schema
    * @throws {E_SCHEMA_INVALID_SCHEMA}
@@ -174,7 +207,7 @@ class SchemaComposer
       }
     }
 
-    this.schemas[schemaName] = schema
+    this.schemas[schemaName] = this.deepcopy.copy(schema)
   }
 
   /**
