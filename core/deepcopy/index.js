@@ -2,7 +2,7 @@ const FailedToFastCopyError = require('./error/failed-to-fast-copy')
 
 class DeepCopy
 {
-  fast(obj)
+  copy(obj)
   {
     try
     {

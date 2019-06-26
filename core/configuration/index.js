@@ -10,7 +10,7 @@ class Configuration
 
   extend(config)
   {
-    const copy  = this.deepcopy.fast(config)
+    const copy  = this.deepcopy.copy(config)
     this.config = this.deepmerge.merge(this.config, copy)
   }
 
