@@ -18,8 +18,8 @@ class SchemaComposer
   }
 
   /**
-   * @param {string} name
-   * @param {...Object} dto
+   * @param {string} schemaName
+   * @param {Object|Array<Object>} dto
    *
    * @throws {E_SCHEMA_NOT_FOUND}
    * @throws {E_VALIDATOR_NOT_FOUND}
@@ -27,93 +27,123 @@ class SchemaComposer
    *
    * @returns {Object}
    */
-  compose(name, dto, errorType)
+  compose(schemaName, dto)
   {
-    if(name in this.schemas === false)
+    if(schemaName in this.schemas === false)
     {
-      const msg = `Schema: "${name}" not found`
+      const msg = `Schema: "${schemaName}" not found`
       throw new SchemaNotFoundError(msg)
     }
 
-    dto = Array.isArray(dto)
-    ? this.deepmerge.merge({}, ...dto)
-    // if dto is not an array, we still want to ensure the object is a clone
-    : this.deepmerge.merge({},    dto)
+    if(Array.isArray(dto))
+    {
+      dto = this.deepmerge.merge({}, ...dto)
+    }
 
     const
-    schema = this.schemas[name],
+    schema = this.schemas[schemaName],
     output = {}
 
     for(const attribute in schema)
     {
-      const options = schema[attribute]
-
-      output[attribute] = dto[attribute]
-
-      if('default' in options
-      && output[attribute] === undefined)
-      {
-        output[attribute] = options.default
-      }
-
-      // if optional, and undefined or null, then we don't need to filter or validate
-      if(options.optional  === true
-      && output[attribute] === undefined)
-      {
-        delete output[attribute]
-        continue
-      }
-
-      if(options.nullable  === true
-      && output[attribute] === null)
-      {
-        continue
-      }
-
-      // Filtering attributes if a filter has been defined for the type
-      if(options.type in this.filters)
-      {
-        const filter = this.filters[options.type]
-        output[attribute] = filter.filter(options, output[attribute])
-      }
-
-      // Validating type
-      if(options.type in this.validators === false)
-      {
-        const msg = `In schema: "${name}", validator: "${options.type}" not found`
-        throw new ValidatorNotFoundError(msg)
-      }
-
-      try
-      {
-        const validator = this.validators[options.type]
-
-        if(options.collection)
-        {
-          if(!Array.isArray(output[attribute]))
-          {
-            const msg = `In schema: "${name}", invalid type: "${typeof output[attribute]}", array expected`
-            throw new InvalidCollectionError(msg)
-          }
-
-          for(const item of output[attribute])
-          {
-            validator.valid(options, item)
-          }
-        }
-        else
-        {
-          validator.valid(options, output[attribute])
-        }
-      }
-      catch(error)
-      {
-        const msg = `Invalid attribute: "${attribute}", schema: "${name}", error: ${error.message}`
-        throw new InvalidAttributeError(msg)
-      }
+      output[attribute] = this.attribute(schema, attribute, dto[attribute])
     }
 
     return output
+  }
+
+  /**
+   * @param {string} schemaName
+   * @param {string} attribute
+   * @param {Object} data
+   *
+   * @throws {E_SCHEMA_NOT_FOUND}
+   * @throws {E_VALIDATOR_NOT_FOUND}
+   * @throws {E_SCHEMA_INVALID_ATTRIBUTE}
+   *
+   * @returns {*}
+   */
+  trait(schemaName, attribute, data)
+  {
+    if(schemaName in this.schemas === false)
+    {
+      const msg = `Schema: "${schemaName}" not found`
+      throw new SchemaNotFoundError(msg)
+    }
+
+    const
+    schema = this.schemas[schemaName],
+    output = this.attribute(schema, attribute, data)
+
+    return output
+  }
+
+  /**
+   * @private
+   */
+  attribute(schema, attribute, data)
+  {
+    const options = schema[attribute]
+
+    if('default' in options && data === undefined)
+    {
+      data = options.default
+    }
+
+    // if optional, and undefined or null, then we don't need to filter or validate
+    if(options.optional === true && data === undefined)
+    {
+      return data
+    }
+
+    if(options.nullable === true && data === null)
+    {
+      return data
+    }
+
+    // Filtering attributes if a filter has been defined for the type
+    if(options.type in this.filters)
+    {
+      const filter = this.filters[options.type]
+      data = filter.filter(options, data)
+    }
+
+    // Validating type
+    if(options.type in this.validators === false)
+    {
+      const msg = `In schema: "${schemaName}", validator: "${options.type}" not found`
+      throw new ValidatorNotFoundError(msg)
+    }
+
+    try
+    {
+      const validator = this.validators[options.type]
+
+      if(options.collection)
+      {
+        if(!Array.isArray(data))
+        {
+          const msg = `In schema: "${schemaName}", invalid type: "${typeof data}", array expected`
+          throw new InvalidCollectionError(msg)
+        }
+
+        for(const item of data)
+        {
+          validator.valid(options, item)
+        }
+      }
+      else
+      {
+        validator.valid(options, data)
+      }
+    }
+    catch(error)
+    {
+      const msg = `Invalid attribute: "${attribute}", schema: "${schemaName}", error: ${error.message}`
+      throw new InvalidAttributeError(msg)
+    }
+
+    return data
   }
 
   /**

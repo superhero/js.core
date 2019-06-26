@@ -9,8 +9,9 @@ const entity =
 {
   'id':
   {
-    'type'    : 'integer',
-    'unsigned': true
+    'type'    : 'schema',
+    'schema'  : 'value-object/id',
+    'trait'   : 'id'
   },
   'type':
   {

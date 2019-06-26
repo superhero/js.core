@@ -9,7 +9,8 @@ module.exports =
     {
       composer:
       {
-        'entity/calculation' : __dirname + '/schema/entity/calculation'
+        'entity/calculation'  : __dirname + '/schema/entity/calculation',
+        'value-object/id'     : __dirname + '/schema/value-object/id'
       }
     },
     locator:

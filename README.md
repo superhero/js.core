@@ -675,8 +675,9 @@ const entity =
 {
   'id':
   {
-    'type'    : 'integer',
-    'unsigned': true
+    'type'    : 'schema',
+    'schema'  : 'value-object/id',
+    'trait'   : 'id'
   },
   'type':
   {
@@ -694,6 +695,26 @@ const entity =
 }
 
 module.exports = entity
+```
+
+#### `src/domain/schema/value-object/id.js`
+
+```js
+/**
+ * @memberof Domain
+ * @typedef {Object} ValueObjectId
+ * @property {number} id
+ */
+const valueObject =
+{
+  'id':
+  {
+    'type'    : 'integer',
+    'unsigned': true
+  }
+}
+
+module.exports = valueObject
 ```
 
 Defining a JSON schema for an entity; calculation. It's a good praxis to also define the type in "jsdoc", as seen above.
@@ -718,6 +739,7 @@ A table over validation and filtration rules follows...
 | stringified | -         | -         | -         | boolean   | -         | -         | -         |
 | indentation | -         | -         | -         | number    | -         | -         | -         |
 | schema      | -         | -         | -         | -         | string    | -         | -         |
+| trait       | -         | -         | -         | -         | string    | -         | -         |
 
 #### `src/domain/config.js`
 

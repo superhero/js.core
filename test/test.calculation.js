@@ -49,6 +49,7 @@ describe('Calculations', () =>
     const url = 'http://localhost:9001/calculations/1'
     const data = { id:1, type:'addition', value:100 }
     const response_unauthorized = await httpRequest.put({ url, data })
+    console.log('* * * * * * * * * *', response_unauthorized.data)
     expect(response_unauthorized.status).to.be.equal(401)
     const headers = { 'Api-Key':'ABC123456789' }
     const response_authorized = await httpRequest.put({ headers, url, data })
