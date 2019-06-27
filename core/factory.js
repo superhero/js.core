@@ -25,6 +25,7 @@ class CoreFactory
     core.add('core/http/request')
     core.add('core/process')
     core.add('core/schema')
+    core.add('core/string')
     core.add('core')
 
     return core
