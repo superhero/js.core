@@ -1,6 +1,6 @@
 const HttpError = require('.')
 
-class PageNotFound extends HttpError
+class NotFound extends HttpError
 {
   constructor(...args)
   {
@@ -9,4 +9,4 @@ class PageNotFound extends HttpError
   }
 }
 
-module.exports = PageNotFound
+module.exports = NotFound
