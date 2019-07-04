@@ -19,10 +19,10 @@
   },
   "scripts": {
     "superhero": "node ./bin/superhero.js",
-    "doc-coverage": "nyc mocha './test/test.*.js' && nyc report --reporter=html --report-dir=./docs/coverage",
-    "doc-tests": "mocha './test/test.*.js' --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index,showHooks=always",
-    "test-coverage": "syntax-check && nyc mocha './test/test.*.js'",
-    "test": "mocha './test/test.*.js'"
+    "doc-coverage": "nyc mocha './**/test.*.js' && nyc report --reporter=html --report-dir=./docs/coverage",
+    "doc-tests": "mocha './**/test.*.js' --reporter mochawesome --reporter-options reportDir=docs/tests,reportFilename=index,showHooks=always",
+    "test-coverage": "syntax-check && nyc mocha './**/test.*.js'",
+    "test": "mocha './**/test.*.js'"
   },
   "bin": {
     "superhero": "./bin/superhero.js"
