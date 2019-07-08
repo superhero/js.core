@@ -135,9 +135,9 @@ Set up a `.gitignore` file to ignore some auto-generated files to keep a clean r
     "email": "padawan@example.com"
   },
   "scripts": {
-    "docs-coverage": "nyc mocha './**/test.*.js' --opts ./test/mocha.opts && nyc report --reporter=html --report-dir=./docs/generated/coverage",
-    "docs-tests": "mocha './**/test.*.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
-    "test": "nyc mocha './**/test.*.js' --opts ./test/mocha.opts",
+    "docs-coverage": "nyc mocha './{,!(node_modules)/**}/test.*.js' --opts ./test/mocha.opts && nyc report --reporter=html --report-dir=./docs/generated/coverage",
+    "docs-tests": "mocha './{,!(node_modules)/**}/test.*.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
+    "test": "nyc mocha './{,!(node_modules)/**}/test.*.js' --opts ./test/mocha.opts",
     "start": "node ./src/index.js"
   },
   "dependencies": {
