@@ -1,9 +1,9 @@
 /**
- * @interface EventBusObserver
+ * @interface EventbusObserver
  */
 
 /**
- * @function EventBusObserver#observe
+ * @function EventbusObserver#observe
  * @param {*} data
  * @returns {void}
  */

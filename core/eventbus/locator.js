@@ -1,6 +1,6 @@
-const EventBus = require('.')
+const Eventbus = require('.')
 
-class EventBusLocator
+class EventbusLocator
 {
   constructor(locator)
   {
@@ -16,10 +16,10 @@ class EventBusLocator
     observersKeys   = Object.keys(observers || {}),
     path            = this.locator.locate('core/path'),
     console         = this.locator.locate('core/console'),
-    eventbus        = new EventBus(eventbusOptions, observersKeys, console)
+    eventbus        = new Eventbus(eventbusOptions, observersKeys, console)
 
     return eventbus
   }
 }
 
-module.exports = EventBusLocator
+module.exports = EventbusLocator

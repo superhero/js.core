@@ -1,6 +1,6 @@
-const EventBusBootstrap = require('.')
+const EventbusBootstrap = require('.')
 
-class EventBusBootstrapLocator
+class EventbusBootstrapLocator
 {
   constructor(locator)
   {
@@ -13,8 +13,8 @@ class EventBusBootstrapLocator
     configuration = this.locator.locate('core/configuration'),
     eventbus      = this.locator.locate('core/eventbus')
 
-    return new EventBusBootstrap(configuration, eventbus, this.locator)
+    return new EventbusBootstrap(configuration, eventbus, this.locator)
   }
 }
 
-module.exports = EventBusBootstrapLocator
+module.exports = EventbusBootstrapLocator

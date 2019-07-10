@@ -1,6 +1,6 @@
 const ObserverContractNotHoneredError = require('./error/observer-contract-not-honered')
 
-class EventBusBootstrap
+class EventbusBootstrap
 {
   constructor(configuration, eventbus, locator)
   {
@@ -30,4 +30,4 @@ class EventBusBootstrap
   }
 }
 
-module.exports = EventBusBootstrap
+module.exports = EventbusBootstrap
