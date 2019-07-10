@@ -1,6 +1,6 @@
-const HttpRouteBuilder = require('.')
+const HttpServerRouteBuilder = require('.')
 
-class HttpRouteBuilderLocator
+class HttpServerRouteBuilderLocator
 {
   constructor(locator)
   {
@@ -12,10 +12,10 @@ class HttpRouteBuilderLocator
     const
     deepmerge = this.locator.locate('core/deepmerge'),
     composer  = this.locator.locate('core/schema/composer'),
-    builder   = new HttpRouteBuilder(deepmerge, composer)
+    builder   = new HttpServerRouteBuilder(deepmerge, composer)
 
     return builder
   }
 }
 
-module.exports = HttpRouteBuilderLocator
+module.exports = HttpServerRouteBuilderLocator

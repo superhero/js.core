@@ -1,16 +1,22 @@
 const
-RoutesInvalidTypeError  = require('./error/routes-invalid-type'),
-InvalidRouteInputError  = require('./error/invalid-route-input'),
-InvalidDtoError         = require('./error/invalid-dto')
+DtoBuilderContractNotHoneredError = require('./error/dto-builder-contract-not-honered'),
+RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
+InvalidRouteInputError            = require('./error/invalid-route-input'),
+InvalidDtoError                   = require('./error/invalid-dto')
 
-class HttpRouteBuilder
+class HttpServerRouteBuilder
 {
   constructor(deepmerge, composer)
   {
-    this.deepmerge  = deepmerge
-    this.composer   = composer
+    this.dtoBuilders  = []
+    this.deepmerge    = deepmerge
+    this.composer     = composer
   }
 
+  /**
+   * @param {Array} routes
+   * @param {Object} request
+   */
   build(routes, request)
   {
     if(typeof routes !== 'object')
@@ -44,6 +50,10 @@ class HttpRouteBuilder
     }
   }
 
+  /**
+   * @param {Array} routes
+   * @param {Object} request
+   */
   fetchValidRoutes(routes, request)
   {
     const validRoutes = []
@@ -59,7 +69,7 @@ class HttpRouteBuilder
       {
         validRoutes.push(route)
 
-        // once we found an endpoint, the route is completed
+        // when an endpoint has been found, the route is terminated
         if(route.endpoint)
         {
           break
@@ -69,37 +79,44 @@ class HttpRouteBuilder
     return validRoutes
   }
 
+  /**
+   * @param {HttpServerRouteBuilderDtoBuilder} dtoBuilder
+   */
+  addDtoBuilder(dtoBuilder)
+  {
+    if(typeof dtoBuilder.build !== 'function')
+    {
+      const msg = 'Expected "dtoBuilder" to have a build function'
+      throw new DtoBuilderContractNotHoneredError(msg)
+    }
+
+    return this.dtoBuilders.push(dtoBuilder)
+  }
+
+  /**
+   * @param {number} index
+   */
+  removeDtoBuilder(index)
+  {
+    return delete this.dtoBuilders[index - 1]
+  }
+
+  /**
+   * @param {Object} request
+   * @param {Object} route
+   */
   composeDto(request, route)
   {
     const dto = {}
 
-    for(const key in request.query)
+    for(const index in this.dtoBuilders)
     {
-      dto[key] = request.query[key]
-    }
-
-    for(const key in request.body)
-    {
-      dto[key] = request.body[key]
-    }
-
-    const
-    requestUrl  = request.url.split('/'),
-    routeUrl    = route.url.split('/')
-
-    for(const i in routeUrl)
-    {
-      const segment = routeUrl[i]
-
-      if(segment.startsWith(':'))
-      {
-        const key = segment.slice(1)
-        dto[key] = requestUrl[i]
-      }
+      const dtoBuilder = this.dtoBuilders[index]
+      dtoBuilder.build(dto, route, request)
     }
 
     return this.composer.compose(route.input, dto)
   }
 }
 
-module.exports = HttpRouteBuilder
+module.exports = HttpServerRouteBuilder

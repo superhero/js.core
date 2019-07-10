@@ -1,7 +1,7 @@
 const
-Dispatcher        = require('../../../core/http/server/dispatcher'),
-PageNotFoundError = require('../../../core/http/server/dispatcher/error/page-not-found'),
-BadRequestError   = require('../../../core/http/server/dispatcher/error/bad-request')
+Dispatcher      = require('../../../core/http/server/dispatcher'),
+NotFoundError   = require('../../../core/http/server/dispatcher/error/not-found'),
+BadRequestError = require('../../../core/http/server/dispatcher/error/bad-request')
 
 /**
  * @memberof Api
@@ -24,7 +24,7 @@ class AppendCalculationEndpoint extends Dispatcher
     switch(error)
     {
       case 'E_CALCULATION_COULD_NOT_BE_FOUND':
-        throw new PageNotFoundError('Calculation could not be found')
+        throw new NotFoundError('Calculation could not be found')
 
       case 'E_INVALID_CALCULATION_TYPE':
         throw new BadRequestError(`Unrecognized type: "${this.route.dto.type}"`)
