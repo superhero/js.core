@@ -31,9 +31,9 @@ class HttpRequestBuilder
     {
       let body = ''
 
-      input.on('error',  reject)
-      input.on('data',   (data)  => body += data)
-      input.on('end',    ()      => this.parseBody(input.headers['content-type'], body).then(accept).catch(reject))
+      input.on('error', reject)
+      input.on('data',  (data)  => body += data)
+      input.on('end',   ()      => this.parseBody(input.headers['content-type'], body).then(accept).catch(reject))
     })
   }
 
