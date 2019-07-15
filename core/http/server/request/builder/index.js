@@ -1,5 +1,5 @@
 const
-url         = require('url'),
+urlParser   = require('url').parse,
 querystring = require('querystring')
 
 class HttpRequestBuilder
@@ -12,28 +12,39 @@ class HttpRequestBuilder
   async build(input)
   {
     const
-    parsedUrl = url.parse(input.url, true),
-    request   =
-    {
-      headers : input.headers,
-      method  : input.method.toUpperCase(),
-      url     : parsedUrl.pathname.replace(/\/+$/g, ''),
-      query   : parsedUrl.query,
-      body    : await this.fetchBody(input)
-    }
+    parsedUrl = urlParser(input.url, true),
+    headers   = this.mapHeaders(input.headers),
+    method    = input.method.toUpperCase(),
+    url       = parsedUrl.pathname.replace(/\/+$/g, ''),
+    query     = parsedUrl.query,
+    body      = await this.fetchBody(input, headers),
+    request   = { headers, method, url, query, body }
 
     return this.deepfreeze.freeze(request)
   }
 
-  async fetchBody(input)
+  mapHeaders(headers)
+  {
+    const mapped = {}
+
+    for(const key in headers)
+    {
+      const lowerCaseKey = key.toLowerCase()
+      mapped[lowerCaseKey] = headers[key]
+    }
+
+    return mapped
+  }
+
+  async fetchBody(stream, headers)
   {
     return new Promise((accept, reject) =>
     {
       let body = ''
 
-      input.on('error', reject)
-      input.on('data',  (data)  => body += data)
-      input.on('end',   ()      => this.parseBody(input.headers['content-type'], body).then(accept).catch(reject))
+      stream.on('error', reject)
+      stream.on('data',  (data)  => body += data)
+      stream.on('end',   ()      => this.parseBody(headers['content-type'], body).then(accept).catch(reject))
     })
   }
 
