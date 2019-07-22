@@ -2,7 +2,8 @@ const
 DtoBuilderContractNotHoneredError = require('./error/dto-builder-contract-not-honered'),
 RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
 InvalidRouteInputError            = require('./error/invalid-route-input'),
-InvalidDtoError                   = require('./error/invalid-dto')
+InvalidDtoError                   = require('./error/invalid-dto'),
+NoRouteFoundError                 = require('./error/no-route-found')
 
 class HttpServerRouteBuilder
 {
@@ -28,6 +29,12 @@ class HttpServerRouteBuilder
     const
     validRoutes = this.fetchValidRoutes(routes, request),
     route       = this.deepmerge.merge({}, ...validRoutes)
+
+    if(!validRoutes.length)
+    {
+      const msg = 'Could not find a matching route'
+      throw new NoRouteFoundError(msg)
+    }
 
     if(!('input' in route))
     {
