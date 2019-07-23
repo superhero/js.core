@@ -22,7 +22,7 @@ describe('Calculations', () =>
 
     core.locate('core/bootstrap').bootstrap().then(() =>
     {
-      core.locate('core/http/server').listen(9001)
+      core.locate('core/http/server').listen(9002)
       core.locate('core/http/server').onListening(done)
     })
   })
@@ -37,7 +37,7 @@ describe('Calculations', () =>
     const configuration = core.locate('core/configuration')
     const httpRequest = core.locate('core/http/request')
     context(this, { title:'route', value:configuration.find('core.http.server.routes.create-calculation') })
-    const response = await httpRequest.post('http://localhost:9001/calculations')
+    const response = await httpRequest.post('http://localhost:9002/calculations')
     expect(response.data.id).to.be.equal(1)
   })
 
@@ -46,10 +46,10 @@ describe('Calculations', () =>
     const configuration = core.locate('core/configuration')
     const httpRequest = core.locate('core/http/request')
     context(this, { title:'route', value:configuration.find('core.http.server.routes.append-calculation') })
-    const url = 'http://localhost:9001/calculations/1'
+    const url = 'http://localhost:9002/calculations/1'
     const data = { id:1, type:'addition', value:100 }
     const response_unauthorized = await httpRequest.put({ url, data })
-    console.log('* * * * * * * * * *', response_unauthorized.data)
+    // console.log('* * * * * * * * * *', response_unauthorized.data)
     expect(response_unauthorized.status).to.be.equal(401)
     const headers = { 'api-key':'ABC123456789' }
     const response_authorized = await httpRequest.put({ headers, url, data })

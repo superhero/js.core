@@ -23,6 +23,7 @@ class CoreFactory
     core.add('core/console/observer/warning')
     core.add('core/eventbus')
     core.add('core/http/request')
+    core.add('core/object')
     core.add('core/process')
     core.add('core/schema')
     core.add('core/string')
