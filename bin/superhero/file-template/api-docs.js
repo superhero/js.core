@@ -1,6 +1,6 @@
 module.exports = (wd, api_config) =>
 {
-  let output = '<style>table, tr, td { border: 1px solid #000; border-collapse: collapse; padding: 8px; margin: -1px; }</style>'
+  let output = '<style>*{font-family: sans-serif;} table,td,tr{border:1px solid #000;border-collapse:collapse;padding:8px;margin:-1px;vertical-align:top}th{background-color:#ec6907;color:#fff;text-transform:uppercase;padding:10px;text-align:left}td>table{width:100%}table td:first-child{font-weight:700}table table{background-color:#fde0c9}table table table{background-color:#e0edf5}table table table table{background-color:#e5dbeb}table table table table table{background-color:#d6e6e1}table,td,tr{border:1px solid #000;border-collapse:collapse;padding:8px;margin:-1px;vertical-align:top}th{background-color:#ec6907;color:#fff;text-transform:uppercase;padding:10px;text-align:left}td>table{width:100%}table td:first-child{font-weight:700}table table{background-color:#fde0c9}table table table{background-color:#e0edf5}table table table table{background-color:#e5dbeb}table table table table table{background-color:#d6e6e1}</style>'
 
   output += '<table>'
   output += `<thead>`
