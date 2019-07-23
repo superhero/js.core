@@ -51,7 +51,7 @@ describe('Calculations', () =>
     const response_unauthorized = await httpRequest.put({ url, data })
     console.log('* * * * * * * * * *', response_unauthorized.data)
     expect(response_unauthorized.status).to.be.equal(401)
-    const headers = { 'Api-Key':'ABC123456789' }
+    const headers = { 'api-key':'ABC123456789' }
     const response_authorized = await httpRequest.put({ headers, url, data })
     expect(response_authorized.data.result).to.be.equal(data.value)
   })

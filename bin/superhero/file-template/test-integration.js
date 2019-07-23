@@ -47,7 +47,7 @@ module.exports = (endpoint) =>
     context(this, { title:'route', value:route })
 
     const
-    headers       = { 'Content-Type':'application/json' },
+    headers       = { 'content-type':'application/json' },
     url           = \`\${host}\${route.url}\`,
     data          = route.example,
     response      = await request[route.method]({ headers, url, data })
