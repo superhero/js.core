@@ -6,7 +6,7 @@ class HttpViewJson
     ? JSON.stringify(viewModel.body, null, 2)
     : JSON.stringify(viewModel.body)
 
-    viewModel.headers['content-type']   = 'application/json'
+    viewModel.headers['content-type']   = 'application/json; charset=utf-8'
     viewModel.headers['content-length'] = Buffer.byteLength(body)
 
     output.writeHead(viewModel.meta.status || 200, viewModel.headers)
