@@ -11,6 +11,6 @@ This standard defines a folder structure for the infrastructure layer. The infra
 
 The segregation of the read and write models, correlates with the responsibility each layer maintain. Operations are expected to honor the single responsibility principle.
 
-An operation often requires a context mapper that is responsible for mapping data between the present context and the context defined by the `bundle`, or `bounded context`.
+An operation often requires a `context mapper` that is responsible for mapping data between the present context and the context defined by the `bundle`, or `bounded context`.
 
 The `config` file defines the collected configurations for all the infrastructure, external services, that the bounded context, that the infrastructure layer partly defines, depends on.
