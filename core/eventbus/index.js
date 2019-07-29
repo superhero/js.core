@@ -5,6 +5,7 @@ class Eventbus extends Events
   constructor(options, observers, console)
   {
     super(options)
+
     this.warnings   = []
     this.observers  = observers
     this.console    = console
