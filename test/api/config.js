@@ -41,8 +41,8 @@ module.exports =
     {
       observers:
       {
-        'calculation created'  : [ 'api/observer/calculation-created/log'  ],
-        'calculation appended' : [ 'api/observer/calculation-appended/log' ]
+        'calculation created'  : { 'api/observer/calculation-created/log'  : true },
+        'calculation appended' : { 'api/observer/calculation-appended/log' : true }
       }
     },
     locator:

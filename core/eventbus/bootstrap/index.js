@@ -14,8 +14,13 @@ class EventbusBootstrap
     const observers = this.configuration.find('core.eventbus.observers')
 
     for(const event in observers)
-      for(const serviceName of observers[event])
+      for(const serviceName in observers[event])
       {
+        if(!observers[event][serviceName])
+        {
+          continue
+        }
+
         const service = this.locator.locate(serviceName)
 
         if(typeof service.observe !== 'function')
