@@ -3,7 +3,8 @@ DtoBuilderContractNotHoneredError = require('./error/dto-builder-contract-not-ho
 RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
 InvalidRouteInputError            = require('./error/invalid-route-input'),
 InvalidDtoError                   = require('./error/invalid-dto'),
-NoRouteFoundError                 = require('./error/no-route-found')
+NoRouteFoundError                 = require('./error/no-route-found'),
+NoEndpointDefinedError            = require('./error/no-endpoint-defined')
 
 class HttpServerRouteBuilder
 {
@@ -36,6 +37,12 @@ class HttpServerRouteBuilder
       throw new NoRouteFoundError(msg)
     }
 
+    if(!route.endpoint)
+    {
+      const msg = `No endpoint defined in route for the request: ${request.method} -> ${request.url}`
+      throw new NoEndpointDefinedError(msg)
+    }
+
     if(!('input' in route))
     {
       const msg = 'route requires a defintion of an input schema, "false" is an acceptable value'
@@ -64,6 +71,7 @@ class HttpServerRouteBuilder
   fetchValidRoutes(routes, request)
   {
     const validRoutes = []
+
     for(const name in routes)
     {
       const
@@ -83,6 +91,7 @@ class HttpServerRouteBuilder
         }
       }
     }
+
     return validRoutes
   }
 

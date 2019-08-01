@@ -1,6 +1,4 @@
-const
-NoEndpointDefinedInRouteError = require('./error/no-endpoint-defined-in-route'),
-ViewContractNotHoneredError   = require('./error/view-contract-not-honered')
+const ViewContractNotHoneredError = require('./error/view-contract-not-honered')
 
 class HttpServer
 {
@@ -144,12 +142,6 @@ class HttpServer
     request   = await this.requestBuilder.build(input),
     route     = await this.routeBuilder.build(routes, request),
     viewModel = this.createViewModel()
-
-    if(!route.endpoint)
-    {
-      const msg = `No endpoint defined in route for the request: ${request.method} -> ${request.url}`
-      throw new NoEndpointDefinedInRouteError(msg)
-    }
 
     const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
     await this.dispatcherChain.dispatch(dispatchers)
