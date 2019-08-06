@@ -49,7 +49,7 @@ class SchemaComposer
 
     for(const attribute in schema)
     {
-      output[attribute] = this.attribute(schema, attribute, dto[attribute])
+      output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
     }
 
     return output
@@ -76,7 +76,7 @@ class SchemaComposer
 
     const
     schema = this.schemas[schemaName],
-    output = this.attribute(schema, attribute, data)
+    output = this.attribute(schemaName, schema, attribute, data)
 
     return output
   }
@@ -84,7 +84,7 @@ class SchemaComposer
   /**
    * @private
    */
-  attribute(schema, attribute, data)
+  attribute(schemaName, schema, attribute, data)
   {
     const options = schema[attribute]
 
