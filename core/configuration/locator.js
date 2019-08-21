@@ -10,10 +10,10 @@ class ConfigurationLocator
   locate()
   {
     const
-    deepcopy      = this.locator.locate('core/deepcopy'),
+    deepclone     = this.locator.locate('core/deepclone'),
     deepmerge     = this.locator.locate('core/deepmerge'),
     deepfind      = this.locator.locate('core/deepfind'),
-    configuration = new Configuration(deepcopy, deepmerge, deepfind)
+    configuration = new Configuration(deepclone, deepmerge, deepfind)
 
     return configuration
   }

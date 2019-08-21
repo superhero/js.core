@@ -4,7 +4,7 @@ module.exports =
   {
     locator:
     {
-      'core/deepcopy' : __dirname
+      'core/deepclone' : __dirname
     }
   }
 }

@@ -1,8 +1,8 @@
 class Configuration
 {
-  constructor(deepcopy, deepmerge, deepfind)
+  constructor(deepclone, deepmerge, deepfind)
   {
-    this.deepcopy   = deepcopy
+    this.deepclone  = deepclone
     this.deepmerge  = deepmerge
     this.deepfind   = deepfind
     this.config     = {}
@@ -10,8 +10,8 @@ class Configuration
 
   extend(config)
   {
-    const copy  = this.deepcopy.copy(config)
-    this.config = this.deepmerge.merge(this.config, copy)
+    const clone = this.deepclone.clone(config)
+    this.config = this.deepmerge.merge(this.config, clone)
   }
 
   find(path)

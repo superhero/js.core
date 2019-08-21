@@ -9,10 +9,10 @@ ValidatorNotFoundError              = require('./error/validator-not-found')
 
 class SchemaComposer
 {
-  constructor(deepmerge, deepcopy)
+  constructor(deepmerge, deepclone)
   {
     this.deepmerge  = deepmerge
-    this.deepcopy   = deepcopy
+    this.deepclone  = deepclone
     this.schemas    = {}
     this.filters    = {}
     this.validators = {}
@@ -207,7 +207,7 @@ class SchemaComposer
       }
     }
 
-    this.schemas[schemaName] = this.deepcopy.copy(schema)
+    this.schemas[schemaName] = this.deepclone.clone(schema)
   }
 
   /**

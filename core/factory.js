@@ -1,7 +1,7 @@
 const
 Core          = require('..'),
 Configuration = require('./configuration'),
-Deepcopy      = require('./deepcopy'),
+Deepclone     = require('./deepclone'),
 Deepfind      = require('./deepfind'),
 Deepfreeze    = require('./deepfreeze'),
 Deepmerge     = require('./deepmerge'),
@@ -36,14 +36,14 @@ class CoreFactory
   {
     const
     locator       = new Locator,
-    deepcopy      = new Deepcopy,
+    deepclone     = new Deepclone,
     deepfreeze    = new Deepfreeze,
     deepmerge     = new Deepmerge,
     deepfind      = new Deepfind,
     path          = new Path,
-    configuration = new Configuration(deepcopy, deepmerge, deepfind)
+    configuration = new Configuration(deepclone, deepmerge, deepfind)
 
-    locator.set('core/deepcopy', deepcopy)
+    locator.set('core/deepclone', deepclone)
     locator.set('core/deepfreeze', deepfreeze)
     locator.set('core/deepmerge', deepmerge)
     locator.set('core/deepfind', deepfind)

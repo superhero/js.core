@@ -8,10 +8,11 @@ NoEndpointDefinedError            = require('./error/no-endpoint-defined')
 
 class HttpServerRouteBuilder
 {
-  constructor(deepmerge, composer)
+  constructor(deepmerge, deepclone, composer)
   {
     this.dtoBuilders  = []
     this.deepmerge    = deepmerge
+    this.deepclone    = deepclone
     this.composer     = composer
   }
 
@@ -28,10 +29,11 @@ class HttpServerRouteBuilder
     }
 
     const
-    validRoutes = this.fetchValidRoutes(routes, request),
-    route       = this.deepmerge.merge({}, ...validRoutes)
+    validRoutes       = this.fetchValidRoutes(routes, request),
+    validRoutesClone  = this.deepclone.clone(validRoutes),
+    route             = this.deepmerge.merge({}, ...validRoutesClone)
 
-    if(!validRoutes.length)
+    if(!validRoutesClone.length)
     {
       const msg = 'Could not find a matching route'
       throw new NoRouteFoundError(msg)

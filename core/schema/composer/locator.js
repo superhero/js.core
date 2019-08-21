@@ -11,9 +11,9 @@ class SchemaLocator
   {
     const
     deepmerge = this.locator.locate('core/deepmerge'),
-    deepcopy  = this.locator.locate('core/deepcopy')
+    deepclone = this.locator.locate('core/deepclone')
 
-    return new Schema(deepmerge, deepcopy)
+    return new Schema(deepmerge, deepclone)
   }
 }
 
