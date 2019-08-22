@@ -45,7 +45,7 @@ class HttpServerRouteBuilder
       throw new NoEndpointDefinedError(msg)
     }
 
-    if(!('input' in route))
+    if('input' in route === false)
     {
       const msg = `route requires a defintion of an input schema, "false" is an acceptable value: ${request.method} -> ${request.url}`
       throw new InvalidRouteInputError(msg)
