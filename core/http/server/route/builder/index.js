@@ -47,7 +47,7 @@ class HttpServerRouteBuilder
 
     if(!('input' in route))
     {
-      const msg = 'route requires a defintion of an input schema, "false" is an acceptable value'
+      const msg = `route requires a defintion of an input schema, "false" is an acceptable value: ${request.method} -> ${request.url}`
       throw new InvalidRouteInputError(msg)
     }
 
