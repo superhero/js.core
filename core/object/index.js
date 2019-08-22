@@ -29,10 +29,12 @@ class CoreObject
     const 
     object = o || {},
     result = { ...object }
+
     for(const key of keys)
     {
       delete result[key]
     }
+
     return result
   }
 }
