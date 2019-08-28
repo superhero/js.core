@@ -148,8 +148,6 @@ class HttpServer
 
     if(!output.finished)
     {
-      output.writeProcessing()
-
       const
       viewType  = viewModel.meta.view || route.view || 'core/http/server/view',
       view      = this.locator.locate(viewType)

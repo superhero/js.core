@@ -15,7 +15,6 @@ class ServerDispatcherChain
 
     try
     {
-      dispatcher.session.response.writeProcessing()
       await dispatcher.dispatch(next)
     }
     catch(error)
