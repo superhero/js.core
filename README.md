@@ -72,7 +72,7 @@ If you install the package globally, by running  the folowing command `npm insta
 Choose your destiny:
 ```
 
-As you can see, there's a menu where you can select different aid for code and coumentation generation.
+As you can see, there's a menu where you can select different aid for code and documentation generation.
 
 ### Problems installing globally?
 
