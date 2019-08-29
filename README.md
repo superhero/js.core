@@ -53,7 +53,7 @@ Recommended standards are published in this repository, stored in the [`doc/stan
 
 ## Helper
 
-If you install the package globaly, by running  the folowing command `npm install superhero -g`, then you can use a cli helper, that can be accessed from the terminal by running the command `superhero`:
+If you install the package globally, by running  the folowing command `npm install superhero -g`, then you can use a cli helper, that can be accessed from the terminal by running the command `superhero`:
 
 ```
                                  __
@@ -74,9 +74,9 @@ Choose your destiny:
 
 As you can see, there's a menu where you can select different aid for code and coumentation generation.
 
-### Problems installing globbaly?
+### Problems installing globally?
 
-This is a guid on how to install the package globaly, if you have problems with permissions, eg: `npm WARN checkPermissions Missing write access to /usr/lib/node_modules`
+This is a guid on how to install the package globally, if you have problems with permissions, eg: `npm WARN checkPermissions Missing write access to /usr/lib/node_modules`
 
 #### Solution
 
