@@ -13,7 +13,19 @@ module.exports = async (cli) =>
   const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
-  const api_config = require(use_wd + '/src/api/config').http.server.routes
+  const api_config = require(use_wd + '/src/api/config')
+
+  if(!api_config
+  || !api_config.core
+  || !api_config.core.http
+  || !api_config.core.http.server
+  || !api_config.core.http.server.routes)
+  {
+    cli.write(`No routes could be located in the API configuration file, expected path: "core.http.server.routes"`, 'red')
+    return
+  }
+
+  const routes = api_config.core.http.server.routes
 
   cli.write(' -------------', 'blue')
   cli.write(' ¡ Finish it !', 'blue')
@@ -21,22 +33,22 @@ module.exports = async (cli) =>
 
   const fs = new Fs(use_wd, cli)
 
-  for(const endpoint in api_config)
+  for(const endpoint in routes)
   {
-    if('endpoint' in api_config[endpoint])
+    if('endpoint' in routes[endpoint])
     {
       const
       endpoint_name       = coreString.composeCamelCase(endpoint),
-      fileEndpointPath    = api_config[endpoint].endpoint + '.js',
+      fileEndpointPath    = routes[endpoint].endpoint + '.js',
       fileEndpointPathDir = path.dirname(fileEndpointPath),
       fileEndpointContent = template_dispatcher(endpoint_name)
 
       fs.mkdir(fileEndpointPathDir)
       fs.writeFile(fileEndpointPath, fileEndpointContent)
 
-      if('input'    in api_config[endpoint]
-      && 'output'   in api_config[endpoint]
-      && 'example'  in api_config[endpoint])
+      if('input'    in routes[endpoint]
+      && 'output'   in routes[endpoint]
+      && 'example'  in routes[endpoint])
       {
         const
         fileTestPath    = 'test/integration' + endpoint + '.js',

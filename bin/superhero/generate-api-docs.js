@@ -1,14 +1,27 @@
 const
 Fs                = require('./fs'),
+cwd               = process.cwd(),
 template_apiDocs  = require('./file-template/api-docs')
 
 module.exports = async (cli) =>
 {
   cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
-  const use_wd = await cli.question(`Where is the project root located?`)
+  const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
-  const api_config = require(use_wd + '/src/api/config').http.server.routes
+  const api_config = require(use_wd + '/src/api/config')
+
+  if(!api_config
+  || !api_config.core
+  || !api_config.core.http
+  || !api_config.core.http.server
+  || !api_config.core.http.server.routes)
+  {
+    cli.write(`No routes could be located in the API configuration file, expected path: "core.http.server.routes"`, 'red')
+    return
+  }
+
+  const routes = api_config.core.http.server.routes
 
   cli.write(' -------------', 'blue')
   cli.write(' ¡ Finish it !', 'blue')
@@ -16,7 +29,7 @@ module.exports = async (cli) =>
 
   const
   fs    = new Fs(use_wd, cli),
-  docs  = template_apiDocs(use_wd, api_config)
+  docs  = template_apiDocs(use_wd, routes)
 
   fs.mkdir('doc/')
   fs.writeFile(fileSchemaPath, docs)

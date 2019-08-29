@@ -12,22 +12,33 @@ module.exports = async (cli) =>
   const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
-  const domain_config = require(use_wd + '/src/domain/config').schema.composer
+  const domain_config = require(use_wd + '/src/domain/config')
 
-  const fs = new Fs('', cli)
+  if(!domain_config
+  || !domain_config.core
+  || !domain_config.core.schema
+  || !domain_config.core.schema.composer)
+  {
+    cli.write(`No schemas could be located for the composer in the domain configuration file, expected path: "core.schema.composer"`, 'red')
+    return
+  }
+
+  const
+  schemas = domain_config.core.schema.composer,
+  fs      = new Fs('', cli)
 
   cli.write(' -------------', 'blue')
   cli.write(' ¡ Finish it !', 'blue')
   cli.write(' -------------', 'blue')
 
-  for(const schema in domain_config)
+  for(const schema in schemas)
   {
     let schema_name
     schema_name = coreString.composeCamelCase(schema)
     schema_name = composeFirstUpperCase(schema)
 
     const
-    fileSchemaPath    = domain_config[schema] + '.js',
+    fileSchemaPath    = schemas[schema] + '.js',
     fileSchemaPathDir = path.dirname(fileSchemaPath),
     fileSchemaContent = template_schema(schema_name)
 
