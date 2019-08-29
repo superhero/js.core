@@ -76,7 +76,7 @@ As you can see, there's a menu where you can select different aid for code and d
 
 ### Problems installing globally?
 
-This is a guid on how to install the package globally, if you have problems with permissions, eg: `npm WARN checkPermissions Missing write access to /usr/lib/node_modules`
+This is a guide on how to install the package globally, if you have problems with permissions, eg: `npm WARN checkPermissions Missing write access to /usr/lib/node_modules`
 
 #### Solution
 
