@@ -87,13 +87,13 @@ mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 ```
 
-Open or create a ~/.profile file and add this line:
+Open or create a `~/.profile` file and add this line:
 
 ```
 export PATH=~/.npm-global/bin:$PATH
 ```
 
-Update your system variables by running...
+Update your system variables by running:
 
 ```
 source ~/.profile
