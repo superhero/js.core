@@ -51,9 +51,11 @@ Recommended standards are published in this repository, stored in the [`doc/stan
  - [Test (sop-test)](doc/standard/sop-test.md)
  - [Event (sop-event)](doc/standard/sop-event.md)
 
-## Helper
+## Automatic code generator
 
-If you install the package globally, by running  the folowing command `npm install superhero -g`, then you can use a cli helper, that can be accessed from the terminal by running the command `superhero`:
+The package comes with a **CLI** helper (**C**ommand **L**ine **I**nterface). You do not need to use this helper in order to use the framework, but if you do get used to the helper you should be able to speed up your productivity.
+
+If you install the package globally, by running  the folowing command `npm install superhero -g`, then you can use a CLI helper, that can be accessed from the terminal by running the command `superhero`:
 
 ```
                                  __
