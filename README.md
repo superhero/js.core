@@ -51,6 +51,56 @@ Recommended standards are published in this repository, stored in the [`doc/stan
  - [Test (sop-test)](doc/standard/sop-test.md)
  - [Event (sop-event)](doc/standard/sop-event.md)
 
+## Helper
+
+If you install the package globaly, by running  the folowing command `npm install superhero -g`, then you can use a cli helper, that can be accessed from the terminal by running the command `superhero`:
+
+```
+                                 __
+     _______  ______  ___  _____/ /_  ___  _________
+    / ___/ / / / __ \/ _ \/ ___/ __ \/ _ \/ ___/ __ \
+   (__  ) /_/ / /_/ /  __/ /  / / / /  __/ /  / /_/ /
+  /____/\__,_/ .___/\___/_/  /_/ /_/\___/_/   \____/
+            /_/
+
+
+1. Generate project
+2. Generate API classes and corresponding tests from configuration
+3. Generate API documentation
+4. Generate Domain classes from configuration
+
+Choose your destiny:
+```
+
+As you can see, there's a menu where you can select different aid for code and coumentation generation.
+
+### Problems installing globbaly?
+
+This is a guid on how to install the package globaly, if you have problems with permissions, eg: `npm WARN checkPermissions Missing write access to /usr/lib/node_modules`
+
+#### Solution
+
+Tested on a debian distribution. Run the following commands:
+
+```
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+```
+
+Open or create a ~/.profile file and add this line:
+
+```
+export PATH=~/.npm-global/bin:$PATH
+```
+
+Update your system variables by running...
+
+```
+source ~/.profile
+```
+
+Then again, run `npm install superhero -g`
+
 ## Example Application
 
 An example application to get started, covering some recommended "best practices" regarding testing and docs generation.
