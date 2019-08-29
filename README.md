@@ -51,7 +51,7 @@ Recommended standards are published in this repository, stored in the [`doc/stan
  - [Test (sop-test)](doc/standard/sop-test.md)
  - [Event (sop-event)](doc/standard/sop-event.md)
 
-## Automatic code generator
+## Automatic code and documentation generation
 
 The package comes with a **CLI** helper (**C**ommand **L**ine **I**nterface). You do not need to use this helper in order to use the framework, but if you do get used to the helper you should be able to speed up your productivity.
 
