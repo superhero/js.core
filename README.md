@@ -103,7 +103,7 @@ source ~/.profile
 
 Then again, run `npm install superhero -g`
 
-## Example Application
+## Example application
 
 An example application to get started, covering some recommended "best practices" regarding testing and docs generation.
 
