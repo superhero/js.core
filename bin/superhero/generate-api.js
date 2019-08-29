@@ -10,7 +10,7 @@ Fs                  = require('./fs')
 module.exports = async (cli) =>
 {
   cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
-  const use_wd = await cli.question(`Where is the project root located?`)
+  const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
   const api_config = require(use_wd + '/src/api/config').http.server.routes

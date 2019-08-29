@@ -9,7 +9,7 @@ template_schema = require('./file-template/schema')
 module.exports = async (cli) =>
 {
   cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
-  const use_wd = await cli.question(`Where is the project root located?`)
+  const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
   const domain_config = require(use_wd + '/src/domain/config').schema.composer
