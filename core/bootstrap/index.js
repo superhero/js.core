@@ -11,10 +11,13 @@ class Bootstrap
     configuration = this.locator.locate('core/configuration'),
     bootstrapMap  = configuration.find('core.bootstrap')
 
-    for(const key in bootstrapMap)
+    for(const serviceName of bootstrapMap)
     {
-      const bootstrap = this.locator.locate(bootstrapMap[key])
-      await bootstrap.bootstrap()
+      if(serviceName)
+      {
+        const service = this.locator.locate(serviceName)
+        await service.bootstrap()
+      }
     }
   }
 }
