@@ -214,7 +214,6 @@ CoreFactory = require('superhero/core/factory'),
 coreFactory = new CoreFactory,
 core        = coreFactory.create()
 
-core.add('core/http/server')
 core.add('api')
 core.add('domain')
 
@@ -865,7 +864,6 @@ describe('Calculations', () =>
 
     core.add('domain')
     core.add('api')
-    core.add('core/http/server')
 
     core.load()
 
@@ -927,7 +925,6 @@ describe('Logger', () =>
 
     core.add('domain')
     core.add('api')
-    core.add('core/http/server')
 
     core.load()
 
