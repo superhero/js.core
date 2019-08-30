@@ -9,10 +9,11 @@ ValidatorNotFoundError              = require('./error/validator-not-found')
 
 class SchemaComposer
 {
-  constructor(deepmerge, deepclone)
+  constructor(deepmerge, deepclone, deepfreeze)
   {
     this.deepmerge  = deepmerge
     this.deepclone  = deepclone
+    this.deepfreeze = deepfreeze
     this.schemas    = {}
     this.filters    = {}
     this.validators = {}
@@ -45,11 +46,14 @@ class SchemaComposer
     schema = this.buildSchema(this.schemas[schemaName]),
     output = {}
 
-
-
     for(const attribute in schema)
     {
       output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
+    }
+
+    if(Object.isFrozen(schema))
+    {
+      this.deepfreeze.freeze(output)
     }
 
     return output
@@ -173,7 +177,16 @@ class SchemaComposer
         }
       }
 
-      delete schema['@meta']
+      if(schema['@meta'].immutable
+      || schema['@meta'].immutable === undefined)
+      {
+        delete schema['@meta']
+        Object.freeze(schema)
+      }
+      else
+      {
+        delete schema['@meta']
+      }
     }
 
     return schema

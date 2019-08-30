@@ -10,10 +10,11 @@ class SchemaLocator
   locate()
   {
     const
-    deepmerge = this.locator.locate('core/deepmerge'),
-    deepclone = this.locator.locate('core/deepclone')
+    deepmerge   = this.locator.locate('core/deepmerge'),
+    deepclone   = this.locator.locate('core/deepclone'),
+    deepfreeze  = this.locator.locate('core/deepfreeze')
 
-    return new Schema(deepmerge, deepclone)
+    return new Schema(deepmerge, deepclone, deepfreeze)
   }
 }
 
