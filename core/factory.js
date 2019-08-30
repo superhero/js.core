@@ -17,12 +17,14 @@ class CoreFactory
     core    = new Core(locator)
 
     core.add('core/bootstrap')
+    core.add('core/cli')
     core.add('core/console')
     core.add('core/console/observer/error')
     core.add('core/console/observer/info')
     core.add('core/console/observer/warning')
     core.add('core/eventbus')
     core.add('core/http/request')
+    core.add('core/http/server')
     core.add('core/object')
     core.add('core/process')
     core.add('core/schema')
@@ -44,9 +46,9 @@ class CoreFactory
     configuration = new Configuration(deepclone, deepmerge, deepfind)
 
     locator.set('core/deepclone', deepclone)
+    locator.set('core/deepfind', deepfind)
     locator.set('core/deepfreeze', deepfreeze)
     locator.set('core/deepmerge', deepmerge)
-    locator.set('core/deepfind', deepfind)
     locator.set('core/path', path)
     locator.set('core/configuration', configuration)
 
