@@ -20,7 +20,7 @@ class Eventbus extends Events
       this.console.warning(`event: "${name}" does not have a defined observer`)
     }
 
-    super.emit(name, { name , data })
+    super.emit(name, data)
   }
 }
 

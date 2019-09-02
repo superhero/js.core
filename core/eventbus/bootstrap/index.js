@@ -14,6 +14,7 @@ class EventbusBootstrap
     const observers = this.configuration.find('core.eventbus.observers')
 
     for(const event in observers)
+    {
       for(const serviceName in observers[event])
       {
         if(!observers[event][serviceName])
@@ -29,9 +30,9 @@ class EventbusBootstrap
           throw new ObserverContractNotHoneredError(msg)
         }
 
-        const observer = service.observe.bind(service)
-        this.eventbus.on(event, observer)
+        this.eventbus.on(event, (data) => service.observe(data, event))
       }
+    }
   }
 }
 
