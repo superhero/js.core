@@ -12,11 +12,8 @@ class EventbusLocator
     const
     configuration   = this.locator.locate('core/configuration'),
     eventbusOptions = configuration.find('core.eventbus.options'),
-    observers       = configuration.find('core.eventbus.observers'),
-    observersKeys   = Object.keys(observers || {}),
-    path            = this.locator.locate('core/path'),
     console         = this.locator.locate('core/console'),
-    eventbus        = new Eventbus(eventbusOptions, observersKeys, console)
+    eventbus        = new Eventbus(eventbusOptions, console)
 
     return eventbus
   }

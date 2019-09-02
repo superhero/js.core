@@ -2,18 +2,17 @@ const Events = require('events')
 
 class Eventbus extends Events
 {
-  constructor(options, observers, console)
+  constructor(options, console)
   {
     super(options)
 
-    this.warnings   = []
-    this.observers  = observers
-    this.console    = console
+    this.warnings = []
+    this.console  = console
   }
 
   emit(name, data)
   {
-    if(!this.observers.includes(name)
+    if(!this.listenerCount(name)
     && !this.warnings.includes(name))
     {
       this.warnings.push(name)
