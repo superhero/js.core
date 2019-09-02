@@ -205,20 +205,10 @@ class SchemaComposer
       throw new InvalidSchemaError(msg)
     }
 
-    for(const attribute in schema)
-    {
-      if(typeof schema[attribute].type !== 'string')
-      {
-        const msg = `In schema "${schemaName}", attribute "${attribute}" does not have a type defined`
-        throw new InvalidSchemaError(msg)
-      }
-
-      if('enum' in schema[attribute] && !Array.isArray(schema[attribute].enum))
-      {
-        const msg = `In schema "${schemaName}", attribute "${attribute}" enum must be an array`
-        throw new InvalidSchemaError(msg)
-      }
-    }
+    // TODO: Improve validation of the schema when it's added
+    // For the moment we can suffer unexpected errors when we start working with the schema
+    // A better approch is to validate the schema structure as a value object
+    // ...resulting in a garantee that the schema is of expected definition.
 
     this.schemas[schemaName] = this.deepclone.clone(schema)
   }
