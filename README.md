@@ -460,10 +460,10 @@ class ObserverCalculationAppendedLog
     this.eventbus = eventbus
   }
 
-  observe(event)
+  observe(data)
   {
-    this.console.log(event.data)
-    this.eventbus.emit('logged calculation appended event', event.data)
+    this.console.log(data)
+    this.eventbus.emit('logged calculation appended event', data)
   }
 }
 
@@ -518,10 +518,10 @@ class ObserverCalculationCreatedLog
     this.eventbus = eventbus
   }
 
-  observe(event)
+  observe(data)
   {
-    this.console.log(event.data)
-    this.eventbus.emit('logged calculation created event', event.data)
+    this.console.log(data)
+    this.eventbus.emit('logged calculation created event', data)
   }
 }
 
