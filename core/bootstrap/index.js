@@ -11,8 +11,12 @@ class Bootstrap
     configuration = this.locator.locate('core/configuration'),
     bootstrapMap  = configuration.find('core.bootstrap')
 
-    for(const serviceName of bootstrapMap)
+    console.log('map...', bootstrapMap)
+
+    for(const uid in bootstrapMap)
     {
+      const serviceName = bootstrapMap[uid]
+
       if(serviceName)
       {
         const service = this.locator.locate(serviceName)
