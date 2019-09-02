@@ -43,7 +43,7 @@ class CoreFactory
     deepmerge     = new Deepmerge,
     deepfind      = new Deepfind,
     path          = new Path,
-    configuration = new Configuration(deepclone, deepmerge, deepfind)
+    configuration = new Configuration(deepclone, deepmerge, deepfind, deepfreeze)
 
     locator.set('core/deepclone', deepclone)
     locator.set('core/deepfind', deepfind)

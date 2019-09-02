@@ -13,7 +13,8 @@ class ConfigurationLocator
     deepclone     = this.locator.locate('core/deepclone'),
     deepmerge     = this.locator.locate('core/deepmerge'),
     deepfind      = this.locator.locate('core/deepfind'),
-    configuration = new Configuration(deepclone, deepmerge, deepfind)
+    deepfreeze    = this.locator.locate('core/deepfreeze'),
+    configuration = new Configuration(deepclone, deepmerge, deepfind, deepfreeze)
 
     return configuration
   }

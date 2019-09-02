@@ -22,6 +22,8 @@ class Core
       configuration.extend(config)
     }
 
+    configuration.freeze()
+
     const
     serviceMap    = configuration.find('core.locator'),
     serviceNames  = Object.keys(serviceMap)

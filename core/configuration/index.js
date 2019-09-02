@@ -1,10 +1,11 @@
 class Configuration
 {
-  constructor(deepclone, deepmerge, deepfind)
+  constructor(deepclone, deepmerge, deepfind, deepfreeze)
   {
     this.deepclone  = deepclone
     this.deepmerge  = deepmerge
     this.deepfind   = deepfind
+    this.deepfreeze = deepfreeze
     this.config     = {}
   }
 
@@ -12,6 +13,11 @@ class Configuration
   {
     const clone = this.deepclone.clone(config)
     this.config = this.deepmerge.merge(this.config, clone)
+  }
+
+  freeze()
+  {
+    this.deepfreeze.freeze(this.config)
   }
 
   find(path)
