@@ -11,6 +11,11 @@ class Core
     this.components[component] = pathname
   }
 
+  remove(component)
+  {
+    delete this.components[component]
+  }
+
   load()
   {
     const configuration = this.locate('core/configuration')
