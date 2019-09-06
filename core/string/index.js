@@ -18,7 +18,7 @@ class CoreString
    */
   composeSeperatedLowerCase(s, seperator = '-')
   {
-    return s.replace(/\W+/g, '-').toLowerCase()
+    return s.replace(/\W+/g, seperator).toLowerCase()
   }
 
   /**
