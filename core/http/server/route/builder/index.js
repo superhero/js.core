@@ -78,7 +78,7 @@ class HttpServerRouteBuilder
     {
       const
       route   = routes[name],
-      url     = route.url     && new RegExp(`^${route.url.replace(/\/:(\w+)/g, '/.+').replace(/\/+$/g, '')}$`),
+      url     = route.url     && new RegExp(`^${route.url.replace(/\/:(\w+)/g, '/[^/]+').replace(/\/+$/g, '')}$`),
       method  = route.method  && new RegExp(`^${route.method}$`, 'i')
 
       if(request.url    .match(url)
