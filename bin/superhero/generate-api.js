@@ -9,8 +9,9 @@ Fs                  = require('./fs')
 
 module.exports = async (cli) =>
 {
-  cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
-  const use_wd = await cli.question(`Where is the project root located?`) || cwd
+  const cwd_src = cwd + '/src'
+  cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd_src}`)
+  const use_wd = await cli.question(`Where is the project root located?`) || cwd_src
   cli.write(` ✔ Excellent\n`, 'green')
 
   const api_config = require(use_wd + '/src/api/config')
@@ -46,22 +47,13 @@ module.exports = async (cli) =>
       fs.mkdir(fileEndpointPathDir)
       fs.writeFile(fileEndpointPath, fileEndpointContent)
 
-      if('input'    in routes[endpoint]
-      && 'output'   in routes[endpoint]
-      && 'example'  in routes[endpoint])
-      {
-        const
-        fileTestPath    = 'test/integration' + endpoint + '.js',
-        fileTestPathDir = path.dirname(fileTestPath),
-        fileTestContent = template_test(endpoint)
+      const
+      fileTestPath    = 'test/integration' + endpoint + '.js',
+      fileTestPathDir = path.dirname(fileTestPath),
+      fileTestContent = template_test(endpoint)
 
-        fs.mkdir(fileTestPathDir)
-        fs.writeFile(fileTestPath, fileTestContent)
-      }
-      else
-      {
-        cli.write(`Requirements not met for the endpoint "${endpoint}", expected attributes: "input", "output" and "example"`, 'yellow')
-      }
+      fs.mkdir(fileTestPathDir)
+      fs.writeFile(fileTestPath, fileTestContent)
     }
     else
     {
