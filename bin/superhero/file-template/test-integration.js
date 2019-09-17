@@ -12,7 +12,7 @@ module.exports = (endpoint) =>
   before((done) =>
   {
     const
-    CoreFactory = require('@superhero/core/factory'),
+    CoreFactory = require('superhero/core/factory'),
     coreFactory = new CoreFactory
 
     core = coreFactory.create()
