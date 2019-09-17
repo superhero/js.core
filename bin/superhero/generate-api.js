@@ -56,7 +56,7 @@ module.exports = async (cli) =>
     }
     else
     {
-      cli.write(`Test generation requires a missing endpoint defintion in route "${endpoint}"`, 'red')
+      cli.write(` Test generation requires a missing endpoint defintion in route "${endpoint}"`, 'red')
     }
   }
 
