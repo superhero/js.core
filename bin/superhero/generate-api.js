@@ -60,7 +60,7 @@ module.exports = async (cli) =>
       }
       else
       {
-        cli.write(`Requirements not met for the endpoint "${endpoint}"`, 'yellow')
+        cli.write(`Requirements not met for the endpoint "${endpoint}", expected attributes: "input", "output" and "example"`, 'yellow')
       }
     }
     else
