@@ -7,7 +7,7 @@ class CoreString
    */
   composeFirstUpperCase(s)
   {
-    return foo[0].toUpperCase() + foo.slice(1)
+    return s[0].toUpperCase() + s.slice(1)
   }
 
   /**
