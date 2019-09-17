@@ -47,7 +47,7 @@ module.exports = async (cli) =>
       fs.writeFile(fileEndpointPath, fileEndpointContent)
 
       const
-      fileTestPath    = 'test/integration' + endpoint + '.js',
+      fileTestPath    = 'test/integration/' + endpoint + '.js',
       fileTestPathDir = path.dirname(fileTestPath),
       fileTestContent = template_test(endpoint)
 
