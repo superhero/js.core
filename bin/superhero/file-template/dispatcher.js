@@ -7,18 +7,18 @@ module.exports = (endpoint_name) =>
 */
 class Endpoint${endpoint_name} extends Dispatcher
 {
-async dispatch()
-{
-
-}
-
-onError(error)
-{
-  switch(error.code)
+  async dispatch()
   {
-    default: throw error
+
   }
-}
+
+  onError(error)
+  {
+    switch(error.code)
+    {
+      default: throw error
+    }
+  }
 }
 
 module.exports = Endpoint${endpoint_name}
