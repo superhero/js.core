@@ -6,8 +6,8 @@ core        = coreFactory.create()
 
 core.add('api')
 core.add('domain')
-${infrastructure  === "yes" && "core.add('infrastructure')"}
-${view            === "yes" && "core.add('view')"}
+${infrastructure  === "no" ? "" : "core.add('infrastructure')"}
+${view            === "no" ? "" : "core.add('view')"}
 core.add('core/http/server')
 
 core.load()
