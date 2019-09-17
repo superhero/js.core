@@ -54,5 +54,5 @@ module.exports = (endpoint) =>
 
     expect(composer.compose.bind(composer, route.output, response.data)).to.not.throw()
   })
-}
+})
 `
