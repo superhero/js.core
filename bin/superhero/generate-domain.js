@@ -35,7 +35,7 @@ module.exports = async (cli) =>
   {
     let schema_name
     schema_name = coreString.composeCamelCase(schema)
-    schema_name = composeFirstUpperCase(schema)
+    schema_name = coreString.composeFirstUpperCase(schema)
 
     const
     fileSchemaPath    = schemas[schema] + '.js',
