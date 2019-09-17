@@ -9,9 +9,8 @@ Fs                  = require('./fs')
 
 module.exports = async (cli) =>
 {
-  const cwd_src = cwd + '/src'
-  cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd_src}`)
-  const use_wd = await cli.question(`Where is the project root located?`) || cwd_src
+  cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
+  const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')
 
   const api_config = require(use_wd + '/src/api/config')
@@ -40,7 +39,7 @@ module.exports = async (cli) =>
     {
       const
       endpoint_name       = coreString.composeCamelCase(endpoint),
-      fileEndpointPath    = routes[endpoint].endpoint + '.js',
+      fileEndpointPath    = 'src/' + routes[endpoint].endpoint + '.js',
       fileEndpointPathDir = path.dirname(fileEndpointPath),
       fileEndpointContent = template_dispatcher(endpoint_name)
 
