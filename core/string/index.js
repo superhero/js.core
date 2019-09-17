@@ -29,7 +29,7 @@ class CoreString
   composeCamelCase(s)
   {
     s = this.composeSeperatedLowerCase(s)
-    s = s.split('-').map((part) => this.composeFirstUpperCase(part)).join('')
+    s = s.split('-').map((part, i) => i === 0 ? part : this.composeFirstUpperCase(part)).join('')
 
     return s
   }
