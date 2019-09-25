@@ -32,7 +32,7 @@ module.exports = async (cli) =>
   docs  = template_apiDocs(use_wd, routes)
 
   fs.mkdir('doc/')
-  fs.writeFile(fileSchemaPath, docs)
+  fs.writeFile('doc/api-documentation.html', docs)
 
   cli.write(' -------------\n', 'blue')
 }
