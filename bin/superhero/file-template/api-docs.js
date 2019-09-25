@@ -28,28 +28,28 @@ module.exports = (wd, api_config) =>
 
       if('input' in api_config[endpoint])
       {
-        api_config[endpoint].input = require(wd + '/src/domain/' + api_config[endpoint].input)
+        api_config[endpoint].input = require(wd + '/src/domain/schema/' + api_config[endpoint].input)
 
         for(const key in api_config[endpoint].input)
         {
           if(api_config[endpoint].input[key].type === 'schema')
           {
             delete api_config[endpoint].input[key].type
-            api_config[endpoint].input[key].schema = require(wd + '/src/domain/' + api_config[endpoint].input[key].schema)
+            api_config[endpoint].input[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].input[key].schema)
           }
         }
       }
 
       if('output' in api_config[endpoint])
       {
-        api_config[endpoint].output = require(wd + '/src/domain/' + api_config[endpoint].output)
+        api_config[endpoint].output = require(wd + '/src/domain/schema/' + api_config[endpoint].output)
 
         for(const key in api_config[endpoint].output)
         {
           if(api_config[endpoint].output[key].type === 'schema')
           {
             delete api_config[endpoint].output[key].type
-            api_config[endpoint].output[key].schema = require(wd + '/src/domain/' + api_config[endpoint].output[key].schema)
+            api_config[endpoint].output[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].output[key].schema)
           }
         }
       }
@@ -75,65 +75,15 @@ module.exports = (wd, api_config) =>
           output += `</td>`
 
           output += `<td>`
-          output += `<table>`
-          for(const attribute_key in api_config[endpoint].input[input_key])
-          {
-            output += `<tr>`
 
-            output += `<td>`
-            output += `${attribute_key}`
-            output += `</td>`
+          output += level(api_config[endpoint].input[input_key])
 
-            if(attribute_key === 'schema')
-            {
-              output += `<td>`
-              output += `<table>`
-              for(const nested_attribute_key in api_config[endpoint].input[input_key][attribute_key])
-              {
-                output += `<tr>`
-
-                output += `<td>`
-                output += `${nested_attribute_key}`
-                output += `</td>`
-
-                output += `<td>`
-                output += `<table>`
-                for(const final_nested_attribute_key in api_config[endpoint].input[input_key][attribute_key][nested_attribute_key])
-                {
-                  output += `<tr>`
-
-                  output += `<td>`
-                  output += `${final_nested_attribute_key}`
-                  output += `</td>`
-
-                  output += `<td>`
-                  output += `${api_config[endpoint].input[input_key][attribute_key][nested_attribute_key][final_nested_attribute_key]}`
-                  output += `</td>`
-
-                  output += `</tr>`
-                }
-                output += `</table>`
-                output += `</td>`
-                output += `</tr>`
-              }
-              output += `</table>`
-              output += `</td>`
-            }
-            else
-            {
-              output += `<td>`
-              output += `${api_config[endpoint].input[input_key][attribute_key]}`
-              output += `</td>`
-            }
-            output += `</tr>`
-          }
-          output += `</table>`
           output += `</td>`
           output += `</tr>`
         }
         output += `</table>`
-        output += `</td>`
       }
+      output += `</td>`
 
       // ...
       output += `<td class="output">`
@@ -149,65 +99,16 @@ module.exports = (wd, api_config) =>
           output += `</td>`
 
           output += `<td>`
-          output += `<table>`
-          for(const attribute_key in api_config[endpoint].output[output_key])
-          {
-            output += `<tr>`
 
-            output += `<td>`
-            output += `${attribute_key}`
-            output += `</td>`
+          output += level(api_config[endpoint].output[output_key])
 
-            if(attribute_key === 'schema')
-            {
-              output += `<td>`
-              output += `<table>`
-              for(const nested_attribute_key in api_config[endpoint].output[output_key][attribute_key])
-              {
-                output += `<tr>`
-
-                output += `<td>`
-                output += `${nested_attribute_key}`
-                output += `</td>`
-
-                output += `<td>`
-                output += `<table>`
-                for(const final_nested_attribute_key in api_config[endpoint].output[output_key][attribute_key][nested_attribute_key])
-                {
-                  output += `<tr>`
-
-                  output += `<td>`
-                  output += `${final_nested_attribute_key}`
-                  output += `</td>`
-
-                  output += `<td>`
-                  output += `${api_config[endpoint].output[output_key][attribute_key][nested_attribute_key][final_nested_attribute_key]}`
-                  output += `</td>`
-
-                  output += `</tr>`
-                }
-                output += `</table>`
-                output += `</td>`
-                output += `</tr>`
-              }
-              output += `</table>`
-              output += `</td>`
-            }
-            else
-            {
-              output += `<td>`
-              output += `${api_config[endpoint].output[output_key][attribute_key]}`
-              output += `</td>`
-            }
-            output += `</tr>`
-          }
-          output += `</table>`
           output += `</td>`
           output += `</tr>`
         }
         output += `</table>`
       }
       output += `</td>`
+
       output += `</tr>`
     }
     else
@@ -217,6 +118,50 @@ module.exports = (wd, api_config) =>
   }
 
   output += `</tbody>`
+  output += `</table>`
+
+  return output
+}
+
+function level(input)
+{
+  output = `<table>`
+  for(const attribute_key in input)
+  {
+    output += `<tr>`
+
+    output += `<td>`
+    output += `${attribute_key}`
+    output += `</td>`
+
+    if(attribute_key === 'schema')
+    {
+      output += `<td>`
+      output += `<table>`
+      for(const nested_attribute_key in input[attribute_key])
+      {
+        output += `<tr>`
+
+        output += `<td>`
+        output += `${nested_attribute_key}`
+        output += `</td>`
+
+        output += `<td>`
+        output += level(input[attribute_key][nested_attribute_key])
+        output += `</td>`
+        output += `</tr>`
+      }
+      output += `</table>`
+      output += `</td>`
+    }
+    else
+    {
+      output += `<td>`
+      output += `${input[attribute_key]}`
+      output += `</td>`
+    }
+    output += `</tr>`
+  }
   output += `</table>`
 
   return output
