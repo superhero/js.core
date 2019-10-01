@@ -3,7 +3,7 @@ CoreString          = require('../../core/string'),
 coreString          = new CoreString,
 cwd                 = process.cwd(),
 path                = require('path'),
-template_test       = require('./file-template/test-integration'),
+template_test       = require('./file-template/test-endpoint'),
 template_dispatcher = require('./file-template/dispatcher'),
 Fs                  = require('./fs')
 
@@ -47,7 +47,7 @@ module.exports = async (cli) =>
       fs.writeFile(fileEndpointPath, fileEndpointContent)
 
       const
-      fileTestPath    = 'test/integration/' + endpoint + '.js',
+      fileTestPath    = 'test/endpoint/' + endpoint + '.test.js',
       fileTestPathDir = path.dirname(fileTestPath),
       fileTestContent = template_test(endpoint)
 

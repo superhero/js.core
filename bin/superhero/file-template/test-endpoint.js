@@ -1,5 +1,5 @@
 module.exports = (endpoint) =>
-`describe('Integration tests for ${endpoint}', () =>
+`describe('Endpoint tests for ${endpoint}', () =>
 {
   const
   expect  = require('chai').expect,
@@ -48,11 +48,12 @@ module.exports = (endpoint) =>
 
     const
     headers       = { 'content-type':'application/json' },
-    url           = \`\${host}\${route.url}\`,
-    data          = route.example,
-    response      = await request[route.method]({ headers, url, data })
+    url           = \`\${host}\${route.url}\`,,
+    data          = composer.composeExample(route.input),
+    response      = await request[route.method]({ headers, url, data }),
+    validate      = composer.compose.bind(composer, route.output, response.data)
 
-    expect(composer.compose.bind(composer, route.output, response.data)).to.not.throw()
+    expect(validate).to.not.throw()
   })
 })
 `

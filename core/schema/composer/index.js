@@ -31,20 +31,14 @@ class SchemaComposer
    */
   compose(schemaName, dto)
   {
-    if(schemaName in this.schemas === false)
-    {
-      const msg = `Schema: "${schemaName}" not found`
-      throw new SchemaNotFoundError(msg)
-    }
+    const
+    schema = this.composeSchema(schemaName),
+    output = {}
 
     if(Array.isArray(dto))
     {
       dto = this.deepmerge.merge({}, ...dto)
     }
-
-    const
-    schema = this.buildSchema(this.schemas[schemaName]),
-    output = {}
 
     for(const attribute in schema)
     {
@@ -57,6 +51,63 @@ class SchemaComposer
     }
 
     return output
+  }
+
+  /**
+   * @param {string} schemaName
+   * @param {boolean} includeOptional
+   *
+   * @throws {E_SCHEMA_NOT_FOUND}
+   *
+   * @returns {Object}
+   */
+  composeExample(schemaName, includeOptional)
+  {
+    const
+    schema = this.composeSchema(schemaName),
+    output = {}
+
+    for(const attribute in schema)
+    {
+      if(output[attribute].optional)
+      {
+        if(includeOptional)
+        {
+          output[attribute] = output[attribute].example
+        }
+      }
+      else
+      {
+        output[attribute] = output[attribute].example
+      }
+    }
+
+    if(Object.isFrozen(schema))
+    {
+      this.deepfreeze.freeze(output)
+    }
+
+    return output
+  }
+
+  /**
+   * @param {string} schemaName
+   *
+   * @throws {E_SCHEMA_NOT_FOUND}
+   *
+   * @returns {Object}
+   */
+  composeSchema(schemaName)
+  {
+    if(schemaName in this.schemas === false)
+    {
+      const msg = `Schema: "${schemaName}" not found`
+      throw new SchemaNotFoundError(msg)
+    }
+
+    const schema = this.buildSchema(this.schemas[schemaName])
+
+    return schema
   }
 
   /**

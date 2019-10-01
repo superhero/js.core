@@ -62,7 +62,6 @@ module.exports = async (cli) =>
   && fs.writeFile('src/view/config.js',            template_config('View'))
 
   fs.writeFile('src/index.js',                     template_main(use_infrastructure, use_view))
-  fs.mkdir('test/integration')
   fs.writeFile('test/init.js',                     template_testInit())
   fs.writeFile('test/mocha.opts',                  template_mochaOpts())
   fs.writeFile('.gitignore',                       template_gitignore())
