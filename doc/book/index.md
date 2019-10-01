@@ -15,7 +15,6 @@
 - - - Request
 - - - Server
 - - Locator
-..... A factory pattern that has inherted flaws that are described about globals
 - - - When to use
 - - - When not to use
 - - Object
@@ -26,47 +25,36 @@
 
 - Code structure
 
-- - By layer
-- - - Api
-- - - Domain
-- - - Infrastructure
-- - - View
-
-- - By feature
-..... Breaking down the monolith
-- - - Domain
-- - - - Microservice
+- - Domain
+- - - Microservice
 - - - Core domain
 - - - Sub domains
+- - - Branch or leaf domain
 
-- - By network (???) (Grouping the diferent features by networks)
+- - Layers
+- - - Api
+- - - - Endpoint
+- - - - Observer
+- - - Domain
+- - - - Aggregate
+- - - - Composite
+- - - - Schema
+- - - - - DTO
+- - - - - - Command
+- - - - - - Query
+- - - - - - Event
+- - - - - Entity
+- - - - - Value object
+- - - - - Collection
+- - - Infrastructure
+- - - - Gateway
+- - - - Repository
+- - - - Anti corruption layer
+- - - View
+- - - - Template
+- - - - Helper
 
-- Layers
-
-- - Api
-- - - Endpoint
-- - - Observer
-
-- - Domain
-- - - Aggregate
-- - - Composite
-- - - Schema
-- - - - DTO
-- - - - - Command
-- - - - - Query
-- - - - - Event
-- - - - Entity
-- - - - Value object
-- - - - Collection
-
-- - Infrastructure
-- - - Gateway
-- - - Repository
-- - - Anti corruption layer
-
-- - View
-- - - Template
-- - - Helper
+- - Networks (???) (Grouping the diferent features by networks)
 
 - Code automisation - Helper
 - - Generate project

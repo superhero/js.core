@@ -48,7 +48,7 @@ module.exports = (endpoint) =>
 
     const
     headers       = { 'content-type':'application/json' },
-    url           = \`\${host}\${route.url}\`,,
+    url           = \`\${host}\${route.url}\`,
     data          = composer.composeExample(route.input),
     response      = await request[route.method]({ headers, url, data }),
     validate      = composer.compose.bind(composer, route.output, response.data)
