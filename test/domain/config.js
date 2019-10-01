@@ -15,7 +15,7 @@ module.exports =
     },
     locator:
     {
-      'domain/aggregate/calculator' : __dirname + '/aggregate/calculator'
+      'domain/aggregate/*' : __dirname + '/aggregate/*'
     }
   }
 }

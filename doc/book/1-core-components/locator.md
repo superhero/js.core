@@ -130,6 +130,65 @@ Above is a simple example of the `package.json` file used in this example applic
 
 ---
 
+## Dynamic configuration specification
+
+To ease work with the locator, in the configuration it is possible to make dynamic references. The example below shows a directory with many different services.
+
+```
+app
+└── src
+    └── domain
+        ├── service
+        │   ├── foo
+        │   │   ├── index.js
+        │   │   └── locator.js
+        │   ├── bar
+        │   │   ├── index.js
+        │   │   └── locator.js
+        │   ├── baz
+        │   │   ├── index.js
+        │   │   └── locator.js
+        │   └── qux
+        │       ├── index.js
+        │       └── locator.js
+        └── config.js
+```
+
+To include all these services, the configuration in the domain is expected to look something like the example below shows.
+
+```js
+module.exports =
+{
+  core:
+  {
+    locator:
+    {
+      'service/foo' : __dirname + '/service/foo',
+      'service/bar' : __dirname + '/service/bar',
+      'service/baz' : __dirname + '/service/baz',
+      'service/qux' : __dirname + '/service/qux'
+    }
+  }
+}
+```
+
+By using an **asterix** `*` in the configuration defintion, to specify a dynamic reference, the same configuration could look like the following example shows.
+
+```js
+module.exports =
+{
+  core:
+  {
+    locator:
+    {
+      'service/*' : __dirname + '/service/*'
+    }
+  }
+}
+```
+
+---
+
 ## Good practice
 
 It is recommended, and by this documentation considered good practice, that you never create a service that is dependent on the `core/locator` component. The locator pattern should be considered as a framework layer, a layer that you should not be integreated with the projects business logic.
