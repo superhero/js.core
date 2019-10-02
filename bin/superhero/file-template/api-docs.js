@@ -28,29 +28,43 @@ module.exports = (wd, api_config) =>
 
       if('input' in api_config[endpoint])
       {
-        api_config[endpoint].input = require(wd + '/src/domain/schema/' + api_config[endpoint].input)
-
-        for(const key in api_config[endpoint].input)
+        if(api_config[endpoint].input)
         {
-          if(api_config[endpoint].input[key].type === 'schema')
+          api_config[endpoint].input = require(wd + '/src/domain/schema/' + api_config[endpoint].input)
+
+          for(const key in api_config[endpoint].input)
           {
-            delete api_config[endpoint].input[key].type
-            api_config[endpoint].input[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].input[key].schema)
+            if(api_config[endpoint].input[key].type === 'schema')
+            {
+              delete api_config[endpoint].input[key].type
+              api_config[endpoint].input[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].input[key].schema)
+            }
           }
+        }
+        else
+        {
+          delete api_config[endpoint].input
         }
       }
 
       if('output' in api_config[endpoint])
       {
-        api_config[endpoint].output = require(wd + '/src/domain/schema/' + api_config[endpoint].output)
-
-        for(const key in api_config[endpoint].output)
+        if(api_config[endpoint].output)
         {
-          if(api_config[endpoint].output[key].type === 'schema')
+          api_config[endpoint].output = require(wd + '/src/domain/schema/' + api_config[endpoint].output)
+
+          for(const key in api_config[endpoint].output)
           {
-            delete api_config[endpoint].output[key].type
-            api_config[endpoint].output[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].output[key].schema)
+            if(api_config[endpoint].output[key].type === 'schema')
+            {
+              delete api_config[endpoint].output[key].type
+              api_config[endpoint].output[key].schema = require(wd + '/src/domain/schema/' + api_config[endpoint].output[key].schema)
+            }
           }
+        }
+        else
+        {
+          delete api_config[endpoint].output
         }
       }
 
