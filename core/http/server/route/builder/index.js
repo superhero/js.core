@@ -35,7 +35,7 @@ class HttpServerRouteBuilder
 
     if(!validRoutesClone.length)
     {
-      const msg = 'Could not find a matching route'
+      const msg = `Could not find a matching route for the request: ${request.method} -> ${request.url}`
       throw new NoRouteFoundError(msg)
     }
 
