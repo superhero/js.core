@@ -69,16 +69,16 @@ class SchemaComposer
 
     for(const attribute in schema)
     {
-      if(output[attribute].optional)
+      if(schema[attribute].optional)
       {
         if(includeOptional)
         {
-          output[attribute] = output[attribute].example
+          output[attribute] = schema[attribute].example
         }
       }
       else
       {
-        output[attribute] = output[attribute].example
+        output[attribute] = schema[attribute].example
       }
     }
 
