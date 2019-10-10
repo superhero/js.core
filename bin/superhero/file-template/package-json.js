@@ -16,10 +16,11 @@ module.exports = (name, description, repository, version) =>
     "superhero": "${version}"
   },
   "devDependencies": {
-    "mocha": "5.1.0",
-    "mochawesome": "3.0.2",
-    "chai": "4.1.2",
-    "nyc": "11.7.1"
+    "mocha": "6.2.1",
+    "mochawesome": "4.1.0",
+    "mocha-steps": "1.3.0",
+    "chai": "4.2.0",
+    "nyc": "14.1.1"
   }
 }
 `
