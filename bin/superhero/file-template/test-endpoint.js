@@ -20,7 +20,6 @@ module.exports = (endpoint) =>
     core.add('api')
     core.add('domain')
     core.add('infrastructure')
-    core.add('core/http/server')
 
     core.load()
 
