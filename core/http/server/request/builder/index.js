@@ -53,7 +53,16 @@ class HttpRequestBuilder
     switch(contentType)
     {
       case 'application/json':
-        return JSON.parse(body || '{}')
+        try
+        {
+          return JSON.parse(body || '{}')
+        }
+        catch(err)
+        {
+          const error = new Error(err.message)
+          error.msg   = 'E_JSON_PARSE_ERROR'
+          throw error
+        }
 
       default:
         return querystring.parse(body)
