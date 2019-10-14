@@ -7,7 +7,7 @@ class ConsoleObserverWarning
 
   observe(event)
   {
-    this.console.warning(event.name, event.data)
+    this.console.warning(event)
   }
 }
 

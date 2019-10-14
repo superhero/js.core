@@ -7,7 +7,7 @@ class ConsoleObserverError
 
   observe(event)
   {
-    this.console.error(event.name, event.data)
+    this.console.error(event)
   }
 }
 

@@ -7,7 +7,7 @@ class ConsoleObserverInfo
 
   observe(event)
   {
-    this.console.info(event.name, event.data)
+    this.console.info(event)
   }
 }
 
