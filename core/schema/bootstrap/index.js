@@ -1,4 +1,6 @@
-const SchemaNotResolvable = require('./error/schema-not-resolvable')
+const
+fs                  = require('fs'),
+SchemaNotResolvable = require('./error/schema-not-resolvable')
 
 class SchemaBootstrap
 {
@@ -26,15 +28,41 @@ class SchemaBootstrap
   {
     for(const schemaName in schemas || [])
     {
-      if(this.path.isResolvable(schemas[schemaName]))
+
+      if(schemaName.endsWith('/*'))
       {
-        const schema = require(schemas[schemaName])
-        composer.addSchema(schemaName, schema)
+        const
+        directoryPath = schemas[schemaName].slice(0, -1),
+        dirents       = fs.readdirSync(directoryPath, { withFileTypes:true })
+
+        for(const dirent of dirents)
+        {
+          if(dirent.isFile()
+          && dirent.name.endsWith('.js'))
+          {
+            const
+            schemaNamePath    = schemaName.slice(0, -1),
+            filename          = dirent.name.slice(0, -3),
+            schemaFilepath    = directoryPath   + filename,
+            schemaNameMapped  = schemaNamePath  + filename,
+            schema            = require(schemaFilepath)
+
+            composer.addSchema(schemaNameMapped, schema)
+          }
+        }
       }
       else
       {
-        const msg = `Could not resolve path for schema: "${schemaName}", path: "${schemas[schemaName]}"`
-        throw new SchemaNotResolvable(msg)
+        if(this.path.isResolvable(schemas[schemaName]))
+        {
+          const schema = require(schemas[schemaName])
+          composer.addSchema(schemaName, schema)
+        }
+        else
+        {
+          const msg = `Could not resolve path for schema: "${schemaName}", path: "${schemas[schemaName]}"`
+          throw new SchemaNotResolvable(msg)
+        }
       }
     }
   }

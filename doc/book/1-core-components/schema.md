@@ -514,3 +514,62 @@ module.exports =
   // ...
 }
 ```
+
+---
+
+## Dynamic configuration specification
+
+To make it easier to load schemas, it is possible to use a dynamic reference in the configurations. The example below shows a directory with many different shemas.
+
+```
+app
+└── src
+    └── domain
+        ├── schema
+        │   ├── foo.js
+        │   ├── bar.js
+        │   ├── baz.js
+        │   └── qux.js
+        └── config.js
+```
+
+To include all these services, the configuration in the domain is expected to look something like the example below shows.
+
+```js
+module.exports =
+{
+  core:
+  {
+    schema:
+    {
+      composer:
+      {
+        'schema/foo' : __dirname + '/schema/foo',
+        'schema/bar' : __dirname + '/schema/bar',
+        'schema/baz' : __dirname + '/schema/baz',
+        'schema/qux' : __dirname + '/schema/qux'
+      }
+    }
+  }
+}
+```
+
+By using an **asterix** `*` in the configuration defintion, to specify a dynamic reference, the same configuration could look like the following example shows.
+
+```js
+module.exports =
+{
+  core:
+  {
+    schema:
+    {
+      composer:
+      {
+        'schema/*' : __dirname + '/schema/*'
+      }
+    }
+  }
+}
+```
+
+Both examples above has the same effect.
