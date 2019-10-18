@@ -14,7 +14,7 @@ class SchemaFilterJson
 
       if(!options.stringified && typeof data === 'string')
       {
-        return JSON.parse(data)
+        return data ? JSON.parse(data) : {}
       }
 
       return data
