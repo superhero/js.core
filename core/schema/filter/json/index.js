@@ -7,9 +7,17 @@ class SchemaFilterJson
   {
     try
     {
-      return options.stringified
-      ? JSON.stringify(data, null, options.indentation)
-      : data
+      if(options.stringified && typeof data === 'object')
+      {
+        return JSON.stringify(data, null, options.indentation)
+      }
+
+      if(!options.stringified && typeof data === 'string')
+      {
+        return JSON.parse(data)
+      }
+
+      return data
     }
     catch(error)
     {
