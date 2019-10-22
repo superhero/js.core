@@ -19,6 +19,7 @@ In below table you can see which type of validators and filters that are availib
 | max         | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
 | gt          | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
 | lt          | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
+| length      | ✗         | ✗         | ✗         | ✗         | ✗         | ✗         | number    | ✗         |
 | enum        | array     | array     | array     | array     | ✗         | ✗         | array     | array     |
 | uppercase   | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
 | lowercase   | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
