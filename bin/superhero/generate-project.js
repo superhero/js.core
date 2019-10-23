@@ -16,7 +16,7 @@ timezones             = require('./timezones')
 
 module.exports = async (cli) =>
 {
-  const use_name            = await cli.question(`Specify a name for the project?`)
+  const use_name            = await cli.question(`What is the name of the project?`)
   const use_name_dashed     = coreString.composeSeperatedLowerCase(use_name)
   cli.write(` ✔ Excellent\n`, 'green')
   const use_description     = await cli.question(`How would you describe the project in one sentence?`)
