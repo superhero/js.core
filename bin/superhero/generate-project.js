@@ -45,8 +45,10 @@ module.exports = async (cli) =>
 
   fs.mkdir('src')
   fs.mkdir('src/api')
-  fs.writeFile('src/api/config.js',                template_config('Api'))
   fs.mkdir('src/domain')
+  fs.mkdir('test')
+
+  fs.writeFile('src/api/config.js',                template_config('Api'))
   fs.writeFile('src/domain/config.js',             template_config('Domain'))
 
   use_infrastructure === 'yes'
