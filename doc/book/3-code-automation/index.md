@@ -2,6 +2,8 @@
 
 The superhero library come with a CLI helper that can reduce redundant work. Using this helper is not required if you like to work with the library. The helper is only a suggested tool that could serve to aid a developer to hopefully progress productivity.
 
+---
+
 ## Installation
 
 The helper is mainly tested on different Debian based distributions (Linux). The helper probably work on other platforms as well, if you bump into problems, please help out by posting an issue on Github.
@@ -9,6 +11,8 @@ The helper is mainly tested on different Debian based distributions (Linux). The
 Install the package globally through the following command.
 
 `npm install -g superhero`̈́
+
+---
 
 ## Navigation
 
@@ -33,11 +37,19 @@ Choose your destiny:
 
 Different options are presented in a numbered list. You are asked to pick an alternative by writing the number of the navigation choice, followed by the `enter` key that will execute the choice.
 
-When prompted with a navigation choice; as the one described above, where a selected choice is expected, it is possible to use the double tab key to display a list of valid options. The list of alternatives is filtered by the defined prefix of the input written before asking for complementary options.
+### Autocomplete
+
+In any form of choice list, it is possible to hit the tab key to autocomplete the option you already started writing.
+
+### Options hint
+
+When prompted with a navigation choice, where a choice from a predefined list is expected, it is possible to double-tab to display a list of valid options.
+
+The list of alternatives is filtered by the defined prefix of the input written before asking for complementary options.
 
 ---
 
-Read more about the different options under one of the following sub-sections.
+Read more about the different options in the main navigation list under one of the following sub-sections.
 
 1. [Generate project](generate-project.md)
 2. [Generate API classes and corresponding tests from configuration](generate-api-classes-and-tests.md)
