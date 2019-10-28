@@ -1,1 +1,1 @@
-# Code automation - Generate Domain classes from configuration]
+# Code automation - Generate Domain classes from configuration
