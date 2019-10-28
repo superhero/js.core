@@ -10,7 +10,7 @@ The helper is mainly tested on different Debian based distributions (Linux). The
 
 Install the package globally through the following command.
 
-`npm install -g superhero`̈́
+`npm install -g superhero`
 
 ---
 
