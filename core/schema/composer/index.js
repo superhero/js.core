@@ -92,7 +92,7 @@ class SchemaComposer
 
   composeExampleValue(options, includeOptional)
   {
-    if(options.example)
+    if('example' in options)
     {
       return options.example
     }
