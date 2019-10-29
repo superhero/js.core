@@ -21,6 +21,19 @@ module.exports = (name, description, repository, version) =>
     "mocha-steps": "1.3.0",
     "chai": "4.2.0",
     "nyc": "14.1.1"
+  },
+  "mocha": {
+    "require": [
+      "test/init.js",
+      "mocha-steps"
+    ],
+    "ui": "bdd",
+    "full-trace": true,
+    "timeout": 5000,
+    "spec": [
+      "./test/**/*.test.js",
+      "./src/**/*.test.js"
+    ]
   }
 }
 `

@@ -5,7 +5,6 @@ cwd                   = process.cwd(),
 version               = require(__dirname + '/../../package.json').version,
 template_config       = require('./file-template/component-config'),
 template_testInit     = require('./file-template/test-init'),
-template_mochaOpts    = require('./file-template/test-mocha-opts'),
 template_gitignore    = require('./file-template/gitignore'),
 template_packageJson  = require('./file-template/package-json'),
 template_dockerfile   = require('./file-template/dockerfile'),
@@ -65,7 +64,6 @@ module.exports = async (cli) =>
 
   fs.writeFile('src/index.js',                     template_main(use_infrastructure, use_view))
   fs.writeFile('test/init.js',                     template_testInit())
-  fs.writeFile('test/mocha.opts',                  template_mochaOpts())
   fs.writeFile('.gitignore',                       template_gitignore())
   fs.writeFile('Dockerfile',                       template_dockerfile(use_timezone))
   fs.writeFile('package.json',                     template_packageJson(use_name_dashed, use_description, use_repository, version))

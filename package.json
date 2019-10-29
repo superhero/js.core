@@ -1,6 +1,6 @@
 {
   "name": "superhero",
-  "version": "2.0.0-beta.51",
+  "version": "2.0.0-beta.52",
   "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -19,10 +19,10 @@
   },
   "scripts": {
     "superhero": "node ./bin/superhero.js",
-    "docs-coverage": "nyc mocha './**/*.test.js' --opts ./test/mocha.opts && nyc report --reporter=html --report-dir=./docs/generated/coverage",
-    "docs-tests": "mocha './**/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
+    "docs-coverage": "nyc mocha && nyc report --reporter=html --report-dir=./docs/generated/coverage",
+    "docs-tests": "mocha --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
     "test-coverage": "syntax-check && nyc mocha './**/test.*.js'",
-    "test": "mocha './**/*.test.js' --opts ./test/mocha.opts"
+    "test": "mocha"
   },
   "bin": {
     "superhero": "./bin/superhero.js"
@@ -45,5 +45,17 @@
   ],
   "engines": {
     "node": ">=10.0.0"
+  },
+  "mocha": {
+    "require": [
+      "test/init.js",
+      "mocha-steps"
+    ],
+    "ui": "bdd",
+    "full-trace": true,
+    "timeout": 5000,
+    "spec": [
+      "./test/**/*.test.js"
+    ]
   }
 }
