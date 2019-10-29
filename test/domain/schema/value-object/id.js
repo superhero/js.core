@@ -8,7 +8,8 @@ const valueObject =
   'id':
   {
     'type'    : 'integer',
-    'unsigned': true
+    'unsigned': true,
+    'example' : 123
   }
 }
 

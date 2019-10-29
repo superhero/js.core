@@ -73,12 +73,12 @@ class SchemaComposer
       {
         if(includeOptional)
         {
-          output[attribute] = schema[attribute].example
+          output[attribute] = this.composeExampleValue(schema[attribute], includeOptional)
         }
       }
       else
       {
-        output[attribute] = schema[attribute].example
+        output[attribute] = this.composeExampleValue(schema[attribute], includeOptional)
       }
     }
 
@@ -88,6 +88,22 @@ class SchemaComposer
     }
 
     return output
+  }
+
+  composeExampleValue(options, includeOptional)
+  {
+    if(options.example)
+    {
+      return options.example
+    }
+    else if(typeof options.schema === 'string')
+    {
+      const schema = this.composeExample(options.schema, includeOptional)
+
+      return options.trait
+      ? schema[options.trait]
+      : schema
+    }
   }
 
   /**

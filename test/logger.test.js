@@ -16,7 +16,6 @@ describe('Logger', () =>
 
     core.add('api')
     core.add('domain')
-    core.add('core/http/server')
 
     core.load()
 

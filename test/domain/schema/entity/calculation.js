@@ -20,11 +20,13 @@ const entity =
     [
       'addition',
       'subtraction'
-    ]
+    ],
+    'example' : 'addition'
   },
   'value':
   {
-    'type': 'decimal'
+    'type'    : 'decimal',
+    'example' : 123.45
   }
 }
 
