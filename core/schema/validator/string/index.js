@@ -34,7 +34,7 @@ class SchemaValidatorString
     }
 
     if('length' in options
-    && data.length === options.length)
+    && data.length !== options.length)
     {
       const msg = `String length must be ${options.length}`
       throw new InvalidStringError(msg)
