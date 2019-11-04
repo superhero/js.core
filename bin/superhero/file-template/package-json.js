@@ -7,9 +7,9 @@ module.exports = (name, description, repository, version) =>
   "license": "UNLICENSED",
   "main": "src/index.js",
   "scripts": {
-    "docs-coverage": "nyc mocha './**/*.test.js' --opts ./test/mocha.opts && nyc report --reporter=html --report-dir=./docs/generated/coverage",
-    "docs-tests": "mocha './**/*.test.js' --opts ./test/mocha.opts --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
-    "test": "nyc mocha './**/*.test.js' --opts ./test/mocha.opts",
+    "docs-coverage": "nyc mocha && nyc report --reporter=html --report-dir=./docs/generated/coverage",
+    "docs-tests": "mocha --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
+    "test": "nyc mocha",
     "start": "node ./src/index.js"
   },
   "dependencies": {
