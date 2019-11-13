@@ -1,17 +1,20 @@
 const
-CoreString            = require('../../core/string'),
-coreString            = new CoreString,
-cwd                   = process.cwd(),
-version               = require(__dirname + '/../../package.json').version,
-template_config       = require('./file-template/component-config'),
-template_testInit     = require('./file-template/test-init'),
-template_gitignore    = require('./file-template/gitignore'),
-template_packageJson  = require('./file-template/package-json'),
-template_dockerfile   = require('./file-template/dockerfile'),
-template_readme       = require('./file-template/readme-md'),
-template_main         = require('./file-template/main'),
-Fs                    = require('./fs'),
-timezones             = require('./timezones')
+CoreString                      = require('../../core/string'),
+coreString                      = new CoreString,
+cwd                             = process.cwd(),
+version                         = require(__dirname + '/../../package.json').version,
+template_config                 = require('./file-template/config'),
+template_config_api             = require('./file-template/config-api'),
+template_config_domain          = require('./file-template/config-domain'),
+template_config_infrastructure  = require('./file-template/config-infrastructure'),
+template_testInit               = require('./file-template/test-init'),
+template_gitignore              = require('./file-template/gitignore'),
+template_packageJson            = require('./file-template/package-json'),
+template_dockerfile             = require('./file-template/dockerfile'),
+template_readme                 = require('./file-template/readme-md'),
+template_main                   = require('./file-template/main'),
+Fs                              = require('./fs'),
+timezones                       = require('./timezones')
 
 module.exports = async (cli) =>
 {
@@ -47,14 +50,14 @@ module.exports = async (cli) =>
   fs.mkdir('src/domain')
   fs.mkdir('test')
 
-  fs.writeFile('src/api/config.js',                template_config('Api'))
-  fs.writeFile('src/domain/config.js',             template_config('Domain'))
+  fs.writeFile('src/api/config.js',                template_config_api('Api'))
+  fs.writeFile('src/domain/config.js',             template_config_domain('Domain'))
 
   use_infrastructure === 'yes'
   && fs.mkdir('src/infrastructure')
 
   use_infrastructure === 'yes'
-  && fs.writeFile('src/infrastructure/config.js',  template_config('Infrastructure'))
+  && fs.writeFile('src/infrastructure/config.js',  template_config_infrastructure('Infrastructure'))
 
   use_view === 'yes'
   && fs.mkdir('src/view')
