@@ -6,19 +6,15 @@ Code structure can be modeled in many different ways. Advocated advice expressed
 
 ## Coherent design
 
-When designing a system of any form, it is of great importance to follow a coherent pattern that is repeated through different resolutions of the system; much like a mathematical fractal. Just as a fractal, the sequence changes in relation to the surrounding, but a pattern persists. The coherent pattern in different resolutions can be different, though never chaotic.
+When designing a system of any form, it is of great importance to follow a coherent pattern that is repeated through different resolutions of the system; *much like a mathematical fractal. Just as a fractal, the sequence changes in relation to the surrounding, but a pattern persists. The coherent pattern in different resolutions can be different, though never chaotic.*
 
-Chaos can be understood as the opposite of order, and in relation coherence, chaos is the same as incoherent. An incoherent system design is hard to understand and navigate through. In mathematics - chaos theory; chaos is studied in relation to an initial small conditional change that has a staggering systematic effect and is hard to predict. When a model of a problem is incoherent, not aligned with pre-defined principles, then it is harder to evaluate what effect a modification to the system has.
+In relation to coherence, chaos is the definition of incoherent. An incoherent system design is hard to understand and navigate through. In mathematics - chaos theory; chaos is defined as an initial small conditional change that has a staggering systematic effect and is hard to predict. When a model of a problem is incoherent, not aligned with pre-defined principles, then it is harder to evaluate what effect a modification to the system has.
 
-### Stable design
+### **Stable design**
 
-You may point out that stability in system architecture correlates with closed to modification. Robert C. Martin, in one of his great books; *"Clean Architecture: A Craftsman's Guide to Software Structure and Design"*, Robert talks about the "Open / Close" principle - conceived by Bertrand Meyer. The principle expresses that a stable component should be open for extension, and closed to modification.
+Robert C. Martin pointed out that stability in system architecture is correlated with code that is closed to modification. In one of Roberts great books; *"Clean Architecture: A Craftsman's Guide to Software Structure and Design"*, Robert talks about the "Open / Close" principle - conceived by Bertrand Meyer. The principle expresses that a stable component should be open for extension, and closed to modification. As the principles reflects, extended functionality over modified functionality must be prioritized when possible.
 
-Though stability is important, stability should be associated to as a spectrum. Stability should be a factor in decision making when composing a system design, not an exclusive key indicator of absolute importance, though of great importance. Every successful system has to be flexible to suit a flexible business model. A business model has to be flexible to reflect the dynamic environment that the business operates in.
-
-As the "Open / Close" principle suggest - open for extension, offers a flexibility that must be prioritized over modification, when possible. But the truth of architecture is that the system we design often has to correlate with systems designed outside the area of our scope. This correlation to an external system is a dependency to the system you design. The instability of the dependent system is inherited by the system you design, which explains the importance to adopt a flexible approach as explained above.
-
-### Why a coherent design is important
+### **Why a coherent design is important**
 
 A coherent design eases the ability for developers in the system to navigate the logic. It is important to ease the developers navigational abilities to increase developers ability to maintain the system, to find problems in the system and solve these problems - resulting in a more stable system.
 
@@ -40,7 +36,7 @@ Eric Evans wrote a great book called *"Domain-Driven Design: Tackling Complexity
 
 Boundaries within a system is defined to break down a monolithic code base. Boundaries aggregates utility and defines a less noisy dependency map that is easier to navigate.
 
-### Dependency direction
+### **Dependency direction**
 
 Each boundary has a dependency direction that determines how the system interacts with other components of the system. The dependency direction should relate to the implementation level, where a lower level is closer to code implementation, and where a lower level of code implementation is closer to IO operations. Components dependency direction should be from higher to lower level. A stronger architecture focuses on stability in the lower level components, where stability is defined by independent components that are closed for modification.
 
@@ -66,7 +62,7 @@ Semantical code is self documented and self explainable. Code that explains it s
 
 Eric Evans express the importance of defining an ubiquitous language - a domain specific language that is recognizable by the stakeholders. Such an approach has great value to the modeled solution from many perspectives. Evans also defined many logical concepts that is useful in the same model, but of grater importance in a higher resolution, where the maintenance workers operate.
 
-### Perspective
+### **Perspective**
 
 Code structure will be viewed from different perspectives, where different level of implementation has value.
 
