@@ -6,12 +6,6 @@ class SchemaValidatorTimestamp
 {
   valid(options, data)
   {
-    if(typeof data !== 'string')
-    {
-      const msg = `Invalid type: "${typeof data}", string expected`
-      throw new InvalidTimestampError(msg)
-    }
-
     const date = new Date(data)
 
     if('min' in options

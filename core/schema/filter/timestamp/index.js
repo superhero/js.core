@@ -29,6 +29,7 @@ class SchemaFilterTimestamp
   filterSingle(options, data)
   {
     const intData = parseInt(data)
+
     if(intData == data)
       data = intData
 
