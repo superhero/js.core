@@ -16,25 +16,26 @@ Robert C. Martin pointed out that stability in system architecture is correlated
 
 ### **Why a coherent design is important**
 
-A coherent design eases the ability for developers in the system to navigate the logic. It is important to ease the developers navigational abilities to increase developers ability to maintain the system, to find problems in the system and solve these problems - resulting in a more stable system.
+A coherent design eases the ability for developers in a system to navigate the logic the system is composed by. It is important to ease the developers navigational abilities to increase developers ability to maintain the system, to find problems in the system and solve these problems.
 
-A coherent design is closely related to simplicity. A developer that is developing an operation in one part of the system will in the future need to integrate with, and work in, other parts of the system. When a developer work within different segments of the system, then a developers familiarity in each segment will reflect on the developers agile ability, the possibility to move between projects.
+A coherent design is closely related to simplicity. A developer that is developing an operation in one part of the system will in the future need to integrate with, and work in, other parts of the system. When a developer work within different segments of the system, then a developers familiarity in each segment will reflect on the developers agile ability; meaning their possibility to move between projects.
 
-A coherent design eases the ability to understand the system at scale. Successful systems grows beyond intention, an indisputable fact. The result is an increasing complexity, no matter how well designed the system is. An increased complexity generates unexpected behaviors that must be analyses to solve, resulting in greater costs. A greater understanding of the system will result in less costs for analytic needed to solve problems as they occur.
+A coherent design eases the ability to understand the system at scale. Successful systems grows beyond intention; that's an indisputable fact. The result is an increasing complexity, no matter how well designed the system is. An increased complexity generates unexpected behaviors that must be analyzed to solve, resulting in greater costs. A greater understanding of the system will result in less costs to solve the problems as they occur.
 
 ---
 
 ## Boundaries
 
-*"Software architecture is the art of drawing lines"* - Robert C. Martin
+> *Software architecture is the art of drawing lines*
+> **Robert C. Martin**
 
-A boundary is an encapsulation of components that are tighter coupled then components across boundaries. Interaction across boundaries are allowed, though they should be limited. Each drawn boundary should define a public interface to be able to interact with the context. When documenting code, priority should be on documenting these interfaces. As there are different levels of implementations, the priority of documentation is on the higher leveled implementation.
+A boundary is an encapsulation of components that are tighter coupled then components across the boundaries. Interaction across boundaries are allowed, though they should be limited. Each drawn boundary should define a public interface to be able to interact with the context. When documenting code, priority should be on documenting these interfaces. As there are different levels of implementations, the priority should be to document the higher level implementations.
 
-It is common to draw boundaries on different levels. What a higher level refers to is when a set of boundaries are aggregated as a context. A lower level is closer to the code implementation.
+It is common to draw boundaries that relates to the code level. A higher level can be distinguished by the resolution of the design. A "lower level" refers to a higher resolution, and is closer to the code implementation. An aggregated context is a boundary of a higher level component.
 
 Eric Evans wrote a great book called *"Domain-Driven Design: Tackling Complexity in the Heart of Software"*. In the book, Evans describes the concept of a bounded context. A bounded context is a good example of an encapsulation of components that separates different domains by explicit boundaries.
 
-Boundaries within a system is defined to break down a monolithic code base. Boundaries aggregates utility and defines a less noisy dependency map that is easier to navigate.
+Boundaries within a system is defined to break down a monolithic code base. Boundaries aggregates utility and defines a less noisy dependency map that is easier to understand and navigate.
 
 ### **Dependency direction**
 
@@ -50,9 +51,9 @@ For example, a class that is part of the `Infrastructure` layer, specifying a `R
 
 In the named repository, the methods of the class are named after what they do. A method that fetches a resource by id should be named `fetchById`.
 
-Alternatively, if the repository is global to the service, the naming convention could also look something like; `Infrastructure.FooReposity#fetchFooById`.
+Alternatively, if the repository is aggregated, the naming convention could also look something like; `Infrastructure.FooReposity#fetchBarById`.
 
-Be explicit in your naming. For example, if you name a query, instead of calling the query `fetch-a-resource`; a more explicit name is `fetch-a-single-resource-by-id`.
+Be explicit in your naming. For example, if you name a query, instead of calling the query `fetch-a-resource`, a more explicit name is `fetch-a-resource-by-id`.
 
 ---
 
@@ -60,7 +61,7 @@ Be explicit in your naming. For example, if you name a query, instead of calling
 
 Semantic code is self documented and self explainable. Code that explains it self must cover **what** the code does, **how** the code does what it does and **when** the code does what it does. Using a domain language for semantic definition is an approach that offers a meaning from domain experts perspective. In a higher resolution, at a lower level, technical details are of greater value. From the perspective of an implementer, the domain language has value, but so does a logical definition of **how** the problem has been solved. The semantic model should therefor reflect a domain specific language as well as being defined by logical concepts.
 
-Eric Evans express the importance of defining an ubiquitous language - a domain specific language that is recognizable by the stakeholders. Such an approach has great value to the modeled solution from many perspectives. Evans also defined many logical concepts that is useful in the same model, but of grater importance in a higher resolution, where the maintenance workers operate.
+Eric Evans express the importance of defining a ubiquitous language - a domain specific language that is recognizable by the stakeholders. Such an approach has great value to the modeled solution. The stakeholders are able to have a conversation with the technical team about the different components the solution is composed by, improving collaboration across departments.
 
 ### **Perspective**
 
@@ -70,4 +71,4 @@ To grasp an overview of what the implementation does, it is helpful with an aggr
 
 From a maintainers perspective, the implementation details of a solution has value, as well as the effect modification could have upstream to dependent components. **A bottom-up perspective.**
 
-This documentation advocates that both a **top-down** and **bottom-up** perspectives is reflected in the code structure of your solution for semantic reasoning. Semantic is...
+This documentation advocates that both a **top-down** and **bottom-up** perspectives is reflected in the code structure and designed solution.
