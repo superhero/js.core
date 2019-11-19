@@ -31,7 +31,7 @@ A coherent design eases the ability to understand the system at scale. Successfu
 
 A boundary is an encapsulation of components that are tighter coupled then components across the boundaries. Interaction across boundaries are allowed, though they should be limited. Each drawn boundary should define a public interface to be able to interact with the context. When documenting code, priority should be on documenting these interfaces. As there are different levels of implementations, the priority should be to document the higher level implementations.
 
-It is common to draw boundaries that relates to the code level. A higher level can be distinguished by the resolution of the design. A "lower level" refers to a higher resolution, and is closer to the code implementation. An aggregated context is a boundary of a higher level component.
+It is common to draw boundaries that relates to the code level. A higher level can be distinguished by the resolution of the solution. A "lower level" refers to a deeper resolution, and is closer to the code implementation. An aggregated context is a boundary of a higher level component.
 
 Eric Evans wrote a great book called *"Domain-Driven Design: Tackling Complexity in the Heart of Software"*. In the book, Evans describes the concept of a bounded context. A bounded context is a good example of an encapsulation of components that separates different domains by explicit boundaries.
 
