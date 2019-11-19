@@ -1,6 +1,6 @@
 # Code structure
 
-Code structure can be modeled in many different ways. Advocated advice expressed in this documentation are guidelines, not enforced or strict rules a developer must submit to. There are many possible models to a problem. The suggested guidlines in this documentation is aimed to improve your ability to structure code in a coherent manner.
+Code structure can be modeled in many different ways. Advocated advice expressed in this documentation are guidelines, not enforced or strict rules a developer must submit to. There are many possible models to a problem. The suggested guidelines in this documentation is aimed to improve your ability to structure code in a coherent manner.
 
 ---
 
@@ -20,7 +20,7 @@ A coherent design eases the ability for developers in the system to navigate the
 
 A coherent design is closely related to simplicity. A developer that is developing an operation in one part of the system will in the future need to integrate with, and work in, other parts of the system. When a developer work within different segments of the system, then a developers familiarity in each segment will reflect on the developers agile ability, the possibility to move between projects.
 
-A coherent design eases the ability to understand the system at scale. Successful systems grows beyond intention, an indisputable fact. The result is an increasing complexity, no matter how well designed the system is. An increased complexity generates unexpected behaviors that must be analysed to solve, resulting in greater costs. A greater understanding of the system will result in less costs for analytics needed to solve problems as they occur.
+A coherent design eases the ability to understand the system at scale. Successful systems grows beyond intention, an indisputable fact. The result is an increasing complexity, no matter how well designed the system is. An increased complexity generates unexpected behaviors that must be analyses to solve, resulting in greater costs. A greater understanding of the system will result in less costs for analytic needed to solve problems as they occur.
 
 ---
 
@@ -58,7 +58,7 @@ Be explicit in your naming. For example, if you name a query, instead of calling
 
 ## Semantics
 
-Semantical code is self documented and self explainable. Code that explains it self must cover **what** the code does, **how** the code does what it does and **when** the code does what it does. Using a domain language for semantical definition is an approach that offers a meaning from domain experts perspective. In a higher resolution, at a lower level, technical details are of greater value. From the perspective of an implementer, the domain language has value, but so does a logical definition of **how** the problem has been solved. The semantic model should therefor reflect a domain specific language as well as being defined by logical concepts.
+Semantic code is self documented and self explainable. Code that explains it self must cover **what** the code does, **how** the code does what it does and **when** the code does what it does. Using a domain language for semantic definition is an approach that offers a meaning from domain experts perspective. In a higher resolution, at a lower level, technical details are of greater value. From the perspective of an implementer, the domain language has value, but so does a logical definition of **how** the problem has been solved. The semantic model should therefor reflect a domain specific language as well as being defined by logical concepts.
 
 Eric Evans express the importance of defining an ubiquitous language - a domain specific language that is recognizable by the stakeholders. Such an approach has great value to the modeled solution from many perspectives. Evans also defined many logical concepts that is useful in the same model, but of grater importance in a higher resolution, where the maintenance workers operate.
 
@@ -70,4 +70,4 @@ To grasp an overview of what the implementation does, it is helpful with an aggr
 
 From a maintainers perspective, the implementation details of a solution has value, as well as the effect modification could have upstream to dependent components. **A bottom-up perspective.**
 
-This documentation advocates that both a **top-down** and **bottom-up** perspectives is reflected in the code structure of your solution for semantical reasoning. Semantic is
+This documentation advocates that both a **top-down** and **bottom-up** perspectives is reflected in the code structure of your solution for semantic reasoning. Semantic is...
