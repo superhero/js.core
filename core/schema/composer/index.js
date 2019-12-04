@@ -197,7 +197,30 @@ class SchemaComposer
       {
         if(!Array.isArray(data))
         {
-          const msg = `In schema: "${schemaName}", invalid type: "${typeof data}", array expected`
+          const msg = `In schema: "${schemaName}", `
+                    + `invalid type: "${typeof data}", `
+                    + `array expected`
+
+          throw new InvalidCollectionError(msg)
+        }
+
+        if(options['collection-size-min']
+        && options['collection-size-min'] > data.length)
+        {
+          const msg = `In schema: "${schemaName}", `
+                    + `invalid collection size, expected min ${options['collection-size-min']}, `
+                    + `received size ${data.length}`
+
+          throw new InvalidCollectionError(msg)
+        }
+
+        if(options['collection-size-max']
+        && options['collection-size-max'] < data.length)
+        {
+          const msg = `In schema: "${schemaName}", `
+                    + `invalid collection size, expected max ${options['collection-size-max']}, `
+                    + `received size ${data.length}`
+
           throw new InvalidCollectionError(msg)
         }
 

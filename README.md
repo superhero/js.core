@@ -772,26 +772,28 @@ Defining a JSON schema for an entity; calculation. It's a good praxis to also de
 
 A table over validation and filtration rules follows...
 
-|             | csv       | boolean   | decimal   | integer   | json      | schema    | string    | timestamp |
-|-------------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| default     | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         |
-| collection  | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
-| optional    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
-| nullable    | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
-| unsigned    | ✗         | ✗         | boolean   | boolean   | ✗         | ✗         | ✗         | ✗         |
-| min         | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
-| max         | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
-| gt          | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
-| lt          | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
-| length      | ✗         | ✗         | ✗         | ✗         | ✗         | ✗         | number    | ✗         |
-| enum        | array     | array     | array     | array     | ✗         | ✗         | array     | array     |
-| uppercase   | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
-| lowercase   | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
-| not-empty   | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
-| stringified | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         | ✗         | ✗         |
-| indentation | ✗         | ✗         | ✗         | ✗         | number    | ✗         | ✗         | ✗         |
-| schema      | ✗         | ✗         | ✗         | ✗         | ✗         | string    | ✗         | ✗         |
-| trait       | ✗         | ✗         | ✗         | ✗         | ✗         | string    | ✗         | ✗         |
+|                      | csv       | boolean   | decimal   | integer   | json      | schema    | string    | timestamp |
+|----------------------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| default              | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         | ✔         |
+| collection           | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+| collection-size-min  | number    | number    | number    | number    | number    | number    | number    | number    |
+| collection-size-max  | number    | number    | number    | number    | number    | number    | number    | number    |
+| optional             | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+| nullable             | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   | boolean   |
+| unsigned             | ✗         | ✗         | boolean   | boolean   | ✗         | ✗         | ✗         | ✗         |
+| min                  | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
+| max                  | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
+| gt                   | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
+| lt                   | number    | ✗         | number    | number    | ✗         | ✗         | number    | timestamp |
+| length               | ✗         | ✗         | ✗         | ✗         | ✗         | ✗         | number    | ✗         |
+| enum                 | array     | array     | array     | array     | ✗         | ✗         | array     | array     |
+| uppercase            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
+| lowercase            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
+| not-empty            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
+| stringified          | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         | ✗         | ✗         |
+| indentation          | ✗         | ✗         | ✗         | ✗         | number    | ✗         | ✗         | ✗         |
+| schema               | ✗         | ✗         | ✗         | ✗         | ✗         | string    | ✗         | ✗         |
+| trait                | ✗         | ✗         | ✗         | ✗         | ✗         | string    | ✗         | ✗         |
 
 #### `src/domain/config.js`
 
