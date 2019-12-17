@@ -33,6 +33,14 @@ module.exports =
             endpoint: 'api/endpoint/append-calculation',
             view    : 'core/http/server/view/json',
             input   : 'entity/calculation'
+          },
+          'dto-test':
+          {
+            url     : '/dto-test',
+            method  : 'post',
+            endpoint: 'api/endpoint/dto-test-endpoint',
+            view    : 'core/http/server/view/json',
+            input   : 'entity/dto-test'
           }
         }
       }

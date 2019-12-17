@@ -44,12 +44,14 @@ class HttpServer
 
   onRequest(input, output)
   {
-    const domain = this.domainFactory.create()
+    const
+    domain  = this.domainFactory.create(),
+    onError = this.onError.bind(this, input, output, domain)
 
     domain.add(input)
     domain.add(output)
 
-    domain.on('error',    this.onError  .bind(this, input, output, domain))
+    domain.on('error',    onError)
     input.on('aborted',   this.onAborted.bind(this, output))
     output.on('timeout',  this.onTimeout.bind(this, output))
     output.on('finish',   this.onFinish .bind(this, input, output, domain))
