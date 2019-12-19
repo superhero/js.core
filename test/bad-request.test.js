@@ -35,7 +35,7 @@ describe('Bad request test', () =>
   {
     const configuration = core.locate('core/configuration')
     const httpRequest = core.locate('core/http/request')
-    context(this, { title:'route', value:configuration.find('core.http.server.routes.append-calculation') })
+    context(this, { title:'route', value:configuration.find('core.http.server.routes.dto-test') })
     const url = 'http://localhost:9002/dto-test'
     const data = { foo:'bar' }
     const response = await httpRequest.post({ url, data })
