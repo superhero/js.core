@@ -1,6 +1,6 @@
 /**
  * @memberof Domain
- * @typedef {Object} EntityCalculation
+ * @typedef {Object} EntityDtoTest
  * @property {string} test
  */
 const entity =

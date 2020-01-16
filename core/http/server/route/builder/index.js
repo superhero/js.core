@@ -4,7 +4,8 @@ RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
 InvalidRouteInputError            = require('./error/invalid-route-input'),
 InvalidDtoError                   = require('./error/invalid-dto'),
 NoRouteFoundError                 = require('./error/no-route-found'),
-NoEndpointDefinedError            = require('./error/no-endpoint-defined')
+NoEndpointDefinedError            = require('./error/no-endpoint-defined'),
+InvalidRouteError                 = require('./error/invalid-route')
 
 class HttpServerRouteBuilder
 {
@@ -84,12 +85,46 @@ class HttpServerRouteBuilder
       if(request.url    .match(url)
       && request.method .match(method))
       {
-        validRoutes.push(route)
-
-        // when an endpoint has been found, the route is terminated
-        if(route.endpoint)
+        if(route.headers)
         {
-          break
+          if(typeof route.headers !== 'object')
+          {
+            const msg = `the route headers must be of type object, found: ${typeof route.headers}, in route: ${name}`
+            throw new InvalidRouteError(msg)
+          }
+
+          // validate that all headers match
+          const isHeadersValid = Object.keys(route.headers).every((header) =>
+          {
+            const headerRegExp = new RegExp(`^${route.headers[header]}$`, 'i')
+
+            if(header in request.headers
+            && request.headers[header].match(headerRegExp))
+            {
+              return true
+            }
+          })
+
+          if(isHeadersValid)
+          {
+            validRoutes.push(route)
+
+            // when an endpoint has been found, the route is terminated
+            if(route.endpoint)
+            {
+              return validRoutes
+            }
+          }
+        }
+        else
+        {
+          validRoutes.push(route)
+
+          // when an endpoint has been found, the route is terminated
+          if(route.endpoint)
+          {
+            return validRoutes
+          }
         }
       }
     }

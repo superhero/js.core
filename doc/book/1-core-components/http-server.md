@@ -25,6 +25,7 @@ module.exports =
         {
           url         : '/foobar',
           method      : 'get',
+          headers     :{'x-foo':'bar'},
           endpoint    : 'api/endpoint/foobar',
           middleware  :['api/middleware/foobar'],
           view        : 'core/http/server/view/json',
@@ -45,7 +46,7 @@ Each variable is exaplained below, what they mean and do in the context of routi
 
 ### `url`
 
-**The `url` variable is a routing variable. A matching url is required when validating a request with a defined route.**
+**The `url` variable is a routing variable. A matching url is required when validating to use the defined route.**
 
 The url is the requested filepath, by example; in the http request `http://example.com/foobar?baz=qux`, the filepath, the `url` variable, is the `/foobar` segment.
 
@@ -57,13 +58,40 @@ Naming segments in the url can be done in the following way; `/foobar/:baz`, whe
 
 ### `method`
 
-**The `method` variable is a routing variable. A matching method is required when validating a request with a defined route.**
+**The `method` variable is a routing variable. A matching url is required when validating to use the defined route.**
 
 Every http request defines a request method, HTTP verbs, which indicates a desired operation accociated for an endpoint, or a resource.
 
 Examples of a method commonly used in http api design, in restful design, is `GET`, `PUT`, `POST` and `DELETE`.
 
-The `method` variable will be matched case insensitive.
+The `method` variable is matched case insensitive.
+
+---
+
+### `headers`
+
+**The `headers` variable is a routing variable. A matching url is required when validating to use the defined route.**
+
+In an http request, it is possible to specify headers, the framework allows developers to route based on the value of one or several of the request headers.
+
+It is possible to match the value of the headers value with regex syntax, shown in below route example:
+
+```js
+{
+  url       : '/foobar',
+  method    : 'get',
+  headers   :
+  {
+    'x-foo' : 'foo',
+    'x-bar' : 'b.+'
+  },
+  endpoint  : 'api/endpoint/foobar',
+  input     : 'dto/example',
+  output    : false
+}
+```
+
+The `headers` variables are always matched case insensitive.
 
 ---
 
