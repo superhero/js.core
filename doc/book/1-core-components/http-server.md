@@ -290,7 +290,7 @@ More explicitly, if a request was made; `http://example.com/bar`, the composed v
 }
 ```
 
-While the request; `http://example.com/wtf/path` will have no matching url and compose the following route.
+While the request; `http://example.com/wtf/path`, will have no matching url and compose the following route.
 
 ```js
 {
