@@ -19,18 +19,21 @@ module.exports =
   {
     http:
     {
-      routes:
+      server:
       {
-        'foobar':
+        routes:
         {
-          url         : '/foobar',
-          method      : 'get',
-          headers     :{'x-foo':'bar'},
-          endpoint    : 'api/endpoint/foobar',
-          middleware  :['api/middleware/foobar'],
-          view        : 'core/http/server/view/json',
-          input       : 'dto/query-foobar',
-          output      : 'entity/foobar'
+          'foobar':
+          {
+            url         : '/foobar',
+            method      : 'get',
+            headers     :{'x-foo':'bar'},
+            endpoint    : 'api/endpoint/foobar',
+            middleware  :['api/middleware/foobar'],
+            view        : 'core/http/server/view/json',
+            input       : 'dto/query-foobar',
+            output      : 'entity/foobar'
+          }
         }
       }
     }
