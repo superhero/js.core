@@ -57,6 +57,8 @@ It is possible to use some regular expressions, regex, in the `url` variable to 
 
 Naming segments in the url can be done in the following way; `/foobar/:baz`, where the `:baz` key is replaced with a regex; `[^/]+`, matching anything but the `/`, the forward slash. Naming a segment is useful for semantikal reasons, but more importantly, named segments are also recognized when composing the dto, **D**ata **T**ransfer **O**bject, as explained under the title `input` below.
 
+It is possible to assign an expected value for a named segment in the url. Instead of replacing the segment with the regex `[^/]+`, the expected value would be used. Example: `/foobar/:baz=qux` would match with the string `/foobar/qux`.
+
 ---
 
 ### `method`

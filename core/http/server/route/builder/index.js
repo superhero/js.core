@@ -79,7 +79,7 @@ class HttpServerRouteBuilder
     {
       const
       route   = routes[name],
-      url     = route.url     && new RegExp(`^${route.url.replace(/\/:(\w+)/g, '/[^/]+').replace(/\/+$/g, '')}$`),
+      url     = route.url     && new RegExp(`^${route.url.split('/').map(this.mapSegments).join('/').replace(/\/+$/g, '')}$`),
       method  = route.method  && new RegExp(`^${route.method}$`, 'i')
 
       if(request.url    .match(url)
@@ -130,6 +130,29 @@ class HttpServerRouteBuilder
     }
 
     return validRoutes
+  }
+
+  /**
+   * @private
+   * @param {string} segment
+   */
+  mapSegments(segment)
+  {
+    if(segment.startsWith(':'))
+    {
+      if(segment.includes('='))
+      {
+        return segment.split('=').pop()
+      }
+      else
+      {
+        return '[^/]+'
+      }
+    }
+    else
+    {
+      return segment
+    }
   }
 
   /**
