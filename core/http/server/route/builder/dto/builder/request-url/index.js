@@ -12,7 +12,7 @@ class HttpServerRouteBuilderDtoBuilderRequestUrl
 
       if(segment.startsWith(':'))
       {
-        const key = segment.slice(1)
+        const key = segment.split('=').shift().slice(1)
         dto[key] = requestUrl[i]
       }
     }
