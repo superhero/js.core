@@ -50,7 +50,7 @@ class HttpRequestBuilder
 
   async parseBody(contentType, body)
   {
-    switch(contentType)
+    switch((contentType || '').split(';').shift())
     {
       case 'application/json':
         try
