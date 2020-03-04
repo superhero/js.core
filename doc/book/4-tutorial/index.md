@@ -4,9 +4,15 @@ When designing code, it's often hard to focus on work due to all the noise that 
 
 The foundation to a good design of any solution starts by locating the events that defines the solution. A good technique to locate the events are by doing an `eventstorming` session, a methodology developed by Alberto Brandolini, inspired by the DDD community.
 
-Once the events of the service has been defined, they must be organized into processes. A process is a tree of events with a defined beginning. Locate the beginning of a process by ordering the events according to when on a timeline they occur. When it becomes apparent where a process begins, and the body of that process has been organized into a tree-like structure of events, then a domain service is defined from an eventstorming perspective. All of these domain services refers to the business logic of the domain.
+Once the events of the microservice has been defined, they must be organized into a process flow. A process is a tree of events with a certain beginning, a root event. Locate the beginning of a process by ordering the events according to when on a timeline they occur. When it becomes apparent where a process begins, and the body of that process has been organized into a tree-like structure of events, then the process flow has formed an aggregation of the domain.
 
-Some processes are repetitive through the model and needs to be cleaned up. Repetitive processes are also a domain service and should therefor be listed isolated next to the other domain services. In the parent process, simply refer to the event root of the sub process.
+![in-out process grid](diagram/in-out-process-grid.svg)
+
+Each process is must be named semanticly correct in relation to the single responsibility the process maintain. Each process is a domain service, the process flow is what we define in the aggregate.
+
+Some processes are repetitive through the model, creating repetitive noise in the model. Create a seperate named context and define the contextual process flow seperatly, and link it by name in the `in-out process grid`.
+
+![dry in-out process grid](diagram/in-out-process-grid-dry.svg)
 
 Each service can often have multiple states of output, due to unexpected failure or other application states. At this stage it is however important to declare an expected successful event to each process. Ignoring all **exceptional events** to the process, an **expected process flow** is defined.
 
