@@ -1,8 +1,10 @@
-module.exports = (wd, api_config) =>
+module.exports = (wd, api_config, schemas) =>
 {
-  function buildParameters(route)
+  const MIN_DEPTH = 1
+
+  function buildParameters(schemaName)
   {
-    if(route.input)
+    if(schemaName)
     {
       let htmlOutput = `<h3>Parameters</h3>
       <div class="parameters">
@@ -15,7 +17,9 @@ module.exports = (wd, api_config) =>
           </div>
         </div>`
 
-      const parameters = buildParametersFromSchema(route.input)
+      const
+      schemaPath = schemas[schemaName],
+      parameters = buildParametersFromSchema(schemaPath)
 
       for(const parameter of parameters)
       {
@@ -25,11 +29,11 @@ module.exports = (wd, api_config) =>
               ${parameter.name}
             </div>
             <div class="parameter__type">
-              ${parameter.type}
+              ${parameter.type} ${parameter.schema ? `(<a class="schema-link" data-schema="${parameter.schema}" href="#${parameter.schema}">${parameter.schema}</a>)` : ''}
             </div>
           </div>
           <div class="parameter__description">
-            ${parameter.description}
+            ${parameter.description ? parameter.description : ''}
             ${buildValidationRulesOutput(parameter.validationRules)}
           </div>
         </div>`
@@ -43,22 +47,75 @@ module.exports = (wd, api_config) =>
     return ''
   }
 
-  function buildJSONExample(schemaName)
+  function buildJSONExample(schemaName, stringify = true, depth = 0)
   {
     if(schemaName)
     {
-      const parameters = buildParametersFromSchema(schemaName)
+      const
+      schemaPath = schemas[schemaName],
+      parameters = buildParametersFromSchema(schemaPath)
 
       if(parameters.length > 0)
       {
         let example = {}
         for(const parameter of parameters)
         {
-          if(parameter.example)
+          const
+          isSameSchema = parameter.schema === schemaName,
+          isCollection = parameter.collection
+
+          if(parameter.example !== undefined)
+          {
             example[parameter.name] = parameter.example
+          }
+          else if(parameter.schema)
+          {
+            if(!isSameSchema)
+            {
+              if(isCollection)
+              {
+                example[parameter.name] = [buildJSONExample(parameter.schema, false)]
+              }
+              else
+              {
+                example[parameter.name] = buildJSONExample(parameter.schema, false)
+              }
+            }
+            else if(isSameSchema)
+            {
+              if(depth <= MIN_DEPTH)
+              {
+                const nextLevel = depth + 1
+                if(isCollection)
+                {
+                  example[parameter.name] = [buildJSONExample(parameter.schema, false, nextLevel)]
+                }
+                else
+                {
+                  example[parameter.name] = buildJSONExample(parameter.schema, false, nextLevel)
+                }
+              }
+              else
+              {
+                if(isCollection)
+                {
+                  if(parameter.default && Array.isArray(parameter.default))
+                    example[parameter.name] = parameter.default
+                  else if(parameter.default)
+                    example[parameter.name] = [parameter.default]
+                  else
+                    example[parameter.name] = []
+                }
+                else
+                {
+                  example[parameter.name] = parameter.default ? parameter.default : undefined
+                }
+              }
+            }
+          }
         }
 
-        return JSON.stringify(example, null, 2)
+        return stringify ? JSON.stringify(example, null, 2).replace(/\n/gi, '&#10;').replace(/\\"/gi, '"') : example
       }
     }
 
@@ -119,60 +176,87 @@ module.exports = (wd, api_config) =>
     return validationRules
   }
 
-  function buildParametersFromSchema(schemaName)
+  function buildParametersFromSchema(schemaPath)
   {
-    const schema = require(wd + '/src/domain/schema/' + schemaName)
-
     let parameters = []
 
-    for(const attribute in schema)
+    if(schemaPath)
     {
-      if(attribute === '@meta' && schema[attribute].extends)
+      const schema = require(schemaPath)
+
+      for(const attribute in schema)
       {
-        if(Array.isArray(schema[attribute].extends))
+        if(attribute === '@meta' && schema[attribute].extends)
         {
-          for(const s of schema[attribute].extends)
+          if(Array.isArray(schema[attribute].extends))
           {
-            const schemaParameters = buildParametersFromSchema(s)
+            for(const s of schema[attribute].extends)
+            {
+              const
+              schemaPath       = schemas[s],
+              schemaParameters = buildParametersFromSchema(schemaPath)
+
+              parameters       = parameters.concat(schemaParameters)
+            }
+          }
+          else if(typeof schema[attribute].extends === 'string')
+          {
+            const
+            schemaPath       = schemas[schema[attribute].extends],
+            schemaParameters = buildParametersFromSchema(schemaPath)
+
             parameters = parameters.concat(schemaParameters)
           }
         }
+        else if(schema[attribute].type === 'schema' && schema[attribute].hasOwnProperty('trait'))
+        {
+          const
+          traitSchema = require(schemas[schema[attribute].schema]),
+          trait       = schema[attribute].trait
+
+          parameters.push({
+            name: attribute,
+            description: schema[attribute].description? schema[attribute].description : traitSchema[trait].description,
+            required: schema[attribute].optional ? false : true,
+            type: traitSchema[trait].type,
+            example: traitSchema[trait].example,
+            validationRules: getValidationRules(traitSchema[trait])
+          })
+        }
+        else if(schema[attribute].type === 'schema')
+        {
+          parameters.push({
+            name: attribute,
+            description: schema[attribute].description,
+            required: schema[attribute].optional ? false : true,
+            type: schema[attribute].type,
+            schema: schema[attribute].schema,
+            collection : schema[attribute].collection,
+            validationRules: getValidationRules(schema[attribute])
+          })
+        }
         else if(typeof schema[attribute].extends === 'string')
         {
-          const schemaParameters = buildParametersFromSchema(schema[attribute].extends)
-          parameters = parameters.concat(schemaParameters)
+          parameters.push({
+            name: attribute,
+            description: schema[attribute].description,
+            required: schema[attribute].optional ? false : true,
+            type: schema[attribute].type,
+            example: schema[attribute].example,
+            validationRules: getValidationRules(schema[attribute])
+          })
         }
-      }
-      else if(schema[attribute].type === 'schema' && schema[attribute].hasOwnProperty('trait'))
-      {
-        const
-        traitSchema = require(wd + '/src/domain/schema/' + schema[attribute].schema),
-        trait       = schema[attribute].trait
-
-        parameters.push({
-          name: attribute,
-          description: schema[attribute].description? schema[attribute].description : traitSchema[trait].description,
-          required: schema[attribute].optional ? false : true,
-          type: traitSchema[trait].type,
-          example: traitSchema[trait].example,
-          validationRules: getValidationRules(schema[attribute])
-        })
-      }
-      else if(schema[attribute].type === 'schema')
-      {
-        const schemaParameters = buildParametersFromSchema(schema[attribute].schema)
-        parameters = parameters.concat(schemaParameters)
-      }
-      else
-      {
-        parameters.push({
-          name: attribute,
-          description: schema[attribute].description,
-          required: schema[attribute].optional ? false : true,
-          type: schema[attribute].type,
-          example: schema[attribute].example,
-          validationRules: getValidationRules(schema[attribute])
-        })
+        else
+        {
+          parameters.push({
+            name: attribute,
+            description: schema[attribute].description,
+            required: schema[attribute].optional ? false : true,
+            type: schema[attribute].type,
+            example: schema[attribute].example,
+            validationRules: getValidationRules(schema[attribute])
+          })
+        }
       }
     }
 
@@ -385,6 +469,7 @@ module.exports = (wd, api_config) =>
   <body>`
 
   let baseView
+  html += '<h1>Endpoints</h1>'
   for(const route in api_config)
   {
     if(api_config[route].hasOwnProperty('url'))
@@ -394,7 +479,7 @@ module.exports = (wd, api_config) =>
         ${api_config[route].description ? `<p class="description">${api_config[route].description}</p>` : ''}
         <h3>View</h3>
         <p class="view">${api_config[route].view ? api_config[route].view : baseView}</p>
-        ${buildParameters(api_config[route])}
+        ${buildParameters(api_config[route].input)}
         ${buildInputExample(api_config[route].input)}
         ${buildOutputExample(api_config[route].output)}
       </div>`
@@ -403,6 +488,16 @@ module.exports = (wd, api_config) =>
     {
       baseView = api_config[route].view
     }
+  }
+
+  html += '<h1>Schemas</h1>'
+  for(const schema in schemas)
+  {
+    html += `<button id="${schema}" class="accordion">${schema}</button>
+    <div class="panel">
+      ${buildParameters(schema)}
+      ${buildInputExample(schema)}
+    </div>`
   }
 
   html += `<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
@@ -440,6 +535,31 @@ module.exports = (wd, api_config) =>
         }
       })
     }
+
+    const schemaLinks = document.getElementsByClassName('schema-link')
+
+    for(let i = 0; i < schemaLinks.length; i++) {
+      schemaLinks[i].addEventListener('click', function() {
+        const
+        schemaName      = this.getAttribute('data-schema'),
+        schemaAccordion = document.getElementById(schemaName)
+
+        schemaAccordion.classList.add('active')
+
+        const panel = schemaAccordion.nextElementSibling
+        panel.classList.add('open')
+
+        if(panel.style.maxHeight)
+        {
+          panel.style.maxHeight = null
+        }
+        else
+        {
+          panel.style.maxHeight = panel.scrollHeight + 'px'
+        }
+      })
+    }
+
   </script>
 </body>
 </html>`
