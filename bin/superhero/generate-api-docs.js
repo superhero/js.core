@@ -28,8 +28,9 @@ module.exports = async (cli) =>
   cli.write(' -------------', 'blue')
 
   const
-  fs    = new Fs(use_wd, cli),
-  docs  = template_apiDocs(use_wd, routes)
+  fs      = new Fs(use_wd, cli),
+  schemas = require(use_wd + '/src/domain/config').core.schema.composer,
+  docs    = template_apiDocs(use_wd, routes, schemas)
 
   fs.mkdir('doc/')
   fs.writeFile('doc/api-documentation.html', docs)
