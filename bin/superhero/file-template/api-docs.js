@@ -186,7 +186,7 @@ module.exports = (wd, api_config, schemas) =>
             validationRules: getValidationRules(schema[attribute])
           })
         }
-        else
+        else if(typeof schema[attribute].extends === 'string')
         {
           parameters.push({
             name: attribute,
