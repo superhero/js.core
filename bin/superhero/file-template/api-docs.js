@@ -490,15 +490,15 @@ module.exports = (wd, api_config, schemas) =>
     }
   }
 
-  // html += '<h1>Schemas</h1>'
-  // for(const schema in schemas)
-  // {
-  //   html += `<button id="${schema}" class="accordion">${schema}</button>
-  //   <div class="panel">
-  //     ${buildParameters(schema)}
-  //     ${buildInputExample(schema)}
-  //   </div>`
-  // }
+  html += '<h1>Schemas</h1>'
+  for(const schema in schemas)
+  {
+    html += `<button id="${schema}" class="accordion">${schema}</button>
+    <div class="panel">
+      ${buildParameters(schema)}
+      ${buildInputExample(schema)}
+    </div>`
+  }
 
   html += `<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
