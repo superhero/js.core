@@ -1,5 +1,7 @@
 module.exports = (wd, api_config, schemas) =>
 {
+  const MIN_DEPTH = 1
+
   function buildParameters(schemaName)
   {
     if(schemaName)
@@ -45,7 +47,7 @@ module.exports = (wd, api_config, schemas) =>
     return ''
   }
 
-  function buildJSONExample(schemaName, stringify = true)
+  function buildJSONExample(schemaName, stringify = true, depth = 0)
   {
     if(schemaName)
     {
@@ -58,12 +60,59 @@ module.exports = (wd, api_config, schemas) =>
         let example = {}
         for(const parameter of parameters)
         {
+          const
+          isSameSchema = parameter.schema === schemaName,
+          isCollection = parameter.collection
+
           if(parameter.example !== undefined)
+          {
             example[parameter.name] = parameter.example
-          else if(parameter.schema && parameter.schema !== schemaName && parameter.collection)
-            example[parameter.name] = [buildJSONExample(parameter.schema, false, schemaName)]
-          else if(parameter.schema && parameter.schema !== schemaName)
-            example[parameter.name] = buildJSONExample(parameter.schema, false, schemaName)
+          }
+          else if(parameter.schema)
+          {
+            if(!isSameSchema)
+            {
+              if(isCollection)
+              {
+                example[parameter.name] = [buildJSONExample(parameter.schema, false)]
+              }
+              else
+              {
+                example[parameter.name] = buildJSONExample(parameter.schema, false)
+              }
+            }
+            else if(isSameSchema)
+            {
+              if(depth <= MIN_DEPTH)
+              {
+                const nextLevel = depth + 1
+                if(isCollection)
+                {
+                  example[parameter.name] = [buildJSONExample(parameter.schema, false, nextLevel)]
+                }
+                else
+                {
+                  example[parameter.name] = buildJSONExample(parameter.schema, false, nextLevel)
+                }
+              }
+              else
+              {
+                if(isCollection)
+                {
+                  if(parameter.default && Array.isArray(parameter.default))
+                    example[parameter.name] = parameter.default
+                  else if(parameter.default)
+                    example[parameter.name] = [parameter.default]
+                  else
+                    example[parameter.name] = []
+                }
+                else
+                {
+                  example[parameter.name] = parameter.default ? parameter.default : undefined
+                }
+              }
+            }
+          }
         }
 
         return stringify ? JSON.stringify(example, null, 2).replace(/\n/gi, '&#10;').replace(/\\"/gi, '"') : example
@@ -187,6 +236,17 @@ module.exports = (wd, api_config, schemas) =>
           })
         }
         else if(typeof schema[attribute].extends === 'string')
+        {
+          parameters.push({
+            name: attribute,
+            description: schema[attribute].description,
+            required: schema[attribute].optional ? false : true,
+            type: schema[attribute].type,
+            example: schema[attribute].example,
+            validationRules: getValidationRules(schema[attribute])
+          })
+        }
+        else
         {
           parameters.push({
             name: attribute,
@@ -430,16 +490,15 @@ module.exports = (wd, api_config, schemas) =>
     }
   }
 
-  html += '<h1>Schemas</h1>'
-  for(const schema in schemas)
-  {
-    html += `<button id="${schema}" class="accordion">${schema}</button>
-    <div class="panel">
-      ${buildParameters(schema)}
-      ${buildInputExample(schema)}
-      ${buildOutputExample(schema)}
-    </div>`
-  }
+  // html += '<h1>Schemas</h1>'
+  // for(const schema in schemas)
+  // {
+  //   html += `<button id="${schema}" class="accordion">${schema}</button>
+  //   <div class="panel">
+  //     ${buildParameters(schema)}
+  //     ${buildInputExample(schema)}
+  //   </div>`
+  // }
 
   html += `<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
