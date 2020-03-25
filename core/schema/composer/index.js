@@ -262,8 +262,16 @@ class SchemaComposer
 
         for(const extendSchemaName of Array.isArray(extendList) ? extendList : [extendList])
         {
-          const extend = this.buildSchema(this.schemas[extendSchemaName])
-          this.deepmerge.merge(schema, extend)
+          if(extendSchemaName in this.schemas)
+          {
+            const extend = this.buildSchema(this.schemas[extendSchemaName])
+            this.deepmerge.merge(schema, extend)
+          }
+          else
+          {
+            const msg = `Schema "${extendSchemaName}" does not exist`
+            throw new InvalidSchemaError(msg)
+          }
         }
       }
 
