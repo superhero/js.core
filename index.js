@@ -112,9 +112,18 @@ class Core
 
     if(path.isResolvable(locatorPath))
     {
-      const
-      Locator = require(locatorPath),
-      locator = new Locator(this.locator)
+      let locator
+
+      try
+      {
+        const Locator = require(locatorPath)
+        locator = new Locator(this.locator)
+      }
+      catch(error)
+      {
+        const msg = `Problem on initiation of a the locator: "${locatorPath}" with the error message: "${error.message}"`
+        throw new Error(msg)
+      }
 
       try
       {
