@@ -48,11 +48,11 @@ class Core
 
     for(const serviceNameUncomposed in serviceMapUncomposed)
     {
-      if(serviceNameUncomposed.endsWith('/*'))
+      if(serviceNameUncomposed.endsWith('*'))
       {
         const
         directoryPath = serviceMapUncomposed[serviceNameUncomposed].slice(0, -1),
-        dirents         = fs.readdirSync(directoryPath, { withFileTypes:true })
+        dirents       = fs.readdirSync(directoryPath, { withFileTypes:true })
 
         for(const dirent of dirents)
         {
