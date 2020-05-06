@@ -13,7 +13,7 @@ class HttpDispatcher
 
   dispatch()
   {
-    const msg = '"dispatch" method is not implemented'
+    const msg = 'the "dispatch" method is not implemented'
     throw new NotImplementedError(msg)
   }
 
