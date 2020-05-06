@@ -18,9 +18,11 @@ class HttpDispatcherModelDispatcher extends Dispatcher
       throw new ServerError(msg)
     }
 
-    if(this.route.command in model)
+    if(typeof this.route.command === 'string'
+    && this.route.command in model)
     {
-      this.view.body = await model[this.route.command](this.route.dto)
+      const command = this.locator.locate('core/string').composeCamelCase(this.route.command, /[ -_]/)
+      this.view.body = await model[command](this.route.dto)
     }
     else
     {
