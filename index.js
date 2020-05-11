@@ -119,10 +119,13 @@ class Core
         const Locator = require(locatorPath)
         locator = new Locator(this.locator)
       }
-      catch(error)
+      catch(exception)
       {
-        const msg = `Problem on initiation of a the locator: "${locatorPath}" with the error message: "${error.message}"`
-        throw new Error(msg)
+        const
+        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${exception.message}"`
+        error = new Error(msg)
+
+        throw error
       }
 
       try
