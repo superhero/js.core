@@ -22,14 +22,15 @@ class CoreString
   }
 
   /**
-   * @example "Foo BAR baz" => "fooBarBaz"
+   * @example "Foo-BAR-baz" => "fooBarBaz" or "Foo BAR baz" => "fooBarBaz"
    * @param {string} s input to be manipulated
+   * @param {string} [seperator='-'] string to be used as the seperator
    * @returns {string} A string that has replaced the spaces with dashes and lowercased the string
    */
-  composeCamelCase(s)
+  composeCamelCase(s, seperator = '-')
   {
     s = this.composeSeperatedLowerCase(s)
-    s = s.split('-').map((part, i) => i === 0 ? part : this.composeFirstUpperCase(part)).join('')
+    s = s.split(seperator).map((part, i) => i === 0 ? part : this.composeFirstUpperCase(part)).join('')
 
     return s
   }

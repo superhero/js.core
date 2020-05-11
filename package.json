@@ -1,6 +1,6 @@
 {
   "name": "superhero",
-  "version": "2.0.0-beta.72",
+  "version": "2.0.0-beta.74",
   "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@superhero/syntax-check": "0.0.1",
-    "mocha": "7.1.2",
-    "mochawesome": "6.1.1",
+    "mocha": "6.2.1",
+    "mochawesome": "4.1.0",
     "mocha-steps": "1.3.0",
     "chai": "4.2.0",
     "nyc": "14.1.1"
