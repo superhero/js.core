@@ -92,18 +92,24 @@ class SchemaComposer
 
   composeExampleValue(options, includeOptional)
   {
+    let output
+
     if('example' in options)
     {
-      return options.example
+      output = options.example
     }
     else if(typeof options.schema === 'string')
     {
-      const schema = this.composeExample(options.schema, includeOptional)
+      const example = this.composeExample(options.schema, includeOptional)
 
-      return options.trait
-      ? schema[options.trait]
-      : schema
+      output = options.trait
+      ? example[options.trait]
+      : example
     }
+
+    return options.collection
+    ? output ? [output] : []
+    : output
   }
 
   /**
