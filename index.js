@@ -122,7 +122,7 @@ class Core
       catch(exception)
       {
         const
-        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${exception.message}"`
+        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${exception.message}"`,
         error = new Error(msg)
 
         throw error
