@@ -37,6 +37,15 @@ class SchemaFilterBoolean
         return false
     }
 
+    if(typeof data === 'number')
+    {
+      if(data === 1)
+        return true
+
+      if(data === 0)
+        return false
+    }
+
     return data
   }
 }
