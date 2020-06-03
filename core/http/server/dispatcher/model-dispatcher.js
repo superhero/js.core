@@ -18,15 +18,23 @@ class HttpDispatcherModelDispatcher extends Dispatcher
       throw new ServerError(msg)
     }
 
-    if(typeof this.route.command === 'string'
-    && this.route.command in model)
+    if(typeof this.route.command === 'string')
     {
       const command = this.locator.locate('core/string').composeCamelCase(this.route.command, /[ -_]/)
-      this.view.body = await model[command](this.route.dto)
+      
+      if(command in model)
+      {
+        this.view.body = await model[command](this.route.dto)
+      }
+      else
+      {
+        const msg = `the model: "${this.route.model}" does not reccognize the command: "${this.route.command}" -> "${command}"`
+        throw new ServerError(msg)
+      }
     }
     else
     {
-      const msg = `the model: "${this.route.model}" does not reccognize the command: "${this.route.command}"`
+      const msg = `a command must be defined in the route: "${this.route.url}" expected a string, received: "${typeof this.route.command}"`
       throw new ServerError(msg)
     }
   }
