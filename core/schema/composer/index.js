@@ -42,7 +42,15 @@ class SchemaComposer
 
     for(const attribute in schema)
     {
-      output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
+      try
+      {
+        output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
+      }
+      catch(error)
+      {
+        error.message = error.message + '; in root schema: "' + schemaName + '" and root attribute: "' + attribute + '"'
+        throw error
+      }
     }
 
     if(Object.isFrozen(schema))
