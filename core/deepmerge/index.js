@@ -30,6 +30,8 @@ class DeepMerge
 
   _mergeObject(a, b)
   {
+    a = { ...a }
+
     for(const key in b)
       a[key] = key in a
       ? this._merge(a[key], b[key])
