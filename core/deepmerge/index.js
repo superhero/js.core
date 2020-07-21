@@ -2,13 +2,11 @@ class DeepMerge
 {
   merge(a, b, ...c)
   {
-    const 
-    result  = this._merge(a, b),
-    cloned  = Array.isArray(result) ? [ ...result ] : { ...result }
+    const result = this._merge(a, b)
 
     return c.length
-    ? this.merge(cloned, c[0], ...c.slice(1))
-    : cloned
+    ? this.merge(result, c[0], ...c.slice(1))
+    : result
   }
 
   _merge(a, b)

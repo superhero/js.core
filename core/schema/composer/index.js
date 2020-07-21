@@ -31,6 +31,8 @@ class SchemaComposer
    */
   compose(schemaName, dto)
   {
+    dto = this.deepclone.clone(dto)
+
     const
     schema = this.composeSchema(schemaName),
     output = {}
