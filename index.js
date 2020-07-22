@@ -99,7 +99,9 @@ class Core
       msg   = `could not resolve path to component "${component}"`,
       error = new Error(msg)
 
-      error.code = 'E_COMPONENT_NOT_RESOLVABLE'
+      error.code    = 'E_COMPONENT_NOT_RESOLVABLE'
+      error.context = { pathname, specifiedPath, localPath, absolutePath, corePath }
+
       throw error
     }
   }
@@ -119,11 +121,14 @@ class Core
         const Locator = require(locatorPath)
         locator = new Locator(this.locator)
       }
-      catch(exception)
+      catch(previous)
       {
         const
-        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${exception.message}"`,
+        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${previous.message}"`,
         error = new Error(msg)
+
+        error.previous  = previous
+        error.context   = { serviceName, servicePath, locatorPath }
 
         throw error
       }
@@ -133,22 +138,25 @@ class Core
         const service = locator.locate()
         this.locator.set(serviceName, service)
       }
-      catch(error)
+      catch(previous)
       {
-        switch(error.code)
+        switch(previous.code)
         {
           case 'E_SERVICE_UNDEFINED':
           {
             const
-            msg                   = `An unmet dependency was found for service "${serviceName}", error: ${error.message}`,
-            errorUnmetDependency  = new Error(msg)
+            msg    = `An unmet dependency was found for service "${serviceName}", error: ${previous.message}`,
+            error  = new Error(msg)
 
-            errorUnmetDependency.code = 'E_SERVICE_UNMET_DEPENDENCY'
-            throw errorUnmetDependency
+            error.code      = 'E_SERVICE_UNMET_DEPENDENCY'
+            error.previous  = previous
+            error.context   = { serviceName, servicePath, locatorPath }
+
+            throw error
           }
 
           default:
-            throw error
+            throw previous
         }
       }
     }
@@ -158,7 +166,9 @@ class Core
       msg   = `locator could not be found for ${serviceName}`,
       error = new Error(msg)
 
-      error.code = 'E_SERVICE_LOCATOR_NOT_FOUND'
+      error.code    = 'E_SERVICE_LOCATOR_NOT_FOUND'
+      error.context = { serviceName, servicePath }
+
       throw error
     }
   }
@@ -193,11 +203,14 @@ class Core
         switch (error.code)
         {
           case 'E_SERVICE_UNMET_DEPENDENCY':
+          {
             queue[serviceName] = serviceMap[serviceName]
             break;
-
+          }
           default:
+          {
             throw error
+          }
         }
       }
     }
@@ -208,7 +221,9 @@ class Core
     if(keys.length === queueKeys.length)
     {
       const error = new Error(`Unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
-      error.code = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
+      
+      error.code    = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
+      error.context = { keys, queueKeys, serviceMap, queue }
 
       throw error
     }
