@@ -29,6 +29,30 @@ class Core
       configuration.extend(config)
     }
 
+    const branch = configuration.find('core.branch')
+
+    // extending the configurations of every component for a specific branch
+    if(branch)
+    {
+      for(const component in this.components)
+      {
+        try
+        {
+          const config = this.fetchComponentConfig(component, this.components[component], branch)
+          configuration.extend(config)
+        }
+        catch(error)
+        {
+          const msg = `could not fetch the branch configurations for the branch: ${branch} in the component: ${component}`
+          console.log(`core log message: ` + msg)
+        }
+      }
+    }
+    else
+    {
+      console.log(`core log message: no configuration branch is set`)
+    }
+
     configuration.freeze()
 
     const
@@ -72,14 +96,15 @@ class Core
     return serviceMap
   }
 
-  fetchComponentConfig(component, pathname)
+  fetchComponentConfig(component, pathname, branch)
   {
     const
+    configFile    = branch ? `config-${branch}` : 'config',
     path          = this.locate('core/path'),
-    specifiedPath = `${pathname}/config`,
-    localPath     = `${path.main.dirname}/${component}/config`,
-    absolutePath  = `${component}/config`,
-    corePath      = `${__dirname}/${component}/config`
+    specifiedPath = `${pathname}/${configFile}`,
+    localPath     = `${path.main.dirname}/${component}/${configFile}`,
+    absolutePath  = `${component}/${configFile}`,
+    corePath      = `${__dirname}/${component}/${configFile}`
 
     if(path.isResolvable(specifiedPath))
       return require(specifiedPath)
@@ -100,7 +125,8 @@ class Core
       error = new Error(msg)
 
       error.code    = 'E_COMPONENT_NOT_RESOLVABLE'
-      error.context = { pathname, specifiedPath, localPath, absolutePath, corePath }
+      error.context = { component, pathname, branch, configFile, specifiedPath, 
+                        localPath, absolutePath, corePath }
 
       throw error
     }
