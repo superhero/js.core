@@ -55,7 +55,7 @@ The url is the requested filepath, by example; in the http request `http://examp
 
 It is possible to use some regular expressions, regex, in the `url` variable to accomplish a dynamic match. But it is considered by this documentaion regarded as good practice to not use any regex, but instead name segments as described below.
 
-Naming segments in the url can be done in the following way; `/foobar/:baz`, where the `:baz` key is replaced with a regex; `[^/]+`, matching anything but the `/`, the forward slash. Naming a segment is useful for semantikal reasons, but more importantly, named segments are also recognized when composing the dto, **D**ata **T**ransfer **O**bject, as explained under the title `input` below.
+Naming segments in the url can be done in the following way; `/foobar/:baz`, where the `:baz` key is replaced with a regex; `[^/]+`, matching anything but the `/`, the forward slash. Naming a segment is useful for semantikal reasons, but more importantly, named segments are also recognized when composing the `dto` - **D**ata **T**ransfer **O**bject.
 
 It is possible to assign an expected value for a named segment in the url. Instead of replacing the segment with the regex `[^/]+`, the expected value would be used. Example: `/foobar/:baz=qux` would match with the string `/foobar/qux`.
 
@@ -120,7 +120,7 @@ class Endpoint extends Dispatcher
 module.exports = Endpoint
 ```
 
-The `dispatch` method will be awaited, as such; the `dispatch` method be defined with the keyword `async`, if the dispatcher is required to work with asynchronous logic.
+The `dispatch` method will be awaited, as such; the `dispatch` method can be defined as `async`, if the dispatcher is required to work with asynchronous logic.
 
 ---
 
@@ -137,25 +137,27 @@ class Middleware extends Dispatcher
 {
   async dispatch(next)
   {
-    console.log(Date.now())
+    const label = 'benchmark'
+
+    console.time(label)
 
     await next()
 
-    console.log(Date.now())
+    console.timeEnd(label)
   }
 }
 
 module.exports = Middleware
 ```
 
-As seen in the above, we use the same dispatcher for the endpoint dispatcher as we use for the middleware dispatcher. The difference is the passed along `next` function that the implementation must call to trigger the next instance in the dispatcher chain, that finally will call the endpoint, where the chain will collaps on it self as described below.
+As seen in the above, we use the same dispatcher for the endpoint dispatcher as we use for the middleware dispatcher. The difference is the passed along `next` function that the implementation must call to trigger the next instance in the `dispatcher chain`, that finally will call the endpoint, where the chain will collaps on it self as described below.
 
 ```
-Middleware
-  ↓    ↑
-Middleware
-  ↓    ↑
- Endpoint
+        Middleware
+          ↓    ↑
+        Middleware
+          ↓    ↑
+         Endpoint
 ```
 
 Worth noting, the post operations will be done in reveresed order to the pre operations due to the collapsed flow.
@@ -180,9 +182,19 @@ The framework also allows for external resources to be used by reference; `@supe
 
 ### `input`
 
-**When a request is validated to a matching route**, the `input` variable is used as a reference to a schema that will be used as a template for the dto.
+**When a request is validated to a matching route**, the `input` variable is used as a reference to a schema that will be used as a template for the `route.dto` member.
 
-The dto is a merged, filtered and validated set of data, recognized by the router. Data can be sent as a query variable, sent in the message body, or mapped in the url segments.
+---
+
+### `output`
+
+The optional variable `output` is a reference to a schema that is used for automated generation of documentation, but could also be used in other contexts, such as in a middleware to validate that the the output is as expected.
+
+---
+
+## Http / Server / Router / Dto
+
+The `dto` is a merged, filtered and validated set of data, recognized by the router. Data can be sent as a query variable, sent in the message body, or mapped in the url segments.
 
 The hiearky of the merged data model is `body`
 **→** `query` **→** `url segment`, where the last overwrites the former.
@@ -216,19 +228,171 @@ It is possible to extend the route builder model by adding an additional dto bui
 }
 ```
 
-The example above is an abstract defintion of how to add a builder. The key is a unique identifier, designed by a unique index to be able to write over an already existing builder, for what ever reason that would be necessery. The "service" expressed in the value is the service name that will be located by the `core/locator` component.
+The example above is an example defintion of how to add a builder. The key is a unique identifier, designed by a unique index to be able to write over an already existing builder, for what ever reason that would be necessery. The "service" expressed in the value is the service name that will be located by the `core/locator` component.
 
 A builder is expected to implement the `HttpServerRouteBuilderDtoBuilder` contract.
 
 ---
 
-### `output`
+## Http / Server / Dispatcher
 
-The optional variable `output` is a reference to a schema that is used for automated generation of documentation, but could also be used in other contexts, such as in a middleware to validate that the the output is as expected.
+The http server dispatcher is an abstract implementation of all the dispatchers used in the dispatcher chain - the endpoints and middlewares.
+
+Use the abstract implementation in your code by extending the dispatcher class in the following manner:
+
+```js
+const Dispatcher = require('superhero/core/http/server/dispatcher')
+class Endpoint extends Dispatcher
+```
 
 ---
 
-## Route termination
+### Dispatcher structure
+
+The dispatcher has dependencies injected by the front controller when building and dispatching the `dispatcher chain`.
+
+Following model describes the member structure of the Dispatcher.
+
+```
+dispatcher
+├── route
+│   ├── dto
+│   ├── endpoint
+│   ├── method
+│   ├── middlewares
+│   ├── input
+│   ├── output
+│   └── view
+├── request
+│   ├── body
+│   ├── headers
+│   ├── method
+│   ├── query
+│   └── url
+├── session
+│   ├── domain
+│   ├── request
+│   ├── response
+│   └── cookies
+├── locator
+│   └── locate
+└── view
+    ├── body
+    ├── headers
+    └── meta
+        └── status
+```
+
+---
+
+### `dispatcher.route`
+
+The `route` member of the dispatcher is a composition of the configurations expressed in the route config.
+
+### `dispatcher.route.dto`
+
+The **D**ata **T**ransfer **O**bject validated against the input schema.
+
+### `dispatcher.route.endpoint`
+
+The name of the endpoint taht is being dispatched.
+
+### `dispatcher.route.middlewares`
+
+A list of middleware names, if any middlewares are defined in the route config.
+
+### `dispatcher.route.method`
+
+The method policy, if defined in the route config.
+
+### `dispatcher.route.input`
+
+The input schema is used to document the input model, and is used to filter and validate the `dto` pre dispatching the `dispatcher chain`.
+
+### `dispatcher.route.output`
+
+The output schema is used to document the output model.
+
+### `dispatcher.route.view`
+
+The name of the view service used to present the view model. If necessery, the view service can be set in the dispatcher process.
+
+---
+
+### `dispatcher.request`
+
+A representation of the request made by the client.
+
+### `dispatcher.request.body`
+
+The parsed body of the clients http request.
+
+### `dispatcher.request.headers`
+
+The http headers used in the client request.
+
+### `dispatcher.request.method`
+
+The http method used when the client made the request.
+
+### `dispatcher.request.query`
+
+The parsed url query.
+
+### `dispatcher.request.url`
+
+The url path used in the clients http request.
+
+---
+
+### `dispatcher.session`
+
+The session model can be used to pass relevant session data between the dispatchers in the `dispatcher chain`. Some default session components are passed by default.
+
+### `dispatcher.session.domain`
+
+See: https://nodejs.org/docs/latest-v13.x/api/domain.html
+
+### `dispatcher.session.request`
+
+See: https://nodejs.org/docs/latest-v13.x/api/http.html#http_class_http_incomingmessage
+
+### `dispatcher.session.response`
+
+See: https://nodejs.org/docs/latest-v13.x/api/http.html#http_class_http_serverresponse
+
+### `dispatcher.session.cookies`
+
+A lazy loaded component, not constructed unless called.
+See: https://www.npmjs.com/package/cookies
+
+---
+
+### `dispatcher.locator`
+
+The service locator - `core/locator`.
+
+---
+
+### `dispatcher.view`
+
+The view model used by the view to present the response.
+
+### `dispatcher.view.body`
+
+The http response body.
+
+### `dispatcher.view.headers`
+
+The http response headers.
+
+### `dispatcher.view.meta`
+
+The meta data used for specific meta view mapping, for instance; the `dispatcher.view.meta.status` is used to set the http status code.
+
+---
+
+## Route / Termination
 
 When a request is made, a route walk is begun to find matching routes. The walk will end when a terminating valid route has been found. What defines a terminating route is when a valid route has an endpoint defined. This behavior allows a route building process where multiple valid routes can be merged together as one, as the following example shows.
 
