@@ -15,7 +15,7 @@ It is possible to set a `core.branch` configuration; that will result in the att
 }
 ```
 
-The example above will, in addition to the default configuration of the component, try to load the configuration file `config-staging`.
+The example above will, in addition to loading the default configuration of the component, try to load the configuration file: `config-staging`.
 
 ---
 
