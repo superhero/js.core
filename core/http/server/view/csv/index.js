@@ -4,16 +4,18 @@ class HttpViewCsv
   {
     if(this.isValid(viewModel))
     {
-      const filename = viewModel.meta.filename || route.filename || 'data'
+      const 
+      filename  = viewModel.meta.filename   || route.filename   || 'data',
+      lineBreak = viewModel.meta.lineBreak  || route.lineBreak  || '\n'
 
-      viewModel.headers['content-type']         = 'text/csv; charset=utf-8'
+      viewModel.headers['content-type']         = 'text/csv'
       viewModel.headers['content-disposition']  = `attachment;filename=${filename}.csv`
 
       const 
       keys      = Object.keys(viewModel.body[0] || {}),
       csvHeader = keys.map((key) => `'${this.escapeValue(key)}'`).join(',')
 
-      output.write(csvHeader)
+      output.write(csvHeader + lineBreak)
 
       for(const item of viewModel.body)
       {
@@ -21,7 +23,7 @@ class HttpViewCsv
 
         // Returns true if the entire data was flushed successfully to the kernel buffer. Returns false if all or part of the data was queued in user memory. 
         // 'drain' will be emitted when the buffer is free again.
-        output.write(row)
+        output.write(row + lineBreak)
       }
 
       output.writeHead(200, viewModel.headers)
@@ -37,16 +39,14 @@ class HttpViewCsv
   isValid(viewModel)
   {
     const isValid = Array.isArray(viewModel.body)
-    && viewModel.body.every((item) => typeof item === 'object' 
-                                   && item !== null 
-                                   && Object.values(item).every((item) => typeof item === 'string'))
+    && viewModel.body.every((item) => typeof item === 'object' && item !== null)
 
     return isValid
   }
 
   escapeValue(value)
   {
-    return (value || '').replace("'", "\\'")
+    return `${value}`.replace(/'/g, "\\'")
   }
 }
 

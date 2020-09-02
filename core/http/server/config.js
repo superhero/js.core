@@ -17,9 +17,7 @@ module.exports =
       'core/http/server/route/builder/dto/builder/request-url'    : __dirname + '/route/builder/dto/builder/request-url',
       'core/http/server/route/builder'                            : __dirname + '/route/builder',
       'core/http/server/session/builder'                          : __dirname + '/session/builder',
-      'core/http/server/view/json'                                : __dirname + '/view/json',
-      'core/http/server/view/stream'                              : __dirname + '/view/stream',
-      'core/http/server/view/text'                                : __dirname + '/view/text',
+      'core/http/server/view/*'                                   : __dirname + '/view/*',
       'core/http/server/view'                                     : __dirname + '/view',
       'core/http/server'                                          : __dirname
     },

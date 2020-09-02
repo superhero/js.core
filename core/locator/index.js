@@ -22,7 +22,7 @@ class Locator
     if(service in this.services)
       return this.services[service]
 
-    throw new ServiceUndefinedError(`"${service}" can not be located`)
+    throw new ServiceUndefinedError(`"${service}" can not be located, did you load the core?`)
   }
 }
 
