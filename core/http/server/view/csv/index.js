@@ -15,6 +15,21 @@ class HttpViewCsv
       keys      = Object.keys(viewModel.body[0] || {}),
       csvHeader = keys.map((key) => `'${this.escapeValue(key)}'`).join(',')
 
+      /*
+      let contentLength = csvHeader.length
+
+      for(const item of viewModel.body)
+      {
+        const row = keys.map((key) => `'${this.escapeValue(item[key])}'`).join(',')
+        
+        contentLength += (row + lineBreak).length
+      }
+
+      viewModel.headers['content-length'] = contentLength
+      */
+
+      output.writeHead(200, viewModel.headers)
+
       output.write(csvHeader + lineBreak)
 
       for(const item of viewModel.body)
@@ -26,7 +41,6 @@ class HttpViewCsv
         output.write(row + lineBreak)
       }
 
-      output.writeHead(200, viewModel.headers)
       output.end()
     }
     else
