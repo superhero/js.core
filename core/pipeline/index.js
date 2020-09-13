@@ -40,26 +40,19 @@ class Pipeline
     }
   }
 
-  getConsumers()
-  {
-    return this.consumers
-  }
-
   async flush()
   {
     if(this.flushed)
     {
       this.flushed = false
 
-      const consumers = this.getConsumers()
-      
-      if(consumers.length)
+      if(this.consumers.length)
       {
         let message
 
         while(message = this.messages.shift())
         {
-          for(const consumer of consumers)
+          for(const consumer of this.consumers)
           {
             try
             {
@@ -79,8 +72,7 @@ class Pipeline
 
   onError(error)
   {
-    const consumers = this.getConsumers()
-    for(const consumer of consumers)
+    for(const consumer of this.consumers)
     {
       consumer.onError(error)
     }
