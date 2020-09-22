@@ -18,16 +18,19 @@ class Pipeline
     this.flush().catch(this.onError.bind(this))
   }
   
-  addConsumer(consumer)
+  async addConsumer(consumer)
   {
-    if(typeof consumer === 'object')
+    if(typeof consumer === 'object'
+    &&        consumer !== null
+    && typeof consumer.consume === 'function'
+    && typeof consumer.onError === 'function')
     {
       this.consumers.push(consumer)
-      this.flush().catch(this.onError.bind(this))
+      await this.flush().catch(this.onError.bind(this))
     }
     else
     {
-      const error   = new Error('a valid consumer must be of type object')
+      const error   = new Error('a valid consumer must be of type object and have aconsume and onError methods declared')
 
       error.code    = 'E_CORE_QUEUE_INVALID_CONSUMER'
       error.context = 
