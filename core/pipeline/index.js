@@ -12,10 +12,10 @@ class Pipeline
     this.flushed    = true
   }
 
-  push(message)
+  async push(message)
   {
     this.messages.push(message)
-    this.flush().catch(this.onError.bind(this))
+    await this.flush()
   }
   
   async addConsumer(consumer)
@@ -26,7 +26,7 @@ class Pipeline
     && typeof consumer.onError === 'function')
     {
       this.consumers.push(consumer)
-      await this.flush().catch(this.onError.bind(this))
+      await this.flush()
     }
     else
     {
@@ -70,14 +70,6 @@ class Pipeline
       }
 
       this.flushed = true
-    }
-  }
-
-  onError(error)
-  {
-    for(const consumer of this.consumers)
-    {
-      consumer.onError(error)
     }
   }
 }
