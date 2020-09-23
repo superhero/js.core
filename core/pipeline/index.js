@@ -30,7 +30,7 @@ class Pipeline
     }
     else
     {
-      const error   = new Error('a valid consumer must be of type object and have aconsume and onError methods declared')
+      const error   = new Error('a valid consumer must be of type object and have a "consume" and a "onError" method declared')
 
       error.code    = 'E_CORE_QUEUE_INVALID_CONSUMER'
       error.context = 
