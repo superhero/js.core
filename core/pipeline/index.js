@@ -49,7 +49,7 @@ class Pipeline
     {
       this.flushed = false
 
-      if(this.consumers.length)
+      try
       {
         let message
 
@@ -68,8 +68,10 @@ class Pipeline
           }
         }
       }
-
-      this.flushed = true
+      finally
+      {
+        this.flushed = true
+      }
     }
   }
 }
