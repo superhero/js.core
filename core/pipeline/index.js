@@ -63,7 +63,7 @@ class Pipeline
             }
             catch(error)
             {
-              consumer.onError(error)
+              consumer.onError(error, message)
             }
           }
         }

@@ -1,6 +1,6 @@
 {
   "name": "superhero",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
