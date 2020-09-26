@@ -28,17 +28,24 @@ class Core
       serviceMapUncomposed  = configuration.find('core.locator'),
       serviceMap            = this.composeServiceMap(serviceMapUncomposed)
   
-      // eager loading the services in the sevice locator
-      this.loadServiceRecursion(serviceMap, queueLog)
+      try
+      {
+        // eager loading the services in the sevice locator
+        this.loadServiceRecursion(serviceMap, queueLog)
+      }
+      catch(previousError)
+      {
+        const error = new Error('the core failed to load - runtime error in the eager loading process - see consol log for more information')
+
+        error.code  = 'E_CORE_LOAD'
+        error.chain = { configuration, serviceMap, previousError }
+
+        throw error
+      }
     }
-    catch(previousError)
+    catch(error)
     {
-      this.locate('core/console').error(previousError)
-      const error = new Error('the core failed to load - runtime error in the eager loading process - see consol log for more information')
-
-      error.code  = 'E_CORE_LOAD'
-      error.chain = { previousError }
-
+      this.locate('core/console').error(error)
       throw error
     }
   }
