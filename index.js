@@ -23,12 +23,13 @@ class Core
     try
     {
       const
-      configuration         = this.buildConfiguration(),
+      queueLog              = [],
+      configuration         = this.buildConfiguration(queueLog),
       serviceMapUncomposed  = configuration.find('core.locator'),
       serviceMap            = this.composeServiceMap(serviceMapUncomposed)
   
       // eager loading the services in the sevice locator
-      this.loadServiceRecursion(serviceMap)
+      this.loadServiceRecursion(serviceMap, queueLog)
     }
     catch(previousError)
     {
@@ -42,7 +43,7 @@ class Core
     }
   }
 
-  buildConfiguration()
+  buildConfiguration(queueLog)
   {
     const configuration = this.locate('core/configuration')
 
@@ -69,6 +70,8 @@ class Core
         {
           // ... we don't need to do anything if the configuration doesn't exist,
           // or maybe emit a warning or info log message through the eventbus ...
+
+          queueLog.push(error)
         }
       }
     }
@@ -222,7 +225,7 @@ class Core
    * Recursion queue to complete loading all services.
    * @param {Object} serviceMap [names of services] => [filepath of services]
    */
-  loadServiceRecursion(serviceMap)
+  loadServiceRecursion(serviceMap, queueLog)
   {
     const keys = Object.keys(serviceMap)
 
@@ -249,6 +252,7 @@ class Core
           case 'E_SERVICE_UNMET_DEPENDENCY':
           {
             queue[serviceName] = serviceMap[serviceName]
+            queueLog.push(error)
             break;
           }
           default:
@@ -264,16 +268,16 @@ class Core
     // if the new queue is the same as the old queue, then no progress has taken place
     if(keys.length === queueKeys.length)
     {
-      const error = new Error(`Unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
+      const error = new Error(`unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
       
       error.code  = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
-      error.chain = { keys, queueKeys, serviceMap, queue }
+      error.chain = { keys, queueKeys, serviceMap, queue, queueLog }
 
       throw error
     }
 
     // recursion until the queue is empty
-    this.loadServiceRecursion(queue)
+    this.loadServiceRecursion(queue, queueLog)
   }
 
   locate(service)
