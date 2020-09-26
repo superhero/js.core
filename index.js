@@ -71,7 +71,7 @@ class Core
           // ... we don't need to do anything if the configuration doesn't exist,
           // or maybe emit a warning or info log message through the eventbus ...
 
-          queueLog.push(error)
+          queueLog.push({ message:error.message })
         }
       }
     }
@@ -252,7 +252,7 @@ class Core
           case 'E_SERVICE_UNMET_DEPENDENCY':
           {
             queue[serviceName] = serviceMap[serviceName]
-            queueLog.push(error)
+            queueLog.push({ message:error.message, serviceName })
             break;
           }
           default:
@@ -268,10 +268,13 @@ class Core
     // if the new queue is the same as the old queue, then no progress has taken place
     if(keys.length === queueKeys.length)
     {
-      const error = new Error(`unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
+      const 
+      // filtereing off a lot of errors from the log here, to keep the error log more relevant
+      filteredLog = queueLog.filter((log) => queueKeys.includes(log.serviceName)),
+      error       = new Error(`unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
       
       error.code  = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
-      error.chain = { keys, queueKeys, serviceMap, queue, queueLog }
+      error.chain = { keys, queueKeys, serviceMap, queue, log:filteredLog }
 
       throw error
     }
