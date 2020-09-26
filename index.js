@@ -169,7 +169,7 @@ class Core
       catch(previousError)
       {
         const
-        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${previous.message}"`,
+        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${previousError.message}"`,
         error = new Error(msg)
 
         error.code  = 'E_CORE_LOAD_SERVICE'
@@ -190,7 +190,7 @@ class Core
           case 'E_SERVICE_UNDEFINED':
           {
             const
-            msg    = `An unmet dependency was found for service "${serviceName}", error: ${previous.message}`,
+            msg    = `An unmet dependency was found for service "${serviceName}", error: ${previousError.message}`,
             error  = new Error(msg)
 
             error.code  = 'E_SERVICE_UNMET_DEPENDENCY'
