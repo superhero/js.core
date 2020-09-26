@@ -20,6 +20,30 @@ class Core
 
   load()
   {
+    try
+    {
+      const
+      configuration         = this.buildConfiguration(),
+      serviceMapUncomposed  = configuration.find('core.locator'),
+      serviceMap            = this.composeServiceMap(serviceMapUncomposed)
+  
+      // eager loading the services in the sevice locator
+      this.loadServiceRecursion(serviceMap)
+    }
+    catch(previousError)
+    {
+      this.locate('core/console').error(previousError)
+      const error = new Error('Core failed to load - runtime error of the eager loading process')
+
+      error.code  = 'E_CORE_LOAD'
+      error.chain = { previousError }
+
+      throw error
+    }
+  }
+
+  buildConfiguration()
+  {
     const configuration = this.locate('core/configuration')
 
     // extending the configurations of every component
@@ -55,12 +79,7 @@ class Core
 
     configuration.freeze()
 
-    const
-    serviceMapUncomposed  = configuration.find('core.locator'),
-    serviceMap            = this.composeServiceMap(serviceMapUncomposed)
-
-    // eager loading the services in the sevice locator
-    this.loadServiceRecursion(serviceMap)
+    return configuration
   }
 
   /**
