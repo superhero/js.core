@@ -33,7 +33,7 @@ class Core
     catch(previousError)
     {
       this.locate('core/console').error(previousError)
-      const error = new Error('Core failed to load - runtime error of the eager loading process')
+      const error = new Error('the core failed to load - runtime error in the eager loading process - see consol log for more information')
 
       error.code  = 'E_CORE_LOAD'
       error.chain = { previousError }
