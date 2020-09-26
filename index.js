@@ -67,8 +67,8 @@ class Core
         }
         catch(error)
         {
-          const msg = `could not fetch the branch configurations for the branch: ${branch} in the component: ${component}`
-          console.log(`core log message: ` + msg)
+          // ... we don't need to do anything if the configuration doesn't exist,
+          // or maybe emit a warning or info log message through the eventbus ...
         }
       }
     }
