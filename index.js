@@ -63,6 +63,7 @@ class Core
     }
     console.log('')
     console.log('Core Loaded')
+    console.log('')
   }
 
   buildConfiguration(queueLog)
