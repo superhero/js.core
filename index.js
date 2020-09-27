@@ -25,7 +25,6 @@ class Core
   {
     try
     {
-      console.log('---')
       console.log('Building configuration')
       console.log('')
 
@@ -38,7 +37,6 @@ class Core
       try
       {
         console.log('')
-        console.log('---')
         console.log('Loading services')
         console.log('')
 
@@ -58,16 +56,13 @@ class Core
     catch(error)
     {
       console.error('')
-      console.error('---')
       console.error('Load core error')
       console.error('')
       console.error(error)
       throw error
     }
     console.log('')
-    console.log('---')
     console.log('Core Loaded')
-    console.log('')
   }
 
   buildConfiguration(queueLog)
