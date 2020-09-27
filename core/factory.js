@@ -10,11 +10,11 @@ Path          = require('./path')
 
 class CoreFactory
 {
-  create()
+  create(branch)
   {
     const
     locator = this.createLocator(),
-    core    = new Core(locator)
+    core    = new Core(locator, branch)
 
     core.add('core/bootstrap')
     core.add('core/cli')

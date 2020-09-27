@@ -1,10 +1,13 @@
-const fs = require('fs')
+const 
+fs      = require('fs'),
+console = require('@superhero/debug').color('blue')
 
 class Core
 {
-  constructor(locator)
+  constructor(locator, branch)
   {
     this.locator    = locator
+    this.branch     = branch
     this.components = {}
   }
 
@@ -22,6 +25,10 @@ class Core
   {
     try
     {
+      console.log('---')
+      console.log('Building configuration')
+      console.log('')
+
       const
       queueLog              = [],
       configuration         = this.buildConfiguration(queueLog),
@@ -30,6 +37,11 @@ class Core
   
       try
       {
+        console.log('')
+        console.log('---')
+        console.log('Loading services')
+        console.log('')
+
         // eager loading the services in the sevice locator
         this.loadServiceRecursion(serviceMap, queueLog)
       }
@@ -45,9 +57,17 @@ class Core
     }
     catch(error)
     {
-      this.locate('core/console').error(error)
+      console.error('')
+      console.error('---')
+      console.error('Load core error')
+      console.error('')
+      console.error(error)
       throw error
     }
+    console.log('')
+    console.log('---')
+    console.log('Core Loaded')
+    console.log('')
   }
 
   buildConfiguration(queueLog)
@@ -59,19 +79,20 @@ class Core
     {
       const config = this.fetchComponentConfig(component, this.components[component])
       configuration.extend(config)
-    }
 
-    const branch = configuration.find('core.branch')
+      if(!component.startsWith('core'))
+      {
+        console.log(`✔ ${component}`)
+      }
 
-    // extending the configurations of every component for a specific branch
-    if(branch)
-    {
-      for(const component in this.components)
+      // extending the configurations of every component for a specific branch
+      if(this.branch)
       {
         try
         {
-          const config = this.fetchComponentConfig(component, this.components[component], branch)
-          configuration.extend(config)
+          const branchConfig = this.fetchComponentConfig(component, this.components[component], this.branch)
+          configuration.extend(branchConfig)
+          console.log(`✔ ${component} - ${this.branch}`)
         }
         catch(error)
         {
@@ -81,10 +102,6 @@ class Core
           queueLog.push({ message:error.message })
         }
       }
-    }
-    else
-    {
-      console.log(`core log message: no configuration branch is set`)
     }
 
     configuration.freeze()
@@ -251,6 +268,11 @@ class Core
       try
       {
         this.loadService(serviceName, serviceMap[serviceName])
+
+        if(!serviceName.startsWith('core'))
+        {
+          console.log(`✔ ${serviceName}`)
+        }
       }
       catch(error)
       {
@@ -275,6 +297,8 @@ class Core
     // if the new queue is the same as the old queue, then no progress has taken place
     if(keys.length === queueKeys.length)
     {
+      queueKeys.forEach((serviceName) => console.error(`✘ ${serviceName}`))
+
       const 
       // filtereing off a lot of errors from the log here, to keep the error log more relevant
       filteredLog = queueLog.filter((log) => queueKeys.includes(log.serviceName)),
