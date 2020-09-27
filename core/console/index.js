@@ -10,8 +10,8 @@ class Console extends Debug
     super(options)
 
     const
-    error_options   = { ...options, color:'red',    prefix:'error:'   },
-    warning_options = { ...options, color:'yellow', prefix:'warning:' },
+    error_options   = { prefix:'error:',    ...options, color:'red' },
+    warning_options = { prefix:'warning:',  ...options, color:'yellow' },
     error           = new Debug(error_options),
     warning         = new Debug(warning_options)
 
