@@ -1,6 +1,6 @@
 const 
 fs      = require('fs'),
-console = require('@superhero/debug').color('blue')
+console = require('@superhero/debug')
 
 class Core
 {
@@ -21,12 +21,12 @@ class Core
     delete this.components[component]
   }
 
-  load()
+  load(verbose = false)
   {
     try
     {
-      console.log('Building configuration')
-      console.log('')
+      console.color('blue').log('Building configuration')
+      console.color('blue').log('')
 
       const
       queueLog              = [],
@@ -36,16 +36,16 @@ class Core
   
       try
       {
-        console.log('')
-        console.log('Loading services')
-        console.log('')
+        console.color('blue').log('')
+        console.color('blue').log('Loading services')
+        console.color('blue').log('')
 
         // eager loading the services in the sevice locator
         this.loadServiceRecursion(serviceMap, queueLog)
       }
       catch(previousError)
       {
-        const error = new Error('the core failed to load - runtime error in the eager loading process - see consol log for more information')
+        const error = new Error('runtime error in the eager loading process')
 
         error.code  = 'E_CORE_LOAD'
         error.chain = { configuration, serviceMap, previousError }
@@ -55,15 +55,26 @@ class Core
     }
     catch(error)
     {
-      console.error('')
-      console.error('Load core error')
-      console.error('')
-      console.error(error)
+      console.color('red').error('Core error')
+      console.color('red').error('')
+      do
+      {
+        console.color('red').error(`✗ ${error.message}`)
+        console.color('red').error(`  ↪ ${error.stack.split('\n')[1].trim()}`)
+        console.color('red').error(`  ↪ ${error.stack.split('\n')[2].trim()}`)
+        console.color('red').error('')
+      }
+      while(error = error.chain && error.chain.previousError)
+      
+      verbose
+      ? console.color('red').error(error)
+      : console.color('blue').error('Call core.load(true) for a more verbose error output')
+
       throw error
     }
-    console.log('')
-    console.log('Core Loaded')
-    console.log('')
+    console.color('blue').log('')
+    console.color('blue').log('Core Loaded')
+    console.color('blue').log('')
   }
 
   buildConfiguration(queueLog)
@@ -78,7 +89,7 @@ class Core
 
       if(!component.startsWith('core'))
       {
-        console.log(`✔ ${component}`)
+        console.color('blue').log(`✔ ${component}`)
       }
 
       // extending the configurations of every component for a specific branch
@@ -88,7 +99,7 @@ class Core
         {
           const branchConfig = this.fetchComponentConfig(component, this.components[component], this.branch)
           configuration.extend(branchConfig)
-          console.log(`✔ ${component} - ${this.branch}`)
+          console.color('blue').log(`✔ ${component} - ${this.branch}`)
         }
         catch(error)
         {
@@ -267,7 +278,7 @@ class Core
 
         if(!serviceName.startsWith('core'))
         {
-          console.log(`✔ ${serviceName}`)
+          console.color('blue').log(`✔ ${serviceName}`)
         }
       }
       catch(error)
@@ -293,7 +304,7 @@ class Core
     // if the new queue is the same as the old queue, then no progress has taken place
     if(keys.length === queueKeys.length)
     {
-      queueKeys.forEach((serviceName) => console.error(`✘ ${serviceName}`))
+      queueKeys.forEach((serviceName) => console.color('red').error(`✘ ${serviceName}`))
 
       const 
       // filtereing off a lot of errors from the log here, to keep the error log more relevant
