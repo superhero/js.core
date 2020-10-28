@@ -60,8 +60,8 @@ class Core
       do
       {
         console.color('red').error(`✗ ${error.message}`)
-        console.color('red').error(`  ↪ ${error.stack.split('\n')[1].trim()}`)
-        console.color('red').error(`  ↪ ${error.stack.split('\n')[2].trim()}`)
+        error.stack.split('\n').forEach((stack) =>
+        console.color('red').error(`  ↪ ${stack.trim()}`))
         console.color('red').error('')
       }
       while(error = error.chain && error.chain.previousError)
