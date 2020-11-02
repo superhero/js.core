@@ -25,6 +25,21 @@ class Core
   {
     try
     {
+      if(this.branch)
+      {
+        console.color('blue').log('Branch defined')
+        console.color('blue').log('')
+        console.color('blue').log(`✔ ${this.branch}`)
+        console.color('blue').log('')
+      }
+      else
+      {
+        console.color('yellow').log('Branch missing')
+        console.color('yellow').log('')
+        console.color('yellow').log(`✗ No branch is defined`)
+        console.color('yellow').log('')
+      }
+
       console.color('blue').log('Building configuration')
       console.color('blue').log('')
 
