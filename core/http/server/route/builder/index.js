@@ -9,12 +9,13 @@ InvalidRouteError                 = require('./error/invalid-route')
 
 class HttpServerRouteBuilder
 {
-  constructor(deepmerge, deepclone, composer)
+  constructor(deepmerge, deepclone, composer, object)
   {
     this.dtoBuilders  = []
     this.deepmerge    = deepmerge
     this.deepclone    = deepclone
     this.composer     = composer
+    this.object       = object
   }
 
   /**
@@ -94,12 +95,14 @@ class HttpServerRouteBuilder
           }
 
           // validate that all headers match
-          const isHeadersValid = Object.keys(route.headers).every((header) =>
+          const 
+          requestHeaders = this.object.composeLowerCaseKeyedObject(request.headers),
+          isHeadersValid = Object.keys(route.headers).every((header) =>
           {
             const headerRegExp = new RegExp(`^${route.headers[header]}$`, 'i')
 
-            if(header in request.headers
-            && request.headers[header].match(headerRegExp))
+            if(header in requestHeaders
+            && requestHeaders[header].match(headerRegExp))
             {
               return true
             }

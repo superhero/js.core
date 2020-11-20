@@ -13,7 +13,8 @@ class HttpServerRouteBuilderLocator
     deepmerge = this.locator.locate('core/deepmerge'),
     deepclone = this.locator.locate('core/deepclone'),
     composer  = this.locator.locate('core/schema/composer'),
-    builder   = new HttpServerRouteBuilder(deepmerge, deepclone, composer)
+    object    = this.locator.locate('core/object'),
+    builder   = new HttpServerRouteBuilder(deepmerge, deepclone, composer, object)
 
     return builder
   }
