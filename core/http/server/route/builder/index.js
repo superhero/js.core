@@ -100,7 +100,7 @@ class HttpServerRouteBuilder
           routeHeaders   = this.object.composeLowerCaseKeyedObject(route.headers),
           isHeadersValid = Object.keys(routeHeaders).every((header) =>
           {
-            const headerRegExp = new RegExp(`^${route.headers[header]}$`, 'i')
+            const headerRegExp = new RegExp(`^${routeHeaders[header]}$`, 'i')
 
             if(header in requestHeaders
             && requestHeaders[header].match(headerRegExp))
