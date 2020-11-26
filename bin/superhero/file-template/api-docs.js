@@ -504,54 +504,61 @@ module.exports = (wd, api_config, schemas) =>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
 
   <script>
-    document.addEventListener('click', function(event)
+    const initializeCodeMirror = (textareas) =>
     {
-      const node = event.target
-
-      if(node.classList.contains('accordion'))
+      textareas.forEach(textarea =>
       {
-        node.classList.toggle('active')
+        if(!textarea.getAttribute('data-code-mirror'))
+        {
+          CodeMirror.fromTextArea(textarea, {
+            lineNumbers: true,
+            theme: 'eclipse',
+            readOnly: true,
+            mode: 'javascript'
+          })
 
-        const panel = node.nextElementSibling
+          textarea.setAttribute('data-code-mirror', true)
+        }
+      })
+    }
 
-        CodeMirror.fromTextArea(panel.querySelector('textarea.code-example'), {
-          lineNumbers: true,
-          theme: 'eclipse',
-          readOnly: true,
-          mode: 'javascript'
-        })
+    const tooglePanel = (panel) =>
+    {
+      const textareas = panel.querySelectorAll('textarea.code-example')
 
-        panel.classList.toggle('open')
+      initializeCodeMirror(textareas)
 
-        if(panel.style.maxHeight)
-          panel.style.maxHeight = null
-        else
-          panel.style.maxHeight = panel.scrollHeight + 'px'
+      panel.classList.toggle('open')
+
+      if(panel.style.maxHeight)
+        panel.style.maxHeight = null
+      else
+        panel.style.maxHeight = panel.scrollHeight + 'px'
+    }
+
+    const toogleAccordion = (node) =>
+    {
+      node.classList.toggle('active')
+      const panel = node.nextElementSibling
+      tooglePanel(panel)
+    }
+
+    document.addEventListener('click', function({ target })
+    {
+      let accordion
+      if(target.classList.contains('accordion'))
+      {
+        accordion = target
       }
-      else if(node.classList.contains('schema-link'))
+      else if(target.classList.contains('schema-link'))
       {
         const
-        schemaName      = node.getAttribute('data-schema'),
-        schemaAccordion = document.getElementById(schemaName)
-
-        schemaAccordion.classList.add('active')
-
-        const panel = schemaAccordion.nextElementSibling
-
-        CodeMirror.fromTextArea(panel.querySelector('textarea.code-example'), {
-          lineNumbers: true,
-          theme: 'eclipse',
-          readOnly: true,
-          mode: 'javascript'
-        })
-
-        panel.classList.add('open')
-
-        if(panel.style.maxHeight)
-          panel.style.maxHeight = null
-        else
-          panel.style.maxHeight = panel.scrollHeight + 'px'
+        schemaName = target.getAttribute('data-schema'),
+        accordion  = document.getElementById(schemaName)
       }
+
+      if(accordion)
+        toogleAccordion(accordion)
     })
 
   </script>
