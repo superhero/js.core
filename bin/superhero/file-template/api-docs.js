@@ -504,7 +504,7 @@ module.exports = (wd, api_config, schemas) =>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
 
   <script>
-    const initializeCodeMirror = (textareas) =>
+    const initializeCodeMirror = (textareas = []) =>
     {
       textareas.forEach(textarea =>
       {
