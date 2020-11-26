@@ -504,61 +504,55 @@ module.exports = (wd, api_config, schemas) =>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
 
   <script>
-    const codeExamples = document.getElementsByClassName('code-example')
-
-    for(let i = 0; i < codeExamples.length; i++)
+    document.addEventListener('click', function(event)
     {
-      CodeMirror.fromTextArea(codeExamples[i], {
-        lineNumbers: true,
-        theme: 'eclipse',
-        readOnly: true,
-        mode: 'javascript'
-      })
-    }
+      const node = event.target
 
-    const acc = document.getElementsByClassName('accordion')
+      if(node.classList.contains('accordion'))
+      {
+        node.classList.toggle('active')
 
-    for(let i = 0; i < acc.length; i++) {
-      acc[i].addEventListener('click', function() {
-        this.classList.toggle('active')
+        const panel = node.nextElementSibling
 
-        const panel = this.nextElementSibling
+        CodeMirror.fromTextArea(panel.querySelector('textarea.code-example'), {
+          lineNumbers: true,
+          theme: 'eclipse',
+          readOnly: true,
+          mode: 'javascript'
+        })
+
         panel.classList.toggle('open')
 
         if(panel.style.maxHeight)
-        {
           panel.style.maxHeight = null
-        }
         else
-        {
           panel.style.maxHeight = panel.scrollHeight + 'px'
-        }
-      })
-    }
-
-    const schemaLinks = document.getElementsByClassName('schema-link')
-
-    for(let i = 0; i < schemaLinks.length; i++) {
-      schemaLinks[i].addEventListener('click', function() {
+      }
+      else if(node.classList.contains('schema-link'))
+      {
         const
-        schemaName      = this.getAttribute('data-schema'),
+        schemaName      = node.getAttribute('data-schema'),
         schemaAccordion = document.getElementById(schemaName)
 
         schemaAccordion.classList.add('active')
 
         const panel = schemaAccordion.nextElementSibling
+
+        CodeMirror.fromTextArea(panel.querySelector('textarea.code-example'), {
+          lineNumbers: true,
+          theme: 'eclipse',
+          readOnly: true,
+          mode: 'javascript'
+        })
+
         panel.classList.add('open')
 
         if(panel.style.maxHeight)
-        {
           panel.style.maxHeight = null
-        }
         else
-        {
           panel.style.maxHeight = panel.scrollHeight + 'px'
-        }
-      })
-    }
+      }
+    })
 
   </script>
 </body>
