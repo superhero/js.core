@@ -1,10 +1,13 @@
-const fs = require('fs')
+const 
+fs      = require('fs'),
+console = require('@superhero/debug')
 
 class Core
 {
-  constructor(locator)
+  constructor(locator, branch)
   {
     this.locator    = locator
+    this.branch     = branch
     this.components = {}
   }
 
@@ -18,7 +21,78 @@ class Core
     delete this.components[component]
   }
 
-  load()
+  load(verbose = false)
+  {
+    try
+    {
+      if(this.branch)
+      {
+        console.color('blue').log('Branch defined')
+        console.color('blue').log('')
+        console.color('blue').log(`✔ ${this.branch}`)
+        console.color('blue').log('')
+      }
+      else
+      {
+        console.color('yellow').log('Branch missing')
+        console.color('yellow').log('')
+        console.color('yellow').log(`✗ No branch is defined`)
+        console.color('yellow').log('')
+      }
+
+      console.color('blue').log('Building configuration')
+      console.color('blue').log('')
+
+      const
+      queueLog              = [],
+      configuration         = this.buildConfiguration(queueLog),
+      serviceMapUncomposed  = configuration.find('core.locator'),
+      serviceMap            = this.composeServiceMap(serviceMapUncomposed)
+  
+      try
+      {
+        console.color('blue').log('')
+        console.color('blue').log('Loading services')
+        console.color('blue').log('')
+
+        // eager loading the services in the sevice locator
+        this.loadServiceRecursion(serviceMap, queueLog)
+      }
+      catch(previousError)
+      {
+        const error = new Error('runtime error in the eager loading process')
+
+        error.code  = 'E_CORE_LOAD'
+        error.chain = { configuration, serviceMap, previousError }
+
+        throw error
+      }
+    }
+    catch(error)
+    {
+      console.color('red').error('Core error')
+      console.color('red').error('')
+      do
+      {
+        console.color('red').error(`✗ ${error.message}`)
+        error.stack.split('\n').forEach((stack) =>
+        console.color('red').error(`  ↪ ${stack.trim()}`))
+        console.color('red').error('')
+      }
+      while(error = error.chain && error.chain.previousError)
+      
+      verbose
+      ? console.color('red').error(error)
+      : console.color('blue').error('Call core.load(true) for a more verbose error output')
+
+      throw error
+    }
+    console.color('blue').log('')
+    console.color('blue').log('Core Loaded')
+    console.color('blue').log('')
+  }
+
+  buildConfiguration(queueLog)
   {
     const configuration = this.locate('core/configuration')
 
@@ -27,16 +101,34 @@ class Core
     {
       const config = this.fetchComponentConfig(component, this.components[component])
       configuration.extend(config)
+
+      if(!component.startsWith('core'))
+      {
+        console.color('blue').log(`✔ ${component}`)
+      }
+
+      // extending the configurations of every component for a specific branch
+      if(this.branch)
+      {
+        try
+        {
+          const branchConfig = this.fetchComponentConfig(component, this.components[component], this.branch)
+          configuration.extend(branchConfig)
+          console.color('blue').log(`✔ ${component} - ${this.branch}`)
+        }
+        catch(error)
+        {
+          // ... we don't need to do anything if the configuration doesn't exist,
+          // or maybe emit a warning or info log message through the eventbus ...
+
+          queueLog.push({ message:error.message })
+        }
+      }
     }
 
     configuration.freeze()
 
-    const
-    serviceMapUncomposed  = configuration.find('core.locator'),
-    serviceMap            = this.composeServiceMap(serviceMapUncomposed)
-
-    // eager loading the services in the sevice locator
-    this.loadServiceRecursion(serviceMap)
+    return configuration
   }
 
   /**
@@ -48,11 +140,11 @@ class Core
 
     for(const serviceNameUncomposed in serviceMapUncomposed)
     {
-      if(serviceNameUncomposed.endsWith('/*'))
+      if(serviceNameUncomposed.endsWith('*'))
       {
         const
         directoryPath = serviceMapUncomposed[serviceNameUncomposed].slice(0, -1),
-        dirents         = fs.readdirSync(directoryPath, { withFileTypes:true })
+        dirents       = fs.readdirSync(directoryPath, { withFileTypes:true })
 
         for(const dirent of dirents)
         {
@@ -72,14 +164,15 @@ class Core
     return serviceMap
   }
 
-  fetchComponentConfig(component, pathname)
+  fetchComponentConfig(component, pathname, branch)
   {
     const
+    configFile    = branch ? `config-${branch}` : 'config',
     path          = this.locate('core/path'),
-    specifiedPath = `${pathname}/config`,
-    localPath     = `${path.main.dirname}/${component}/config`,
-    absolutePath  = `${component}/config`,
-    corePath      = `${__dirname}/${component}/config`
+    specifiedPath = `${pathname}/${configFile}`,
+    localPath     = `${path.main.dirname}/${component}/${configFile}`,
+    absolutePath  = `${component}/${configFile}`,
+    corePath      = `${__dirname}/${component}/${configFile}`
 
     if(path.isResolvable(specifiedPath))
       return require(specifiedPath)
@@ -99,7 +192,10 @@ class Core
       msg   = `could not resolve path to component "${component}"`,
       error = new Error(msg)
 
-      error.code = 'E_COMPONENT_NOT_RESOLVABLE'
+      error.code  = 'E_COMPONENT_NOT_RESOLVABLE'
+      error.chain = { component, pathname, branch, configFile, specifiedPath, 
+                      localPath, absolutePath, corePath }
+
       throw error
     }
   }
@@ -112,31 +208,48 @@ class Core
 
     if(path.isResolvable(locatorPath))
     {
-      const
-      Locator = require(locatorPath),
-      locator = new Locator(this.locator)
+      let locator
+
+      try
+      {
+        const Locator = require(locatorPath)
+        locator = new Locator(this.locator)
+      }
+      catch(previousError)
+      {
+        const
+        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${previousError.message}"`,
+        error = new Error(msg)
+
+        error.code  = 'E_CORE_LOAD_SERVICE'
+        error.chain = { previousError, serviceName, servicePath, locatorPath }
+
+        throw error
+      }
 
       try
       {
         const service = locator.locate()
         this.locator.set(serviceName, service)
       }
-      catch(error)
+      catch(previousError)
       {
-        switch(error.code)
+        switch(previousError.code)
         {
           case 'E_SERVICE_UNDEFINED':
           {
             const
-            msg                   = `An unmet dependency was found for service "${serviceName}", error: ${error.message}`,
-            errorUnmetDependency  = new Error(msg)
+            msg    = `An unmet dependency was found for service "${serviceName}", error: ${previousError.message}`,
+            error  = new Error(msg)
 
-            errorUnmetDependency.code = 'E_SERVICE_UNMET_DEPENDENCY'
-            throw errorUnmetDependency
+            error.code  = 'E_SERVICE_UNMET_DEPENDENCY'
+            error.chain = { previousError, serviceName, servicePath, locatorPath }
+
+            throw error
           }
 
           default:
-            throw error
+            throw previousError
         }
       }
     }
@@ -146,7 +259,9 @@ class Core
       msg   = `locator could not be found for ${serviceName}`,
       error = new Error(msg)
 
-      error.code = 'E_SERVICE_LOCATOR_NOT_FOUND'
+      error.code  = 'E_SERVICE_LOCATOR_NOT_FOUND'
+      error.chain = { serviceName, servicePath }
+
       throw error
     }
   }
@@ -156,7 +271,7 @@ class Core
    * Recursion queue to complete loading all services.
    * @param {Object} serviceMap [names of services] => [filepath of services]
    */
-  loadServiceRecursion(serviceMap)
+  loadServiceRecursion(serviceMap, queueLog)
   {
     const keys = Object.keys(serviceMap)
 
@@ -175,17 +290,26 @@ class Core
       try
       {
         this.loadService(serviceName, serviceMap[serviceName])
+
+        if(!serviceName.startsWith('core'))
+        {
+          console.color('blue').log(`✔ ${serviceName}`)
+        }
       }
       catch(error)
       {
         switch (error.code)
         {
           case 'E_SERVICE_UNMET_DEPENDENCY':
+          {
             queue[serviceName] = serviceMap[serviceName]
+            queueLog.push({ message:error.message, serviceName })
             break;
-
+          }
           default:
+          {
             throw error
+          }
         }
       }
     }
@@ -195,14 +319,21 @@ class Core
     // if the new queue is the same as the old queue, then no progress has taken place
     if(keys.length === queueKeys.length)
     {
-      const error = new Error(`Unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
-      error.code = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
+      queueKeys.forEach((serviceName) => console.color('red').error(`✘ ${serviceName}`))
+
+      const 
+      // filtereing off a lot of errors from the log here, to keep the error log more relevant
+      filteredLog = queueLog.filter((log) => queueKeys.includes(log.serviceName)),
+      error       = new Error(`unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
+      
+      error.code  = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
+      error.chain = { keys, queueKeys, serviceMap, queue, log:filteredLog }
 
       throw error
     }
 
     // recursion until the queue is empty
-    this.loadServiceRecursion(queue)
+    this.loadServiceRecursion(queue, queueLog)
   }
 
   locate(service)

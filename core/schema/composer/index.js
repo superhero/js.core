@@ -31,6 +31,8 @@ class SchemaComposer
    */
   compose(schemaName, dto)
   {
+    dto = this.deepclone.clone(dto)
+
     const
     schema = this.composeSchema(schemaName),
     output = {}
@@ -42,7 +44,15 @@ class SchemaComposer
 
     for(const attribute in schema)
     {
-      output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
+      try
+      {
+        output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
+      }
+      catch(error)
+      {
+        error.message = error.message + '; in root schema: "' + schemaName + '" and root attribute: "' + attribute + '"'
+        throw error
+      }
     }
 
     if(Object.isFrozen(schema))
@@ -92,18 +102,24 @@ class SchemaComposer
 
   composeExampleValue(options, includeOptional)
   {
+    let output
+
     if('example' in options)
     {
-      return options.example
+      output = options.example
     }
     else if(typeof options.schema === 'string')
     {
-      const schema = this.composeExample(options.schema, includeOptional)
+      const example = this.composeExample(options.schema, includeOptional)
 
-      return options.trait
-      ? schema[options.trait]
-      : schema
+      output = options.trait
+      ? example[options.trait]
+      : example
     }
+
+    return options.collection
+    ? output ? [output] : []
+    : output
   }
 
   /**
@@ -262,8 +278,16 @@ class SchemaComposer
 
         for(const extendSchemaName of Array.isArray(extendList) ? extendList : [extendList])
         {
-          const extend = this.buildSchema(this.schemas[extendSchemaName])
-          this.deepmerge.merge(schema, extend)
+          if(extendSchemaName in this.schemas)
+          {
+            const extend = this.buildSchema(this.schemas[extendSchemaName])
+            this.deepmerge.merge(schema, extend)
+          }
+          else
+          {
+            const msg = `Schema "${extendSchemaName}" does not exist`
+            throw new InvalidSchemaError(msg)
+          }
         }
       }
 

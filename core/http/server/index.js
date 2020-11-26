@@ -107,20 +107,29 @@ class HttpServer
     {
       case 'E_HTTP_SERVER_ROUTE_BUILDER_INVALID_DTO':
       {
+        this.eventbus.emit('core.warning', error)
+
         output.writeHead(400)
-        output.end('Bad request\n---\n' + error.message)
+        output.end('Bad request: ' + error.message)
+
         break
       }
       case 'E_JSON_PARSE_ERROR':
       {
+        this.eventbus.emit('core.warning', error)
+
         output.writeHead(400)
-        output.end('Bad request\nInvalid JSON format\n---\n' + error.message)
+        output.end('Bad request: Invalid JSON format: ' + error.message)
+
         break
       }
       case 'E_HTTP_DISPATCHER':
       {
+        this.eventbus.emit('core.warning', error)
+
         output.writeHead(error.status)
         output.end(error.message)
+
         break
       }
       case 'E_NO_ENDPOINT_DEFINED_IN_ROUTE':
@@ -129,6 +138,7 @@ class HttpServer
 
         output.writeHead(404)
         output.end('Endpoint not found')
+
         break
       }
       default:
@@ -137,6 +147,7 @@ class HttpServer
 
         output.writeHead(500)
         output.end('Internal server error')
+
         break
       }
     }

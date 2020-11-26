@@ -8,6 +8,12 @@ class SchemaValidatorTimestamp
   {
     const date = new Date(data)
 
+    if(isNaN(date.getTime()))
+    {
+      const msg = `Value for timestamp is invalid: "${data}"`
+      throw new InvalidTimestampError(msg)
+    }
+
     if('min' in options
     && date.getTime() < new Date(options.min).getTime())
     {

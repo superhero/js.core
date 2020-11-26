@@ -16,8 +16,8 @@ module.exports = (name, description, repository, version) =>
     "superhero": "${version}"
   },
   "devDependencies": {
-    "mocha": "6.2.1",
-    "mochawesome": "4.1.0",
+    "mocha": "7.1.2",
+    "mochawesome": "6.1.1",
     "mocha-steps": "1.3.0",
     "chai": "4.2.0",
     "nyc": "14.1.1"

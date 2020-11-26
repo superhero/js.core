@@ -28,28 +28,33 @@ class ServerDispatcherCollectionBuilder
 
   createDispatcher(pathname, route, request, session, viewModel)
   {
-    const fullPathname = `${this.path.main.dirname}/${pathname}`
+    const pathnames = 
+    [
+      `${pathname}`,
+      `${this.path.main.dirname}/${pathname}`
+    ]
 
-    if(this.path.isResolvable(fullPathname))
+    for(const path of pathnames)
     {
-      const
-      Dispatcher  = require(fullPathname),
-      dispatcher  = new Dispatcher(route, request, session, this.locator, viewModel)
-
-      if(typeof dispatcher.dispatch !== 'function'
-      || typeof dispatcher.onError  !== 'function')
+      if(this.path.isResolvable(path))
       {
-        const msg = `dispatcher "${pathname}" is not honering the server dispatcher contract`
-        throw new NotHoneringDispatcherContractError(msg)
-      }
+        const
+        Dispatcher  = require(path),
+        dispatcher  = new Dispatcher(route, request, session, this.locator, viewModel)
 
-      return dispatcher
+        if(typeof dispatcher.dispatch !== 'function'
+        || typeof dispatcher.onError  !== 'function')
+        {
+          const msg = `dispatcher "${pathname}" is not honering the server dispatcher contract`
+          throw new NotHoneringDispatcherContractError(msg)
+        }
+
+        return dispatcher
+      }
     }
-    else
-    {
-      const msg = `dispatcher "${pathname}" can not be resolved in request: ${request.method} -> ${request.url}`
-      throw new DispatcherCanNotBeResolvedError(msg)
-    }
+
+    const msg = `dispatcher "${pathname}" can not be resolved in request: ${request.method} -> ${request.url}`
+    throw new DispatcherCanNotBeResolvedError(msg)
   }
 }
 
