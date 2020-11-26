@@ -504,61 +504,62 @@ module.exports = (wd, api_config, schemas) =>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
 
   <script>
-    const codeExamples = document.getElementsByClassName('code-example')
-
-    for(let i = 0; i < codeExamples.length; i++)
+    const initializeCodeMirror = (textareas = []) =>
     {
-      CodeMirror.fromTextArea(codeExamples[i], {
-        lineNumbers: true,
-        theme: 'eclipse',
-        readOnly: true,
-        mode: 'javascript'
-      })
-    }
-
-    const acc = document.getElementsByClassName('accordion')
-
-    for(let i = 0; i < acc.length; i++) {
-      acc[i].addEventListener('click', function() {
-        this.classList.toggle('active')
-
-        const panel = this.nextElementSibling
-        panel.classList.toggle('open')
-
-        if(panel.style.maxHeight)
+      textareas.forEach(textarea =>
+      {
+        if(!textarea.getAttribute('data-code-mirror'))
         {
-          panel.style.maxHeight = null
-        }
-        else
-        {
-          panel.style.maxHeight = panel.scrollHeight + 'px'
+          CodeMirror.fromTextArea(textarea, {
+            lineNumbers: true,
+            theme: 'eclipse',
+            readOnly: true,
+            mode: 'javascript'
+          })
+
+          textarea.setAttribute('data-code-mirror', true)
         }
       })
     }
 
-    const schemaLinks = document.getElementsByClassName('schema-link')
+    const tooglePanel = (panel) =>
+    {
+      const textareas = panel.querySelectorAll('textarea.code-example')
 
-    for(let i = 0; i < schemaLinks.length; i++) {
-      schemaLinks[i].addEventListener('click', function() {
+      initializeCodeMirror(textareas)
+
+      panel.classList.toggle('open')
+
+      if(panel.style.maxHeight)
+        panel.style.maxHeight = null
+      else
+        panel.style.maxHeight = panel.scrollHeight + 'px'
+    }
+
+    const toogleAccordion = (node) =>
+    {
+      node.classList.toggle('active')
+      const panel = node.nextElementSibling
+      tooglePanel(panel)
+    }
+
+    document.addEventListener('click', function({ target })
+    {
+      let accordion
+      if(target.classList.contains('accordion'))
+      {
+        accordion = target
+      }
+      else if(target.classList.contains('schema-link'))
+      {
         const
-        schemaName      = this.getAttribute('data-schema'),
-        schemaAccordion = document.getElementById(schemaName)
+        schemaName = target.getAttribute('data-schema'),
+        accordion  = document.getElementById(schemaName)
+      }
 
-        schemaAccordion.classList.add('active')
-
-        const panel = schemaAccordion.nextElementSibling
-        panel.classList.add('open')
-
-        if(panel.style.maxHeight)
-        {
-          panel.style.maxHeight = null
-        }
-        else
-        {
-          panel.style.maxHeight = panel.scrollHeight + 'px'
-        }
-      })
-    }
+      if(accordion)
+        toogleAccordion(accordion)
+    })
 
   </script>
 </body>
