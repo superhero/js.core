@@ -47,9 +47,25 @@ The trueful flag in the mapper is indicating that the observer will observe the 
 An observer is a class that follows a simple interface. The class must have an `observe` method that accepts 2 arguements, the emitted data and the eventName of the triggered event.
 
 ```js
-class FoobarObserver
+class Observer
 {
   observe(data, eventName)
+  {
+    /* ... */
+  }
+}
+```
+
+---
+
+## Alternative observer interface
+
+Alternative an observer can follow a naming convention on the interface, defining a method that is prefixed with the keyword `on` - followed by a camelcased version of the eventname. So for example, the event `foo bar` woukld be mapped to the method `onFooBar`, as the following example describes.
+
+```js
+class Observer
+{
+  onFooBar(data, eventName)
   {
     /* ... */
   }

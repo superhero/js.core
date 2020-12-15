@@ -2,11 +2,12 @@ const ObserverContractNotHoneredError = require('./error/observer-contract-not-h
 
 class EventbusBootstrap
 {
-  constructor(configuration, eventbus, locator)
+  constructor(configuration, eventbus, locator, string)
   {
     this.configuration  = configuration
     this.eventbus       = eventbus
     this.locator        = locator
+    this.string         = string
   }
 
   bootstrap()
@@ -22,15 +23,23 @@ class EventbusBootstrap
           continue
         }
 
-        const service = this.locator.locate(serviceName)
+        const 
+          service   = this.locator.locate(serviceName),
+          observer  = 'on' + this.string.composeCamelCase(event, ' ', true)
 
-        if(typeof service.observe !== 'function')
+        if(typeof service[observer] === 'function')
         {
-          const msg = `"${serviceName}" does not implement the EventBusObserver interface`
+          this.eventbus.on(event, (data) => service[observer](data, event))
+        }
+        else if(typeof service.observe === 'function')
+        {
+          this.eventbus.on(event, (data) => service.observe(data, event))
+        }
+        else
+        {
+          const msg = `"${serviceName}" does not have a recognizable observer interface`
           throw new ObserverContractNotHoneredError(msg)
         }
-
-        this.eventbus.on(event, (data) => service.observe(data, event))
       }
     }
   }

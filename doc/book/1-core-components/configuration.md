@@ -4,15 +4,14 @@ The configuration component, in the context of the framework, is perhaps not to 
 
 When the core component loads all added components in your main script, the core merges all configuration files of all components together and stores them in this confifiguration component. Post loading, the configuration data is frozen, no further merge or alteration to the data can be made post the core load process.
 
-It is possible to set a `core.branch` configuration; that will result in the attempt to load additional configuration files with the string suffix in the configuration file name. The file name suffix is the string expressed in the `core.branch` configuration.
+It is possible to set a `branch` on construction; that will result in the attempt to load additional configuration files with the branch name suffix in the configuration file name.
 
 ```js
-{
-  core:
-  {
-    branch: 'staging'
-  }
-}
+const
+  CoreFactory = require('superhero/core/factory'),
+  coreFactory = new CoreFactory,
+  branch      = 'staging',
+  core        = coreFactory.create(branch)
 ```
 
 The example above will, in addition to loading the default configuration of the component, try to load the configuration file: `config-staging`.
@@ -41,8 +40,8 @@ If we like to find the leaf configuration variable `baz`, we can use the query `
 
 ```js
 const
-configuration = core.locate('core/configuration'),
-bazConfig     = configuration.find('foo.bar.baz')
+  configuration = core.locate('core/configuration'),
+  bazConfig     = configuration.find('foo.bar.baz')
 ```
 
 ### Alternative find query
