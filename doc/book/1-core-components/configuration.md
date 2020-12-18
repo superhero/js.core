@@ -14,7 +14,7 @@ const
   core        = coreFactory.create(branch)
 ```
 
-The example above will, in addition to loading the default configuration of the component, try to load the configuration file: `config-staging`.
+The example above will, in addition to loading the default configuration of the component, try to load the configuration file: `config-staging` in each configurable layer. The `config-staging` file is expected to complement, and/or write over settings required for the envirment the branch represents.
 
 ---
 
