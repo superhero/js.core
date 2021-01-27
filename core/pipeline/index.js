@@ -20,6 +20,7 @@ class Pipeline
   
   async addConsumer(consumer)
   {
+    // validation of input
     if(typeof consumer === 'object'
     &&        consumer !== null
     && typeof consumer.consume === 'function'
@@ -30,7 +31,7 @@ class Pipeline
     }
     else
     {
-      const error   = new Error('a valid consumer must be of type object and have a "consume" and a "onError" method declared')
+      const error   = new Error('a valid consumer must be of type object and have a "consume" and an "onError" method declared')
 
       error.code    = 'E_CORE_QUEUE_INVALID_CONSUMER'
       error.context = 
@@ -43,6 +44,10 @@ class Pipeline
     }
   }
 
+  /**
+   * The flush method is responsible for forwarding all messages to the consumers.
+   * The flush method follows the FIFO principle - first in first out
+   */
   async flush()
   {
     if(this.flushed)
