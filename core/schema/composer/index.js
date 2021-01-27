@@ -291,8 +291,9 @@ class SchemaComposer
         }
       }
 
-      if(schema['@meta'].immutable
-      || schema['@meta'].immutable === undefined)
+      if(schema['@meta'].immutable  === true
+      || schema['@meta'].mutable    === false
+      ||(schema['@meta'].mutable    === undefined && schema['@meta'].immutable === undefined))
       {
         delete schema['@meta']
         Object.freeze(schema)
