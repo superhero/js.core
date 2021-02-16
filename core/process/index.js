@@ -4,6 +4,11 @@ class Process
   {
     process.exit(...a)
   }
+
+  get report()
+  {
+    return process.report.getReport()
+  }
 }
 
 module.exports = Process
