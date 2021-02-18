@@ -503,6 +503,30 @@ It is also possible to extend from multiple references by using an array of reff
 
 ---
 
+### Excludes
+
+When using extensions, sometimes it is decireable to exclude some attributes of the extended schema. It is possible to exclude attributes from a schema by defining the `excludes` sub-attribute in the `@meta` root-attribute.
+
+```js
+module.exports =
+{
+  '@meta':
+  {
+    'extends'   : 'entity/person',
+    'excludes'  : 'age'
+  },
+  'superpower':
+  {
+    'type'    : 'string',
+    'enum'    : ['invisibility', 'precognition', 'indestructible']
+  }
+}
+```
+
+It is also possible to exclude multiple attributes by specifying an array in the `excludes` attribute.
+
+---
+
 ### Immutable
 
 By default, the schema will construct an immutable object, an object that can not be changed, a frozen object. If you like a composed structure to instead be mutable, then you must specify that in the meta attribute, as in the example below.

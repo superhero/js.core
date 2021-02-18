@@ -285,9 +285,23 @@ class SchemaComposer
           }
           else
           {
-            const msg = `Schema "${extendSchemaName}" does not exist`
+            const msg = `schema "${extendSchemaName}" does not exist`
             throw new InvalidSchemaError(msg)
           }
+        }
+      }
+
+      if('excludes' in schema['@meta']
+      || 'exclude'  in schema['@meta']
+      || 'remove'   in schema['@meta'])
+      {
+        const excludeList = schema['@meta'].excludes
+                         || schema['@meta'].exclude
+                         || schema['@meta'].remove
+
+        for(const excludeAttribute of Array.isArray(excludeList) ? excludeList : [excludeList])
+        {
+          delete schema[excludeAttribute]
         }
       }
 
