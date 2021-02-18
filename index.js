@@ -87,7 +87,7 @@ class Core
           console.error('')
         }
         while(error = error.chain && error.chain.previousError)
-        console.warning('Call core.load(true) for a more verbose error output')
+        console.color('yellow').log('Call core.load(true) for a more verbose error output')
         throw new Error('load process failed')
       }
     }
