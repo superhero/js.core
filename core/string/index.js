@@ -30,7 +30,7 @@ class CoreString
    */
   composeCamelCase(s, seperator = '-', firstUpperCase = false)
   {
-    s = this.composeSeperatedLowerCase(s)
+    s = this.composeSeperatedLowerCase(s, seperator)
     s = s.split(seperator).map((part, i) => i === 0 && !firstUpperCase ? part : this.composeFirstUpperCase(part)).join('')
 
     return s

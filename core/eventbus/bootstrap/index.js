@@ -25,7 +25,7 @@ class EventbusBootstrap
 
         const
           service   = this.locator.locate(serviceName),
-          observer  = 'on' + this.string.composeCamelCase(this.string.composeCamelCase(event, '-'), ' ', true)
+          observer  = 'on' + this.string.composeCamelCase(event.replace(/-/g, ' '), ' ', true)
 
         if(typeof service[observer] === 'function')
         {
