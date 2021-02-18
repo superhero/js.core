@@ -56,7 +56,7 @@ class Core
         console.color('blue').log('')
 
         // eager loading the services in the sevice locator
-        this.loadServiceRecursion(serviceMap, queueLog)
+        this.loadServiceRecursion(serviceMap, queueLog, verbose)
       }
       catch(previousError)
       {
@@ -68,24 +68,28 @@ class Core
         throw error
       }
     }
-    catch(error)
+    catch(completeError)
     {
-      console.color('red').error('Core error')
-      console.color('red').error('')
-      do
+      console.error('Core error')
+      console.error('')
+      if(verbose)
       {
-        console.color('red').error(`✗ ${error.message}`)
-        error.stack.split('\n').forEach((stack) =>
-        console.color('red').error(`  ↪ ${stack.trim()}`))
-        console.color('red').error('')
+        throw completeError
       }
-      while(error = error.chain && error.chain.previousError)
-      
-      verbose
-      ? console.color('red').error(error)
-      : console.color('blue').error('Call core.load(true) for a more verbose error output')
-
-      throw error
+      else
+      {
+        let error = completeError
+        do
+        {
+          console.error(`✗ ${error.message}`)
+          error.stack.split('\n').forEach((stack) =>
+          console.error(`  ↪ ${stack.trim()}`))
+          console.error('')
+        }
+        while(error = error.chain && error.chain.previousError)
+        console.warning('Call core.load(true) for a more verbose error output')
+        throw new Error('load process failed')
+      }
     }
     console.color('blue').log('')
     console.color('blue').log('Core Loaded')
@@ -271,7 +275,7 @@ class Core
    * Recursion queue to complete loading all services.
    * @param {Object} serviceMap [names of services] => [filepath of services]
    */
-  loadServiceRecursion(serviceMap, queueLog)
+  loadServiceRecursion(serviceMap, queueLog, verbose)
   {
     const keys = Object.keys(serviceMap)
 
@@ -323,7 +327,7 @@ class Core
 
       const 
       // filtereing off a lot of errors from the log here, to keep the error log more relevant
-      filteredLog = queueLog.filter((log) => queueKeys.includes(log.serviceName)),
+      filteredLog = verbose ? queueLog : queueLog.filter((log) => queueKeys.includes(log.serviceName)),
       error       = new Error(`unmet dependencies found, could not resolve dependencies for ${queueKeys.join(', ')}`)
       
       error.code  = 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES'
@@ -333,7 +337,7 @@ class Core
     }
 
     // recursion until the queue is empty
-    this.loadServiceRecursion(queue, queueLog)
+    this.loadServiceRecursion(queue, queueLog, verbose)
   }
 
   locate(service)
