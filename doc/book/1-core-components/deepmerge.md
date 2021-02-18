@@ -29,7 +29,7 @@ As shown by the example above, the `merge` method extends the object `obj1` with
 
 ## Merge arrays
 
-Deepmerge will extend an array found in one object with the values in another array of the other object, as shown in the example below.
+Deepmerge inclusive will extend an array found in one object with the values in another array of the other object, as shown in the example below.
 
 ```js
 const
@@ -37,7 +37,7 @@ obj1      = { foo:['bar'] },
 obj2      = { foo:['baz'] },
 deepmerge = core.locate('core/deepmerge')
 
-deepmerge.merge(obj1, obj2)
+deepmerge.mergeInclusive(obj1, obj2)
 ```
 
 In above example, after merge, `obj1` will hold the following value.
@@ -53,7 +53,6 @@ In above example, after merge, `obj1` will hold the following value.
 ## Merge multiple objects
 
 It is possible to merge multiple objects at the same time, as the example below shows.
-
 
 ```js
 const
@@ -88,7 +87,6 @@ In the above example 3 different objects are merged. There is no limit by the co
 ## Merge conflicts
 
 If a conflict in the merge is present, then the last object in the merge will be prioritized as the resulting value.
-
 
 ```js
 const
