@@ -74,7 +74,7 @@ class Core
       console.error('')
       if(verbose)
       {
-        throw completeError
+        console.error(completeError)
       }
       else
       {
@@ -88,8 +88,8 @@ class Core
         }
         while(error = error.chain && error.chain.previousError)
         console.color('yellow').log('Call core.load(true) for a more verbose error output')
-        throw new Error('load process failed')
       }
+      throw new Error('core load process failed')
     }
     console.color('blue').log('')
     console.color('blue').log('Core Loaded')
