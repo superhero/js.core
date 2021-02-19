@@ -19,7 +19,32 @@ class Eventbus extends Events
       this.console.warning(`event: "${name}" does not have a defined observer`)
     }
 
+    if(data instanceof Error)
+    {
+      data = this.encodeError(data)
+    }
+
     super.emit(name, data)
+  }
+
+  /**
+   * @private
+   * @param {Error} error 
+   */
+  encodeError(error)
+  {
+    const
+      properties  = Object.getOwnPropertyNames(error),
+      output      = {}
+
+    for(const property of properties)
+    {
+      output[property] = error[property] instanceof Error
+      ? this.encodeEventdataError(error[property])
+      : error[property]
+    }
+
+    return output
   }
 }
 
