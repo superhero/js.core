@@ -40,8 +40,13 @@ class Eventbus extends Events
     for(const property of properties)
     {
       output[property] = error[property] instanceof Error
-      ? this.encodeEventdataError(error[property])
+      ? this.encodeError(error[property])
       : error[property]
+    }
+
+    if(output.chain && output.chain.previousError)
+    {
+      output.chain.previousError = this.encodeError(output.chain.previousError)
     }
 
     return output
