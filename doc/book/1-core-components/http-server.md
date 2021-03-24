@@ -10,6 +10,32 @@ core.locate('core/http/server').listen(80)
 
 ## Http / Server / Router
 
+It's possible to set the server timeout through the server configuration through the `timeout` attributes. The key accepts an integer in milliseconds as value.
+
+If a request takes more time to complete then what the timeout policy allows, then the request will be closed with a 408 status returned to the client.
+
+```js
+module.exports =
+{
+  core:
+  {
+    http:
+    {
+      server:
+      {
+        timeout: 60e2
+      }
+    }
+  }
+}
+```
+
+*By default, the value is set to 30 seconds*
+
+---
+
+## Http / Server / Router
+
 After a connection is established, we must define a configuration for the router component to know how to handle each request. Below is an example of a route.
 
 ```js
