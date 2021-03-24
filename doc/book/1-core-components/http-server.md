@@ -8,7 +8,7 @@ core.locate('core/http/server').listen(80)
 
 ---
 
-## Http / Server / Router
+## Http / Server / Timeout
 
 It's possible to set the server timeout through the server configuration through the `timeout` attributes. The key accepts an integer in milliseconds as value.
 
