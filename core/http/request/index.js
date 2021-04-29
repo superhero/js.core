@@ -8,14 +8,14 @@ class HttpRequest extends Request
     this.object = object
   }
 
-  fetch(method, options)
+  async fetch(method, options)
   {
     if(typeof options === 'object')
     {
       options.headers = this.object.composeLowerCaseKeyedObject(options.headers)
     }
 
-    const response = super.fetch(method, options)
+    const response = await super.fetch(method, options)
     
     response.headers = this.object.composeLowerCaseKeyedObject(response.headers)
 
