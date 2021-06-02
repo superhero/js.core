@@ -30,4 +30,21 @@ describe('Composer', () =>
 
     expect(example).to.deep.equal({ id: 123, type: 'addition', value: 123.45 })
   })
+
+  it('should be able to show 2 errors in schema', async function()
+  {
+    const 
+      composer = core.locate('core/schema/composer'),
+      dto =
+      {
+        'test1': 'yoyo',
+        'test2': 'coco'
+      }
+
+      expect(() => composer.compose('entity/dto-composer-test', dto)).to.throw('test2')
+
+    // const
+    //   result = composer.compose('entity/dto-composer-test', dto)
+
+  })
 })

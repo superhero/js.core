@@ -42,6 +42,8 @@ class SchemaComposer
       dto = this.deepmerge.merge({}, ...dto)
     }
 
+    var errors = []
+
     for(const attribute in schema)
     {
       try
@@ -50,9 +52,26 @@ class SchemaComposer
       }
       catch(error)
       {
-        error.message = error.message + '; in root schema: "' + schemaName + '" and root attribute: "' + attribute + '"'
-        throw error
+        error.message = error.message + '>> in root schema: "' + schemaName + '"\n>> root attribute: "' + attribute + '"'
+        errors.push(error)
+        continue
       }
+    }
+
+    if(errors.length > 0)
+    {
+      let message = 'invalid attributes'
+      for(const error of errors)
+      {
+        message += '\n\n'
+        message += '*** '
+        message += error.chain.attribute
+        message += ' - '
+        message += error.message
+      }
+      const error = new InvalidAttributeError(message)
+      error.chain = { errors, schemaName, dto }
+      throw error
     }
 
     if(Object.isFrozen(schema))
@@ -161,9 +180,11 @@ class SchemaComposer
       throw new SchemaNotFoundError(msg)
     }
 
+    var errors = []
+
     const
     schema = this.schemas[schemaName],
-    output = this.attribute(schemaName, schema, attribute, data)
+    output = this.attribute(schemaName, schema, attribute, data, errors)
 
     return output
   }
@@ -250,10 +271,13 @@ class SchemaComposer
         validator.valid(options, data)
       }
     }
-    catch(error)
+    catch(previousError)
     {
-      const msg = `Invalid attribute: "${attribute}", schema: "${schemaName}", error: ${error.message}`
-      throw new InvalidAttributeError(msg)
+      const msg = `Invalid attribute: "${attribute}"\n>> schema: "${schemaName}"\n>> error: ${previousError.message}\n`
+      
+      const error = new InvalidAttributeError(msg)
+      error.chain = { previousError, schemaName, schema, attribute, data}
+      throw error
     }
 
     return data
