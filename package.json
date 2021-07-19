@@ -21,7 +21,8 @@
     "superhero": "node ./bin/superhero.js",
     "docs-coverage": "nyc mocha && nyc report --reporter=html --report-dir=./docs/generated/coverage",
     "docs-tests": "mocha --reporter mochawesome --reporter-options reportDir=docs/generated/test,reportFilename=index,showHooks=always",
-    "test-coverage": "syntax-check && nyc mocha './**/test.*.js'",
+    "test-coverage": "nyc mocha './**/test.*.js'",
+    "test-syntax-check": "syntax-check",
     "test": "mocha"
   },
   "bin": {

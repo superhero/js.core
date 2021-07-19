@@ -50,7 +50,12 @@ class HttpRequestBuilder
 
   async parseBody(contentType, body)
   {
-    switch((contentType || '').split(';').shift())
+    const 
+      parts     = (contentType || '').split(';'),
+      type      = parts.shift(),
+      secondary = parts.shift()
+
+    switch(type)
     {
       case 'application/json':
         try
@@ -61,6 +66,43 @@ class HttpRequestBuilder
         {
           const error = new Error(err.message)
           error.msg   = 'E_JSON_PARSE_ERROR'
+          throw error
+        }
+
+      case 'multipart/form-data':
+        try
+        {
+          const 
+            reducer  = (divider) => (accumulator, row) => { const parts = row.split(divider), key = parts.shift(), value = parts.shift(); accumulator[key] = value; return accumulator },
+            boundary = secondary.replace('boundary=', ''),
+            parsed   = {}
+
+          body.split(boundary).forEach((segment) => 
+          {
+            const 
+              foobar  = segment.split('\r\n\r\n'),
+              headers = foobar.shift().split('\r\n').reduce(reducer(':'), {}),
+              value   = foobar.shift().split('\r\n')
+
+            for (const key in headers) 
+            {
+              const parts = headers[key].split(';')
+              headers[key] = { value: parts.shift(), attribute: parts.shift().reduce(reducer('='), {}) }
+              for (const name in headers[key].attribute) 
+              {
+                headers[key].attribute[name] = headers[key].attribute[name].replace(/['"]+/g, '')
+              }
+            }
+            const name = headers['Content-Disposition'].attribute.name 
+            parsed[name] = value.length === 1 ? value[0] : value
+          })
+
+          return parsed
+        }
+        catch(err)
+        {
+          const error = new Error(err.message)
+          error.msg   = 'E_FORMDATA_PARSE_ERROR'
           throw error
         }
 
