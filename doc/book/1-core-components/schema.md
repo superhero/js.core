@@ -26,6 +26,7 @@ In below table you can see which type of validators and filters that are availib
 | uppercase            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
 | lowercase            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
 | not-empty            | boolean   | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
+| decode               | ✗         | ✗         | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         |
 | stringified          | ✗         | ✗         | ✗         | ✗         | boolean   | ✗         | ✗         | ✗         |
 | indentation          | ✗         | ✗         | ✗         | ✗         | number    | ✗         | ✗         | ✗         |
 | schema               | ✗         | ✗         | ✗         | ✗         | ✗         | string    | ✗         | ✗         |

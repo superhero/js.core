@@ -36,6 +36,9 @@ class SchemaFilterString
 
     if(typeof data === 'string')
     {
+      if(options.decode)
+        data = decodeURIComponent(data)
+
       if(options.uppercase)
         data = data.toUpperCase()
 
