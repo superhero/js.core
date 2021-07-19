@@ -62,10 +62,11 @@ class HttpRequestBuilder
         {
           return JSON.parse(body || '{}')
         }
-        catch(err)
+        catch(previousError)
         {
-          const error = new Error(err.message)
-          error.msg   = 'E_JSON_PARSE_ERROR'
+          const error = new Error(previousError.message)
+          error.code   = 'E_JSON_PARSE_ERROR'
+          error.chain  = { previousError }
           throw error
         }
 
@@ -99,10 +100,11 @@ class HttpRequestBuilder
 
           return parsed
         }
-        catch(err)
+        catch(previousError)
         {
-          const error = new Error(err.message)
-          error.msg   = 'E_FORMDATA_PARSE_ERROR'
+          const error = new Error(previousError.message)
+          error.code   = 'E_FORMDATA_PARSE_ERROR'
+          error.chain  = { previousError }
           throw error
         }
 
