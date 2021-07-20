@@ -70,39 +70,39 @@ class HttpRequestBuilder
           throw error
         }
 
-        case 'multipart/form-data':
-          try
+      case 'multipart/form-data':
+        try
+        {
+          const 
+            reducer  = (divider) => (accumulator, row) => { const parts = row.split(divider), key = parts.shift().trim(), value = parts.shift().trim().replace(/['"]+/g, ''); accumulator[key] = value; return accumulator },
+            boundary = '--' + secondary.replace('boundary=', '').trim(),
+            parsed   = {}
+            
+          body.split(boundary).slice(1, -1).forEach((segment) => 
           {
             const 
-              reducer  = (divider) => (accumulator, row) => { const parts = row.split(divider), key = parts.shift().trim(), value = parts.shift().trim().replace(/['"]+/g, ''); accumulator[key] = value; return accumulator },
-              boundary = '--' + secondary.replace('boundary=', '').trim(),
-              parsed   = {}
-              
-            body.split(boundary).slice(1, -1).forEach((segment) => 
+              foobar  = segment.split('\r\n\r\n'),
+              headers = foobar.shift().trim().split('\r\n').reduce(reducer(':'), {}),
+              value   = foobar.shift().trim().split('\r\n')
+
+            for (const key in headers) 
             {
-              const 
-                foobar  = segment.split('\r\n\r\n'),
-                headers = foobar.shift().trim().split('\r\n').reduce(reducer(':'), {}),
-                value   = foobar.shift().trim().split('\r\n')
-  
-              for (const key in headers) 
-              {
-                const parts = headers[key].split(';')
-                headers[key] = { value: parts.shift(), attribute: parts.reduce(reducer('='), {}) }
-              }
-              const name = headers['Content-Disposition'].attribute.name 
-              parsed[name] = value.length === 1 ? value[0] : value
-            })
-  
-            return parsed
-          }
-          catch(previousError)
-          {
-            const error = new Error(previousError.message)
-            error.code   = 'E_FORMDATA_PARSE_ERROR'
-            error.chain  = { previousError }
-            throw error
-          }
+              const parts = headers[key].split(';')
+              headers[key] = { value: parts.shift(), attribute: parts.reduce(reducer('='), {}) }
+            }
+            const name = headers['Content-Disposition'].attribute.name 
+            parsed[name] = value.length === 1 ? value[0] : value
+          })
+
+          return parsed
+        }
+        catch(previousError)
+        {
+          const error = new Error(previousError.message)
+          error.code   = 'E_FORMDATA_PARSE_ERROR'
+          error.chain  = { previousError }
+          throw error
+        }
 
       default:
         return querystring.parse(body)
