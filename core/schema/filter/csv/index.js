@@ -12,6 +12,11 @@ class SchemaFilterCsv
 
   filterCollection(options, data)
   {
+    if(typeof data === 'string')
+    {
+      data = data.split('\n')
+    }
+    
     if(!Array.isArray(data))
       return data
 
