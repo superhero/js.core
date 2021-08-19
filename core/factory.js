@@ -22,6 +22,7 @@ class CoreFactory
     core.add('core/console/observer/error')
     core.add('core/console/observer/info')
     core.add('core/console/observer/warning')
+    core.add('core/crypto')
     core.add('core/eventbus')
     core.add('core/http/request')
     core.add('core/http/server')
