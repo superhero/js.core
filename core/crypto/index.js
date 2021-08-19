@@ -5,13 +5,20 @@ class CoreCrypto
     this.crypto = crypto
   }
 
+  /**
+   * @param {string} sha 
+   * @param {string|Buffer} data 
+   * @param {string} digest 
+   * 
+   * @returns {string}
+   */
   hash(sha, data, digest)
   {
-    var shasum = this.crypto.createHash(sha)
-    shasum.update(data)
-    shasum.digest(digest)
+    const hash = this.crypto.createHash(sha)
+    hash.update(data)
+    const digested = hash.digest(digest)
 
-    return shasum
+    return digested
   }
 }
 
