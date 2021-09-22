@@ -543,6 +543,14 @@ module.exports =
 }
 ```
 
+It is also possible to control the immutable output of the `compose` method on the schema composer object (`core/schema/composer`) by passing a third optional argument to the method, as the below example shows.
+
+```js
+const 
+  immutable = this.composer.compose('schema-name', dto, true),
+  mutable   = this.composer.compose('schema-name', dto, false)
+```
+
 ---
 
 ## Dynamic configuration specification

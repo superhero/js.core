@@ -29,7 +29,7 @@ class SchemaComposer
    *
    * @returns {Object}
    */
-  compose(schemaName, dto)
+  compose(schemaName, dto, freeze)
   {
     dto = this.deepclone.clone(dto)
 
@@ -74,7 +74,8 @@ class SchemaComposer
       throw error
     }
 
-    if(Object.isFrozen(schema))
+    // priority on the api level, argument definition > schema definition
+    if(typeof freeze === 'boolean' ? freeze : Object.isFrozen(schema))
     {
       this.deepfreeze.freeze(output)
     }
