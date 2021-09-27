@@ -13,12 +13,10 @@ class Bootstrap
 
     for(const key in bootstrapMap)
     {
+      const serviceName = bootstrapMap[key]
       try
       {
-        const 
-          serviceName = bootstrapMap[key],
-          service     = this.locator.locate(serviceName)
-
+        const service = this.locator.locate(serviceName)
         await service.bootstrap()
       }
       catch(previousError)
