@@ -21,7 +21,7 @@ class Bootstrap
       }
       catch(previousError)
       {
-        const error = new Error('failed to reserve paxad order in legacy layer')
+        const error = new Error('could not fullfill the bootstrap process for service')
         error.code  = 'E_CORE_BOOTSTRAP'
         error.chain = { previousError, key, serviceName, bootstrapMap }
         throw error
