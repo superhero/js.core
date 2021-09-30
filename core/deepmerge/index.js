@@ -23,6 +23,9 @@ class DeepMerge
 
   _merge(a, b)
   {
+    if(b === undefined)
+      return a
+
     if(typeof a !== 'object' || a === null || Array.isArray(a))
       return b
 
@@ -31,6 +34,9 @@ class DeepMerge
 
   _mergeInclusive(a, b)
   {
+    if(b === undefined)
+      return a
+
     if(typeof a !== 'object' || a === null)
       return b
 
