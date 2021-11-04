@@ -223,8 +223,12 @@ class SchemaComposer
     // Validating type
     if(options.type in this.validators === false)
     {
-      const msg = `In schema: "${schemaName}", validator: "${options.type}" not found`
-      throw new ValidatorNotFoundError(msg)
+      const 
+        msg   = `In schema: "${schemaName}", validator: "${options.type}" not found`,
+        error = new ValidatorNotFoundError(msg)
+
+      error.chain = { schemaName, schema, attribute, data }
+      throw error
     }
 
     try
