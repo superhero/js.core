@@ -17,6 +17,7 @@ module.exports =
         'json'      : 'core/schema/filter/json',
         'schema'    : 'core/schema/filter/schema',
         'string'    : 'core/schema/filter/string',
+        'email'     : 'core/schema/filter/email',
         'timestamp' : 'core/schema/filter/timestamp'
       },
       validator:
@@ -28,6 +29,7 @@ module.exports =
         'json'      : 'core/schema/validator/json',
         'schema'    : 'core/schema/validator/schema',
         'string'    : 'core/schema/validator/string',
+        'email'     : 'core/schema/validator/email',
         'timestamp' : 'core/schema/validator/timestamp'
       }
     },
