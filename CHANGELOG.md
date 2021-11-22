@@ -1,3 +1,6 @@
+2.6.0
+Added schema support for email
+
 2.5.1
 Added the ability to control if we want to freeze the composed schema on the command `compose` in the schema composer.
 
