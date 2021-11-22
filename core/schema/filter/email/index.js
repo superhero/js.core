@@ -1,7 +1,7 @@
 /**
  * @implements {SchemaFilter}
  */
-class SchemaFilterString
+class SchemaFilterEmail
 {
   filter(options, data)
   {
@@ -28,12 +28,6 @@ class SchemaFilterString
 
   filterSingle(options, data)
   {
-    if(typeof data === 'number')
-      data = `${data}`
-
-    if(typeof data === 'boolean')
-      data = `${data}`
-
     if(typeof data === 'string')
     {
       if(options.decode)
@@ -53,4 +47,4 @@ class SchemaFilterString
   }
 }
 
-module.exports = SchemaFilterString
+module.exports = SchemaFilterEmail
