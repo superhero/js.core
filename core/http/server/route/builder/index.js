@@ -22,7 +22,7 @@ class HttpServerRouteBuilder
    * @param {Array} routes
    * @param {Object} request
    */
-  build(routes, request)
+  async build(routes, request, locator)
   {
     if(typeof routes !== 'object')
     {
@@ -53,11 +53,35 @@ class HttpServerRouteBuilder
       throw new InvalidRouteInputError(msg)
     }
 
+    let decodedRequest = request
+
+    if('decoder' in route)
+    {
+      let decoder
+      try 
+      {
+        decoder = locator.locate(route.decoder)
+      } 
+      catch (error) 
+      {
+        const msg = `the decoder service: ${route.decoder} cannot be located`
+        throw new InvalidDecoderError(msg)
+      }
+      try 
+      {
+        decodedRequest = await decoder.decode(request)
+      } 
+      catch (error) 
+      {
+        throw new FailedToDecodeError(error.message)
+      }
+    }
+
     try
     {
       if(route.input)
       {
-        route.dto = this.composeDto(request, route)
+        route.dto = this.composeDto(decodedRequest, route)
       }
 
       return route

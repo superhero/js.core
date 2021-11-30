@@ -159,7 +159,7 @@ class HttpServer
     routes    = this.configuration.find('core.http.server.routes'),
     session   = await this.sessionBuilder.build(input, output, domain),
     request   = await this.requestBuilder.build(input),
-    route     = await this.routeBuilder.build(routes, request),
+    route     = await this.routeBuilder.build(routes, request, this.locator),
     viewModel = this.createViewModel()
 
     const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
