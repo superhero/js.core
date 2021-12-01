@@ -106,15 +106,6 @@ class HttpServer
   {
     switch(error.code)
     {
-      case 'E_HTTP_SERVER_ROUTE_BUILDER_FAILED_TO_DECODE':
-      {
-        this.eventbus.emit('core.warning', error)
-
-        output.writeHead(400)
-        output.end('Bad request: ' + error.message)
-
-        break
-      }
       case 'E_HTTP_SERVER_ROUTE_BUILDER_INVALID_DTO':
       {
         this.eventbus.emit('core.warning', error)
