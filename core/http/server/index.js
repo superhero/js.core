@@ -7,7 +7,7 @@ class HttpServer
    */
   constructor(server, requestBuilder, sessionBuilder, routeBuilder,
               dispatcherCollectionBuilder, dispatcherChain, configuration,
-              locator, eventbus, domainFactory)
+              locator, eventbus, domainFactory, decoder)
   {
     this.server                       = server
     this.requestBuilder               = requestBuilder
@@ -19,6 +19,7 @@ class HttpServer
     this.locator                      = locator
     this.eventbus                     = eventbus
     this.domainFactory                = domainFactory
+    this.decoder                      = decoder
   }
 
   listen(...args)
@@ -105,6 +106,15 @@ class HttpServer
   {
     switch(error.code)
     {
+      case 'E_HTTP_SERVER_ROUTE_BUILDER_FAILED_TO_DECODE':
+      {
+        this.eventbus.emit('core.warning', error)
+
+        output.writeHead(400)
+        output.end('Bad request: ' + error.message)
+
+        break
+      }
       case 'E_HTTP_SERVER_ROUTE_BUILDER_INVALID_DTO':
       {
         this.eventbus.emit('core.warning', error)
@@ -159,11 +169,28 @@ class HttpServer
     routes    = this.configuration.find('core.http.server.routes'),
     session   = await this.sessionBuilder.build(input, output, domain),
     request   = await this.requestBuilder.build(input),
-    route     = await this.routeBuilder.build(routes, request, this.locator),
+    route     = await this.routeBuilder.build(routes, request),
     viewModel = this.createViewModel()
+    
+    try 
+    {
+      const decoded = await this.decoder.decode(route, request, session, viewModel)
+      this.routeBuilder.buildDto(decoded, route)
 
-    const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
-    await this.dispatcherChain.dispatch(dispatchers)
+      const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+      await this.dispatcherChain.dispatch(dispatchers)
+    } 
+    catch (error) 
+    {
+      switch (error.code) 
+      {
+        case 'E_HTTP_SERVER_DECODER_FAILED_TO_DECODE':
+          break
+      
+        default:
+          throw error
+      }
+    }
 
     if(!output.finished)
     {

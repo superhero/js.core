@@ -3,6 +3,8 @@ DtoBuilderContractNotHoneredError = require('./error/dto-builder-contract-not-ho
 RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
 InvalidRouteInputError            = require('./error/invalid-route-input'),
 InvalidDtoError                   = require('./error/invalid-dto'),
+InvalidDecoderError               = require('./error/invalid-decoder'),
+FailedToDecodeError               = require('./error/failed-to-decode'),
 NoRouteFoundError                 = require('./error/no-route-found'),
 NoEndpointDefinedError            = require('./error/no-endpoint-defined'),
 InvalidRouteError                 = require('./error/invalid-route')
@@ -22,7 +24,7 @@ class HttpServerRouteBuilder
    * @param {Array} routes
    * @param {Object} request
    */
-  async build(routes, request, locator)
+  build(routes, request)
   {
     if(typeof routes !== 'object')
     {
@@ -53,35 +55,39 @@ class HttpServerRouteBuilder
       throw new InvalidRouteInputError(msg)
     }
 
-    let decodedRequest = request
+    // let decodedRequest = request
 
-    if('decoder' in route)
-    {
-      let decoder
-      try 
-      {
-        decoder = locator.locate(route.decoder)
-      } 
-      catch (error) 
-      {
-        const msg = `the decoder service: ${route.decoder} cannot be located`
-        throw new InvalidDecoderError(msg)
-      }
-      try 
-      {
-        decodedRequest = await decoder.decode(request)
-      } 
-      catch (error) 
-      {
-        throw new FailedToDecodeError(error.message)
-      }
-    }
+    // if('decoder' in route)
+    // {
+    //   let decoder
+    //   try 
+    //   {
+    //     decoder = this.createDecoder(route.decoder)
+    //   } 
+    //   catch (error) 
+    //   {
+    //     const msg = `the decoder service: ${route.decoder} cannot be located`
+    //     throw new InvalidDecoderError(msg)
+    //   }
+    //   try 
+    //   {
+    //     decodedRequest = await decoder.decode(request)
+    //   } 
+    //   catch (error) 
+    //   {
+    //     throw new FailedToDecodeError(error.message)
+    //   }
+    // }
+    return route
+  }
 
+  buildDto(request, route)
+  {
     try
     {
       if(route.input)
       {
-        route.dto = this.composeDto(decodedRequest, route)
+        route.dto = this.composeDto(request, route)
       }
 
       return route
