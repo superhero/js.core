@@ -36,7 +36,7 @@ class HttpRequestBuilder
     return mapped
   }
 
-  async fetchBody(stream, headers)
+  fetchBody(stream, headers)
   {
     return new Promise((accept, reject) =>
     {
@@ -57,6 +57,9 @@ class HttpRequestBuilder
 
     switch(type)
     {
+      case 'text/plain':
+          return body
+
       case 'application/json':
         try
         {
