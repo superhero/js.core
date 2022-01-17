@@ -9,7 +9,8 @@ class BootstrapLocator
 
   locate()
   {
-    return new Bootstrap(this.locator)
+    const console = this.locator.locate('core/console')
+    return new Bootstrap(this.locator, console)
   }
 }
 

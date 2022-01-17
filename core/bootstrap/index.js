@@ -1,8 +1,9 @@
 class Bootstrap
 {
-  constructor(locator)
+  constructor(locator, console)
   {
     this.locator = locator
+    this.console = console
   }
 
   async bootstrap()
@@ -11,6 +12,9 @@ class Bootstrap
       configuration = this.locator.locate('core/configuration'),
       bootstrapMap  = configuration.find('core.bootstrap')
 
+    this.console.color('cyan').log('Bootstrap process')
+    this.console.color('cyan').log('')
+
     for(const key in bootstrapMap)
     {
       const serviceName = bootstrapMap[key]
@@ -18,6 +22,7 @@ class Bootstrap
       {
         const service = this.locator.locate(serviceName)
         await service.bootstrap()
+        this.console.color('cyan').log(`✔ ${serviceName}`)
       }
       catch(previousError)
       {
@@ -27,6 +32,8 @@ class Bootstrap
         throw error
       }
     }
+
+    this.console.color('cyan').log('')
   }
 }
 
