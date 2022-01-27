@@ -29,7 +29,7 @@ class SchemaFilterInteger
   filterSingle(data)
   {
     if(typeof data === 'string')
-      data = trim()
+      data = data.trim()
     
     if(data === '')
       return data
