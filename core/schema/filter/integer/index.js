@@ -28,6 +28,12 @@ class SchemaFilterInteger
 
   filterSingle(data)
   {
+    if(typeof data === 'string')
+      data = trim()
+    
+    if(data === '')
+      return data
+
     if(isNaN(data) === false)
       return +data
 
