@@ -8,20 +8,16 @@ class ServerDecoder
 
   async decode(route, request, session, viewModel)
   {
-    const decoders = []
+    const decoders = route.decoder ? Array.isArray(route.decoder) ? route.decoder : [route.decoder] : []
 
-    for(const i in route.decoder)
+    for(const i in decoders)
     {
-      const decoder = this.createDecoder(route.decoder[i], route, request, session, viewModel)
-      decoders.push(decoder)
-    }
+      const decoder = this.createDecoder(decoders[i], route, request, session, viewModel)
 
-    for (const decoder of decoders) 
-    {
       try 
       {
         request = await decoder.decode(request)
-      } 
+      }
       catch (previousError) 
       {
         await decoder.onError(previousError)

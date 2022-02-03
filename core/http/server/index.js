@@ -161,27 +161,13 @@ class HttpServer
     session   = await this.sessionBuilder.build(input, output, domain),
     request   = await this.requestBuilder.build(input),
     route     = await this.routeBuilder.build(routes, request),
-    viewModel = this.createViewModel()
+    viewModel = this.createViewModel(),
+    decoded   = await this.decoder.decode(route, request, session, viewModel)
     
-    try 
-    {
-      const decoded = await this.decoder.decode(route, request, session, viewModel)
-      this.routeBuilder.buildDto(decoded, route)
+    this.routeBuilder.buildDto(decoded, route)
 
-      const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
-      await this.dispatcherChain.dispatch(dispatchers)
-    } 
-    catch (error) 
-    {
-      switch (error.code) 
-      {
-        case 'E_HTTP_SERVER_DECODER_FAILED_TO_DECODE':
-          break
-      
-        default:
-          throw error
-      }
-    }
+    const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+    await this.dispatcherChain.dispatch(dispatchers)
 
     if(!output.finished)
     {
