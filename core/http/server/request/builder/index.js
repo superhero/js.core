@@ -58,6 +58,7 @@ class HttpRequestBuilder
     switch(type)
     {
       case 'text/plain':
+      case 'application/jwt':
           return body
 
       case 'application/json':
