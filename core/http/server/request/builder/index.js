@@ -84,15 +84,16 @@ class HttpRequestBuilder
           body.split(boundary).slice(1, -1).forEach((segment) => 
           {
             const 
-              foobar  = segment.split('\r\n\r\n'),
-              headers = foobar.shift().trim().split('\r\n').reduce(reducer(':'), {}),
-              value   = foobar.shift().trim().split('\r\n')
+              segments  = segment.split('\r\n\r\n'),
+              headers   = segments.shift().trim().split('\r\n').reduce(reducer(':'), {}),
+              value     = segments.shift().trim().split('\r\n')
 
             for (const key in headers) 
             {
               const parts = headers[key].split(';')
               headers[key] = { value: parts.shift(), attribute: parts.reduce(reducer('='), {}) }
             }
+
             const name = headers['Content-Disposition'].attribute.name 
             parsed[name] = value.length === 1 ? value[0] : value
           })
