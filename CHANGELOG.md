@@ -1,3 +1,6 @@
+2.7.0
+Added a "toJSON" method (if it does not already exist) on the prototype of Error class to be able to work with errors better, in more detail.
+
 2.6.0
 Added schema support for email
 

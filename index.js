@@ -1,3 +1,19 @@
+// TODO!!! Maybe place this somewhere more organized..?
+if (!('toJSON' in Error.prototype))
+{
+  Object.defineProperty(Error.prototype, 'toJSON', 
+  {
+    value: function () 
+    {
+      let alt = {}
+      Object.getOwnPropertyNames(this).forEach((key) => { alt[key] = this[key] }, this)
+      return alt
+    },
+    configurable  : true,
+    writable      : true
+  })
+}
+
 const 
 fs      = require('fs'),
 console = require('@superhero/debug')
