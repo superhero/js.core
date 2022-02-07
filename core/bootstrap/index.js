@@ -18,18 +18,22 @@ class Bootstrap
     for(const key in bootstrapMap)
     {
       const serviceName = bootstrapMap[key]
-      try
+
+      if(serviceName)
       {
-        const service = this.locator.locate(serviceName)
-        await service.bootstrap()
-        this.console.color('cyan').log(`✔ ${serviceName}`)
-      }
-      catch(previousError)
-      {
-        const error = new Error('could not fullfill the bootstrap process for service')
-        error.code  = 'E_CORE_BOOTSTRAP'
-        error.chain = { previousError, key, serviceName, bootstrapMap }
-        throw error
+        try
+        {
+          const service = this.locator.locate(serviceName)
+          await service.bootstrap()
+          this.console.color('cyan').log(`✔ ${serviceName}`)
+        }
+        catch(previousError)
+        {
+          const error = new Error('could not fullfill the bootstrap process for service')
+          error.code  = 'E_CORE_BOOTSTRAP'
+          error.chain = { previousError, key, serviceName, bootstrapMap }
+          throw error
+        }
       }
     }
 
