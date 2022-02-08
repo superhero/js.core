@@ -3,8 +3,6 @@ DtoBuilderContractNotHoneredError = require('./error/dto-builder-contract-not-ho
 RoutesInvalidTypeError            = require('./error/routes-invalid-type'),
 InvalidRouteInputError            = require('./error/invalid-route-input'),
 InvalidDtoError                   = require('./error/invalid-dto'),
-InvalidDecoderError               = require('./error/invalid-decoder'),
-FailedToDecodeError               = require('./error/failed-to-decode'),
 NoRouteFoundError                 = require('./error/no-route-found'),
 NoEndpointDefinedError            = require('./error/no-endpoint-defined'),
 InvalidRouteError                 = require('./error/invalid-route')
@@ -35,7 +33,7 @@ class HttpServerRouteBuilder
     const
     validRoutes       = this.fetchValidRoutes(routes, request),
     validRoutesClone  = this.deepclone.clone(validRoutes),
-    route             = this.deepmerge.merge({}, ...validRoutesClone)
+    route             = this.deepmerge.mergeInclusive({}, ...validRoutesClone)
 
     if(!validRoutesClone.length)
     {
@@ -55,29 +53,6 @@ class HttpServerRouteBuilder
       throw new InvalidRouteInputError(msg)
     }
 
-    // let decodedRequest = request
-
-    // if('decoder' in route)
-    // {
-    //   let decoder
-    //   try 
-    //   {
-    //     decoder = this.createDecoder(route.decoder)
-    //   } 
-    //   catch (error) 
-    //   {
-    //     const msg = `the decoder service: ${route.decoder} cannot be located`
-    //     throw new InvalidDecoderError(msg)
-    //   }
-    //   try 
-    //   {
-    //     decodedRequest = await decoder.decode(request)
-    //   } 
-    //   catch (error) 
-    //   {
-    //     throw new FailedToDecodeError(error.message)
-    //   }
-    // }
     return route
   }
 
