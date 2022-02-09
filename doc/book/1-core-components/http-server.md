@@ -389,8 +389,7 @@ See: https://nodejs.org/docs/latest-v13.x/api/http.html#http_class_http_serverre
 
 ### `dispatcher.session.cookies`
 
-A lazy loaded component, not constructed unless called.
-See: https://www.npmjs.com/package/cookies
+Docs missing...
 
 ---
 

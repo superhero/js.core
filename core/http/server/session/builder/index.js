@@ -1,5 +1,3 @@
-const Cookies = require('cookies')
-
 class SessionBuilder
 {
   build(request, response, domain)
@@ -23,7 +21,25 @@ class SessionBuilder
       {
         return cookies
         ? cookies
-        : cookies = new Cookies(request, response)
+        : cookies = 
+          {
+            get(name)
+            {
+              const cookies = request.headers.cookie.split(';')
+              for(const cookie of cookies)
+              {
+                const pair = cookie.split('=')
+                if(pair[0].trim() === name)
+                {
+                  return decodeURIComponent(pair[1])
+                }
+              }
+            },
+            set(name, value)
+            {
+              throw new Error('cookie can not be set, functionality not yet implemented, raise an issue on github if you need it')
+            }
+          }
       }
     }
 
