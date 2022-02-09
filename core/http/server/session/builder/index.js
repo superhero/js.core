@@ -29,7 +29,7 @@ class SessionBuilder
               for(const cookie of cookies)
               {
                 const pair = cookie.split('=')
-                if(pair[0].trim() === name)
+                if(pair[0].trim() === name && pair[1])
                 {
                   return decodeURIComponent(pair[1])
                 }
