@@ -202,13 +202,6 @@ class SchemaComposer
       data = options.default
     }
 
-    // Filtering attributes if a filter has been defined for the type
-    if(options.type in this.filters)
-    {
-      const filter = this.filters[options.type]
-      data = filter.filter(options, data)
-    }
-
     // if optional and no data, then we don't need to filter or validate
     if(options.optional === true
     && data === undefined
@@ -221,6 +214,13 @@ class SchemaComposer
     if(options.nullable === true && data === null)
     {
       return data
+    }
+
+    // Filtering attributes if a filter has been defined for the type
+    if(options.type in this.filters)
+    {
+      const filter = this.filters[options.type]
+      data = filter.filter(options, data)
     }
 
     // Validating type
