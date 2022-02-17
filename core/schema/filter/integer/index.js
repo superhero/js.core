@@ -30,9 +30,6 @@ class SchemaFilterInteger
   {
     if(typeof data === 'string')
       data = data.trim()
-    
-    if(data === '')
-      return data
 
     if(isNaN(data) === false)
       return +data
