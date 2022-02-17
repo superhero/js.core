@@ -25,7 +25,7 @@ class SessionBuilder
           {
             get(name)
             {
-              const cookies = request.headers.cookie.split(';')
+              const cookies = (request.headers.cookie || '').split(';')
               for(const cookie of cookies)
               {
                 const pair = cookie.split('=')
