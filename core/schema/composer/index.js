@@ -204,9 +204,9 @@ class SchemaComposer
 
     // if optional and no data, then we don't need to filter or validate
     if(options.optional === true
-    && data === undefined
-    && data === null
-    && data === '')
+    &&(data === undefined
+    || data === null
+    || data === ''))
     {
       return undefined
     }
