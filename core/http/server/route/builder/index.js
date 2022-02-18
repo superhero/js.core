@@ -69,7 +69,7 @@ class HttpServerRouteBuilder
     }
     catch(previousError)
     {
-      const error = new InvalidDtoError(error.message)
+      const error = new InvalidDtoError(previousError.message)
       error.chain = { route, request, previousError }
       throw error
     }
