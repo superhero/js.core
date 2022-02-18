@@ -50,9 +50,10 @@ class SchemaComposer
       {
         output[attribute] = this.attribute(schemaName, schema, attribute, dto[attribute])
       }
-      catch(error)
+      catch(previousError)
       {
-        error.message = error.message + '>> in root schema: "' + schemaName + '"\n>> root attribute: "' + attribute + '"'
+        const error = new Error(previousError.message + ' >> in root schema: "' + schemaName + '" >> root attribute: "' + attribute + '"')
+        error.chain = { previousError, schemaName, dto, attribute, schema }
         errors.push(error)
         continue
       }
@@ -63,11 +64,18 @@ class SchemaComposer
       let message = 'invalid attributes'
       for(const error of errors)
       {
-        message += '\n\n'
-        message += '*** '
-        message += error.chain.attribute
-        message += ' - '
-        message += error.message
+        if(error.chain?.attribute)
+        {
+          message += '\n\n'
+          message += '*** '
+          message += error.chain.attribute
+          message += ' - '
+          message += error.message
+        }
+        else
+        {
+          throw error
+        }
       }
       const error = new InvalidAttributeError(message)
       error.chain = { errors, schemaName, dto }
@@ -181,13 +189,19 @@ class SchemaComposer
       throw new SchemaNotFoundError(msg)
     }
 
-    var errors = []
+    const schema = this.buildSchema(this.schemas[schemaName])
 
-    const
-    schema = this.schemas[schemaName],
-    output = this.attribute(schemaName, schema, attribute, data, errors)
-
-    return output
+    try
+    {
+      const output = this.attribute(schemaName, schema, attribute, data)
+      return output
+    }
+    catch(previousError)
+    {
+      const error = new Error(previousError.message)
+      error.chain = { previousError, schema, schemaName, attribute, data }
+      throw error
+    }
   }
 
   /**
