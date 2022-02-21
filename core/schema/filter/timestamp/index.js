@@ -30,14 +30,29 @@ class SchemaFilterTimestamp
   {
     const intData = parseInt(data)
 
-    if(intData == data)
-      data = intData
+    if(options.date)
+      data = new Date(data).toDateString()
+
+    if(options.iso)
+      data = new Date(data).toISOString()
+
+    if(options.local)
+      data = new Date(data).toLocaleString()
+
+    if(options.localDate)
+      data = new Date(data).toLocaleDateString()
+
+    if(options.localTime)
+      data = new Date(data).toLocaleTimeString()
 
     if(options.utc)
       data = new Date(data).toUTCString()
 
     if(options.json)
       data = new Date(data).toJSON()
+
+    if(intData == data)
+      data = intData
 
     return data
   }

@@ -31,6 +31,12 @@ In below table you can see which type of validators and filters that are availib
 | indentation          | ✗         | ✗         | ✗         | ✗       | ✗         | number    | ✗         | ✗         | ✗         |
 | schema               | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | string    | ✗         | ✗         |
 | trait                | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | string    | ✗         | ✗         |
+| date                 | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
+| local                | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
+| localDate            | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
+| localTime            | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
+| utc                  | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
+| json                 | ✗         | ✗         | ✗         | ✗       | ✗         | ✗         | ✗         | ✗         | boolean   |
 
 ---
 
