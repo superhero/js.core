@@ -217,17 +217,17 @@ class SchemaComposer
     }
 
     // if optional and no data, then we don't need to filter or validate
-    if(options.optional === true
-    &&(data === undefined
-    || data === null
-    || data === ''))
+    if(options.optional === true && data === undefined)
     {
       return undefined
     }
 
-    if(options.nullable === true && data === null)
+    // if nullable and no data, then we don't need to filter or validate
+    if(options.nullable === true 
+    &&(data === null 
+    || data === ''))
     {
-      return data
+      return null
     }
 
     // Filtering attributes if a filter has been defined for the type
