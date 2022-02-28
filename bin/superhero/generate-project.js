@@ -16,8 +16,10 @@ template_main                   = require('./file-template/main'),
 Fs                              = require('./fs'),
 timezones                       = require('./timezones')
 
-module.exports = async (cli) =>
+module.exports = async (core) =>
 {
+  const cli = core.locate('core/cli')
+
   const use_name            = await cli.question(`What is the name of the project?`)
   const use_name_dashed     = coreString.composeSeperatedLowerCase(use_name)
   cli.write(` ✔ Excellent\n`, 'green')

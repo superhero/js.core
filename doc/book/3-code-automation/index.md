@@ -28,9 +28,8 @@ Once the module is installed globally, you should be able to access the CLI help
 
 
 1. Generate project
-2. Generate API classes and corresponding tests from configuration
-3. Generate API documentation
-4. Generate Domain classes from configuration
+2. Generate API documentation
+3. Generate API swagger documentation
 
 Choose your destiny:
 ```
@@ -52,6 +51,5 @@ The list of alternatives is filtered by the defined prefix of the input written 
 Read more about the different options in the main navigation list under one of the following sub-sections.
 
 1. [Generate project](generate-project.md)
-2. [Generate API classes and corresponding tests from configuration](generate-api-classes-and-tests.md)
-3. [Generate API documentation](generate-api-documentation.md)
-4. [Generate Domain classes from configuration](generate-domain-classes.md)
+2. [Generate API documentation](generate-api-documentation.md)
+4. [Generate API swagger documentation](generate-swagger.md)

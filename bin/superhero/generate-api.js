@@ -7,8 +7,10 @@ template_test       = require('./file-template/test-endpoint'),
 template_dispatcher = require('./file-template/dispatcher'),
 Fs                  = require('./fs')
 
-module.exports = async (cli) =>
+module.exports = async (core) =>
 {
+  const cli = core.locate('core/cli')
+
   cli.write(`Specify the path to where the project is located, or leave blank to use ${cwd}`)
   const use_wd = await cli.question(`Where is the project root located?`) || cwd
   cli.write(` ✔ Excellent\n`, 'green')

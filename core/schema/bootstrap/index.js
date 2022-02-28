@@ -28,7 +28,6 @@ class SchemaBootstrap
   {
     for(const schemaName in schemas || [])
     {
-
       if(schemaName.endsWith('/*'))
       {
         const
