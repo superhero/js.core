@@ -1,3 +1,6 @@
+2.11.0
+Added support to specify dependent components through the config.
+
 2.8.0
 Discontinued the cookies dependecy in favor of our own solution.
 
