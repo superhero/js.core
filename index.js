@@ -137,15 +137,9 @@ class Core
         continue
       }
 
-      if(dependentComponent === component)
-      {
-        const error = new Error(`circular component dependecy detected`)
-        error.code  = 'E_CORE_CIRCULAR_COMPONENT_DEPENDECY'
-        error.chain = { dependentComponent, component, branch }
-        throw error
-      }
-
       const dependentPath = config.core?.component[dependentComponent]
+
+      this.add(dependentComponent, dependentPath)
       this.extendConfigByComponent(dependentComponent, dependentPath)
 
       if(this.branch)
