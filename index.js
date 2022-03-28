@@ -120,15 +120,6 @@ class Core
       configuration = this.locate('core/configuration'),
       config        = this.fetchComponentConfig(component, path, branch)
 
-    configuration.extend(config)
-
-    if(!component.startsWith('core'))
-    {
-      branch
-      ? console.color('blue').log(`✔ ${component} - ${branch}`)
-      : console.color('blue').log(`✔ ${component}`)
-    }
-
     for(const dependentComponent in config.core?.component || {})
     {
       if(dependentComponent in this.components)
@@ -155,6 +146,15 @@ class Core
         }
       }
     }
+
+    if(!component.startsWith('core'))
+    {
+      branch
+      ? console.color('blue').log(`✔ ${component} - ${branch}`)
+      : console.color('blue').log(`✔ ${component}`)
+    }
+
+    configuration.extend(config)
   }
 
   buildConfiguration()
