@@ -120,7 +120,7 @@ class Core
       configuration = this.locate('core/configuration'),
       config        = this.fetchComponentConfig(component, path, branch)
 
-    for(const dependentComponent in config.core?.component || {})
+    for(const dependentComponent in config.core?.dependency || {})
     {
       if(dependentComponent in this.components)
       {
@@ -128,7 +128,7 @@ class Core
         continue
       }
 
-      const dependentPath = config.core?.component[dependentComponent]
+      const dependentPath = config.core?.dependency[dependentComponent]
 
       this.add(dependentComponent, dependentPath)
       this.extendConfigByComponent(dependentComponent, dependentPath)
