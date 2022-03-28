@@ -15,8 +15,8 @@ if (!('toJSON' in Error.prototype))
 }
 
 const 
-fs      = require('fs'),
-console = require('@superhero/debug')
+  fs      = require('fs'),
+  console = require('@superhero/debug')
 
 class Core
 {
@@ -59,12 +59,15 @@ class Core
       console.color('blue').log('Building configuration')
       console.color('blue').log('')
 
+      this.buildConfiguration()
+
       const
-      queueLog              = [],
-      configuration         = this.buildConfiguration(queueLog),
-      serviceMapUncomposed  = configuration.find('core.locator'),
-      serviceMap            = this.composeServiceMap(serviceMapUncomposed)
+        configuration         = this.locate('core/configuration'),
+        serviceMapUncomposed  = configuration.find('core.locator'),
+        serviceMap            = this.composeServiceMap(serviceMapUncomposed)
   
+      configuration.freeze()
+
       try
       {
         console.color('blue').log('')
@@ -72,20 +75,19 @@ class Core
         console.color('blue').log('')
 
         // eager loading the services in the sevice locator
-        this.loadServiceRecursion(serviceMap, queueLog, verbose)
+        this.loadServiceRecursion(serviceMap, verbose)
       }
       catch(previousError)
       {
         const error = new Error('runtime error in the eager loading process')
-
         error.code  = 'E_CORE_LOAD'
         error.chain = { configuration, serviceMap, previousError }
-
         throw error
       }
     }
     catch(completeError)
     {
+      console.error('')
       console.error('Core error')
       console.error('')
       if(verbose)
@@ -112,43 +114,76 @@ class Core
     console.color('blue').log('')
   }
 
-  buildConfiguration(queueLog)
+  extendConfigByComponent(component, path, branch)
   {
-    const configuration = this.locate('core/configuration')
+    const 
+      configuration = this.locate('core/configuration'),
+      config        = this.fetchComponentConfig(component, path, branch)
 
+    configuration.extend(config)
+
+    if(!component.startsWith('core'))
+    {
+      branch
+      ? console.color('blue').log(`✔ ${component} - ${branch}`)
+      : console.color('blue').log(`✔ ${component}`)
+    }
+
+    for(const dependentComponent in config.core?.component || {})
+    {
+      if(dependentComponent in this.components)
+      {
+        console.color('yellow').log(`- ${dependentComponent} component laoded multiple times`)
+        continue
+      }
+
+      if(dependentComponent === component)
+      {
+        const error = new Error(`circular component dependecy detected`)
+        error.code  = 'E_CORE_CIRCULAR_COMPONENT_DEPENDECY'
+        error.chain = { dependentComponent, component, branch }
+        throw error
+      }
+
+      const dependentPath = config.core?.component[dependentComponent]
+      this.extendConfigByComponent(dependentComponent, dependentPath)
+
+      if(this.branch)
+      {
+        try
+        {
+          this.extendConfigByComponent(dependentComponent, dependentPath, this.branch)
+        }
+        catch(error)
+        {
+          // ... we don't need to do anything if the configuration doesn't exist,
+          // or maybe emit a warning or info log message through the eventbus ...
+        }
+      }
+    }
+  }
+
+  buildConfiguration()
+  {
     // extending the configurations of every component
     for(const component in this.components)
     {
-      const config = this.fetchComponentConfig(component, this.components[component])
-      configuration.extend(config)
-
-      if(!component.startsWith('core'))
-      {
-        console.color('blue').log(`✔ ${component}`)
-      }
+      this.extendConfigByComponent(component, this.components[component])
 
       // extending the configurations of every component for a specific branch
       if(this.branch)
       {
         try
         {
-          const branchConfig = this.fetchComponentConfig(component, this.components[component], this.branch)
-          configuration.extend(branchConfig)
-          console.color('blue').log(`✔ ${component} - ${this.branch}`)
+          this.extendConfigByComponent(component, this.components[component], this.branch)
         }
         catch(error)
         {
           // ... we don't need to do anything if the configuration doesn't exist,
           // or maybe emit a warning or info log message through the eventbus ...
-
-          queueLog.push({ message:error.message })
         }
       }
     }
-
-    configuration.freeze()
-
-    return configuration
   }
 
   /**
@@ -291,7 +326,7 @@ class Core
    * Recursion queue to complete loading all services.
    * @param {Object} serviceMap [names of services] => [filepath of services]
    */
-  loadServiceRecursion(serviceMap, queueLog, verbose)
+  loadServiceRecursion(serviceMap, verbose, queueLog = [])
   {
     const keys = Object.keys(serviceMap)
 
@@ -353,7 +388,7 @@ class Core
     }
 
     // recursion until the queue is empty
-    this.loadServiceRecursion(queue, queueLog, verbose)
+    this.loadServiceRecursion(queue, verbose, queueLog)
   }
 
   locate(service)
