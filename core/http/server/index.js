@@ -172,8 +172,8 @@ class HttpServer
     if(!output.finished)
     {
       const
-      viewType  = viewModel.meta.status === 204 ? 'core/http/server/view/no-content' : viewModel.meta.view || route.view || 'core/http/server/view',
-      view      = this.locator.locate(viewType)
+        viewType  = viewModel.meta.status === 204 ? 'core/http/server/view/no-content' : viewModel.meta.view || route.view || 'core/http/server/view/json',
+        view      = this.locator.locate(viewType)
 
       if(typeof view.write !== 'function')
       {
