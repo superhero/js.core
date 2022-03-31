@@ -209,6 +209,12 @@ class SchemaComposer
    */
   attribute(schemaName, schema, attribute, data)
   {
+    if(attribute in schema === false)
+    {
+      const message = `Attribute: "${attribute}" does not exist in schema: "${schemaName}"`
+      throw new InvalidAttributeError(message)
+    }
+
     const options = schema[attribute]
 
     if('default' in options && data === undefined)
