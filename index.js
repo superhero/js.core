@@ -124,7 +124,7 @@ class Core
     {
       if(dependentComponent in this.components)
       {
-        console.color('yellow').log(`- ${dependentComponent} component laoded multiple times`)
+        console.color('yellow').log(`- ${dependentComponent} component loaded multiple times`)
         continue
       }
 
