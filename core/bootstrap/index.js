@@ -32,6 +32,10 @@ class Bootstrap
           const error = new Error('could not fullfill the bootstrap process for service')
           error.code  = 'E_CORE_BOOTSTRAP'
           error.chain = { previousError, key, serviceName, bootstrapMap }
+
+          console.error('bootstrap process error discovered, terminating process...')
+          process.nextTick(() => process.kill(process.pid, 'SIGKILL'))
+
           throw error
         }
       }
