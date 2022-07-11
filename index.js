@@ -14,9 +14,10 @@ if (!('toJSON' in Error.prototype))
   })
 }
 
-const 
+const
   fs      = require('fs'),
-  console = require('@superhero/debug')
+  Console = require('@superhero/debug'),
+  console = new Console({ maxArrayLength:0 })
 
 class Core
 {
@@ -339,6 +340,8 @@ class Core
       try
       {
         this.loadService(serviceName, serviceMap[serviceName])
+
+        queueLog.push({ message:'✔ successfully loaded service', serviceName })
 
         if(!serviceName.startsWith('core'))
         {
