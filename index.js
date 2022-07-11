@@ -17,7 +17,7 @@ if (!('toJSON' in Error.prototype))
 const
   fs      = require('fs'),
   Console = require('@superhero/debug'),
-  console = new Console({ maxArrayLength:1000 })
+  console = new Console({ maxArrayLength:100 })
 
 class Core
 {
@@ -101,8 +101,20 @@ class Core
         do
         {
           console.error(`✗ ${error.message}`)
+          console.error(`  ${error.code}`)
           error.stack.split('\n').forEach((stack) =>
           console.error(`  ↪ ${stack.trim()}`))
+          switch(error.code)
+          {
+            case 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES':
+            {
+              console.error(`Service map`)
+              console.log(error.chain.serviceMap)
+              console.error(`Error log`)
+              console.log(error.chain.log)
+              break
+            }
+          }
           console.error('')
         }
         while(error = error.chain && error.chain.previousError)
