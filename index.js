@@ -17,7 +17,7 @@ if (!('toJSON' in Error.prototype))
 const
   fs      = require('fs'),
   Console = require('@superhero/debug'),
-  console = new Console({ maxArrayLength:0 })
+  console = new Console({ maxArrayLength:1000 })
 
 class Core
 {
