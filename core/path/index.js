@@ -1,4 +1,6 @@
-const path = require('path')
+const 
+  path = require('path'),
+  fs   = require('fs')
 
 class Path
 {
@@ -25,6 +27,23 @@ class Path
     {
       return false
     }
+  }
+
+  directories(directoryPath)
+  {
+    const 
+      dirents     = fs.readdirSync(directoryPath, { withFileTypes:true }),
+      directories = {}
+  
+    for(const dirent of dirents)
+    {
+      if(dirent.isDirectory())
+      {
+        directories[dirent.name] = directoryPath + dirent.name
+      }
+    }
+
+    return directories
   }
 
   /**
