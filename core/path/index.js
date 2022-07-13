@@ -33,13 +33,13 @@ class Path
   {
     const 
       dirents     = fs.readdirSync(directoryPath, { withFileTypes:true }),
-      directories = {}
+      directories = []
   
     for(const dirent of dirents)
     {
       if(dirent.isDirectory())
       {
-        directories[dirent.name] = directoryPath + dirent.name
+        directories.push(dirent.name)
       }
     }
 
