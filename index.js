@@ -103,12 +103,15 @@ class Core
           console.error(`✗ ${error.message}`)
           console.error(`  ${error.code}`)
           error.stack.split('\n').forEach((stack) => console.error(`  ↪ ${stack.trim()}`))
-          console.error(`  CHAIN`)
-          for(const key in error.chain || {})
+          if(error.code !== 'E_CORE_LOAD')
           {
-            if(key !== 'previousError')
+            console.error(`  CHAIN`)
+            for(const key in error.chain || {})
             {
-              console.error(`  ↪ ${key}`, error.chain[key])
+              if(key !== 'previousError')
+              {
+                console.error(`  ↪ ${key}:`, error.chain[key])
+              }
             }
           }
           switch(error.code)
