@@ -102,8 +102,15 @@ class Core
         {
           console.error(`✗ ${error.message}`)
           console.error(`  ${error.code}`)
-          error.stack.split('\n').forEach((stack) =>
-          console.error(`  ↪ ${stack.trim()}`))
+          error.stack.split('\n').forEach((stack) => console.error(`  ↪ ${stack.trim()}`))
+          console.error(`  CHAIN`)
+          for(const key in error.chain || {})
+          {
+            if(key !== 'previousError')
+            {
+              console.error(`  ↪ ${key}`, error.chain[key])
+            }
+          }
           switch(error.code)
           {
             case 'E_SERVICE_UNABLE_TO_RESOLVE_DEPENDENCIES':
