@@ -13,7 +13,7 @@ class SchemaFilterInteger
   filterCollection(data)
   {
     if(!Array.isArray(data))
-      return data
+      data = [ data ]
 
     const collection = []
 
