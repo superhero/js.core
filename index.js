@@ -290,8 +290,8 @@ class Core
       catch(previousError)
       {
         const
-        msg   = `Problem on initiation of the locator: "${locatorPath}" with the error message: "${previousError.message}"`,
-        error = new Error(msg)
+          msg   = `Problem on initiation of the locator: "${locatorPath}" for the service "${serviceName}" with the error message: "${previousError.message}"`,
+          error = new Error(msg)
 
         error.code  = 'E_CORE_LOAD_SERVICE'
         error.chain = { previousError, serviceName, servicePath, locatorPath }
