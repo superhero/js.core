@@ -1,5 +1,37 @@
 class CoreString
 {
+  trim(s, charToRemove)
+  {
+    s = ltrim(s, charToRemove)
+    s = rtrim(s, charToRemove)
+
+    return s
+  }
+
+  ltrim(s, charToRemove)
+  {
+    let start = 0
+
+    while (start < s.length && s[start] === charToRemove) 
+    {
+      start++
+    }
+
+    return s.slice(start)
+  }
+
+  rtrim(s, charToRemove)
+  {
+    let end = s.length
+ 
+    while (end > 0 && s[end - 1] === charToRemove) 
+    {
+      end--
+    }
+
+    return s.slice(0, end)
+  }
+
   /**
    * @example "foobar" => "Foobar"
    * @param {string} s input to be manipulated
