@@ -24,7 +24,7 @@ module.exports = async (core) =>
     schemaBootstrap = core.locate('core/schema/bootstrap'),
     schemas         = configuration.find('core/schema/composer')
 
-  schemaBootstrap.addSchemas(composer, schemas)
+  schemaBootstrap.addSchemas(schemaComposer, schemas)
 
   // ...
 
