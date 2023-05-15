@@ -19,10 +19,9 @@ module.exports = async (core) =>
   }
 
   const
-    configuration   = core.locate('core/configuration'),
     schemaComposer  = core.locate('core/schema/composer'),
     schemaBootstrap = core.locate('core/schema/bootstrap'),
-    schemas         = configuration.find('core/schema/composer')
+    schemas         = schema_config?.core?.schema?.composer
 
   schemaBootstrap.addSchemas(schemaComposer, schemas)
 
@@ -55,10 +54,10 @@ module.exports = async (core) =>
     contact       = await cli.question(`Specify contact name`),
     contactEmail  = await cli.question(`Specify an email to the contact`),
     servers       = [],
-    components    = { schemas:{}, examples:{} },
+    components    = { schema:{}, examples:{} },
     loadComponent = (schemaName) =>
     {
-      schemaName = schemaName.replace('/', '.')
+      // schemaName = schemaName.replaceAll('/', '.')
 
       cli.write(' ✔ Loading component: ' + schemaName, 'green')
 
@@ -106,7 +105,7 @@ module.exports = async (core) =>
       }
 
       components.schema[schemaName]   = properties
-      components.examples[schemaName] = schema.composeExample(schemaName)
+      components.examples[schemaName] = schemaComposer.composeExample(schemaName)
     }
 
   do
