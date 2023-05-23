@@ -4,19 +4,32 @@ module.exports = async (core) =>
 
   cli.write(`Specify the path to where the schema configuration file is located`)
 
-  const 
-    use_schema_wd = await cli.question(`Where is the schema config located?`),
-    schema_config = require(use_schema_wd)
-
-  if(schema_config?.core?.schema?.composer)
+  const schema_config = await (async function schemaConfig()
   {
-    cli.write(` ✔ Excellent\n`, 'green')
-  }
-  else
-  {
-    cli.write(`No schemas could be located in the configuration file, expected path: "core.schema.composer"`, 'red')
-    return
-  }
+    const
+      use_schema_wd = await cli.question(`Where is the schema config located?`),
+      config        = require(use_schema_wd)
+  
+    if(config?.core?.schema?.composer)
+    {
+      cli.write(` ✔ Excellent\n`, 'green')
+      const again = await cli.question(`Extend the schema config with another?`, ['yes', 'no'])
+      if(again === 'yes')
+      {
+        const extension = await schemaConfig()
+        return core.locate('core/deepmerge').merge({ ...config }, { ...extension })
+      }
+      else
+      {
+        return config
+      }
+    }
+    else
+    {
+      cli.write(`No schemas could be located in the configuration file, expected path: "core.schema.composer"`, 'red')
+      return await schemaConfig()
+    }
+  })()
 
   const
     schemaComposer  = core.locate('core/schema/composer'),
@@ -29,7 +42,7 @@ module.exports = async (core) =>
 
   cli.write(`Specify the path to where the routes configuration file is located`)
 
-  const 
+  const
     use_routes_wd = await cli.question(`Where is the routes config located?`),
     routes_config = require(use_routes_wd)
 
@@ -54,16 +67,17 @@ module.exports = async (core) =>
     contact       = await cli.question(`Specify contact name`),
     contactEmail  = await cli.question(`Specify an email to the contact`),
     servers       = [],
-    components    = { schema:{}, examples:{} },
+    components    = { schemas:{}, examples:{} },
     loadComponent = (schemaName) =>
     {
-      // schemaName = schemaName.replaceAll('/', '.')
+      schemaName = schemaName.replaceAll('.', '/')
 
       cli.write(' ✔ Loading component: ' + schemaName, 'green')
 
-      const 
+      const
         properties  = {},
-        schema      = schemaComposer.composeSchema(schemaName)
+        schema      = schemaName ? schemaComposer.composeSchema(schemaName) : {},
+        required    = []
 
       for(const property in schema)
       {
@@ -89,10 +103,19 @@ module.exports = async (core) =>
           case 'schema':
           {
             loadComponent(schema[property].schema)
-            properties[property] = 
+
+            if(schema[property].collection)
             {
-              schema  :{ $ref:'#/components/schemas/'   + schema[property].schema.replace('/', '.') },
-              example :{ $ref:'#/components/examples/'  + schema[property].schema.replace('/', '.') }
+              properties[property] =
+              {
+                type        : 'array',
+                description : schema[property].description || '',
+                items       : { $ref : '#/components/schemas/' + schema[property].schema.replaceAll('/', '.') }
+              }
+            }
+            else
+            {
+              properties[property] = { $ref: '#/components/schemas/' + schema[property].schema.replaceAll('/', '.') }
             }
             break
           }
@@ -102,10 +125,63 @@ module.exports = async (core) =>
             break
           }
         }
+        switch(schema[property].type)
+        {
+          case 'decimal':
+          case 'integer':
+          {
+            if(schema[property].min)
+            {
+              properties[property].minimum = schema[property].min
+            }
+            if(schema[property].max)
+            {
+              properties[property].maximum = schema[property].max
+            }
+            break
+          }
+        }
+        if(schema[property].collection)
+        {
+          if(schema[property].min)
+          {
+            properties[property].minItems = schema[property].min
+          }
+          if(schema[property].max)
+          {
+            properties[property].maxItems = schema[property].max
+          }
+        }
+        if(schema[property].description)
+        {
+          properties[property].description = schema[property].description
+        }
+        if(schema[property].example)
+        {
+          properties[property].example = schema[property].example
+        }
+        if(!schema[property].optional)
+        {
+          required.push(property)
+        }
+        if(schema[property].nullable)
+        {
+          properties[property].nullable = true
+        }
       }
 
-      components.schema[schemaName]   = properties
-      components.examples[schemaName] = schemaComposer.composeExample(schemaName)
+      const newSchemaName = schemaName.replaceAll('/', '.')
+
+      components.schemas[newSchemaName]  = { 'type':'object', properties }
+      if(required.length)
+      {
+        components.schemas[newSchemaName].required = required
+      }
+      components.examples[newSchemaName] =
+      {
+        'summary' : newSchemaName.replaceAll('.', ' '),
+        'value'   : schemaComposer.composeExample(schemaName)
+      }
     }
 
   do
@@ -126,21 +202,21 @@ module.exports = async (core) =>
 
   const swagger = 
   {
-    "openapi": "3.0.3",
-    "info": 
+    'openapi': '3.0.3',
+    'info': 
     {
-      "title"       : title,
-      "description" : description,
-      "version"     : version,
-      "contact": 
+      'title'       : title,
+      'description' : description,
+      'version'     : version,
+      'contact': 
       {
-        "name"  : contact,
-        "email" : contactEmail
+        'name'  : contact,
+        'email' : contactEmail
       }
     },
-    "servers"     : servers,
-    "components"  : components,
-    "paths"       : {}
+    'servers'     : servers,
+    'components'  : components,
+    'paths'       : {}
   }
 
   for(const route_name in routes_config.core.http.server.routes)
@@ -150,8 +226,10 @@ module.exports = async (core) =>
     if('endpoint' in route)
     {
       const
-        path    = route.url.replace(/(:[a-z]+)/gi, (name) => '{' + name + '}'),
-        method  = (route.method || 'get').toLowerCase()
+        path        = route.url.replace(/:([a-z]+)/gi, '{$1}'),
+        method      = (route.method || 'get').toLowerCase(),
+        matches     = route.url.match(/:([a-z0-9]+)/gi),
+        parameters  = (matches || []).map(match => match.slice(1))
         
       cli.write(' ✔ Loading path: ' + path, 'green')
 
@@ -162,39 +240,58 @@ module.exports = async (core) =>
       {
         [method]:
         {
-          "description" : route.description,
-          "requestBody" :
+          'responses'   : 
           {
-            "content":
+            '200': 
             {
-              '*/*':
+              'description' : 'Success',
+              'content'     : 
               {
-                "schema"  : { $ref:'#/components/schemas/'  + route.input.replace('/', '.') },
-                "example" : { $ref:'#/components/examples/' + route.input.replace('/', '.') }
-              }
-            }
-          },
-          "responses"   : 
-          {
-            "200": 
-            {
-              "description" : "Success",
-              "content"     : 
-              {
-                "application/json": 
+                'application/json': 
                 {
-                  "schema"  : { $ref:'#/components/schemas/'  + route.output.replace('/', '.') },
-                  "example" : { $ref:'#/components/examples/' + route.output.replace('/', '.') }
+                  'schema'  : { $ref:'#/components/schemas/'  + route.output.replaceAll('/', '.') },
+                  'example' : { $ref:'#/components/examples/' + route.output.replaceAll('/', '.') }
                 }
               }
             }
           }
         }
       }
+
+      if(route.description)
+      {
+        swagger.paths[path][method].description = route.description
+      }
+
+      if(method !== 'get')
+      {
+        swagger.paths[path][method].requestBody =
+        {
+          'content':
+          {
+            'application/json':
+            {
+              'schema'  : { $ref:'#/components/schemas/'  + route.input.replaceAll('/', '.') },
+              'example' : { $ref:'#/components/examples/' + route.input.replaceAll('/', '.') }
+            }
+          }
+        }
+      }
+
+      if(parameters.length)
+      {
+        swagger.paths[path][method].parameters = parameters.map((name) => 
+        ({
+          name, 
+          in        : 'path', 
+          required  : true, 
+          schema    : { type:'string' }
+        }))
+      }
+
+      cli.write('', 'green')
     }
   }
 
-  cli.write(' -------------\n', 'blue')
   cli.write(JSON.stringify(swagger, null, 2), 'blue')
-  cli.write(' -------------\n', 'blue')
 }
