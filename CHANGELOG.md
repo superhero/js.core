@@ -1,3 +1,6 @@
+2.13.0
+Improved on the Swaggor generator in the CLI helper.
+
 2.11.0
 Added support to specify dependent components through the config.
 
