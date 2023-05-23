@@ -10,10 +10,11 @@ class SchemaBootstrapLocator
   locate()
   {
     const
-    configuration = this.locator.locate('core/configuration'),
-    path          = this.locator.locate('core/path')
+      configuration = this.locator.locate('core/configuration'),
+      path          = this.locator.locate('core/path'),
+      console       = this.locator.locate('core/console')
 
-    return new SchemaBootstrap(this.locator, configuration, path)
+    return new SchemaBootstrap(this.locator, configuration, path, console)
   }
 }
 

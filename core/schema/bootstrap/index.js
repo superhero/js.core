@@ -1,23 +1,24 @@
 const
-fs                  = require('fs'),
-SchemaNotResolvable = require('./error/schema-not-resolvable')
+  fs                  = require('fs'),
+  SchemaNotResolvable = require('./error/schema-not-resolvable')
 
 class SchemaBootstrap
 {
-  constructor(locator, configuration, path)
+  constructor(locator, configuration, path, console)
   {
     this.locator        = locator
     this.configuration  = configuration
     this.path           = path
+    this.console        = console
   }
 
   bootstrap()
   {
     const
-    composer    = this.locator.locate('core/schema/composer'),
-    schemas     = this.configuration.find('core.schema.composer'),
-    filters     = this.configuration.find('core.schema.filter'),
-    validators  = this.configuration.find('core.schema.validator')
+      composer    = this.locator.locate('core/schema/composer'),
+      schemas     = this.configuration.find('core.schema.composer'),
+      filters     = this.configuration.find('core.schema.filter'),
+      validators  = this.configuration.find('core.schema.validator')
 
     this.addSchemas(composer, schemas)
     this.addFilters(composer, filters)
@@ -26,6 +27,9 @@ class SchemaBootstrap
 
   addSchemas(composer, schemas)
   {
+    this.console.color('green').log(`Schemas`)
+    this.console.color('green').log(``)
+
     for(const schemaName in schemas || [])
     {
       if(schemaName.endsWith('/*'))
@@ -47,6 +51,7 @@ class SchemaBootstrap
             schema            = require(schemaFilepath)
 
             composer.addSchema(schemaNameMapped, schema)
+            this.console.color('green').log(`✔ ${schemaNameMapped}`)
           }
         }
       }
@@ -56,6 +61,7 @@ class SchemaBootstrap
         {
           const schema = require(schemas[schemaName])
           composer.addSchema(schemaName, schema)
+          this.console.color('green').log(`✔ ${schemaName}`)
         }
         else
         {
@@ -64,6 +70,8 @@ class SchemaBootstrap
         }
       }
     }
+
+    this.console.log(``)
   }
 
   addFilters(composer, filters)
