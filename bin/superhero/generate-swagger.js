@@ -61,18 +61,17 @@ module.exports = async (core) =>
   cli.write(`Specify API attributes that will be used in the swagger file...`)
 
   const
-    title         = await cli.question(`Specify the title of the API`),
-    description   = await cli.question(`Specify a short description of the API`),
-    version       = await cli.question(`Specify the API version`),
-    contact       = await cli.question(`Specify contact name`),
-    contactEmail  = await cli.question(`Specify an email to the contact`),
-    servers       = [],
     components    = { schemas:{}, examples:{} },
     loadComponent = (schemaName) =>
     {
-      schemaName = schemaName.replaceAll('.', '/')
+      if(!schemaName)
+      {
+        return
+      }
 
       cli.write(' ✔ Loading component: ' + schemaName, 'green')
+
+      schemaName = schemaName.replaceAll('.', '/')
 
       const
         properties  = {},
@@ -186,11 +185,24 @@ module.exports = async (core) =>
         {
           properties[property].nullable = true
         }
+        if(Array.isArray(schema[property].enum))
+        {
+          properties[property].enum = schema[property].enum.map((value) => 
+          {
+            switch(schema[property].type)
+            {
+              case 'decimal': return parseFloat(value)
+              case 'integer': return parseInt(value)
+              case 'boolean': return value === 'false' ? false : !!value
+              default: return value
+            }
+          })
+        }
       }
 
       const newSchemaName = schemaName.replaceAll('/', '.')
 
-      components.schemas[newSchemaName]  = { 'type':'object', properties }
+      components.schemas[newSchemaName] = { 'type':'object', properties }
       if(required.length)
       {
         components.schemas[newSchemaName].required = required
@@ -202,40 +214,12 @@ module.exports = async (core) =>
       }
     }
 
-  do
-  {
-    const addAServer = await cli.question(`Add a server?`, ['yes', 'no'])
-    if(addAServer === 'no') break
-    servers.push(
-    {
-      url         : await cli.question(`Specify server url`),
-      description : await cli.question(`Specify server description`)
-    })
-  }
-  while(true)
-
   cli.write(' -------------', 'blue')
   cli.write(' ¡ Finish it !', 'blue')
   cli.write(' -------------', 'blue')
 
-  const swagger = 
-  {
-    'openapi': '3.0.3',
-    'info': 
-    {
-      'title'       : title,
-      'description' : description,
-      'version'     : version,
-      'contact': 
-      {
-        'name'  : contact,
-        'email' : contactEmail
-      }
-    },
-    'servers'     : servers,
-    'components'  : components,
-    'paths'       : {}
-  }
+  const 
+    paths   = {}
 
   for(const route_name in routes_config.core.http.server.routes)
   {
@@ -254,7 +238,7 @@ module.exports = async (core) =>
       loadComponent(route.input)
       loadComponent(route.output)
 
-      swagger.paths[path] = 
+      paths[path] = 
       {
         [method]:
         {
@@ -278,12 +262,12 @@ module.exports = async (core) =>
 
       if(route.description)
       {
-        swagger.paths[path][method].description = route.description
+        paths[path][method].description = route.description
       }
 
       if(method !== 'get')
       {
-        swagger.paths[path][method].requestBody =
+        paths[path][method].requestBody =
         {
           'content':
           {
@@ -298,7 +282,7 @@ module.exports = async (core) =>
 
       if(parameters.length)
       {
-        swagger.paths[path][method].parameters = parameters.map((name) => 
+        paths[path][method].parameters = parameters.map((name) => 
         ({
           name, 
           in        : 'path', 
@@ -310,6 +294,45 @@ module.exports = async (core) =>
       cli.write('', 'green')
     }
   }
+
+  const servers = []
+
+  do
+  {
+    const addAServer = await cli.question(`Add a server?`, ['yes', 'no'])
+    if(addAServer === 'no') break
+    servers.push(
+    {
+      url         : await cli.question(`Specify server url`),
+      description : await cli.question(`Specify server description`)
+    })
+  }
+  while(true)
+
+  const 
+    title         = await cli.question(`Specify the title of the API`),
+    description   = await cli.question(`Specify a short description of the API`),
+    version       = await cli.question(`Specify the API version`),
+    contact       = await cli.question(`Specify contact name`),
+    contactEmail  = await cli.question(`Specify an email to the contact`),
+    swagger       = 
+    {
+      'openapi': '3.0.3',
+      'info': 
+      {
+        'title'       : title,
+        'description' : description,
+        'version'     : version,
+        'contact': 
+        {
+          'name'  : contact,
+          'email' : contactEmail
+        }
+      },
+      'servers'     : servers,
+      'components'  : components,
+      'paths'       : paths
+    }
 
   cli.write(JSON.stringify(swagger, null, 2), 'blue')
 }

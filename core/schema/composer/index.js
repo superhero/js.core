@@ -160,6 +160,11 @@ class SchemaComposer
    */
   composeSchema(schemaName)
   {
+    if(!schemaName)
+    {
+      return {}
+    }
+
     if(schemaName in this.schemas === false)
     {
       const msg = `Schema: "${schemaName}" not found`
