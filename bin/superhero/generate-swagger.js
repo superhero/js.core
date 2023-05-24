@@ -235,8 +235,8 @@ module.exports = async (core) =>
         
       cli.write(' ✔ Loading path: ' + path, 'green')
 
-      loadComponent(route.input)
-      loadComponent(route.output)
+      route.input   && loadComponent(route.input)
+      route.output  && loadComponent(route.output)
 
       paths[path] = 
       {
@@ -246,16 +246,20 @@ module.exports = async (core) =>
           {
             '200': 
             {
-              'description' : 'Success',
-              'content'     : 
-              {
-                'application/json': 
-                {
-                  'schema'  : { $ref:'#/components/schemas/'  + route.output.replaceAll('/', '.') },
-                  'example' : { $ref:'#/components/examples/' + route.output.replaceAll('/', '.') }
-                }
-              }
+              'description' : 'Success'
             }
+          }
+        }
+      }
+
+      if(route.output)
+      {
+        paths[path][method].responses['200'].content =
+        {
+          'application/json': 
+          {
+            'schema'  : { $ref:'#/components/schemas/'  + route.output.replaceAll('/', '.') },
+            'example' : { $ref:'#/components/examples/' + route.output.replaceAll('/', '.') }
           }
         }
       }
@@ -265,7 +269,7 @@ module.exports = async (core) =>
         paths[path][method].description = route.description
       }
 
-      if(method !== 'get')
+      if(method !== 'get' && route.input)
       {
         paths[path][method].requestBody =
         {
