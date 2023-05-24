@@ -116,6 +116,7 @@ module.exports = async (core) =>
             else
             {
               properties[property] = { $ref: '#/components/schemas/' + schema[property].schema.replaceAll('/', '.') }
+              continue
             }
             break
           }
@@ -158,7 +159,24 @@ module.exports = async (core) =>
         }
         if(schema[property].example)
         {
-          properties[property].example = schema[property].example
+          switch(schema[property].type)
+          {
+            case 'decimal':
+            {
+              properties[property].example = parseFloat(schema[property].example)
+              break
+            }
+            case 'integer':
+            {
+              properties[property].example = parseInt(schema[property].example)
+              break
+            }
+            case 'boolean':
+            {
+              properties[property].example = schema[property].example === 'false' ? false : !!schema[property].example
+              break
+            }
+          }
         }
         if(!schema[property].optional)
         {
