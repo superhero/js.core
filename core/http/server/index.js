@@ -158,10 +158,10 @@ class HttpServer
   {
     const
     routes    = this.configuration.find('core.http.server.routes'),
-    session   = await this.sessionBuilder.build(input, output, domain),
+    viewModel = this.createViewModel(),
+    session   = await this.sessionBuilder.build(input, output, domain, viewModel),
     request   = await this.requestBuilder.build(input),
     route     = await this.routeBuilder.build(routes, request),
-    viewModel = this.createViewModel(),
     decoded   = await this.decoder.decode(route, request, session, viewModel)
     
     this.routeBuilder.buildDto(decoded, route)

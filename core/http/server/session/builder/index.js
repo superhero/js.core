@@ -1,6 +1,6 @@
 class SessionBuilder
 {
-  build(request, response, domain)
+  build(request, response, domain, viewModel)
   {
     let cookies
 
@@ -37,7 +37,7 @@ class SessionBuilder
             },
             set(name, value)
             {
-              throw new Error('cookie can not be set, functionality not yet implemented, raise an issue on github if you need it')
+              viewModel.headers['Set-Cookie'] = `${name}=${encodeURIComponent(value)}`
             }
           }
       }
