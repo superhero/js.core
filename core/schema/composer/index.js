@@ -20,6 +20,21 @@ class SchemaComposer
     this.console    = console
   }
 
+  assert(schemaName, value)
+  {
+    try
+    {
+      this.compose(schemaName, value)
+    }
+    catch(previousError)
+    {
+      const error = new InvalidSchemaError('schema assertion failed')
+      error.chain = { previousError, schemaName, value }
+      error.code  = 'E_CORE_SCHEMA_ASSERTION'
+      throw error
+    }
+  }
+
   /**
    * @param {string} schemaName
    * @param {Object|Array<Object>} dto
