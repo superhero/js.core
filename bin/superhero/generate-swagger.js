@@ -238,13 +238,15 @@ module.exports = async (core) =>
       route.input   && loadComponent(route.input)
       route.output  && loadComponent(route.output)
 
-      paths[path] = 
+      paths[path] =
       {
+        ...paths[path],
+
         [method]:
         {
-          'responses'   : 
+          'responses':
           {
-            '200': 
+            '200':
             {
               'description' : 'Success'
             }
@@ -269,7 +271,9 @@ module.exports = async (core) =>
         paths[path][method].description = route.description
       }
 
-      if(method !== 'get' && route.input)
+      if(method !== 'get' 
+      && method !== 'delete' 
+      && route.input)
       {
         paths[path][method].requestBody =
         {
