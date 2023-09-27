@@ -100,6 +100,7 @@ class HttpServer
   {
     output.writeHead(408)
     output.end('Request Timeout')
+    this.locator.locate('core/console').color('red').log('✗ server timeout')
   }
 
   onError(input, output, domain, error)
