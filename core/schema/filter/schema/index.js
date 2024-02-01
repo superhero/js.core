@@ -38,7 +38,7 @@ class SchemaFilterSchema
     {
       return options.trait
       ? this.composer.trait(options.schema, options.trait, data)
-      : this.composer.compose(options.schema, data)
+      : this.composer.compose(options.schema, data, false)
     }
     else
     {
