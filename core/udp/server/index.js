@@ -31,8 +31,6 @@ class UdpServer
     socket.on('message',  this.onMessage.bind(this, socket, route))
     socket.on('error',    this.onError.bind(this, socket, route))
     this.#sockets.push(socket)
-
-    this.locator.locate('core/console').color('green').log(`✔ udp server listening on ${route.bind.port || route.bind}`)
   }
 
   close()
