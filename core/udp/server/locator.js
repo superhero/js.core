@@ -11,8 +11,8 @@ class UdpServerLocator
   {
     const
       configuration = this.locator.locate('core/configuration'),
-      router        = configuration.find('core/udp/server/router'),
-      udpServer     = new UdpServer(router, this.locator)
+      routes        = configuration.find('core/udp/server/routes'),
+      udpServer     = new UdpServer(routes, this.locator)
 
     return udpServer
   }

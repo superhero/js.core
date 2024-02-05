@@ -8,18 +8,18 @@ class UdpServer
    * @param {Object} router
    * @param {Core.Locator} locator
    */
-  constructor(router, locator)
+  constructor(routes, locator)
   {
-    this.router   = router
+    this.routes   = routes
     this.locator  = locator
   }
 
   bootstrap()
   {
-    for(const route_id in this.router)
+    for(const route_id in this.routes)
     {
       const
-        route   = this.router[route_id],
+        route   = this.routes[route_id],
         socket  = dgram.createSocket(route.socket || 'udp4')
 
       socket.bind(route.bind)
