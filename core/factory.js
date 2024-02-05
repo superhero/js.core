@@ -30,6 +30,7 @@ class CoreFactory
     core.add('core/process')
     core.add('core/schema')
     core.add('core/string')
+    core.add('core/udp/server')
     core.add('core')
 
     return core
