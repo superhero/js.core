@@ -18,17 +18,21 @@ class UdpServer
   {
     for(const route_id in this.routes)
     {
-      const
-        route   = this.routes[route_id],
-        socket  = dgram.createSocket(route.socket || 'udp4')
-
-      socket.bind(route.bind)
-      socket.on('message',  this.onMessage.bind(this, socket, route))
-      socket.on('error',    this.onError.bind(this, socket, route))
-      this.#sockets.push(socket)
-
-      this.locator.locate('core/console').color('green').log(`✔ udp server listening on ${route.bind.port || route.bind}`)
+      const route = this.routes[route_id]
+      this.addSocket(route)
     }
+  }
+
+  addSocket(route)
+  {
+    const socket = dgram.createSocket(route.socket || 'udp4')
+
+    socket.bind(route.bind)
+    socket.on('message',  this.onMessage.bind(this, socket, route))
+    socket.on('error',    this.onError.bind(this, socket, route))
+    this.#sockets.push(socket)
+
+    this.locator.locate('core/console').color('green').log(`✔ udp server listening on ${route.bind.port || route.bind}`)
   }
 
   close()
