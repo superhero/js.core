@@ -67,6 +67,33 @@ class CoreString
 
     return s
   }
+
+  splitStringIntoChunks(text, maxLength) 
+  {
+    const result = []
+    let currentChunk = ''
+
+    text.split(' ').forEach((word) =>
+    {
+      if ((currentChunk.length + word.length) <= maxLength) 
+      {
+        currentChunk += word + ' '
+      }
+      else 
+      {
+        result.push(currentChunk.trim())
+        currentChunk = word + ' '
+      }
+    })
+
+    // Add the last chunk if it's not empty
+    if (currentChunk.trim().length > 0) 
+    {
+      result.push(currentChunk.trim())
+    }
+
+    return result
+  }
 }
 
 module.exports = CoreString
