@@ -78,6 +78,44 @@ class HttpRequestBuilder
         try
         {
           const 
+            reducer  = (divider) => (accumulator, row) => 
+            { 
+              const parts = row.split(divider), 
+                    key   = parts.shift().trim(), 
+                    value = parts.join(divider).trim().replace(/^['"]+|['"]+$/g, '')
+
+              accumulator[key] = value
+              return accumulator
+            },
+            boundary = '--' + secondary.replace('boundary=', '').trim(),
+            parsed   = {}
+            
+          body.split(boundary).slice(1, -1).forEach((segment) => 
+          {
+            const 
+              segments  = segment.split('\r\n\r\n'),
+              headers   = segments.shift().trim().split('\r\n').reduce(reducer(':'), {}),
+              content   = segments.join('\r\n\r\n')
+
+            for (const key in headers) 
+            {
+              const parts = headers[key].split(';').map(part => part.trim());
+              headers[key] = { value: parts.shift(), attribute: parts.reduce(reducer('='), {}) };
+            }
+
+            const
+              key   = headers['Content-Disposition'].attribute.name,
+              value = headers['Content-Disposition'].attribute.filename ? { headers, content } : content
+
+            parsed[key] = parsed[key] ? (Array.isArray(parsed[key]) ? [...parsed[key], value] : [parsed[key], value]) : value
+          })
+
+          return parsed
+
+          // old version of code
+
+          /*
+          const 
             reducer  = (divider) => (accumulator, row) => { const parts = row.split(divider), key = parts.shift().trim(), value = parts.shift().trim().replace(/['"]+/g, ''); accumulator[key] = value; return accumulator },
             boundary = '--' + secondary.replace('boundary=', '').trim(),
             parsed   = {}
@@ -100,6 +138,7 @@ class HttpRequestBuilder
           })
 
           return parsed
+          */
         }
         catch(previousError)
         {
