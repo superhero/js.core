@@ -95,7 +95,7 @@ class HttpRequestBuilder
             const 
               segments  = segment.split('\r\n\r\n'),
               headers   = segments.shift().trim().split('\r\n').reduce(reducer(':'), {}),
-              content   = segments.join('\r\n\r\n')
+              content   = segments.join('\r\n\r\n').trim()
 
             for (const key in headers) 
             {
