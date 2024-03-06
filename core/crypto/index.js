@@ -20,6 +20,11 @@ class CoreCrypto
 
     return digested
   }
+
+  randomBytes(amountOfRandomBytes = 32, digest = 'hex')
+  {
+    return this.crypto.randomBytes(amountOfRandomBytes).toString(digest)
+  }
 }
 
 module.exports = CoreCrypto
