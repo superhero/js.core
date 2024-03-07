@@ -26,6 +26,7 @@ class SessionBuilder
           : lazyload = 
             {
               _sameSite : 'Strict',
+              _isCookieGlobal : true,
 
               get(name)
               {
