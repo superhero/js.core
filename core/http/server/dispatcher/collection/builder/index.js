@@ -12,11 +12,13 @@ class ServerDispatcherCollectionBuilder
 
   build(route, request, session, viewModel)
   {
-    const dispatchers = []
+    const 
+      middlewares = Array.isArray(route.middleware) ? route.middleware : route.middleware ? [route.middleware] : [],
+      dispatchers = []
 
-    for(const i in route.middleware)
+    for(const i in middlewares)
     {
-      const dispatcher = this.createDispatcher(route.middleware[i], route, request, session, viewModel)
+      const dispatcher = this.createDispatcher(middlewares[i], route, request, session, viewModel)
       dispatchers.push(dispatcher)
     }
 
