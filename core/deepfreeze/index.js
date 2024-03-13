@@ -10,7 +10,7 @@ class DeepFreeze
       {
         const value = obj[name]
   
-        obj[name] = value && typeof value === 'object'
+        obj[name] = value && typeof value === 'object' && value instanceof Buffer === false
         ? this.freeze(value)
         : value
       }

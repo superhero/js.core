@@ -165,24 +165,34 @@ class HttpServer
     route     = await this.routeBuilder.build(routes, request),
     decoded   = await this.decoder.decode(route, request, session, viewModel)
     
-    this.routeBuilder.buildDto(decoded, route)
-
-    const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
-    await this.dispatcherChain.dispatch(dispatchers)
-
-    if(!output.finished)
+    try
     {
-      const
-        viewType  = viewModel.meta.status === 204 ? 'core/http/server/view/no-content' : viewModel.meta.view || route.view || 'core/http/server/view/json',
-        view      = this.locator.locate(viewType)
-
-      if(typeof view.write !== 'function')
+      this.routeBuilder.buildDto(decoded, route)
+  
+      const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
+      await this.dispatcherChain.dispatch(dispatchers)
+  
+      if(!output.finished)
       {
-        const msg = `The service "${viewType}" does not honer the view contract`
-        throw new ViewContractNotHoneredError(msg)
+        const
+          viewType  = viewModel.meta.status === 204 ? 'core/http/server/view/no-content' : viewModel.meta.view || route.view || 'core/http/server/view/json',
+          view      = this.locator.locate(viewType)
+  
+        if(typeof view.write !== 'function')
+        {
+          const msg = `The service "${viewType}" does not honer the view contract`
+          throw new ViewContractNotHoneredError(msg)
+        }
+  
+        await view.write(output, viewModel, route)
       }
-
-      await view.write(output, viewModel, route)
+    }
+    catch(previousError)
+    {
+      const error = new Error('could not freeze attribute of object')
+      error.code  = 'E_CORE_HTTP_SERVER_DISPATCH'
+      error.chain = { viewModel, route, previousError }
+      throw error
     }
   }
 
