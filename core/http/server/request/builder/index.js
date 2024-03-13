@@ -123,14 +123,14 @@ class HttpRequestBuilder
               {
                 return buffers[0]
               }
-            
+
               // Calculate the total length needed for the joined buffer
               const 
                 totalLength = buffers.reduce((acc, buf, index) => acc + buf.length + (index < buffers.length - 1 ? delimiter.length : 0), 0),
                 result      = Buffer.alloc(totalLength)
 
               let offset = 0
-            
+
               buffers.forEach((buf, index) => 
               {
                 buf.copy(result, offset)
@@ -141,7 +141,7 @@ class HttpRequestBuilder
                   offset += delimiter.length
                 }
               })
-            
+
               return result
             },
             boundary  = Buffer.from('--' + contentTypeParts.shift().replace('boundary=', '').trim(), 'utf-8'),
@@ -152,7 +152,7 @@ class HttpRequestBuilder
             const
               segments  = splitBuffer(segment, Buffer.from('\r\n\r\n')),
               headers   = splitBuffer(segments.shift(), Buffer.from('\r\n')).reduce(segmentReducer(':'), {}),
-              content   = joinBuffer(segments, Buffer.from('\r\n\r\n'))
+              content   = splitBuffer(joinBuffer(segments, Buffer.from('\r\n\r\n')), Buffer.from('\r\n'))[0]
 
             for (const key in headers) 
             {
@@ -168,7 +168,7 @@ class HttpRequestBuilder
       
             parsed[key] = parsed[key] ? (Array.isArray(parsed[key]) ? [...parsed[key], value] : [parsed[key], value]) : value
           })
-      
+
           return parsed
         }
         catch(previousError)
