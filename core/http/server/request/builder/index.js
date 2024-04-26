@@ -152,7 +152,7 @@ class HttpRequestBuilder
             const
               segments  = splitBuffer(segment, Buffer.from('\r\n\r\n')),
               headers   = splitBuffer(segments.shift(), Buffer.from('\r\n')).reduce(segmentReducer(':'), {}),
-              content   = splitBuffer(joinBuffer(segments, Buffer.from('\r\n\r\n')), Buffer.from('\r\n'))[0]
+              content   = joinBuffer(splitBuffer(joinBuffer(segments, Buffer.from('\r\n\r\n')), Buffer.from('\r\n')).slice(0, -1), Buffer.from('\r\n'))
 
             for (const key in headers) 
             {
