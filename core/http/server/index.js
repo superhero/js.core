@@ -164,14 +164,51 @@ class HttpServer
     request   = await this.requestBuilder.build(input),
     route     = await this.routeBuilder.build(routes, request),
     decoded   = await this.decoder.decode(route, request, session, viewModel)
-    
+
     try
     {
-      this.routeBuilder.buildDto(decoded, route)
-  
       const dispatchers = await this.dispatcherCollectionBuilder.build(route, request, session, viewModel)
-      await this.dispatcherChain.dispatch(dispatchers)
-  
+
+      let buildDtoErrorHandled
+      try
+      {
+        this.routeBuilder.buildDto(decoded, route)
+      }
+      catch(error)
+      {
+        buildDtoErrorHandled = false
+        for(const dispatcher of dispatchers)
+        {
+          try
+          {
+            await dispatcher.onError(error)
+            handled = true
+            break
+          }
+          catch(errorOnError)
+          {
+            if(errorOnError.code === error.code)
+            {
+              continue
+            }
+            else
+            {
+              throw errorOnError
+            }
+          }
+        }
+
+        if(buildDtoErrorHandled === false)
+        {
+          throw error
+        }
+      }
+
+      if(buildDtoErrorHandled === undefined)
+      {
+        await this.dispatcherChain.dispatch(dispatchers)
+      }
+
       if(!output.finished)
       {
         const
@@ -189,7 +226,7 @@ class HttpServer
     }
     catch(previousError)
     {
-      const error = new Error('could not freeze attribute of object')
+      const error = new Error('failed to dispatch')
       error.code  = 'E_CORE_HTTP_SERVER_DISPATCH'
       error.chain = { viewModel, route, previousError }
       throw error
