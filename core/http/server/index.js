@@ -182,7 +182,7 @@ class HttpServer
           try
           {
             await dispatcher.onError(error)
-            handled = true
+            buildDtoErrorHandled = true
             break
           }
           catch(errorOnError)
