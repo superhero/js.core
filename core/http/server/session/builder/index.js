@@ -25,8 +25,9 @@ class SessionBuilder
           ? lazyload
           : lazyload = 
             {
-              _sameSite : 'Strict',
+              _sameSite       : 'Strict',
               _isCookieGlobal : true,
+              _keyPairs       : [],
 
               get(name)
               {
@@ -42,83 +43,86 @@ class SessionBuilder
               },
               set(name, value)
               {
-                if(name   === undefined
-                || value  === undefined)
+                if(name  !== undefined
+                && value !== undefined)
                 {
-                  return false
+                  _keyPairs.push(`${name}=${encodeURIComponent(value)}`)
                 }
 
-                lazyload._name  = name
-                lazyload._value = value
+                viewModel.headers['Set-Cookie'] += _keyPairs.concat(lazyload.meta).join('; ')
 
-                viewModel.headers['Set-Cookie'] = `${name}=${encodeURIComponent(value)}`
+                return true
+              },
+              get _meta()
+              {
+                const meta = []
 
                 if(lazyload._domain)
                 {
-                  viewModel.headers['Set-Cookie'] += `; Domain=${lazyload._domain}`
+                  meta.push(`Domain=${lazyload._domain}`)
                 }
                 if(lazyload._expire)
                 {
-                  viewModel.headers['Set-Cookie'] += `; Expires=${lazyload._expire}`
+                  meta.push(`Expires=${lazyload._expire}`)
                 }
                 if(lazyload._maxAge || lazyload._maxAge === 0)
                 {
-                  viewModel.headers['Set-Cookie'] += `; Max-Age=${lazyload._maxAge}`
+                  meta.push(`Max-Age=${lazyload._maxAge}`)
                 }
                 if(lazyload._sameSite)
                 {
-                  viewModel.headers['Set-Cookie'] += `; SameSite=${lazyload._sameSite}`
+                  meta.push(`SameSite=${lazyload._sameSite}`)
                 }
                 if(lazyload._isSecure)
                 {
-                  viewModel.headers['Set-Cookie'] += `; Secure`
+                  meta.push(`Secure`)
                 }
                 if(lazyload._isCookieGlobal)
                 {
-                  viewModel.headers['Set-Cookie'] += `; Path=/`
+                  meta.push(`Path=/`)
                 }
                 if(lazyload._isHttpOnly)
                 {
-                  viewModel.headers['Set-Cookie'] += `; HttpOnly`
+                  meta.push(`HttpOnly`)
                 }
 
-                return true
+                return meta
               },
               isCookieGlobal(bool)
               {
                 lazyload._isCookieGlobal = bool
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               isHttpOnly(bool)
               {
                 lazyload._isHttpOnly = bool
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               isSecure(bool)
               {
                 lazyload._isSecure = bool
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               domain(domain)
               {
                 lazyload._domain = domain
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               expires(expire)
               {
                 lazyload._expire = new Date(expire).toUTCString()
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               maxAge(maxAge)
               {
                 // the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
                 lazyload._maxAge = parseInt(maxAge)
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               },
               sameSite(sameSite)
               {
                 lazyload._sameSite = sameSite
-                lazyload.set(lazyload._name, lazyload._value)
+                lazyload.set()
               }
             }
         }
