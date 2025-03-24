@@ -46,10 +46,10 @@ class SessionBuilder
                 if(name  !== undefined
                 && value !== undefined)
                 {
-                  _keyPairs.push(`${name}=${encodeURIComponent(value)}`)
+                  lazyload._keyPairs.push(`${name}=${encodeURIComponent(value)}`)
                 }
 
-                viewModel.headers['Set-Cookie'] += _keyPairs.concat(lazyload.meta).join('; ')
+                viewModel.headers['Set-Cookie'] += lazyload._keyPairs.concat(lazyload.meta).join('; ')
 
                 return true
               },
