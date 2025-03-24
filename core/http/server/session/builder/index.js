@@ -25,10 +25,6 @@ class SessionBuilder
           ? lazyload
           : lazyload = 
             {
-              _sameSite       : 'Strict',
-              _isCookieGlobal : true,
-              _keyPairs       : [],
-
               get(name)
               {
                 const cookies = (request.headers.cookie || '').split(';')
@@ -41,88 +37,51 @@ class SessionBuilder
                   }
                 }
               },
-              set(name, value)
+              set(name, value, { isCookieGlobal=true, isHttpOnly, isSecure, domain, expire, maxAge, sameSite='Strict' } = {})
               {
-                if(name  !== undefined
-                && value !== undefined)
+                if(name  === undefined
+                || value === undefined)
                 {
-                  lazyload._keyPairs.push(`${name}=${encodeURIComponent(value)}`)
+                  return
                 }
 
-                viewModel.headers['Set-Cookie'] = lazyload._keyPairs.concat(lazyload._meta).join('; ')
+                const cookie = [ `${name}=${encodeURIComponent(value)}` ]
+
+                if(domain)
+                {
+                  cookie.push(`Domain=${domain}`)
+                }
+                if(expire)
+                {
+                  expire = new Date(expire).toUTCString()
+                  cookie.push(`Expires=${expire}`)
+                }
+                if(maxAge || maxAge === 0)
+                {
+                  // The number of seconds until the cookie expires. 
+                  // A zero or negative number will expire the cookie immediately.
+                  cookie.push(`Max-Age=${parseInt(maxAge)}`)
+                }
+                if(sameSite)
+                {
+                  cookie.push(`SameSite=${sameSite}`)
+                }
+                if(isSecure)
+                {
+                  cookie.push(`Secure`)
+                }
+                if(isCookieGlobal)
+                {
+                  cookie.push(`Path=/`)
+                }
+                if(isHttpOnly)
+                {
+                  cookie.push(`HttpOnly`)
+                }
+
+                viewModel.headers['Set-Cookie'] = [ viewModel.headers['Set-Cookie'], cookie.join('; ') ].filter(Boolean)
 
                 return true
-              },
-              get _meta()
-              {
-                const meta = []
-
-                if(lazyload._domain)
-                {
-                  meta.push(`Domain=${lazyload._domain}`)
-                }
-                if(lazyload._expire)
-                {
-                  meta.push(`Expires=${lazyload._expire}`)
-                }
-                if(lazyload._maxAge || lazyload._maxAge === 0)
-                {
-                  meta.push(`Max-Age=${lazyload._maxAge}`)
-                }
-                if(lazyload._sameSite)
-                {
-                  meta.push(`SameSite=${lazyload._sameSite}`)
-                }
-                if(lazyload._isSecure)
-                {
-                  meta.push(`Secure`)
-                }
-                if(lazyload._isCookieGlobal)
-                {
-                  meta.push(`Path=/`)
-                }
-                if(lazyload._isHttpOnly)
-                {
-                  meta.push(`HttpOnly`)
-                }
-
-                return meta
-              },
-              isCookieGlobal(bool)
-              {
-                lazyload._isCookieGlobal = bool
-                lazyload.set()
-              },
-              isHttpOnly(bool)
-              {
-                lazyload._isHttpOnly = bool
-                lazyload.set()
-              },
-              isSecure(bool)
-              {
-                lazyload._isSecure = bool
-                lazyload.set()
-              },
-              domain(domain)
-              {
-                lazyload._domain = domain
-                lazyload.set()
-              },
-              expires(expire)
-              {
-                lazyload._expire = new Date(expire).toUTCString()
-                lazyload.set()
-              },
-              maxAge(maxAge)
-              {
-                // the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
-                lazyload._maxAge = parseInt(maxAge)
-                lazyload.set()
-              },
-              sameSite(sameSite)
-              {
-                lazyload._sameSite = sameSite
-                lazyload.set()
               }
             }
         }
