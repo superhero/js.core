@@ -49,7 +49,7 @@ class SessionBuilder
                   lazyload._keyPairs.push(`${name}=${encodeURIComponent(value)}`)
                 }
 
-                viewModel.headers['Set-Cookie'] += lazyload._keyPairs.concat(lazyload.meta).join('; ')
+                viewModel.headers['Set-Cookie'] = lazyload._keyPairs.concat(lazyload.meta).join('; ')
 
                 return true
               },
