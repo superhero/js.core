@@ -46,18 +46,38 @@ class HttpServer
   onRequest(input, output)
   {
     const
+    report  = {},
     domain  = this.domainFactory.create(),
-    onError = this.onError.bind(this, input, output, domain)
+    onError = this.onError.bind(this, input, output, domain, report)
 
     domain.add(input)
     domain.add(output)
 
+    report['input.method']    = input.method
+    report['input.url']       = input.url
+    report['dispatch.chain']  = []
+
+    input.on('aborted',  () => report['input.aborted']  ? report['input.aborted']  += 1 : report['input.aborted']  = 1)
+    input.on('close',    () => report['input.close']    ? report['input.close']    += 1 : report['input.close']    = 1)
+    input.on('end',      () => report['input.end']      ? report['input.end']      += 1 : report['input.end']      = 1)
+    input.on('error',    () => report['input.error']    ? report['input.error']    += 1 : report['input.error']    = 1)
+    input.on('pause',    () => report['input.pause']    ? report['input.pause']    += 1 : report['input.pause']    = 1)
+    input.on('resume',   () => report['input.resume']   ? report['input.resume']   += 1 : report['input.resume']   = 1)
+
+    output.on('close',   () => report['output.close']   ? report['output.close']   += 1 : report['output.close']   = 1)
+    output.on('drain',   () => report['output.drain']   ? report['output.drain']   += 1 : report['output.drain']   = 1)
+    output.on('error',   () => report['output.error']   ? report['output.error']   += 1 : report['output.error']   = 1)
+    output.on('finish',  () => report['output.finish']  ? report['output.finish']  += 1 : report['output.finish']  = 1)
+    output.on('pipe',    () => report['output.pipe']    ? report['output.pipe']    += 1 : report['output.pipe']    = 1)
+    output.on('timeout', () => report['output.timeout'] ? report['output.timeout'] += 1 : report['output.timeout'] = 1)
+    output.on('unpipe',  () => report['output.unpipe']  ? report['output.unpipe']  += 1 : report['output.unpipe']  = 1)
+
     domain.on('error',    onError)
     input.on('aborted',   this.onAborted.bind(this, output))
-    output.on('timeout',  this.onTimeout.bind(this, output))
+    output.on('timeout',  this.onTimeout.bind(this, output, domain, report))
     output.on('finish',   this.onFinish .bind(this, input, output, domain))
 
-    domain.run(() => this.dispatch(input, output, domain).catch(onError))
+    domain.run(() => this.dispatch(input, output, domain, report).catch(onError))
   }
 
   onAborted(output)
@@ -67,44 +87,23 @@ class HttpServer
 
   onFinish(input, output, domain)
   {
-    let
-    emitters = 0,
-    timeouts = 0
-
-    for(const member of domain.members)
-      'removeAllListeners' in member
-      ? emitters++
-      : timeouts++
-
-    if(domain.members.length > 2)
-    {
-      const msg =
-      [
-        `Finished session did not clear all domain members!`,
-        `Expected: 2 (response and request)`,
-        `Recieved: ${domain.members.length}`,
-        `Emitters: ${emitters}`,
-        `Timeouts: ${timeouts}`
-      ].join('\n')
-
-      this.eventbus.emit('core.warning', msg)
-    }
-
     domain.exit()
     domain.removeAllListeners()
     input .removeAllListeners()
     output.removeAllListeners()
   }
 
-  onTimeout(output)
+  onTimeout(output, domain, report)
   {
+    this.locator.locate('core/console').color('red').log('✗ server timeout', report)
     output.writeHead(408)
     output.end('Request Timeout')
-    this.locator.locate('core/console').color('red').log('✗ server timeout')
   }
 
-  onError(input, output, domain, error)
+  onError(input, output, domain, report, error)
   {
+    report['domain.error'] ? report['domain.error'] += 1 : report['domain.error'] = 1
+
     try
     {
       switch(error.code)
@@ -173,7 +172,7 @@ class HttpServer
     }
   }
 
-  async dispatch(input, output, domain)
+  async dispatch(input, output, domain, report)
   {
     const
     routes    = this.configuration.find('core.http.server.routes'),
@@ -224,7 +223,7 @@ class HttpServer
 
       if(buildDtoErrorHandled === undefined)
       {
-        await this.dispatcherChain.dispatch(dispatchers)
+        await this.dispatcherChain.dispatch(dispatchers, report)
       }
 
       if(!output.finished)
@@ -232,13 +231,13 @@ class HttpServer
         const
           viewType  = viewModel.meta.status === 204 ? 'core/http/server/view/no-content' : viewModel.meta.view || route.view || 'core/http/server/view/json',
           view      = this.locator.locate(viewType)
-  
+
         if(typeof view.write !== 'function')
         {
           const msg = `The service "${viewType}" does not honer the view contract`
           throw new ViewContractNotHoneredError(msg)
         }
-  
+
         await view.write(output, viewModel, route)
       }
     }

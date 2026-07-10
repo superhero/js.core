@@ -7,14 +7,15 @@ class ServerDispatcherChain
     this.path = path
   }
 
-  async chain(dispatchers, i)
+  async chain(dispatchers, report, i)
   {
     const
     dispatcher  = dispatchers[i++],
-    next        = this.dispatch.bind(this, dispatchers, i)
+    next        = this.dispatch.bind(this, dispatchers, report, i)
 
     try
     {
+      report['dispatch.chain'].push(dispatcher.constructor.name)
       await dispatcher.dispatch(next)
     }
     catch(error)
@@ -23,11 +24,11 @@ class ServerDispatcherChain
     }
   }
 
-  async dispatch(dispatchers, i = 0)
+  async dispatch(dispatchers, report, i = 0)
   {
     if(i < dispatchers.length)
     {
-      await this.chain(dispatchers, i)
+      await this.chain(dispatchers, report, i)
     }
     else
     {
