@@ -7,11 +7,11 @@ class ServerDispatcherChain
     this.path = path
   }
 
-  async chain(dispatchers, report, i)
+  async chain(dispatchers, i, report)
   {
     const
     dispatcher  = dispatchers[i++],
-    next        = this.dispatch.bind(this, dispatchers, report, i)
+    next        = this.dispatch.bind(this, dispatchers, i, report)
 
     try
     {
@@ -24,11 +24,11 @@ class ServerDispatcherChain
     }
   }
 
-  async dispatch(dispatchers, report, i = 0)
+  async dispatch(dispatchers, i = 0, report = { 'dispatch.chain': [] })
   {
     if(i < dispatchers.length)
     {
-      await this.chain(dispatchers, report, i)
+      await this.chain(dispatchers, i, report)
     }
     else
     {

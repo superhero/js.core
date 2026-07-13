@@ -77,7 +77,7 @@ class HttpServer
     output.on('timeout',  this.onTimeout.bind(this, output, domain, report))
     output.on('finish',   this.onFinish .bind(this, input, output, domain))
 
-    domain.run(() => this.dispatch(input, output, domain, report).catch(onError))
+    domain.run(() => this.dispatch(input, output, domain, 0, report).catch(onError))
   }
 
   onAborted(output)
@@ -172,7 +172,7 @@ class HttpServer
     }
   }
 
-  async dispatch(input, output, domain, report)
+  async dispatch(input, output, domain, i, report)
   {
     const
     routes    = this.configuration.find('core.http.server.routes'),
@@ -223,7 +223,7 @@ class HttpServer
 
       if(buildDtoErrorHandled === undefined)
       {
-        await this.dispatcherChain.dispatch(dispatchers, report)
+        await this.dispatcherChain.dispatch(dispatchers, i, report)
       }
 
       if(!output.finished)
