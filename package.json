@@ -1,6 +1,6 @@
 {
   "name": "superhero",
-  "version": "2.15.2",
+  "version": "2.15.3",
   "description": "Framework built with the domain driven design pattern in mind",
   "repository": "git@github.com:superhero/js.core.git",
   "main": "index.js",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@superhero/debug": "1.1.14",
-    "@superhero/request": "2.4.0"
+    "@superhero/request": "2.5.0"
   },
   "devDependencies": {
     "@superhero/syntax-check": "0.0.1",
